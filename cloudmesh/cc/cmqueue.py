@@ -2,14 +2,20 @@ from queue import Queue
 from cloudmesh.common.console import Console
 from cloudmesh.common.Shell import Shell
 
-class Job:
 
-    def __init__(self, name, command):
-        self.name = name
+class Job:
+    """
+        A job is a simply a function that has a command
+        We need to queue up these jobs and commands inside an
+        array of queued up jobs.
+    """
+
+    def __init__(self, queuename, command):
+        self.queuename = queuename
         self.command = command
 
     def __str__(self):
-        print('name:', self.name)
+        print('queuename:', self.queuename)
         print('command:', self.command)
 
 
@@ -22,57 +28,47 @@ class CMQueue:
             queues.list()
     """
 
-    # initialize the queue object, assuming that this is a FIFO queue.
+    # initialize the queue object as an array
     def __init__(self):
-        self.queues = []
+        self.queue_structure = {}
 
-    def create(self, name=None):
-        if (name is not None):
-            self.name = name
+    # creating the queuename queue
+    def create(self, queuename=None):
+
+        # checking the queuename to see what it should be when adding it
+        if queuename is not None:
+            self.queue_structure[queuename] = Queue()
         else:
-            self.name='localhost'
+            self.queue_structure['localhost'] = Queue()
 
-        self.queue[name] = Queue()
+    def get(self, queuename=None):
+        return self.queue_structure[queuename].key()
 
 
-    # add items to the queue
-    def add(self, job=None, name=None, command=None):
-        if(name is not None ):
-            self.name = name
-
+    # add items to the specified queue
+    def add(self, job=None, queuename=None, command=None):
         job = Job(job, command)
-        self.queue[name].put(job)
-
-    # remove the first element of the queue to be started as a job
-    def remove(self, name=None, job=None):
-        if(name is not None):
-            del self.queuesqueues[name]
-        elif(job is not None):
-            name = self.name or name
-            self.queue[name].get(name)
+        if queuename is not None:
+            self.queue_structure[queuename].put(job)
         else:
-            Console.error('Cannot remove job')
+            self.create(queuename)
+            self.queue_structure[queuename].put(job)
+
+    # remove a job in a specified queue
+    def remove(self, queuename=None, job=None):
+        if queuename is not None and job is not None:
+            self.queue_structure[queuename].get(job)
+        else:
+            Console.error('Cannot remove')
 
 
 
-        self.queue.get(name)
-
-    def get(self, name=None, job=None):
-        return self.queues[name][job]
-
-
-    def run(self, name=None, job=None):
-        job = self.get(name=name, job=job)
+    def run(self, name=None):
+        job = self.get(name=name)
         command = job.command
         r = Shell.run(command)
 
     # figure out in what position a specific job is in the queue
-    def status(self, name):
-        for element in len(self.queue):
-            if self.queue[element] == name:
-                return "Job is in the", element, "position"
+    # def status(self, name):
 
-    # list the elements left in the queue
-    def list(self):
-        for element in len(self.queue):
-            print(self.queue[element])
+
