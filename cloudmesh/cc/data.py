@@ -9,8 +9,9 @@ class Data:
             self.name = name
         if directory is not None:
             self.directory=directory
-        Shell.execute(f'cd, {self.directory}')
-        Shell.execute(f'touch, {self.name}')
+        Shell.execute(f'mkdir -p {self.directory}')
+        Shell.execute(f'cd {self.directory}')
+        Shell.execute(f'touch {self.name}')
         Shell.execute(f'mv {self.name} {self.directory}')
 
 
@@ -19,6 +20,6 @@ class Data:
             self.name = name
         if directory is not None:
             self.directory = directory
-        Shell.execute(f'cd, {self.directory}')
+        Shell.execute(f'cd {self.directory}')
         Shell.execute(f'rm {self.name}')
 
