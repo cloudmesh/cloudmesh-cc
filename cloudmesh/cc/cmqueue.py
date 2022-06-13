@@ -30,11 +30,7 @@ class CMQueue:
 
     # initialize the queue object as an array
     def __init__(self):
-<<<<<<< HEAD
-        self.queue = []
-=======
         self.queue_structure = {}
->>>>>>> cab7d70cd18d4529f9f4d2c740a07124a0dfed73
 
     # creating the queuename queue
     def create(self, queuename=None):

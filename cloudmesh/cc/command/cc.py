@@ -18,9 +18,14 @@ class CcCommand(PluginCommand):
         ::
 
           Usage:
-                cc --file=FILE
-                cc list
-                cc [--parameter=PARAMETER] [--experiment=EXPERIMENT] [COMMAND...]
+                cc upload --data=FILENAME
+                cc queue create NAME
+                cc queue delete NAME
+                cc queue add [--queue=NAME] JOB
+                cc queue set NAME
+                cc queue run JOB
+                cc queue list [--queue=QUEUES]
+                cc queue list [--job=JOBS]
 
           This command does some useful things.
 
@@ -30,6 +35,8 @@ class CcCommand(PluginCommand):
 
           Options:
               -f      specify the file
+              --queue=QUEUES  TBD
+              --job=JOBS      TBD
 
           Description:
 
@@ -61,23 +68,25 @@ class CcCommand(PluginCommand):
 
         banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
-        map_parameters(arguments, "file", "parameter", "experiment")
+        map_parameters(arguments,
+                       "job",
+                       "data")
 
         VERBOSE(arguments)
 
         banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments,
-                                    parameter='expand',
-                                    experiment='dict',
-                                    COMMAND='str')
+                                    job='expand',
+                                    data='expand')
+
+        arguments["queues"] = Parameter.expand(arguments["--queue"])
+
 
 
         VERBOSE(arguments)
 
         banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
-
-        m = Manager()
 
         #
         # It is important to keep the programming here to a minimum and any substantial programming ought
@@ -87,19 +96,12 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
-        if arguments.file:
-            print("option a")
-            m.list(path_expand(arguments.file))
+        if arguments.queue and arguments.set:
 
-        elif arguments.list:
-            print("option b")
-            m.list("just calling list without parameter")
+            q = arguments["--queue"]
+            print(f"print set {q}")
 
-
-        Console.error("This is just a sample of an error")
-        Console.warning("This is just a sample of a warning")
-        Console.info("This is just a sample of an info")
-
-        Console.info(" You can witch debugging on and off with 'cms debug on' or 'cms debug off'")
+        elif arguments["--queue"] and arguments.list and arguments.job:
+            print("jobs")
 
         return ""
