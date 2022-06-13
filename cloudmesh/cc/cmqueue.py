@@ -24,7 +24,7 @@ class CMQueue:
 
     # initialize the queue object, assuming that this is a FIFO queue.
     def __init__(self):
-        self.queues = []
+        self.queue = []
 
     def create(self, name=None):
         if (name is not None):
