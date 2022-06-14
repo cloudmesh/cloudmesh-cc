@@ -1,8 +1,5 @@
-from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.command.data import Data
 
-result = Shell.execute('pwd')
-print(result)
-result = Shell.execute('ls', ["-l", "-a"])
-print(result)
-result = Shell.execute('ls', "-l -a")
-print(result)
+d= Data()
+#d.upload('test.txt')
+d.delete('test.txt')
