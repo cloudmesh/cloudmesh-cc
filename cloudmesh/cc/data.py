@@ -21,7 +21,6 @@ class Data:
         self.directory = os.getcwd()
         print(self.directory)
         os.remove(f'{self.directory}/{self.name}')
-        print(os.getcwd())
 
     def update(self, name=None):
         if name is not None:
