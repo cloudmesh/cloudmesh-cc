@@ -17,14 +17,14 @@ class Job:
     def __str__(self):
         return f'{self.jobname}, Command- {self.command}'
 
-        #print('jobname:', self.jobname)
-        #print('command:', self.command)
+        # print('jobname:', self.jobname)
+        # print('command:', self.command)
 
 
 class Queue:
     """
         Example:
-            queues = cmqueue()
+            queues = queue()
             queues.create('localhost')
             queues.add('ls')
             queues.list()
@@ -33,6 +33,11 @@ class Queue:
     # initialize the queue object as an array
     def __init__(self):
         self.queue_structure = {}
+
+    def get_job(self, queuename=None, job=None):
+        qlist = self.queue_structure[queuename]
+        print(qlist.get())
+        return qlist.get(job)
 
     # creating the queuename queue
     def create(self, queuename=None):
@@ -43,24 +48,24 @@ class Queue:
         else:
             self.queue_structure['localhost'] = pyQueue()
 
-    def grab(self, queuename=None):
-        return self.queue_structure[queuename].key()
-
     # add items to the specified queue
     def add(self, jobname=None, queuename=None, command=None):
         job = Job(jobname, command)
-        if queuename is None:
-            self.create(queuename)
-            self.queue_structure[queuename].put(job)
+        if queuename is not None:
+            qlist = self.queue_structure[queuename]
+            qlist.put(job)
+
         else:
+            self.create(queuename)
             self.queue_structure[queuename].put(job)
 
     # remove a job in a specified queue
-    def remove(self, queuename=None, job=None):
-        if queuename is not None and job is not None:
-            self.queue_structure[queuename].get(job)
+    def remove(self, queuename=None):
+        if queuename is not None:
+            self.queue_structure[queuename].get()
         else:
-            Console.error('Cannot remove')
+            queuename = 'localhost'
+            self.queue_structure[queuename].get()
 
     def run(self, name=None):
         job = self.get(name=name)
@@ -69,11 +74,6 @@ class Queue:
 
     # list all the elements in a specific queue
     def list(self, queuename):
+        print("Queuename:", queuename)
         for i in range(0, self.queue_structure[queuename].qsize()):
             print(self.queue_structure[queuename].get(i))
-
-
-
-
-
-
