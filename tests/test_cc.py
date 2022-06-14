@@ -29,7 +29,6 @@ class TestConfig:
         result = Shell.execute("cms cc create localhost", shell=True)
         Benchmark.Stop()
         VERBOSE(result)
-
         assert "quit" in result
         assert "clear" in result
 

@@ -6,6 +6,7 @@ from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
 from cloudmesh.cc.data import Data
+from cloudmesh.cc.Queue import Queue
 
 
 class CcCommand(PluginCommand):
@@ -99,10 +100,17 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
-        if arguments.queue and arguments.set:
+        if arguments["--queue"] and arguments.create:
+            Queue.create(self, queuename=arguments["--queue"])
 
-            q = arguments["--queue"]
-            print(f"print set {q}")
+        elif arguments["--queue"] and arguments.add:
+            Queue.add(self, queuename=arguments["--queue"], jobname=arguments["--queue"])
+
+        elif arguments["--queue"] and arguments.list:
+            Queue.create(self, queuename=arguments["--queue"])
+
+        elif arguments["--queue"] and arguments.remove:
+            Queue.remove(self, queuename=arguments["--queue"])
 
         elif arguments["--data"] and arguments.upload:
             Data.upload(self, name=arguments["--data"])
