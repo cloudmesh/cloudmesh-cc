@@ -70,7 +70,8 @@ class CcCommand(PluginCommand):
 
         map_parameters(arguments,
                        "job",
-                       "data")
+                       "data",
+                       "upload")
 
         VERBOSE(arguments)
 
@@ -78,7 +79,8 @@ class CcCommand(PluginCommand):
 
         arguments = Parameter.parse(arguments,
                                     job='expand',
-                                    data='expand')
+                                    data='expand',
+                                    upload='expand')
 
         arguments["queues"] = Parameter.expand(arguments["--queue"])
 
@@ -100,6 +102,9 @@ class CcCommand(PluginCommand):
 
             q = arguments["--queue"]
             print(f"print set {q}")
+
+        elif arguments.data and arguments["--upload"]:
+            print("Hello World")
 
         elif arguments["--queue"] and arguments.list and arguments.job:
             print("jobs")

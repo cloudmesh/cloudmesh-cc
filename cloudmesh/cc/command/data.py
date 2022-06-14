@@ -1,20 +1,33 @@
 from cloudmesh.common.Shell import Shell
-from cloudmesh.common.util import writefile
 import os
 
 class Data:
     global directory
 
-    def __init__(self, directory):
-        self.directory = directory
-
+    def __init__(self):
+        self.directory = ''
 
     def upload(self, name=None):
         if name is not None:
             self.name = name
-        self.directory=
-        writefile(f'{self.directory}/{self.name}')
-        file.close()
+        self.directory = os.getcwd()
+        print(self.directory)
+        open(f'{self.directory}/{self.name}', 'w')
+        print(os.getcwd())
+
+    def delete(self, name=None):
+        if name is not None:
+            self.name = name
+        self.directory = os.getcwd()
+        os.remove(f'{self.directory}/{self.name}')
+
+    def update(self, name=None):
+        if name is not None:
+            self.name = name
+        self.directory = os.getcwd()
+        print(self.directory)
+        open(f'{self.directory}/{self.name}', 'a')
+
 
 
     # def upload(self, name=None, directory=None):
