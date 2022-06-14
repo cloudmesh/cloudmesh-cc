@@ -21,19 +21,22 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc queue create NAME
-                cc queue delete NAME
-                cc queue add [--queue=NAME] JOB
-                cc queue set NAME
-                cc queue run JOB
-                cc queue list [--queue=QUEUES]
-                cc queue list [--job=JOBS]
+                cc queue --queues=NAMES
+                cc createqueue --queuename=NAME
+                cc add --queuename=NAME --jobname=JOB --command=COMMAND
+                cc remove --queuename=NAME
+                cc run --queuename=NAME
+                cc list --queuename=NAME
 
           This command does some useful things.
 
           Arguments:
               FILE   a file name
               PARAMETER  a parameterized parameter of the form "a[0-3],a5"
+              NAMES  a name of the dictionary of queues to be created
+              NAME  a name of a queue in the dictionary
+              JOB  the name of a job that has been created
+              COMMAND  the command that is associated with the job name
 
           Options:
               -f      specify the file
@@ -64,20 +67,21 @@ class CcCommand(PluginCommand):
         variables = Variables()
         variables["debug"] = True
 
-        banner("original arguments", color="RED")
+        #banner("original arguments", color="RED")
 
-        VERBOSE(arguments)
+        #VERBOSE(arguments)
 
-        banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        #banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
-                       "job",
-                       "data"
+                       "data",
+                       "queues",
+                       "queuename"
                        )
 
-        VERBOSE(arguments)
+        #VERBOSE(arguments)
 
-        banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
+        #banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments,
                                     job='expand',
@@ -88,9 +92,9 @@ class CcCommand(PluginCommand):
 
 
 
-        VERBOSE(arguments)
+       # VERBOSE(arguments)
 
-        banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
+        #banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
 
         #
         # It is important to keep the programming here to a minimum and any substantial programming ought
@@ -100,16 +104,19 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
-        if arguments["--queue"] and arguments.create:
+        if arguments["--queueset"] and arguments.set:
+            Queue(self)
+
+        elif arguments["--create"] and arguments.create:
             Queue.create(self, queuename=arguments["--queue"])
 
-        elif arguments["--queue"] and arguments.add:
+        elif arguments["--add"] and arguments.add:
             Queue.add(self, queuename=arguments["--queue"], jobname=arguments["--queue"])
 
-        elif arguments["--queue"] and arguments.list:
+        elif arguments["--list"] and arguments.list:
             Queue.create(self, queuename=arguments["--queue"])
 
-        elif arguments["--queue"] and arguments.remove:
+        elif arguments["--remove"] and arguments.remove:
             Queue.remove(self, queuename=arguments["--queue"])
 
         elif arguments["--data"] and arguments.upload:
