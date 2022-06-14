@@ -9,10 +9,10 @@ class Data:
             self.name = name
         if directory is not None:
             self.directory=directory
-        Shell.execute(f'mkdir -p {self.directory}')
-        Shell.execute(f'cd {self.directory}')
-        Shell.execute(f'touch {self.name}')
-        Shell.execute(f'mv {self.name} {self.directory}')
+        Shell.mkdir(self.directory)
+        Shell.run(f'cd {self.directory}')
+        Shell.run(f'touch {self.name}')
+        Shell.run(f'mv {self.name} {self.directory}')
 
 
     def delete(self, name=None, directory=None):
@@ -20,6 +20,5 @@ class Data:
             self.name = name
         if directory is not None:
             self.directory = directory
-        Shell.execute(f'cd {self.directory}')
-        Shell.execute(f'rm {self.name}')
+        Shell.run(f'cd {self.directory} && rm {self.name}')
 
