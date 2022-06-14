@@ -1,13 +1,12 @@
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import PluginCommand
-from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
-from pprint import pprint
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
+from cloudmesh.cc.data import Data
+
 
 class CcCommand(PluginCommand):
 
@@ -19,6 +18,8 @@ class CcCommand(PluginCommand):
 
           Usage:
                 cc upload --data=FILENAME
+                cc update --data=FILENAME
+                cc delete --data=FILENAME
                 cc queue create NAME
                 cc queue delete NAME
                 cc queue add [--queue=NAME] JOB
@@ -70,8 +71,8 @@ class CcCommand(PluginCommand):
 
         map_parameters(arguments,
                        "job",
-                       "data",
-                       "upload")
+                       "data"
+                       )
 
         VERBOSE(arguments)
 
@@ -79,8 +80,8 @@ class CcCommand(PluginCommand):
 
         arguments = Parameter.parse(arguments,
                                     job='expand',
-                                    data='expand',
-                                    upload='expand')
+                                    data='expand'
+                                    )
 
         arguments["queues"] = Parameter.expand(arguments["--queue"])
 
@@ -103,8 +104,14 @@ class CcCommand(PluginCommand):
             q = arguments["--queue"]
             print(f"print set {q}")
 
-        elif arguments.data and arguments["--upload"]:
-            print("Hello World")
+        elif arguments["--data"] and arguments.upload:
+            Data.upload(self, name=arguments["--data"])
+
+        elif arguments["--data"] and arguments.update:
+            Data.update(self, name=arguments["--data"])
+
+        elif arguments["--data"] and arguments.delete:
+            Data.delete(self, name=arguments["--data"])
 
         elif arguments["--queue"] and arguments.list and arguments.job:
             print("jobs")

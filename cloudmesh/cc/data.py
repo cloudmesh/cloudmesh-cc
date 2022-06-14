@@ -7,18 +7,19 @@ class Data:
     def __init__(self):
         self.directory = ''
 
+    @staticmethod
     def upload(self, name=None):
         if name is not None:
             self.name = name
         self.directory = os.getcwd()
-        print(self.directory)
         open(f'{self.directory}/{self.name}', 'w')
-        print(os.getcwd())
+
 
     def delete(self, name=None):
         if name is not None:
             self.name = name
         self.directory = os.getcwd()
+        print(self.directory)
         os.remove(f'{self.directory}/{self.name}')
 
     def update(self, name=None):
