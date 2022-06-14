@@ -21,27 +21,26 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc queue --queues=NAMES
-                cc createqueue --queuename=NAME
-                cc add --queuename=NAME --jobname=JOB --command=COMMAND
-                cc remove --queuename=NAME
-                cc run --queuename=NAME
-                cc list --queuename=NAME
+                cc create queue --queue=QUEUE
+                cc add --queue=QUEUE --job=JOB --command=COMMAND
+                cc remove --queue=QUEUE
+                cc run --queue=QUEUE
+                cc list --queue=QUEUE
 
           This command does some useful things.
 
           Arguments:
-              FILE   a file name
-              PARAMETER  a parameterized parameter of the form "a[0-3],a5"
-              NAMES  a name of the dictionary of queues to be created
-              NAME  a name of a queue in the dictionary
+              FILENAME   a file name
+              NAME  a name is a parameterized set of names
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
 
           Options:
               -f      specify the file
-              --queue=QUEUES  TBD
-              --job=JOBS      TBD
+              --queue=QUEUE      TBD
+              --data=FILENAME    TBD
+              --job=JOB         TBD
+              --command=COMMAND  TBD
 
           Description:
 
@@ -59,7 +58,6 @@ class CcCommand(PluginCommand):
 
         """
 
-
         # arguments.FILE = arguments['--file'] or None
 
         # switch debug on
@@ -67,34 +65,33 @@ class CcCommand(PluginCommand):
         variables = Variables()
         variables["debug"] = True
 
-        #banner("original arguments", color="RED")
+        # banner("original arguments", color="RED")
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-        #banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
                        "data",
                        "queues",
-                       "queuename"
+                       "queuename",
+                       "jobname",
+                       "command"
                        )
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-        #banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
+        # banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments,
-                                    job='expand',
                                     data='expand'
                                     )
 
-        arguments["queues"] = Parameter.expand(arguments["--queue"])
+        # arguments["queues"] = Parameter.expand(arguments["--queue"])
 
+        # VERBOSE(arguments)
 
-
-       # VERBOSE(arguments)
-
-        #banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
+        # banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
 
         #
         # It is important to keep the programming here to a minimum and any substantial programming ought
@@ -104,31 +101,52 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
-        if arguments["--queueset"] and arguments.set:
-            Queue(self)
-
-        elif arguments["--create"] and arguments.create:
-            Queue.create(self, queuename=arguments["--queue"])
-
-        elif arguments["--add"] and arguments.add:
-            Queue.add(self, queuename=arguments["--queue"], jobname=arguments["--queue"])
-
-        elif arguments["--list"] and arguments.list:
-            Queue.create(self, queuename=arguments["--queue"])
-
-        elif arguments["--remove"] and arguments.remove:
-            Queue.remove(self, queuename=arguments["--queue"])
-
-        elif arguments["--data"] and arguments.upload:
-            Data.upload(self, name=arguments["--data"])
-
-        elif arguments["--data"] and arguments.update:
-            Data.update(self, name=arguments["--data"])
-
-        elif arguments["--data"] and arguments.delete:
-            Data.delete(self, name=arguments["--data"])
-
-        elif arguments["--queue"] and arguments.list and arguments.job:
-            print("jobs")
+        if arguments.upload and arguments.data:
+            filename = arguments.data
+        elif arguments.update and arguments.data:
+            filename = arguments.data
+        elif arguments.delete and arguments.data:
+            filename = arguments.data
+        elif arguments.create and arguments.queue:
+            Queue.create(self,queuename=arguments.queue)
+        elif arguments.add and arguments.queue and arguments.job and arguments.command:
+            Queue.add(queuename=arguments.queue, jobname=arguments.job,
+                      command=arguments.command)
+        elif arguments.remove and arguments.queue:
+            Queue.remove(queuename=arguments.queue)
+        elif arguments.run and arguments.queue:
+            Queue.run(queuename=arguments.queue)
+        elif arguments.list and arguments.queue:
+            Queue.list(queuename=arguments.queue)
 
         return ""
+
+
+"""
+     if arguments.list and arguments.queuename:
+         print('Queue list function')
+
+     elif arguments["--create"] and arguments.create:
+         Queue.create(self, queuename=arguments["--queue"])
+
+     elif arguments["--add"] and arguments.add:
+         Queue.add(self, queuename=arguments["--queue"], jobname=arguments["--queue"])
+
+     elif arguments["--list"] and arguments.list:
+         Queue.create(self, queuename=arguments["--queue"])
+
+     elif arguments["--remove"] and arguments.remove:
+         Queue.remove(self, queuename=arguments["--queue"])
+
+     elif arguments["--data"] and arguments.upload:
+         Data.upload(self, name=arguments["--data"])
+
+     elif arguments["--data"] and arguments.update:
+         Data.update(self, name=arguments["--data"])
+
+     elif arguments["--data"] and arguments.delete:
+         Data.delete(self, name=arguments["--data"])
+
+     elif arguments["--queue"] and arguments.list and arguments.job:
+         print("jobs")
+ """

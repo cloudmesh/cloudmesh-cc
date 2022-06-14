@@ -1,5 +1,5 @@
-from cloudmesh.cc.command.queue import Queue
-from cloudmesh.cc.command.queue import Job
+from cloudmesh.cc.Queue import Job
+from cloudmesh.cc.Queue import Queue
 
 q = Queue()
 queuenames = ['localuser', 'rivanna1', 'rivanna2', 'rivanna3']
