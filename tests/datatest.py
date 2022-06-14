@@ -1,15 +1,5 @@
-from cloudmesh.cc.data import Data
-from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.command.data import Data
 
-# result = Shell.execute('pwd')
-# print(result)
-# result = Shell.execute('ls', ["-l", "-a"])
-# print(result)
-# result = Shell.execute('ls', "-l -a")
-# print(result)
+d= Data('/c/Users/abeck/cm/cloudmesh-cc/tests/directory')
+d.upload('test.txt')
 
-# d = Data('./directory')
-# d.upload('text.txt')
-
-r = Shell.run('ls')
-print(r)
