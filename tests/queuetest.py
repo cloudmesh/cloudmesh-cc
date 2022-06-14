@@ -1,23 +1,25 @@
-from cloudmesh.cc.queue import Queue
-from cloudmesh.cc.queue import Job
+from cloudmesh.cc.command.queue import Queue
+from cloudmesh.cc.command.queue import Job
 
 
 q = Queue()
 for name in ['localuser', 'rivanna1', 'rivanna2', 'rivanna3']:
-    q.create(name)
+    q.create(queuename=name)
 
 
 
 print('Adding to queue . . .')
 for i in range(0, 9):
     name = f"job-{i}"
-    job = Job(name=name, command="sleep 0.{i}")
-    q.add(job=job, queuename='localuser')
-    for r in range(0,3):
-        job = Job(name=f"rivanna-{name}", command="sleep 0.{i}")
+    job = Job(jobname=name, command=f"sleep 0.{i}")
+    q.add(jobname=job, queuename='localuser')
+print()
+print("Finished adding to the queue . . . ")
 
-q.list("")
+q.list(queuename="localuser")
 
+
+'''
 for i in range(0, 9):
     name = f"job-{i}"
     print(q.get(job=name, queue='localuser'))
@@ -33,7 +35,7 @@ for i in range(0, 100):
     q.remove(job=j, queuename='rivanna3')
 
 
-
+'''
 
 
 

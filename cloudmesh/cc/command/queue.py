@@ -10,16 +10,18 @@ class Job:
         array of queued up jobs.
     """
 
-    def __init__(self, queuename, command):
-        self.queuename = queuename
+    def __init__(self, jobname, command):
+        self.jobname = jobname
         self.command = command
 
     def __str__(self):
-        print('queuename:', self.queuename)
-        print('command:', self.command)
+        return f'{self.jobname}, Command- {self.command}'
+
+        #print('jobname:', self.jobname)
+        #print('command:', self.command)
 
 
-class CMQueue:
+class Queue:
     """
         Example:
             queues = cmqueue()
@@ -37,21 +39,20 @@ class CMQueue:
 
         # checking the queuename to see what it should be when adding it
         if queuename is not None:
-            self.queue_structure[queuename] = Queue()
+            self.queue_structure[queuename] = pyQueue()
         else:
-            self.queue_structure['localhost'] = Queue()
+            self.queue_structure['localhost'] = pyQueue()
 
-    def get(self, queuename=None):
+    def grab(self, queuename=None):
         return self.queue_structure[queuename].key()
 
-
     # add items to the specified queue
-    def add(self, job=None, queuename=None, command=None):
-        job = Job(job, command)
-        if queuename is not None:
+    def add(self, jobname=None, queuename=None, command=None):
+        job = Job(jobname, command)
+        if queuename is None:
+            self.create(queuename)
             self.queue_structure[queuename].put(job)
         else:
-            self.create(queuename)
             self.queue_structure[queuename].put(job)
 
     # remove a job in a specified queue
@@ -61,12 +62,18 @@ class CMQueue:
         else:
             Console.error('Cannot remove')
 
-
-
     def run(self, name=None):
         job = self.get(name=name)
         command = job.command
         r = Shell.run(command)
 
-    # figure out in what position a specific job is in the queue
-    # def status(self, name):
+    # list all the elements in a specific queue
+    def list(self, queuename):
+        for i in range(0, self.queue_structure[queuename].qsize()):
+            print(self.queue_structure[queuename].get(i))
+
+
+
+
+
+
