@@ -30,3 +30,19 @@ print("Finished removing from queue . . . ")
 
 '''
 q.run('rivanna1')
+
+
+script = textwarp.dedent(
+"""
+cms queue craete a
+cms queue craete b
+cms queue craete b
+cms queue add --queue=a --name=hallo --command=hostname
+cms queue add a hallo hostname
+cms queue list 
+cms queue list --queue=a
+cms queue list --queue=a,b
+""").strip().splitlines()
+print (script)
+for command in script:
+    Shell.run(command)
