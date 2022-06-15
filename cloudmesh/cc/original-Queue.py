@@ -2,11 +2,12 @@ from queue import Queue as pyQueue
 from cloudmesh.common.console import Console
 from cloudmesh.common.Shell import Shell
 
+
 class Job:
     """
-        A job is a simply a function that has a command
-        We need to queue up these jobs and commands inside an
-        array of queued up jobs.
+        A job is simply an object that has a name and a command
+        The name is the name of the job and the command is the
+        command that the job will execute when run.
     """
 
     def __init__(self, name, command):
@@ -16,17 +17,10 @@ class Job:
     def __str__(self):
         return f'name={self.name}, command={self.command}'
 
-        # print('jobname:', self.jobname)
-        # print('command:', self.command)
-
 
 class Queue:
     """
-        Example:
-            queues = queue()
-            queues.create('localhost')
-            queues.add('ls')
-            queues.list()
+
     """
 
     # initialize the queue object as a dictionary
@@ -88,7 +82,7 @@ class Queue:
         raise NotImplementedError
         if scheduler.lower() == "fifo":
             for job in self.jobs:
-                print ("Now i run job {job.name} in queue {self.name}")
+                print("Now i run job {job.name} in queue {self.name}")
 
     def get_job(self, queuename=None):
         qlist = self.qdict[queuename]
@@ -134,7 +128,6 @@ class Queue:
             j = self.get_job(queuename=queuename)
             r = Shell.run(j.command)
             print(r)
-
 
     # list all the elements in a specific queue
     def list(self, queuename):

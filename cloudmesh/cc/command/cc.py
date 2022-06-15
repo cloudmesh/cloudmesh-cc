@@ -21,12 +21,16 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc object --queue=QUEUE
-                cc create queue --queue=QUEUE
-                cc add --queue=QUEUE --job=JOB --command=COMMAND
-                cc remove --queue=QUEUE
-                cc run --queue=QUEUE
-                cc list --queue=QUEUE
+                cc queue  --queue=QUEUE
+                cc queue add --queue=QUEUE --job=JOB --command=COMMAND
+                cc queue remove --queue=QUEUE --job=JOB
+                cc queue list --queue=QUEUE
+                cc queue run --queue=QUEUE --scheduler=SCHEDULER
+                cc queues --queues=QUEUES
+                cc queues add --queues=QUEUES --queue=QUEUE
+                cc queues remove --queues=QUEUES --queue=QUEUE
+                cc queues list --queues=QUEUES
+                cc queues run --queues=QUEUES
                 cc start
                 cc stop
 
@@ -34,16 +38,19 @@ class CcCommand(PluginCommand):
 
           Arguments:
               FILENAME   a file name
-              NAME  a name is a parameterized set of names
+              QUEUE  the name of a queue object that has been created
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
+              SCHEDULER  designation of how jobs should be pulled from the queue
+              QUEUES  the name of the queues object that has been created
 
           Options:
-              -f      specify the file
-              --queue=QUEUE      TBD
-              --data=FILENAME    TBD
-              --job=JOB         TBD
-              --command=COMMAND  TBD
+              --queue=QUEUE          specify the queue that you want to access
+              --data=FILENAME        specify the data that you want to access
+              --job=JOB              specify the job name
+              --command=COMMAND      specify the command to be added to a job
+              --scheduler=SCHEDULER  specify the scheduling technique that is to be used
+              --queues=QUEUES        specify the queues object that is to be used
 
           Description:
 
@@ -128,29 +135,25 @@ class CcCommand(PluginCommand):
 
         elif arguments.delete and arguments.data:
             filename = arguments.data
-        elif arguments.object:
-            Queue(self)
-            raise NotImplementedError
-        elif arguments.create and arguments.queue:
-            Queue.create(self,queuename=arguments.queue)
 
         elif arguments.add and \
                 arguments.queue and \
                 arguments.job and \
                 arguments.command:
-            Queue.add(queuename=arguments.queue,
-                      jobname=arguments.job,
-                      command=arguments.command)
 
-        elif arguments.remove and arguments.queue:
-            Queue.remove(queuename=arguments.queue)
+            arguments.queue.add(arguments.job, arguments.command)
 
-        elif arguments.run and arguments.queue:
-            Queue.run(queuename=arguments.queue)
+        elif arguments.remove and \
+                arguments.queue and \
+                arguments.job:
+            arguments.queue.remove(arguments.job)
+
+        elif arguments.run and \
+                arguments.queue and \
+                arguments.scheduler:
+            arguments.queue.run(arguments.scheduler)
 
         elif arguments.list and arguments.queue:
-            Queue.list(queuename=arguments.queue)
+            arguments.queue.list()
 
         return ""
-
-
