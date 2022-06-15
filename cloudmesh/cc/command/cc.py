@@ -7,7 +7,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
 from cloudmesh.cc.data import Data
 from cloudmesh.cc.Queue import Queue
-
+import os
 
 class CcCommand(PluginCommand):
 
@@ -120,6 +120,8 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
+            command="uvicorn cloudmesh.cc.service.service:queue_app --reload"
+            os.system(command)
             raise NotImplementedError
 
         elif arguments.stop:
