@@ -1,3 +1,5 @@
+from cloudmesh.common.Shell import Shell
+
 """
     This is a program that allows for the instantiation of jobs and then
     allowing those jobs to be manipulated in a queue. These manipulations
@@ -8,11 +10,13 @@
     command that would theoretically be run in the command line.
 """
 
+
 class Job:
     """
         A job is an object that has a name and a command. This name is paired
         to the command.
     """
+
     def __int__(self, name, command):
         self.name = name
         self.command = command
@@ -38,7 +42,6 @@ class Queue:
         cms cc queue run --queue=a
     """
 
-
     def __int__(self, name=None):
         """
         Initializes the queue object
@@ -46,35 +49,43 @@ class Queue:
         :param name:
         :return: creates the queue object
         """
+        if name is None:
+            self.name = 'localhost'
+        else:
+            self.name = name
+
+        self.jobs = {}
 
     def add(self, name, command):
         """
         Creates a job using the name and command parameters and then
         adds this job to the correct queue
 
-        :param queue:
         :param name:
         :param command:
         :return: edits a queue that was created by adding an element
         """
+        job = Job(name, command)
+        self.jobs[job.name] = job.command
 
     def remove(self, name):
         """
-        Takes a job name and a specified queue and removes the specified job
-        from that specific queue.
+        Takes a job name and removes the specified job
 
-        :param queue:
         :param name:
+        :returns: updated queue structure
         """
+        self.jobs.pop(name)
 
     def list(self):
         """
         Takes a queue and returns the elements that are in the queue, in the
         correct order that they are supposed to be in.
 
-        :param queue:
         :return: list of the jobs that are in the queue object
         """
+        for name in self.jobs:
+            print(name, self.jobs.get(name))
 
     def run(self, scheduler):
         """
@@ -83,10 +94,15 @@ class Queue:
         in first out).
 
         :param scheduler:
-        :param queue:
         :return: the commands that are in the queue, one at a time
         """
 
+        if scheduler.lower() == 'fifo':
+            for name in self.jobs:
+                c = self.jobs.get(name)
+                Shell.run(c)
+        else:
+            print("LIFO and PQ are not yet implemented")
 
 
 class Queues:
@@ -110,6 +126,8 @@ class Queues:
         :param name: name of the structure
         :return: creates the queues structure
         """
+        self.name = name
+        self.queues = {}
 
     def add(self, queue):
         """

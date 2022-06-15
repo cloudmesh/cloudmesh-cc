@@ -94,8 +94,6 @@ rivanna:
 
 """
 
-local
-
 
 class Data:
 

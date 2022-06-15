@@ -1,4 +1,5 @@
 import textwrap
+from cloudmesh.common.Shell import Shell
 
 """
     This is the test file for the queue framework. Essentially, what we want
@@ -23,24 +24,27 @@ import textwrap
 
 s_1 = textwrap.dedent(
     """
-    cms cc queue --queue=a
-    cms cc queue add --queue=a --jobname="Job1" --command="cd"
-    cms cc queue add --queue=a --jobname="Job2" --command="ls"
-    cms cc queue add --queue=a --jobname="Job3" --command="cd Desktop"
-    cms cc queue add --queue=a --jobname="Job4" --command="ls"
-    cms cc queue add --queue=a --jobname="Job5" --command="cd .."
-    cms cc queue list --queue=a
-    cms cc queue remove --queue=a --jobname="Job5"
-    cms cc queue remove --queue=a --jobname="Job4"
-    cms cc queue list --queue=a
-    cms cc queue run --queue=a
+cms cc --queue=a
+cms cc add --queue=a --jobname="Job1" --command="cd"
+cms cc add --queue=a --jobname="Job2" --command="ls"
+cms cc add --queue=a --jobname="Job3" --command="cd Desktop"
+cms cc add --queue=a --jobname="Job4" --command="ls"
+cms cc add --queue=a --jobname="Job5" --command="cd .."
+cms cc list --queue=a
+cms cc remove --queue=a --jobname="Job5"
+cms cc remove --queue=a --jobname="Job4"
+cms cc list --queue=a
+cms cc run --queue=a
     """).strip().splitlines()
 
-print(s_1)
-print()
+for command in s_1:
+    print(command)
+    c = Shell.run(command)
+    print(c)
+
 
 # script for section 2:
-
+'''
 s_2 = textwrap.dedent(
 """
 cms cc queue --queue=a
@@ -70,3 +74,4 @@ cms cc queues run --queues=abc
 """).strip().splitlines()
 
 print(s_2)
+'''

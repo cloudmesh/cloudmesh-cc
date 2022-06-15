@@ -5,9 +5,12 @@ from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
-from cloudmesh.cc.data import Data
-from cloudmesh.cc.Queue import Queue
+# from cloudmesh.cc.data import Data
+
+from cloudmesh.cc.queue import Queue
 import os
+
+
 
 class CcCommand(PluginCommand):
 
@@ -21,16 +24,11 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc queue  --queue=QUEUE
-                cc queue add --queue=QUEUE --job=JOB --command=COMMAND
-                cc queue remove --queue=QUEUE --job=JOB
-                cc queue list --queue=QUEUE
-                cc queue run --queue=QUEUE --scheduler=SCHEDULER
-                cc queues --queues=QUEUES
-                cc queues add --queues=QUEUES --queue=QUEUE
-                cc queues remove --queues=QUEUES --queue=QUEUE
-                cc queues list --queues=QUEUES
-                cc queues run --queues=QUEUES
+                cc --queue=QUEUE
+                cc add --queue=QUEUE --job=JOB --command=COMMAND
+                cc remove --queue=QUEUE --job=JOB
+                cc list --queue=QUEUE
+                cc run --queue=QUEUE --scheduler=SCHEDULER
                 cc start
                 cc stop
 
@@ -84,29 +82,28 @@ class CcCommand(PluginCommand):
 
         # banner("original arguments", color="RED")
 
-        # VERBOSE(arguments)
+        #VERBOSE(arguments)
 
-        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        #banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
-                       "data",
+                       "filename",
                        "queue",
-                       "queuename",
-                       "jobname",
-                       "command"
+                       "job",
+                       "command",
+                       "scheduler",
+                       "queues"
                        )
 
-        # VERBOSE(arguments)
+        #VERBOSE(arguments)
 
-        # banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
+        #banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
 
-        arguments = Parameter.parse(arguments,
-                                    data='expand'
-                                    )
+        arguments = Parameter.parse(arguments)
 
         # arguments["queues"] = Parameter.expand(arguments["--queue"])
 
-        # VERBOSE(arguments)
+        #VERBOSE(arguments)
 
         # banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
 
@@ -138,8 +135,11 @@ class CcCommand(PluginCommand):
         elif arguments.delete and arguments.data:
             filename = arguments.data
 
+        elif arguments.queue:
+            arguments.queue = Queue()
+
         elif arguments.add and \
-                arguments.queue and \
+                arguments["--queue"] and \
                 arguments.job and \
                 arguments.command:
 
