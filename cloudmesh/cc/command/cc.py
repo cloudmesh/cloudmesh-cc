@@ -53,7 +53,7 @@ class CcCommand(PluginCommand):
                 start the service
 
             cc stop
-                sto the service
+                stop the service
 
 
             > cms cc --parameter="a[1-2,5],a10"
@@ -113,9 +113,11 @@ class CcCommand(PluginCommand):
         #
 
         if arguments.start:
+            print("Start the service")
             raise NotImplementedError
 
         elif arguments.stop:
+            print("Stop the service")
             raise NotImplementedError
 
         elif arguments.upload and arguments.data:
