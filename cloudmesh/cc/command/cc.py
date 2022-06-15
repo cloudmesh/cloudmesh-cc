@@ -25,8 +25,8 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc --queue=QUEUE
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
+                cc add --queue=QUEUE
                 cc remove --queue=QUEUE --job=JOB
                 cc list --queue=QUEUE
                 cc run --queue=QUEUE --scheduler=SCHEDULER

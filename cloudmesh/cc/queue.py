@@ -1,4 +1,7 @@
+import os.path
+import shelve
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.util import path_expand
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -56,6 +59,7 @@ class Queue:
             self.name = name
 
         self.jobs = {}
+
 
     def add(self, name, command):
         """
@@ -120,7 +124,7 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __int__(self, name):
+    def __init__(self, name):
         """
         Initializes the giant queue structure.
 
@@ -128,7 +132,28 @@ class Queues:
         :return: creates the queues structure
         """
         self.name = name
+        self.filename = path_expand("~/.cloudmesh/queue/queues.shelve")
         self.queues = {}
+        self.load()
+
+    def load(self):
+        # load in the queues that have been created (shelve)
+
+        if os.path.exists(self.filename):
+            with shelve.open(self.filename) as storage:
+                self.queues = storage
+        else:
+            # create the directory
+            directory = os.path.dirname(self.filename)
+            Shell.mkdir(directory)
+            # save the queue
+            self.save()
+
+
+    def save(self):
+        # save in the queues that have been created (shelve)
+        with shelve.open(self.filename) as storage:
+            storage = self.queues
 
     def add(self, queue):
         """
@@ -137,6 +162,8 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
+        self.save()
+
 
     def remove(self, queue):
         """
@@ -144,6 +171,7 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
+        self.save()
 
     def run(self, scheduler):
         """
@@ -151,9 +179,11 @@ class Queues:
         :param scheduler:
         :return: the commands that are issued from the jobs.
         """
+        self.save()
 
     def list(self):
         """
         Returns a list of the queues that are in the queue
         :return:
         """
+        self.save()

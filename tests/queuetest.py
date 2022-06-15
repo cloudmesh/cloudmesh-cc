@@ -39,19 +39,21 @@ q.run(scheduler='fifo')
 
 # script for section 1:
 """
-cms cc add --queue=a --jobname="Job2" --command="ls"
-cms cc add --queue=a --jobname="Job3" --command="cd Desktop"
-cms cc add --queue=a --jobname="Job4" --command="ls"
-cms cc add --queue=a --jobname="Job5" --command="cd .."
+cms cc add --queue=a --job=\"Job1\" --command=\"whoami\"
+cms cc add --queue=a --job=\"Job2\" --command=\"ls\"
+cms cc add --queue=a --job=\"Job3\" --command=\"hostname\"
+cms cc add --queue=a --job=\"Job4\" --command=\"date\"
+cms cc add --queue=a --job=\"Job5\" --command=\"echo hello world\"
 cms cc list --queue=a
-cms cc remove --queue=a --jobname="Job5"
-cms cc remove --queue=a --jobname="Job4"
+cms cc remove --queue=a --job="Job5"
+cms cc remove --queue=a --job="Job4"
 cms cc list --queue=a
 cms cc run --queue=a
 """
 script = textwrap.dedent(
 """
-cms cc add --queue=a --job=\"Job1\" --command=\"cd\"
+cms cc add --queue=a --job=\"Job1\" --command=\"whoami\"
+cms cc add --queue=a --job=\"Job2\" --command=\"ls\"
 """
 ).strip().splitlines()
 
