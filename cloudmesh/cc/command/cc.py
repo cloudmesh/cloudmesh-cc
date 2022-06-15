@@ -21,6 +21,7 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
+                cc object --queue=QUEUE
                 cc create queue --queue=QUEUE
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
                 cc remove --queue=QUEUE
@@ -73,7 +74,7 @@ class CcCommand(PluginCommand):
 
         map_parameters(arguments,
                        "data",
-                       "queues",
+                       "queue",
                        "queuename",
                        "jobname",
                        "command"
@@ -107,6 +108,8 @@ class CcCommand(PluginCommand):
             filename = arguments.data
         elif arguments.delete and arguments.data:
             filename = arguments.data
+        elif arguments.object:
+            Queue(self)
         elif arguments.create and arguments.queue:
             Queue.create(self,queuename=arguments.queue)
         elif arguments.add and arguments.queue and arguments.job and arguments.command:
