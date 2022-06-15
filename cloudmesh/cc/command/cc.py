@@ -33,6 +33,7 @@ class CcCommand(PluginCommand):
                 cc start
                 cc stop
                 cc doc
+                cc test
 
           This command does some useful things.
 
@@ -119,13 +120,18 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
-            command = "uvicorn cloudmesh.cc.service.service:queue_app --reload"
+            command = "uvicorn cloudmesh.cc.service.service:queue_app"
             os.system(command)
             raise NotImplementedError
         elif arguments.doc:
             url = "http://127.0.0.1:8000/docs"
             Shell.browser(url)
-
+        elif arguments.test:
+            import requests
+            url = "http://127.0.0.1:8000/docs"
+            r = requests.get(url)
+            pprint(r)
+            print(r.text)
         elif arguments.stop:
             print("Stop the service")
             commands = Shell.ps()
@@ -136,12 +142,10 @@ class CcCommand(PluginCommand):
                 if command["name"].startswith('python'):
                     cmdline = command["cmdline"]
                     if 'cc' in cmdline and 'start' in cmdline:
-                        print(command)
+                        #print(command)
                         Shell.kill_pid(command["pid"])
-                if command["name"].startswith('python'):
-                    cmdline = command["cmdline"]
                     if 'cloudmesh.cc.service.service:queue_app' in cmdline:
-                        print(command)
+                        #print(command)
                         Shell.kill_pid(command["pid"])
 
 
