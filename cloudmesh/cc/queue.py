@@ -17,9 +17,10 @@ class Job:
         to the command.
     """
 
-    def __int__(self, name, command):
+    def __init__(self, name=None, command=None):
         self.name = name
         self.command = command
+
 
     def __str__(self):
         return f'Job Name= {self.name}, Command={self.command}'
@@ -42,7 +43,7 @@ class Queue:
         cms cc queue run --queue=a
     """
 
-    def __int__(self, name=None):
+    def __init__(self, name=None):
         """
         Initializes the queue object
 
@@ -96,11 +97,11 @@ class Queue:
         :param scheduler:
         :return: the commands that are in the queue, one at a time
         """
-
         if scheduler.lower() == 'fifo':
             for name in self.jobs:
                 c = self.jobs.get(name)
-                Shell.run(c)
+                r = Shell.run(c)
+                print(r)
         else:
             print("LIFO and PQ are not yet implemented")
 

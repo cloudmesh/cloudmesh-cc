@@ -1,6 +1,7 @@
 import textwrap
 from cloudmesh.common.Shell import Shell
-
+from cloudmesh.cc.queue import Queue
+import sys
 """
     This is the test file for the queue framework. Essentially, what we want
     is to create a queue, add some jobs to it, remove some jobs from it, list
@@ -20,12 +21,24 @@ from cloudmesh.common.Shell import Shell
     Task4: Run the queues object in a FIFO order
 """
 
-# script for section 1:
+''' q = Queue()
+for x in range(0, 9):
+    q.add(f"job{x}", f"echo hello world {x}")
 
-s_1 = textwrap.dedent(
-    """
-cms cc --queue=a
-cms cc add --queue=a --jobname="Job1" --command="cd"
+#q.list()
+
+q.run(scheduler='fifo')
+'''
+
+
+
+
+
+
+
+
+# script for section 1:
+"""
 cms cc add --queue=a --jobname="Job2" --command="ls"
 cms cc add --queue=a --jobname="Job3" --command="cd Desktop"
 cms cc add --queue=a --jobname="Job4" --command="ls"
@@ -35,9 +48,16 @@ cms cc remove --queue=a --jobname="Job5"
 cms cc remove --queue=a --jobname="Job4"
 cms cc list --queue=a
 cms cc run --queue=a
-    """).strip().splitlines()
+"""
+script = textwrap.dedent(
+"""
+cms cc add --queue=a --job=\"Job1\" --command=\"cd\"
+"""
+).strip().splitlines()
 
-for command in s_1:
+print(script)
+
+for command in script:
     print(command)
     c = Shell.run(command)
     print(c)
