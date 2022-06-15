@@ -6,7 +6,7 @@ from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
 from cloudmesh.cc.data import Data
-from cloudmesh.cc.Queue import Queue
+from cloudmesh.cc.queue import Queue
 
 
 class CcCommand(PluginCommand):

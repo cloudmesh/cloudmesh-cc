@@ -105,7 +105,7 @@ class Queue:
             print("LIFO and PQ are not yet implemented")
 
 
-'''class Queues:
+class Queues:
     """
     The Queues data structure is a structure that holds all of the queues
     with their corresponding names. It is a meta-queue, essentially. The queues
@@ -136,8 +136,6 @@ class Queue:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        
-
 
     def remove(self, queue):
         """
@@ -158,4 +156,3 @@ class Queue:
         Returns a list of the queues that are in the queue
         :return:
         """
-'''
