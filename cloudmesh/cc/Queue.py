@@ -31,14 +31,35 @@ class Queue:
 
     # initialize the queue object as a dictionary
     def __init__(self, name):
+        """
+
+        Args:
+            name ():
+        """
         self.name = name
         self.jobs = {}
 
     def add(self, job):
+        """
+
+        Args:
+            job ():
+
+        Returns:
+
+        """
         name = job.name
         self.jobs[name] = job
 
     def get(self, name):
+        """
+
+        Args:
+            name ():
+
+        Returns:
+
+        """
         if name in self.jobs:
             return self.jobs[name]
         else:
@@ -47,6 +68,14 @@ class Queue:
             raise ValueError(error)
 
     def remove(self, name):
+        """
+
+        Args:
+            name ():
+
+        Returns:
+
+        """
         job = self.get(name)
         del self.jobs[job.name]
 
@@ -76,16 +105,24 @@ class Queue:
     # add items to the specified queue
     def add(self, jobname=None, queuename=None, command=None):
         job = Job(jobname, command)
+
         if queuename is not None:
             qlist = self.qdict[queuename]
             qlist.put(job)
-
         else:
             self.create(queuename)
             self.qdict[queuename].put(job)
 
-    # remove a job in a specified queue
     def remove(self, queuename=None):
+        """
+        remove a job in a specified queue
+
+        Args:
+            queuename ():
+
+        Returns:
+
+        """
         if queuename is not None:
             self.qdict[queuename].get()
         else:
