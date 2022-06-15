@@ -14,6 +14,9 @@ class Host:
         """
         location hhas the form username@host:directory
 
+            abc@localhost:~/cm/cloudmesh-cc/test/dir
+            xyz1jk@rivanna.hpc.virginia.edu:~/cm/cloudmesh-cc/test/dir
+
         Args:
             location (str):
 
@@ -37,22 +40,61 @@ class Host:
         if self.host in ['localhost', "127.0.0.1"]:
             Shell.mkdir(directory)
         else:
-            Shell.ssh(f"mkdir -p {self.user}@{self.host}:{self.path}")
+            Shell.ssh(f"{self.user}@{self.host} mkdir -p {self.path}")
 
     def scp(self, source, destination):
         if self.host in ['localhost', "127.0.0.1"]:
             destination = shutil.copytree(source, destination)
         else:
-            Shell.ssh(f"mkdir -p {self.user}@{self.host}:{self.path}")
+            self.mkdir(self.path)
             Shell.scp(source, destination)
 
     def sync(self, source, destination):
         if self.host in ['localhost', "127.0.0.1"]:
-            # this is not quite correct as we want to also use rsync, but for now good enough
             destination = shutil.copytree(source, destination)
         else:
-            Shell.ssh(f"mkdir -p {self.user}@{self.host}:{source}")
+            self.mkdir(self.path)
             os.system(f"rsync -a {source} {self.user}@{self.host}:{destination}")
+
+
+"""
+Step1 
+
+localhost:
+  ~/tmp/a/1.txt
+  ~/tmp/a/2.txt
+  ~/tmp/b/3.txt
+  ~/tmp/b/4.txt
+
+Step2
+  
+rivanna:
+  nothing  
+
+step 3
+cms data upload ~/tmp/a/1.txt
+cms data list rivanna:~/tmp
+
+cms data upload ~/tmp/b/3.txt
+cms data list rivanna:~/tmp
+
+cms data upload ~/tmp/a
+cms data list rivanna:~/tmp
+
+cms data upload ~/tmp
+cms data list rivanna:~/tmp
+
+output
+rivanna:
+  ~/tmp/a/1.txt
+  ~/tmp/a/2.txt
+  ~/tmp/b/3.txt
+  ~/tmp/b/4.txt
+
+
+"""
+
+local
 
 
 class Data:
