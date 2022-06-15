@@ -5,11 +5,12 @@ from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
-# from cloudmesh.cc.data import Data
+from cloudmesh.cc.data import Data
 
 from cloudmesh.cc.queue import Queue
 import os
-
+from cloudmesh.common.Shell import Shell
+from pprint import pprint
 
 
 class CcCommand(PluginCommand):
@@ -31,6 +32,7 @@ class CcCommand(PluginCommand):
                 cc run --queue=QUEUE --scheduler=SCHEDULER
                 cc start
                 cc stop
+                cc doc
 
           This command does some useful things.
 
@@ -82,9 +84,9 @@ class CcCommand(PluginCommand):
 
         # banner("original arguments", color="RED")
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-        #banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
                        "filename",
@@ -95,15 +97,15 @@ class CcCommand(PluginCommand):
                        "queues"
                        )
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-        #banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
+        # banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
         # arguments["queues"] = Parameter.expand(arguments["--queue"])
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
         # banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
 
@@ -117,13 +119,31 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
-            command="uvicorn cloudmesh.cc.service.service:queue_app --reload"
+            command = "uvicorn cloudmesh.cc.service.service:queue_app --reload"
             os.system(command)
             raise NotImplementedError
+        elif arguments.doc:
+            url = "http://127.0.0.1:8000/docs"
+            Shell.browser(url)
 
         elif arguments.stop:
             print("Stop the service")
-            raise NotImplementedError
+            commands = Shell.ps()
+            # pprint(commands)
+            # print(type(commands))
+            for command in commands:
+                #print(command)
+                if command["name"].startswith('python'):
+                    cmdline = command["cmdline"]
+                    if 'cc' in cmdline and 'start' in cmdline:
+                        print(command)
+                        Shell.kill_pid(command["pid"])
+                if command["name"].startswith('python'):
+                    cmdline = command["cmdline"]
+                    if 'cloudmesh.cc.service.service:queue_app' in cmdline:
+                        print(command)
+                        Shell.kill_pid(command["pid"])
+
 
         elif arguments.upload and arguments.data:
             filename = arguments.data
