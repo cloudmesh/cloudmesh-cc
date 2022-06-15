@@ -26,7 +26,7 @@ class Host:
         """
         self.user, rest = location.split("@")
         self.host, self.path = rest.split(":")
-        if self.host is "localhost":
+        if self.host == "localhost":
             self.location = self.path
         else:
             self.location = str(self)
