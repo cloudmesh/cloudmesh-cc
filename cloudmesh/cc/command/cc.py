@@ -126,13 +126,9 @@ class CcCommand(PluginCommand):
 
         elif arguments.delete and arguments.data:
             filename = arguments.data
-<<<<<<< HEAD
         elif arguments.object:
             Queue(self)
-=======
             raise NotImplementedError
-
->>>>>>> ba0c9ff46848200b09742df6d6260ad5db1ae04d
         elif arguments.create and arguments.queue:
             Queue.create(self,queuename=arguments.queue)
 
