@@ -2,7 +2,6 @@ from queue import Queue as pyQueue
 from cloudmesh.common.console import Console
 from cloudmesh.common.Shell import Shell
 
-
 class Job:
     """
         A job is a simply a function that has a command
@@ -10,12 +9,12 @@ class Job:
         array of queued up jobs.
     """
 
-    def __init__(self, jobname, command):
-        self.jobname = jobname
+    def __init__(self, name, command):
+        self.name = name
         self.command = command
 
     def __str__(self):
-        return f'{self.jobname}, Command- {self.command}'
+        return f'name={self.name}, command={self.command}'
 
         # print('jobname:', self.jobname)
         # print('command:', self.command)
@@ -31,8 +30,36 @@ class Queue:
     """
 
     # initialize the queue object as a dictionary
-    def __init__(self):
-        self.qdict = {}
+    def __init__(self, name):
+        self.name = name
+        self.jobs = {}
+
+    def add(self, job):
+        name = job.name
+        self.jobs[name] = job
+
+    def get(self, name):
+        if name in self.jobs:
+            return self.jobs[name]
+        else:
+            error = f"job {name} not in queue {self.name}"
+            Console.error(error)
+            raise ValueError(error)
+
+    def remove(self, name):
+        job = self.get(name)
+        del self.jobs[job.name]
+
+    def run(self, scheduler="FIFO"):
+        """
+        run the jobes in the queue
+        Returns:
+
+        """
+        raise NotImplementedError
+        if scheduler.lower() == "fifo":
+            for job in self.jobs:
+                print ("Now i run job {job.name} in queue {self.name}")
 
     def get_job(self, queuename=None):
         qlist = self.qdict[queuename]
@@ -77,3 +104,17 @@ class Queue:
         print("Queuename:", queuename)
         for i in range(0, self.qdict[queuename].qsize()):
             print(self.qdict[queuename].get(i))
+
+
+class Queues:
+
+    def __int__(self):
+        queues = {}
+
+    def add(self, queue):
+        name = queue.name
+        self.queues[name] = queue
+
+    def list(self):
+        for queue in self.queues():
+            queue.list()
