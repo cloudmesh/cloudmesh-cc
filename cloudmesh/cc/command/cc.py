@@ -5,8 +5,10 @@ from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.cc.hostdata import Data
+from cloudmesh.common.util import banner
+#from cloudmesh.cc.hostdata import Data
 
-from cloudmesh.cc.queue import Queues
+#from cloudmesh.cc.queue import Queues
 import os
 from cloudmesh.common.Shell import Shell
 from pprint import pprint
@@ -119,9 +121,15 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
-            command = "uvicorn cloudmesh.cc.service.service:queue_app"
-            os.system(command)
-            raise NotImplementedError
+
+            #command = "uvicorn cloudmesh.cc.service.service:queue_app"
+            #os.system(command)
+
+            if True:
+                import uvicorn
+                from cloudmesh.cc.service.service import app
+                r = uvicorn.run(app, host="127.0.0.1", port=8000)
+                print (r)
         elif arguments.doc:
             url = "http://127.0.0.1:8000/docs"
             Shell.browser(url)
