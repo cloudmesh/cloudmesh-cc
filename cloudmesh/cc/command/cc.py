@@ -8,6 +8,7 @@ from cloudmesh.cc.hostdata import Data
 from cloudmesh.common.util import banner
 #from cloudmesh.cc.hostdata import Data
 from cloudmesh.cc.queue import Queue
+from cloudmesh.cc.queue import Queues
 import os
 from cloudmesh.common.Shell import Shell
 from pprint import pprint
@@ -25,8 +26,9 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
+                cc create <queues>
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
-                cc add --queue=QUEUE
+                cc add --queue=QUEUE --queues=QUEUES
                 cc remove --queue=QUEUE --job=JOB
                 cc list --queue=QUEUE
                 cc run --queue=QUEUE --scheduler=SCHEDULER
@@ -40,6 +42,7 @@ class CcCommand(PluginCommand):
           Arguments:
               FILENAME   a file name
               QUEUE  the name of the queue object as a variable in code
+              QUEUES the name of the queues (diciontary of queues) object
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
               SCHEDULER  designation of how jobs should be pulled from the queue
@@ -123,7 +126,6 @@ class CcCommand(PluginCommand):
 
             #command = "uvicorn cloudmesh.cc.service.service:queue_app"
             #os.system(command)
-
             if True:
                 import uvicorn
                 from cloudmesh.cc.service.service import app
@@ -165,18 +167,24 @@ class CcCommand(PluginCommand):
         elif arguments.delete and arguments.data:
             filename = arguments.data
 
-        elif arguments.create and \
-                arguments.queue and \
-                arguments.name:
-            arguments.queue = Queue(arguments.name)
+        elif arguments.create and arguments.queues:
+            print(arguments.queues)
+           # q_name = input("Input what you want the queues name to be")
+            #arguments.queues = Queues(q_name)
 
         elif arguments.add and \
                 arguments.queue and \
                 arguments.job and \
                 arguments.command:
 
-            print(arguments)
-            #arguments.queue.add(arguments.job, arguments.command)
+            raise NotImplementedError
+
+
+        elif arguments.add and \
+                arguments.queue and \
+                arguments.queues:
+
+            pass
 
         elif arguments.remove and \
                 arguments.queue and \
