@@ -10,8 +10,7 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
-# from cloudmesh.cc.database import QDatabase
-from cloudmesh.cc.database import Database
+from cloudmesh.cc.db.yamldb.database import Database
 
 
 @pytest.mark.incremental
