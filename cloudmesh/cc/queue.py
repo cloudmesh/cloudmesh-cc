@@ -2,6 +2,7 @@ import os.path
 import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
+from cloudmesh.cc.database import Database as QueueDB
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -118,9 +119,6 @@ class Queues:
     job names and commands.
 
     An example command would likely look like:
-        cms cc queues --queues=abc
-        cms cc queues add --queues= abc --queue=d
-        cms cc queues remove --queues=abc --queue=c
         cms cc queues list --queues=ab
     """
 
@@ -132,32 +130,29 @@ class Queues:
         :return: creates the queues structure
         """
         self.name = name
-        self.filename = path_expand("~/.cloudmesh/queue/queues.shelve")
         self.queues = {}
-        self.load()
-
-    def load(self):
-        # load in the queues that have been created (shelve)
-
-        if os.path.exists(self.filename):
-            with shelve.open(self.filename) as storage:
-                self.queues = storage
-        else:
-            # create the directory
-            directory = os.path.dirname(self.filename)
-            Shell.mkdir(directory)
-            # save the queue
-            self.save()
-
+        self.filename = path_expand("~/.cloudmesh/queue/queues.shelve")
+        self.db = QueueDB(filename=self.filename)
 
     def save(self):
-        # save in the queues that have been created (shelve)
-        with shelve.open(self.filename) as storage:
-            storage = self.queues
+        """
+        save the queue to persistant storage
+
+        Returns:
+
+        """
+        self.db.save(self.queues)
+
+    def load(self):
+        self.queues = self.db.load()
+        return self.queues
 
     def add(self, queue):
         """
-        Adds a queue to the dictionary of queues.
+        Adds a queue to the queues.
+
+        cms cc queues add --queues= abc --queue=d
+
 
         :param queue:
         :return: Updates the structure of the queues by addition
@@ -167,7 +162,10 @@ class Queues:
 
     def remove(self, queue):
         """
-        Takes a queue and removes it from the structure
+        removes a queue from the queues
+
+        cms cc queues remove --queues=abc --queue=c
+
         :param queue:
         :return: updates the structure of the queues by deletion
         """
@@ -186,4 +184,5 @@ class Queues:
         Returns a list of the queues that are in the queue
         :return:
         """
-        self.save()
+        pass
+        # no save needed as just list

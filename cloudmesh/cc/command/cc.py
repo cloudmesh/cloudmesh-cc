@@ -5,9 +5,9 @@ from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import banner
-from cloudmesh.cc.data import Data
+from cloudmesh.cc.hostdata import Data
 
-from cloudmesh.cc.queue import Queue
+from cloudmesh.cc.queue import Queues
 import os
 from cloudmesh.common.Shell import Shell
 from pprint import pprint
@@ -158,9 +158,6 @@ class CcCommand(PluginCommand):
 
         elif arguments.delete and arguments.data:
             filename = arguments.data
-
-        elif arguments.queue:
-            arguments.queue = Queue()
 
         elif arguments.add and \
                 arguments["--queue"] and \
