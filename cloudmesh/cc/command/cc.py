@@ -4,7 +4,6 @@ from cloudmesh.common.debug import VERBOSE
 from cloudmesh.shell.command import map_parameters
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import banner
 from cloudmesh.cc.hostdata import Data
 
 from cloudmesh.cc.queue import Queues

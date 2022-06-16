@@ -2,7 +2,7 @@ import os.path
 import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
-from cloudmesh.cc.database import Database as QueueDB
+from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -137,9 +137,6 @@ class Queues:
     def save(self):
         """
         save the queue to persistant storage
-
-        Returns:
-
         """
         self.db.save(self.queues)
 
@@ -157,7 +154,8 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.save()
+        self.queues[queue.name] = queue.jobs
+        self.db.save(self.queues)
 
 
     def remove(self, queue):
@@ -169,7 +167,8 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.save()
+        self.queues.pop(queue)
+        self.db.save(self.queues)
 
     def run(self, scheduler):
         """
@@ -177,12 +176,18 @@ class Queues:
         :param scheduler:
         :return: the commands that are issued from the jobs.
         """
-        self.save()
+        if scheduler.lower() == 'fifo':
+            for each in self.queues:
+                each.run(scheduler=scheduler)
+
+        self.db.save(self.queues)
 
     def list(self):
         """
         Returns a list of the queues that are in the queue
         :return:
         """
-        pass
+        for each in self.queues:
+            print(each.name)
+
         # no save needed as just list
