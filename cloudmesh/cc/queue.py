@@ -1,8 +1,6 @@
-import os.path
-import shelve
+from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
-from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -24,7 +22,6 @@ class Job:
     def __init__(self, name=None, command=None):
         self.name = name
         self.command = command
-
 
     def __str__(self):
         return f'Job Name= {self.name}, Command={self.command}'
@@ -60,7 +57,6 @@ class Queue:
             self.name = name
 
         self.jobs = {}
-
 
     def add(self, name, command):
         """
@@ -138,7 +134,7 @@ class Queues:
         """
         save the queue to persistant storage
         """
-        self.db.save(self.queues)
+        self.db.save()
 
     def load(self):
         self.queues = self.db.load()
@@ -155,8 +151,7 @@ class Queues:
         :return: Updates the structure of the queues by addition
         """
         self.queues[queue.name] = queue.jobs
-        self.db.save(self.queues)
-
+        self.save()
 
     def remove(self, queue):
         """
@@ -168,7 +163,8 @@ class Queues:
         :return: updates the structure of the queues by deletion
         """
         self.queues.pop(queue)
-        self.db.save(self.queues)
+        self.save()
+
 
     def run(self, scheduler):
         """
@@ -177,10 +173,14 @@ class Queues:
         :return: the commands that are issued from the jobs.
         """
         if scheduler.lower() == 'fifo':
-            for each in self.queues:
-                each.run(scheduler=scheduler)
+            for queue in self.queues:
+                print(type(self.queues[queue]))
+                print(type(queue))
+                self.queues[queue].run(scheduler=scheduler)
 
-        self.db.save(self.queues)
+
+
+        self.save(self.queues)
 
     def list(self):
         """
@@ -188,6 +188,6 @@ class Queues:
         :return:
         """
         for each in self.queues:
-            print(each.name)
+            print(each, self.queues[each])
 
         # no save needed as just list
