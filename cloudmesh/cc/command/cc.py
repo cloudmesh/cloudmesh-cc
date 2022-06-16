@@ -7,8 +7,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.cc.hostdata import Data
 from cloudmesh.common.util import banner
 #from cloudmesh.cc.hostdata import Data
-
-#from cloudmesh.cc.queue import Queues
+from cloudmesh.cc.queue import Queue
 import os
 from cloudmesh.common.Shell import Shell
 from pprint import pprint
@@ -40,7 +39,7 @@ class CcCommand(PluginCommand):
 
           Arguments:
               FILENAME   a file name
-              QUEUE  the name of a queue object that has been created
+              QUEUE  the name of the queue object as a variable in code
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
               SCHEDULER  designation of how jobs should be pulled from the queue
@@ -166,12 +165,18 @@ class CcCommand(PluginCommand):
         elif arguments.delete and arguments.data:
             filename = arguments.data
 
+        elif arguments.create and \
+                arguments.queue and \
+                arguments.name:
+            arguments.queue = Queue(arguments.name)
+
         elif arguments.add and \
-                arguments["--queue"] and \
+                arguments.queue and \
                 arguments.job and \
                 arguments.command:
 
-            arguments.queue.add(arguments.job, arguments.command)
+            print(arguments)
+            #arguments.queue.add(arguments.job, arguments.command)
 
         elif arguments.remove and \
                 arguments.queue and \
