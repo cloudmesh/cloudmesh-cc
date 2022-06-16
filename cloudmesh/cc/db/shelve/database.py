@@ -1,5 +1,5 @@
 import os
-from yamldb import YamlDB
+import shelve
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
@@ -17,10 +17,9 @@ class Database:
             self.filename = filename
         else:
             self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
-        self._create_directory()
-        self.db = YamlDB(filename=self.filename)
-        self.db["config.filename"] = self.filename
-        self.db.save(self.filename)
+
+        self.d = shelve.open(filename=self.filename)
+        self.d.close()
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
@@ -41,7 +40,7 @@ class Database:
         Returns:
 
         """
-        self.db.save()
+        self.d.close()
 
     def load(self):
         """
@@ -50,7 +49,9 @@ class Database:
         Returns:
 
         """
-        self.db.load()
+        # self.db.load()
+        with shelve.open(self.filename) as d:
+            return d
 
     def remove(self):
         """
@@ -58,19 +59,33 @@ class Database:
         Returns:
 
         """
-        os.remove(self.filename)
+        os.remove(f"{self.filename}.bak")
+        os.remove(f"{self.filename}.dat")
+        os.remove(f"{self.filename}.dir")
 
     def get(self, name):
-        return self.db[name]
+        with shelve.open(self.filename) as d:
+            return d[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        self.db[key] = value
+        with shelve.open(self.filename) as d:
+            d[key] = value
 
     def __str__(self):
-        return str(self.db)
+        s = "Shelve: " + self.filename
+        with shelve.open(self.filename) as d:
+            keylist = list(d.keys())
+            for key in keylist:
+                s += "\n" + key + ": " + str(d[key])
+        return s
 
     def clear(self):
-        self.db.clear()
+        with shelve.open(self.filename) as d:
+            keylist = list(d.keys())
+            for key in keylist:
+                del d[key]
+
+        # self.db.clear()
