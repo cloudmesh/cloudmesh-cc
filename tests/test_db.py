@@ -4,7 +4,6 @@
 # pytest -v --capture=no  tests/test_db..py::Test_db::<METHODNAME>
 ###############################################################
 import os.path
-
 import pytest
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
