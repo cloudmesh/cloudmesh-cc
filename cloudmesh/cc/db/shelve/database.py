@@ -16,19 +16,25 @@ class Database:
         if filename:
             self.filename = filename
         else:
-            self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
-
-        self.d = shelve.open(filename=self.filename)
-        self.d.close()
+            self.filename = path_expand("~/.cloudmesh/queue/queues")
+        self._create_directory_and_load()
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
-    def _create_directory(self):
+    def _create_directory_and_load(self):
         directory = os.path.dirname(self.filename)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.data = {}
+            self.data["queues"] = {}
             self.save()
+        else:
+            self.load()
+
+    def info(self):
+        print("keys: ", self.data["queues"].keys())
+        print("n: ", len(self.data['queues'].keys()))
+        print("filename: ", self.filename)
+
 
     def save(self):
         """
@@ -40,7 +46,11 @@ class Database:
         Returns:
 
         """
-        self.d.close()
+        self.data.sync()
+
+    def close(self):
+        print("closing shelf")
+        self.data.close()
 
     def load(self):
         """
@@ -49,9 +59,9 @@ class Database:
         Returns:
 
         """
-        # self.db.load()
-        with shelve.open(self.filename) as d:
-            return d
+        # self.data.load()
+        self.data = shelve.open(self.filename)
+        return self.data
 
     def remove(self):
         """
@@ -64,28 +74,26 @@ class Database:
         os.remove(f"{self.filename}.dir")
 
     def get(self, name):
-        with shelve.open(self.filename) as d:
-            return d[name]
+        return self.data['queues'][name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        with shelve.open(self.filename) as d:
-            d[key] = value
+        self.data['queues']['key'] = value
+        self.save()
 
     def __str__(self):
-        s = "Shelve: " + self.filename
-        with shelve.open(self.filename) as d:
-            keylist = list(d.keys())
-            for key in keylist:
-                s += "\n" + key + ": " + str(d[key])
-        return s
+        return self.data["queues"]
+
+    def __delitem__(self, key):
+        del self.data['queues'][key]
 
     def clear(self):
-        with shelve.open(self.filename) as d:
-            keylist = list(d.keys())
-            for key in keylist:
-                del d[key]
+        self.data["queues"] = {}
+        # with shelve.open(self.filename) as d:
+        #     keylist = list(d.keys())
+        #     for key in keylist:
+        #         del d[key]
 
-        # self.db.clear()
+        # self.data.clear()
