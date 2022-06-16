@@ -174,13 +174,19 @@ class Queues:
         """
         if scheduler.lower() == 'fifo':
             for queue in self.queues:
-                print(type(self.queues[queue]))
-                print(type(queue))
-                self.queues[queue].run(scheduler=scheduler)
+                q = self.queues.get(queue)
+                print(type(q))
+                for job in q:
+                    c = q.get(job)
+                    r = Shell.run(c)
+                    print(r)
+
+
+                #self.queues[queue].run(scheduler=scheduler)
 
 
 
-        self.save(self.queues)
+        self.save()
 
     def list(self):
         """
