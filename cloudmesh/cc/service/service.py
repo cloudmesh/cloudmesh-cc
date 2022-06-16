@@ -1,16 +1,20 @@
 
 from fastapi import FastAPI
+import logging
 
-queue_app = FastAPI()
+app = FastAPI()
 
 items = [{"name": "Foo"}, {"name": "Bar"}, {"name": "Baz"}]
 
+@app.get("/")
+async def read_main():
+    return {"msg": "Hello World"}
 
-@queue_app.get("/items/")
-async def read_item(skip: int = 0, limit: int = 10):
-    return items[skip : skip + limit]
+@app.get("/items/")
+async def read_items():
+    return {"msg": "Hello World"}
 
-@queue_app.get("/search/")
+@app.get("/search/")
 async def search_item(name:str):
     result = None
     for item in items:
