@@ -32,6 +32,8 @@ class TestConfig:
         db = Database()
         db["queue.a"] = {"name": "gregor"}
         db["queue.b"] = {"name": "gregor"}
+        db["queue.c"] = {"name": "gregor"}
+
 
         n = Database()
         Benchmark.Stop()
