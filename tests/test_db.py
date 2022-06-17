@@ -41,11 +41,7 @@ class Test_db:
         print(n)
 
 
-
-
-
-"""
-class a:
+    """
     def test_queue_create(self):
         HEADING()
         Benchmark.Start()
@@ -54,8 +50,8 @@ class a:
         VERBOSE(result)
         assert "quit" in result
         assert "clear" in result
+    """
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cmd5")
-"""
+        Benchmark.print(csv=True, sysinfo=False, tag="cc-db")

@@ -91,5 +91,4 @@ class Test_Queue:
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=True, tag="queue")
-                        # , user='test', node='test')
+        Benchmark.print(csv=True, sysinfo=False, tag="cc-queue")

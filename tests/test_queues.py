@@ -96,7 +96,9 @@ class TestConfig:
         assert len(q.queues) == 3
 
 
-
+    def test_benchmark(self):
+        HEADING()
+        Benchmark.print(csv=True, sysinfo=False, tag="cc-queues")
 
 
 

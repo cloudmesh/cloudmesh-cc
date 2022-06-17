@@ -34,4 +34,4 @@ class TestConfig:
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cmd5")
+        Benchmark.print(csv=True, sysinfo=False, tag="cc")
