@@ -9,7 +9,7 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
-from cloudmesh.cc.db.shelve.database import Database
+from cloudmesh.cc.db.yamldb.database import Database
 from cloudmesh.common.systeminfo import os_is_mac, os_is_windows
 import shelve
 from pprint import pprint
