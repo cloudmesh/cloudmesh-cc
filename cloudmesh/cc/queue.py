@@ -1,5 +1,3 @@
-from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-from yamldb import YamlDB
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 
@@ -70,6 +68,7 @@ class Queue:
         :param name:
         :return: creates the queue object
         """
+
         if name is None:
             self.name = 'localhost'
         else:
@@ -137,13 +136,21 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self):
+    def __init__(self, database='yamldb'):
         """
         Initializes the giant queue structure.
-
+        Default database is yamldb
         :param name: name of the structure
         :return: creates the queues structure
         """
+        if database.lower() == 'yamldb':
+            from yamldb import YamlDB
+            from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+
+        elif database.lower() == 'shelve':
+            import shelve
+            from cloudmesh.cc.db.shelve.database import Database as QueueDB
+
         self.queues = {}
         self.filename = path_expand("/Users/jacksonmiskill/Desktop/queue.yaml")
         self.db = QueueDB(filename=self.filename)

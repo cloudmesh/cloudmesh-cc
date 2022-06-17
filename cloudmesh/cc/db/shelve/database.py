@@ -1,6 +1,5 @@
 import os
 import shelve
-
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import pathlib

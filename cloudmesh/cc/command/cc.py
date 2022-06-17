@@ -30,7 +30,6 @@ class CcCommand(PluginCommand):
                 cc remove --queue=QUEUE --job=JOB
                 cc remove --queue=QUEUE
                 cc list --queue=QUEUE
-
                 cc start
                 cc stop
                 cc doc
