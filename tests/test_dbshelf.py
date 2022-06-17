@@ -10,6 +10,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
 from cloudmesh.cc.db.shelve.database import Database
+from cloudmesh.common.systeminfo import os_is_mac, os_is_windows
 import shelve
 from pprint import pprint
 import sys
@@ -47,7 +48,10 @@ class Test_dbshelf:
         db.info()
         print(db)
         Benchmark.Stop()
-        assert os.path.exists(f"{db.filename}.dat")
+        if os_is_windows():
+            assert os.path.exists(f"{db.filename}.dat")
+        else:
+            assert os.path.exists(f"{db.filename}.db")
         assert len(list(db.data.keys())) == 0
 
     def test_add(self):
@@ -59,7 +63,10 @@ class Test_dbshelf:
         db.info()
         print(db.data["queues"])
         Benchmark.Stop()
-        assert os.path.exists(f"{db.filename}.dat")
+        if os_is_windows():
+            assert os.path.exists(f"{db.filename}.dat")
+        else:
+            assert os.path.exists(f"{db.filename}.db")
         assert len(db.data["queues"]) == 1
         assert db.data["queues"]["name"] == "red"
 
@@ -78,7 +85,10 @@ class Test_dbshelf:
         Benchmark.Start()
         db1 = Database()
         db1.remove()
-        assert not os.path.exists(f"{db1.filename}.dat")
+        if os_is_windows():
+            assert not os.path.exists(f"{db1.filename}.dat")
+        else:
+            assert not os.path.exists(f"{db1.filename}.db")
 
     def test_save(self):
         HEADING()
