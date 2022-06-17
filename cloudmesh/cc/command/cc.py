@@ -170,7 +170,6 @@ class CcCommand(PluginCommand):
         elif arguments.create and arguments.queues:
             # cc create --queue=a,b
             names = Parameter.expand(arguments.queues)
-            print(names)
             queues = Queues()
             for name in names:
                 queues.create(name)

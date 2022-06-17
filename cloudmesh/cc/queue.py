@@ -1,4 +1,5 @@
 from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+from yamldb import YamlDB
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 
@@ -87,7 +88,6 @@ class Queue:
         """
         job = Job(name, command)
         self.jobs[job.name] = job.command
-        self.save()
 
     def remove(self, name):
         """
@@ -97,7 +97,6 @@ class Queue:
         :returns: updated queue structure
         """
         self.jobs.pop(name)
-        self.save()
 
     def list(self):
         """
@@ -146,7 +145,7 @@ class Queues:
         :return: creates the queues structure
         """
         self.queues = {}
-        self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
+        self.filename = path_expand("/Users/jacksonmiskill/Desktop/queue.yaml")
         self.db = QueueDB(filename=self.filename)
 
     def save(self):

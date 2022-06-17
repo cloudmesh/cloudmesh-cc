@@ -60,7 +60,7 @@ class Database:
     def get(self, name):
         return self.db[name]
 
-    def __getitem__(self, name):
+    2def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
