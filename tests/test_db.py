@@ -13,7 +13,7 @@ from cloudmesh.cc.db.yamldb.database import Database
 
 
 @pytest.mark.incremental
-class TestConfig:
+class Test_db:
 
     def test_create(self):
         HEADING()

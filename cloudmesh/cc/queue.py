@@ -10,6 +10,24 @@ from cloudmesh.common.util import path_expand
 
     Below are the objects and what they can do with examples of the type of
     command that would theoretically be run in the command line.
+    
+    Job, Queue, Queues
+    
+    Job(name, command)
+    Queue(name)
+        self.name = name 
+        self.jobs = {'job1: command1}
+        
+    Queues(name)
+        self.name = name
+        self.queues = {queuename: queue}
+        
+    q = Queue(name=)
+    qs = Queues(name=)
+    
+    
+    
+    
 """
 
 
@@ -69,6 +87,7 @@ class Queue:
         """
         job = Job(name, command)
         self.jobs[job.name] = job.command
+        self.save()
 
     def remove(self, name):
         """
@@ -78,6 +97,7 @@ class Queue:
         :returns: updated queue structure
         """
         self.jobs.pop(name)
+        self.save()
 
     def list(self):
         """
@@ -118,16 +138,15 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name):
+    def __init__(self):
         """
         Initializes the giant queue structure.
 
         :param name: name of the structure
         :return: creates the queues structure
         """
-        self.name = name
         self.queues = {}
-        self.filename = path_expand("~/.cloudmesh/queue/queues.shelve")
+        self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
         self.db = QueueDB(filename=self.filename)
 
     def save(self):
@@ -140,7 +159,7 @@ class Queues:
         self.queues = self.db.load()
         return self.queues
 
-    def add(self, queue):
+    def add(self, name: str, job:str, command:str):
         """
         Adds a queue to the queues.
 
@@ -150,10 +169,24 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.queues[queue.name] = queue.jobs
+
+        self.queues[name].add(job, command)
         self.save()
 
-    def remove(self, queue):
+    def create(self, name: str):
+        """
+        Create a queue
+
+        cms cc queues add --queues= abc --queue=d
+
+
+        :param queue:
+        :return: Updates the structure of the queues by addition
+        """
+        self.queues[name] = Queue(name=name)
+        self.save()
+
+    def remove(self, name):
         """
         removes a queue from the queues
 
@@ -162,9 +195,8 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.pop(queue)
+        self.queues.pop(name)
         self.save()
-
 
     def run(self, scheduler):
         """
@@ -181,10 +213,7 @@ class Queues:
                     r = Shell.run(c)
                     print(r)
 
-
-                #self.queues[queue].run(scheduler=scheduler)
-
-
+                # self.queues[queue].run(scheduler=scheduler)
 
         self.save()
 

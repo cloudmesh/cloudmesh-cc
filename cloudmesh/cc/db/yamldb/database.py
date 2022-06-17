@@ -5,6 +5,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import pathlib
 
+
 class Database:
 
     def __init__(self, filename=None, debug=False):
