@@ -9,24 +9,6 @@ from cloudmesh.common.util import path_expand
 
     Below are the objects and what they can do with examples of the type of
     command that would theoretically be run in the command line.
-    
-    Job, Queue, Queues
-    
-    Job(name, command)
-    Queue(name)
-        self.name = name 
-        self.jobs = {'job1: command1}
-        
-    Queues(name)
-        self.name = name
-        self.queues = {queuename: queue}
-        
-    q = Queue(name=)
-    qs = Queues(name=)
-    
-    
-    
-    
 """
 
 

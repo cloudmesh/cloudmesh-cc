@@ -1,6 +1,5 @@
 import os
 from yamldb import YamlDB
-
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import pathlib
