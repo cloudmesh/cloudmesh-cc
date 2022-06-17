@@ -16,19 +16,25 @@ class Database:
         if filename:
             self.filename = filename
         else:
-            self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
-
-        self.d = shelve.open(filename=self.filename)
-        self.d.close()
+            self.filename = path_expand("~/.cloudmesh/queue/queues")
+        self._create_directory_and_load()
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
-    def _create_directory(self):
+    def _create_directory_and_load(self):
         directory = os.path.dirname(self.filename)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.data = {}
+            self.data = shelve.open(self.filename)
             self.save()
+        else:
+            self.load()
+
+    def info(self):
+        print("keys: ", self.__str__())
+        print("n: ", len(self.data.keys()))
+        print("filename: ", self.filename)
+
 
     def save(self):
         """
@@ -40,7 +46,11 @@ class Database:
         Returns:
 
         """
-        self.d.close()
+        self.data.sync()
+
+    def close(self):
+        print("closing shelf")
+        self.data.close()
 
     def load(self):
         """
@@ -49,9 +59,9 @@ class Database:
         Returns:
 
         """
-        # self.db.load()
-        with shelve.open(self.filename) as d:
-            return d
+        # self.data.load()
+        self.data = shelve.open(self.filename)
+        return self.data
 
     def remove(self):
         """
@@ -64,28 +74,37 @@ class Database:
         os.remove(f"{self.filename}.dir")
 
     def get(self, name):
-        with shelve.open(self.filename) as d:
-            return d[name]
+        # special load for modification
+        self.data = shelve.open(self.filename, writeback=True)
+        return self.data[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        with shelve.open(self.filename) as d:
-            d[key] = value
+        # special load for modification
+        self.data = shelve.open(self.filename, writeback=True)
+        self.data[key] = value
+        self.save()
 
     def __str__(self):
-        s = "Shelve: " + self.filename
-        with shelve.open(self.filename) as d:
-            keylist = list(d.keys())
-            for key in keylist:
-                s += "\n" + key + ": " + str(d[key])
+        self.load()
+        s = ""
+        keylist = list(self.data.keys())
+        for key in keylist:
+            s += str(key) + ": " + str(self.data[key]) + "\n"
         return s
 
-    def clear(self):
-        with shelve.open(self.filename) as d:
-            keylist = list(d.keys())
-            for key in keylist:
-                del d[key]
+    def __delitem__(self, key):
+        # special load for modification
+        self.data = shelve.open(self.filename, writeback=True)
+        del self.data[key]
 
-        # self.db.clear()
+    def clear(self):
+        # self.data = {}
+        self.load()
+        keylist = list(self.data.keys())
+        for key in keylist:
+            del self.data[key]
+
+        # self.data.clear()
