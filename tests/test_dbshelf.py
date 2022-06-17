@@ -45,10 +45,10 @@ class Test_dbshelf:
         db.clear()
         db.save()
         db.info()
-        print(db.data["queues"])
+        print(db)
         Benchmark.Stop()
         assert os.path.exists(f"{db.filename}.dat")
-        assert len(db.data["queues"]) == 0
+        assert len(list(db.data.keys())) == 0
 
     def test_add(self):
         HEADING()
@@ -67,16 +67,18 @@ class Test_dbshelf:
         HEADING()
         Benchmark.Start()
         db = Database()
-        db.__delitem__("name")
-
+        db["queues"].pop("name")
         db.save()
         db.info()
-        print(db.data["queues"])
         Benchmark.Stop()
-        assert len(db.data["queues"]) == 0
-        assert "name" not in db.data["queues"]
+        assert len(db["queues"]) == 0
 
-class rest:
+    def test_remove(self):
+        HEADING()
+        Benchmark.Start()
+        db1 = Database()
+        db1.remove()
+        assert not os.path.exists(f"{db1.filename}.dat")
 
     def test_save(self):
         HEADING()
@@ -86,16 +88,12 @@ class rest:
         db["queue.b"] = {"name": "gregor"}
         db["queue.c"] = {"name": "gregor"}
 
-
         n = Database()
         Benchmark.Stop()
-        assert n["queue.a.name"] == "gregor"
-        assert n["queue.b.name"] == "gregor"
+        assert n["queue.a"]["name"] == "gregor"
+        assert n["queue.b"]["name"] == "gregor"
 
         print(n)
-
-
-
 
 
 """
@@ -113,44 +111,3 @@ class a:
         HEADING()
         Benchmark.print(csv=True, sysinfo=False, tag="cmd5")
 """
-
-
-# computers = shelve.open('computers1.db')
-# computers['temperature'] = {
-#     'red': 80,
-#     'blue': 40,
-#     'yellow': 50,
-# }
-# print('Initial temperature:')
-# pprint(computers['temperature'])
-# computers.close()
-#
-# # develop a read function
-# c=shelve.open('computers1.db')
-# pprint(str(c))
-# pprint(c['temperature'])
-#
-# assert c['temperature']['red']==80
-#
-# with shelve.open('computers.db') as computers:
-#     computers['temperature'] = {
-#         'red': 80,
-#         'blue': 40,
-#         'yellow': 50,
-#     }
-#     print('Initial temperature:')
-#     pprint(computers['temperature'])
-#
-#
-# with shelve.open('computers.db') as computers:
-#
-#     #c = computers['temperature']
-#     #c['green'] = 101
-#     #computers['temperature'] = c
-#
-#     computers['temperature']['blue'] = 101
-#     # del computers['temperature']['yellow']
-#     print()
-#     print('Modified temperature:')
-#     pprint(computers['temperature'])
-#
