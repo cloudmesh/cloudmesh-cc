@@ -2,6 +2,7 @@ import os
 import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.systeminfo import os_is_windows
 import pathlib
 
 #
@@ -68,9 +69,12 @@ class Database:
         Returns:
 
         """
-        os.remove(f"{self.filename}.bak")
-        os.remove(f"{self.filename}.dat")
-        os.remove(f"{self.filename}.dir")
+        if os_is_windows():
+            os.remove(f"{self.filename}.bak")
+            os.remove(f"{self.filename}.dat")
+            os.remove(f"{self.filename}.dir")
+        else:
+            os.remove(f"{self.filename}.db")
 
     def get(self, name):
         # special load for modification
