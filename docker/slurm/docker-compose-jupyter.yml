@@ -1,6 +1,6 @@
 services:
   slurmjupyter:
-        image: slurm-jupyter:19.05.5-1
+        image: slurm-jupyter:latest
         hostname: slurmjupyter
         user: admin
         volumes:
@@ -8,7 +8,7 @@ services:
         ports:
                 - 8888:8888
   slurmmaster:
-        image: slurm-master:19.05.5-1
+        image: slurm-master:latest
         hostname: slurmmaster
         user: admin
         volumes:
@@ -18,7 +18,7 @@ services:
                 - 6818:6818
                 - 6819:6819
   slurmnode1:
-        image: slurm-node:19.05.5-1
+        image: slurm-node:latest
         hostname: slurmnode1
         user: admin
         volumes:
@@ -26,7 +26,7 @@ services:
         links:
                 - slurmmaster
   slurmnode2:
-        image: slurm-node:19.05.5-1
+        image: slurm-node:latest
         hostname: slurmnode2
         user: admin
         volumes:
@@ -34,7 +34,7 @@ services:
         links:
                 - slurmmaster
   slurmnode3:
-        image: slurm-node:19.05.5-1
+        image: slurm-node:latest
         hostname: slurmnode3
         user: admin
         volumes:
