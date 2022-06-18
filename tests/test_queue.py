@@ -10,6 +10,7 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 import pytest
 
+
 @pytest.mark.incremental
 class Test_Queue:
 
@@ -27,9 +28,9 @@ class Test_Queue:
         Benchmark.Start()
         q = Queue(name='queue 1')
 
-        for x in range (0, 10):
+        for x in range(0, 10):
             job = f'job-{x}'
-            command= f'command{x}'
+            command = f'command{x}'
             q.add(name=job, command=command)
         q.list()
         Benchmark.Stop()
@@ -41,9 +42,9 @@ class Test_Queue:
         q = Queue(name='queue 1')
         size = 10
         remove = int(size / 5)
-        for x in range (0, size):
+        for x in range(0, size):
             job = f'job-{x}'
-            command= f'command{x}'
+            command = f'command{x}'
             q.add(name=job, command=command)
 
         # result = q.list() should return a list of the items
@@ -71,7 +72,7 @@ class Test_Queue:
         q.add(name='job3', command='python3 ../cm/python-test/banner.py')
 
         Benchmark.Start()
-        q.run(scheduler= "FIFO")
+        q.run(scheduler="FIFO")
         Benchmark.Stop()
         assert q.jobs.get('job1') == 'cd'
         assert 'echo' in q.jobs.get('job2')
@@ -80,10 +81,10 @@ class Test_Queue:
     def test_list(self):
         HEADING()
 
-        q = Queue(name= "queue 1")
-        for x in range (0, 10):
+        q = Queue(name="queue 1")
+        for x in range(0, 10):
             job = f'job-{x}'
-            command= f'command{x}'
+            command = f'command{x}'
             q.add(name=job, command=command)
         Benchmark.Start()
         q.list()

@@ -24,7 +24,7 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
-                cc create --queues=QUEUES
+                cc create --queues=QUEUES --database=DATABASE
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
                 cc run --queue=QUEUE --scheduler=SCHEDULER
                 cc remove --queue=QUEUE --job=JOB
@@ -166,8 +166,10 @@ class CcCommand(PluginCommand):
             filename = arguments.data
 
 
-        elif arguments.create and arguments.queues:
-            # cc create --queue=a,b
+        elif arguments.create and \
+                arguments.queues and \
+                arguments.database:
+            #  cc create --queue=a,b into the correct database: yaml or shelve
             names = Parameter.expand(arguments.queues)
             queues = Queues()
             for name in names:
@@ -206,6 +208,6 @@ class CcCommand(PluginCommand):
             list_name = arguments.list
             queue_name = arguments.queue
             Queue.list(self)
-            #arguments.queue.list()
+            # arguments.queue.list()
 
         return ""
