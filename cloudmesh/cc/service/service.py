@@ -30,5 +30,22 @@ app = FastAPI()
 
 
 @app.get("/")
+<<<<<<< HEAD
 async def read_root():
     return {"Hello": "World"}
+=======
+async def read_main():
+    return {"msg": "Hello World"}
+
+@app.get("/items/")
+async def read_items():
+    return {"msg": "Hello World"}
+
+@app.get("/search/")
+async def search_item(name:str):
+    result = None
+    for item in items:
+        if item['name'] == name:
+            result = name
+    return result
+>>>>>>> 83cfc78568b7779eed94cbe833783a2ba72e8116

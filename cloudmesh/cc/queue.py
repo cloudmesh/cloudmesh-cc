@@ -1,8 +1,5 @@
-import os.path
-import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
-from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -24,7 +21,6 @@ class Job:
     def __init__(self, name=None, command=None):
         self.name = name
         self.command = command
-
 
     def __str__(self):
         return f'Job Name= {self.name}, Command={self.command}'
@@ -54,13 +50,13 @@ class Queue:
         :param name:
         :return: creates the queue object
         """
+
         if name is None:
             self.name = 'localhost'
         else:
             self.name = name
 
         self.jobs = {}
-
 
     def add(self, name, command):
         """
@@ -106,7 +102,7 @@ class Queue:
             for name in self.jobs:
                 c = self.jobs.get(name)
                 r = Shell.run(c)
-                print(r)
+                print(f"run queue={self.name} job={name} command={c}:", r)
         else:
             print("LIFO and PQ are not yet implemented")
 
@@ -122,29 +118,39 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name):
+    def __init__(self, name=None, database='yamldb'):
         """
         Initializes the giant queue structure.
-
+        Default database is yamldb
         :param name: name of the structure
         :return: creates the queues structure
         """
-        self.name = name
+        self.name = name or "queues"
+        if database.lower() == 'yamldb':
+            from yamldb import YamlDB
+            from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+            self.filename = path_expand("~/.cloudmesh/queue.yaml")
+
+        elif database.lower() == 'shelve':
+            import shelve
+            from cloudmesh.cc.db.shelve.database import Database as QueueDB
+            self.filename = path_expand("~/.cloudmesh/queue.dat")
+
         self.queues = {}
-        self.filename = path_expand("~/.cloudmesh/queue/queues.shelve")
-        self.db = QueueDB(filename=self.filename)
+        self.db = QueueDB(name=self.name, filename=self.filename)
+
 
     def save(self):
         """
         save the queue to persistant storage
         """
-        self.db.save(self.queues)
+        self.db.save()
 
     def load(self):
         self.queues = self.db.load()
         return self.queues
 
-    def add(self, queue):
+    def add(self, name: str, job:str, command:str):
         """
         Adds a queue to the queues.
 
@@ -154,11 +160,23 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.queues[queue.name] = queue.jobs
-        self.db.save(self.queues)
 
+        self.queues[name].add(job, command)
+        self.save()
 
-    def remove(self, queue):
+    def create(self, name: str):
+        """
+        Create a queue
+
+        cms cc queues add --queues= abc --queue=d
+        :param queue:
+        :return: Updates the structure of the queues by addition
+        """
+        self.load()
+        self.queues[name] = Queue(name=name)
+        self.save()
+
+    def remove(self, name):
         """
         removes a queue from the queues
 
@@ -167,8 +185,8 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.pop(queue)
-        self.db.save(self.queues)
+        self.queues.pop(name)
+        self.save()
 
     def run(self, scheduler):
         """
@@ -177,10 +195,17 @@ class Queues:
         :return: the commands that are issued from the jobs.
         """
         if scheduler.lower() == 'fifo':
-            for each in self.queues:
-                each.run(scheduler=scheduler)
+            for queue in self.queues:
+                q = self.queues.get(queue)
+                print(type(q))
+                for job in q:
+                    c = q.get(job)
+                    r = Shell.run(c)
+                    print(r)
 
-        self.db.save(self.queues)
+                # self.queues[queue].run(scheduler=scheduler)
+
+        self.save()
 
     def list(self):
         """
@@ -188,6 +213,14 @@ class Queues:
         :return:
         """
         for each in self.queues:
-            print(each.name)
+            print(each, self.queues[each])
 
         # no save needed as just list
+
+    def dict(self):
+        d = {}
+        for each in self.queues:
+            d[each] = {}
+            for job, command in self.queues[each].jobs.items():
+                d[each][job] =command
+        return d

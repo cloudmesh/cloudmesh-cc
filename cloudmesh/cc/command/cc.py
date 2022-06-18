@@ -1,17 +1,15 @@
-from cloudmesh.shell.command import command
-from cloudmesh.shell.command import PluginCommand
-from cloudmesh.common.debug import VERBOSE
-from cloudmesh.shell.command import map_parameters
+from pprint import pprint
+
+# from cloudmesh.cc.hostdata import Data
+from cloudmesh.cc.queue import Queue
+from cloudmesh.cc.queue import Queues
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
-from cloudmesh.cc.hostdata import Data
-from cloudmesh.common.util import banner
-#from cloudmesh.cc.hostdata import Data
-
-#from cloudmesh.cc.queue import Queues
-import os
-from cloudmesh.common.Shell import Shell
-from pprint import pprint
+from cloudmesh.shell.command import PluginCommand
+from cloudmesh.shell.command import command
+from cloudmesh.shell.command import map_parameters
+from cloudmesh.cc.queue import Job
 
 
 class CcCommand(PluginCommand):
@@ -26,11 +24,12 @@ class CcCommand(PluginCommand):
                 cc upload --data=FILENAME
                 cc update --data=FILENAME
                 cc delete --data=FILENAME
+                cc create --queues=QUEUES --database=DATABASE
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
-                cc add --queue=QUEUE
-                cc remove --queue=QUEUE --job=JOB
-                cc list --queue=QUEUE
                 cc run --queue=QUEUE --scheduler=SCHEDULER
+                cc remove --queue=QUEUE --job=JOB
+                cc remove --queue=QUEUE
+                cc list --queue=QUEUE
                 cc start
                 cc stop
                 cc doc
@@ -40,7 +39,8 @@ class CcCommand(PluginCommand):
 
           Arguments:
               FILENAME   a file name
-              QUEUE  the name of a queue object that has been created
+              QUEUE  the name of the queue object as a variable in code
+              QUEUES the name of the queues (diciontary of queues) object
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
               SCHEDULER  designation of how jobs should be pulled from the queue
@@ -122,14 +122,13 @@ class CcCommand(PluginCommand):
         if arguments.start:
             print("Start the service")
 
-            #command = "uvicorn cloudmesh.cc.service.service:queue_app"
-            #os.system(command)
-
+            # command = "uvicorn cloudmesh.cc.service.service:queue_app"
+            # os.system(command)
             if True:
                 import uvicorn
                 from cloudmesh.cc.service.service import app
                 r = uvicorn.run(app, host="127.0.0.1", port=8000)
-                print (r)
+                print(r)
         elif arguments.doc:
             url = "http://127.0.0.1:8000/docs"
             Shell.browser(url)
@@ -145,14 +144,14 @@ class CcCommand(PluginCommand):
             # pprint(commands)
             # print(type(commands))
             for command in commands:
-                #print(command)
+                # print(command)
                 if command["name"].startswith('python'):
                     cmdline = command["cmdline"]
                     if 'cc' in cmdline and 'start' in cmdline:
-                        #print(command)
+                        # print(command)
                         Shell.kill_pid(command["pid"])
                     if 'cloudmesh.cc.service.service:queue_app' in cmdline:
-                        #print(command)
+                        # print(command)
                         Shell.kill_pid(command["pid"])
 
 
@@ -166,24 +165,49 @@ class CcCommand(PluginCommand):
         elif arguments.delete and arguments.data:
             filename = arguments.data
 
+
+        elif arguments.create and \
+                arguments.queues and \
+                arguments.database:
+            #  cc create --queue=a,b into the correct database: yaml or shelve
+            names = Parameter.expand(arguments.queues)
+            queues = Queues()
+            for name in names:
+                queues.create(name)
+
         elif arguments.add and \
-                arguments["--queue"] and \
+                arguments.queue and \
                 arguments.job and \
                 arguments.command:
 
-            arguments.queue.add(arguments.job, arguments.command)
+            # cc add --queue=QUEUE --job=JOB --command=COMMAND
+            # here is what the command looks like  cc add --queue=QUEUE --job=JOB --command=COMMAND
+            job_name = arguments.job
+            command = arguments.command
+            job = Job(job_name, command)
+            q = Queues()  # how to we access the previously made queue?
+            q.add(arguments.queue, job)
+
+        elif arguments.remove and arguments.queue:
+            q = Queues()
+            q.remove(arguments.queue)
 
         elif arguments.remove and \
                 arguments.queue and \
                 arguments.job:
-            arguments.queue.remove(arguments.job)
+            q = Queues()
+            q[arguments.queue].remove(arguments.job)
 
         elif arguments.run and \
                 arguments.queue and \
                 arguments.scheduler:
-            arguments.queue.run(arguments.scheduler)
+            q = Queues()
+            q.run(scheduler=arguments.scheduler)
 
         elif arguments.list and arguments.queue:
-            arguments.queue.list()
+            list_name = arguments.list
+            queue_name = arguments.queue
+            Queue.list(self)
+            # arguments.queue.list()
 
         return ""

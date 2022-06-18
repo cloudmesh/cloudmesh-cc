@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_cc.py
 # pytest -v  tests/test_cc.py
-# pytest -v --capture=no  tests/test_cc..py::Test_cc::<METHODNAME>
+# pytest -v --capture=no  tests/test_cc.py::Test_cc::<METHODNAME>
 ###############################################################
 import pytest
 from cloudmesh.common.Benchmark import Benchmark
@@ -34,4 +34,4 @@ class TestConfig:
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cmd5")
+        Benchmark.print(csv=True, sysinfo=False, tag="cc")

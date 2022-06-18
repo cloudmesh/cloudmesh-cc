@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_db.py
-# pytest -v  tests/test_db.py
-# pytest -v --capture=no  tests/test_db..py::Test_db::<METHODNAME>
+# pytest -v --capture=no tests/test_db_yaml.py
+# pytest -v  tests/test_db_yaml.py
+# pytest -v --capture=no  tests/test_db_yaml.py::Test_db_yaml::<METHODNAME>
 ###############################################################
 import os.path
 import pytest
@@ -13,7 +13,7 @@ from cloudmesh.cc.db.yamldb.database import Database
 
 
 @pytest.mark.incremental
-class TestConfig:
+class Test_db_yaml:
 
     def test_create(self):
         HEADING()
@@ -41,11 +41,7 @@ class TestConfig:
         print(n)
 
 
-
-
-
-"""
-class a:
+    """
     def test_queue_create(self):
         HEADING()
         Benchmark.Start()
@@ -54,8 +50,8 @@ class a:
         VERBOSE(result)
         assert "quit" in result
         assert "clear" in result
+    """
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cmd5")
-"""
+        Benchmark.print(csv=True, sysinfo=False, tag="cc-db")
