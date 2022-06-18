@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_queue.py
 # pytest -v  tests/test_queue.py
-# pytest -v --capture=no  tests/test_queue..py::Test_queue::<METHODNAME>
+# pytest -v --capture=no  tests/test_queue.py::Test_queue::<METHODNAME>
 ###############################################################
 
 from cloudmesh.cc.queue import Queue, Queues
@@ -10,6 +10,7 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 import pytest
 
+@pytest.mark.incremental
 class Test_Queue:
 
     def test_create(self):

@@ -13,19 +13,26 @@ class Database:
 
     def __init__(self, filename=None, debug=False):
         self.debug = debug
-        if filename:
-            self.filename = filename
-        else:
-            self.filename = path_expand("~/.cloudmesh/queue/queues")
+        self.fileprefix = filename or  path_expand("~/.cloudmesh/queue/queues")
+        self.fileprefix.replace(".db", "")
+        self.fileprefix.replace(".dat", "")
+
         self._create_directory_and_load()
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
+    @property
+    def filename(self):
+        if os_is_windows():
+            return self.fileprefix + ".dat"
+        else:
+            return self.fileprefix + ".db"
+
     def _create_directory_and_load(self):
-        directory = os.path.dirname(self.filename)
+        directory = os.path.dirname(self.fileprefix)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.data = shelve.open(self.filename)
+            self.data = shelve.open(self.fileprefix)
             self.save()
         else:
             self.load()
@@ -34,6 +41,7 @@ class Database:
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))
         print("filename: ", self.filename)
+        print("fileprefix: ", self.fileprefix)
 
 
     def save(self):
@@ -60,7 +68,7 @@ class Database:
 
         """
         # self.data.load()
-        self.data = shelve.open(self.filename)
+        self.data = shelve.open(self.fileprefix)
         return self.data
 
     def remove(self):
@@ -70,15 +78,15 @@ class Database:
 
         """
         if os_is_windows():
-            os.remove(f"{self.filename}.bak")
-            os.remove(f"{self.filename}.dat")
-            os.remove(f"{self.filename}.dir")
+            os.remove(f"{self.fileprefix}.bak")
+            os.remove(f"{self.fileprefix}.dat")
+            os.remove(f"{self.fileprefix}.dir")
         else:
-            os.remove(f"{self.filename}.db")
+            os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
         # special load for modification
-        self.data = shelve.open(self.filename, writeback=True)
+        self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data[name]
 
     def __getitem__(self, name):
@@ -86,7 +94,7 @@ class Database:
 
     def __setitem__(self, key, value):
         # special load for modification
-        self.data = shelve.open(self.filename, writeback=True)
+        self.data = shelve.open(self.fileprefix, writeback=True)
         self.data[key] = value
         self.save()
 
@@ -100,7 +108,9 @@ class Database:
 
     def __delitem__(self, key):
         # special load for modification
-        self.data = shelve.open(self.filename, writeback=True)
+        # IS THI RIGHT?????
+        # ACCORDING TO DOCUMENTATION IT IS NOT
+        self.data = shelve.open(self.fileprefix, writeback=True)
         del self.data[key]
 
     def clear(self):

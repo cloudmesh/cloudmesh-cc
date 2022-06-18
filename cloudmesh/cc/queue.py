@@ -118,24 +118,26 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, database='yamldb'):
+    def __init__(self, name=None, database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
         :param name: name of the structure
         :return: creates the queues structure
         """
+        name = name or "queues"
         if database.lower() == 'yamldb':
             from yamldb import YamlDB
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+            self.filename = path_expand("~/.cloudmesh/queue.yaml")
 
         elif database.lower() == 'shelve':
             import shelve
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
+            self.filename = path_expand("~/.cloudmesh/queue.dat")
 
         self.queues = {}
-        self.filename = path_expand("/Users/jacksonmiskill/Desktop/queue.yaml")
-        self.db = QueueDB(filename=self.filename)
+        self.db = QueueDB(name=name, filename=self.filename)
 
     def save(self):
         """
