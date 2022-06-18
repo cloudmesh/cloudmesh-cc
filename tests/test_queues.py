@@ -8,6 +8,8 @@ import os.path
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 import pytest
+from pprint import pprint
+import yaml
 
 @pytest.mark.incremental
 class TestConfig:
@@ -26,12 +28,10 @@ class TestConfig:
         HEADING()
         Benchmark.Start()
         q = Queues(name='queues structure')
-        q1 = Queue(name='queue 1')
-        q2 = Queue(name='queue 2')
-        q3 = Queue(name='queue 3')
-        q.add(q1)
-        q.add(q2)
-        q.add(q3)
+        for i in range(3):
+            name=f"queue-{i}"
+            q.create(name=name)
+            q.add(name=name, job=i, command=f"command-{i}")
         print('Current structure: ', q.queues)
         Benchmark.Stop()
         assert len(q.queues) == 3
@@ -40,16 +40,14 @@ class TestConfig:
         HEADING()
         Benchmark.Start()
         q = Queues(name='queues structure')
-        q1 = Queue(name='queue 1')
-        q2 = Queue(name='queue 2')
-        q3 = Queue(name='queue 3')
-        q.add(q1)
-        q.add(q2)
-        q.add(q3)
+        for i in range(3):
+            name=f"queue-{i}"
+            q.create(name=name)
+            q.add(name=name, job=i, command=f"command-{i}")
         print('Current structure: ', q.queues)
         print('Now removing 1 element')
         print(". . .")
-        q.remove(q1.name)
+        q.remove("queue-1")
         print('Current stricture: ', q.queues)
         Benchmark.Stop()
         assert len(q.queues) == 2
@@ -58,12 +56,10 @@ class TestConfig:
         HEADING()
         Benchmark.Start()
         q = Queues(name='queues structure')
-        q1 = Queue(name='queue 1')
-        q2 = Queue(name='queue 2')
-        q3 = Queue(name='queue 3')
-        q.add(q1)
-        q.add(q2)
-        q.add(q3)
+        for i in range(3):
+            name=f"queue-{i}"
+            q.create(name=name)
+            q.add(name=name, job=i, command=f"command-{i}")
         print('The queues list() function prints out the following:')
         q.list()
         Benchmark.Stop()
@@ -73,33 +69,36 @@ class TestConfig:
         HEADING()
         Benchmark.Start()
         q = Queues(name='queues structure')
+        for i in range(3):
+            name=f"queue-{i}"
+            q.create(name=name)
 
-        q1 = Queue(name='queue 1')
-        q1.add(name='job1', command='echo this is queue 1')
-        q1.add(name='job2', command='cd')
-        q1.add(name='job3', command='python /Users/jacksonmiskill/cm/python-test/barchart.py ')
+        for i in range(3):
+            name = f"queue-{i}"
 
-        q2 = Queue(name='queue 2')
-        q2.add(name='job1', command='echo this is queue 2')
-        q2.add(name='job2', command='cd ~')
-        q2.add(name='job3', command='ls')
-
-        q3 = Queue(name='queue 3')
-        q3.add(name='job1', command='echo this is queue 3')
-        q3.add(name='job2', command='cd ~')
-        q3.add(name='job3', command='python /Users/jacksonmiskill/cm/PythonPractice/youmadeit.py')
-
-        q.add(q1)
-        q.add(q2)
-        q.add(q3)
+            q.add(name=name, job=1, command=f"pwd")
+            q.add(name=name, job=2, command=f"hostname")
+            q.add(name=name, job=3, command=f"uname")
 
         print('Current structure: ', q.queues)
         print('The list() function prints the following:')
         q.list()
 
-        q.run(scheduler='fifo')
+
+        for name, queue in q.queues.items():
+            print (name)
+            queue.run(scheduler='fifo')
         Benchmark.Stop()
+
+        d = q.dict()
+        pprint(d)
+        print(yaml.dump(d))
+
         assert len(q.queues) == 3
+
+
+
+class a:
 
 
     def test_benchmark(self):

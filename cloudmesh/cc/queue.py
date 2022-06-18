@@ -102,7 +102,7 @@ class Queue:
             for name in self.jobs:
                 c = self.jobs.get(name)
                 r = Shell.run(c)
-                print(r)
+                print(f"run queue={self.name} job={name} command={c}:", r)
         else:
             print("LIFO and PQ are not yet implemented")
 
@@ -125,7 +125,7 @@ class Queues:
         :param name: name of the structure
         :return: creates the queues structure
         """
-        name = name or "queues"
+        self.name = name or "queues"
         if database.lower() == 'yamldb':
             from yamldb import YamlDB
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
@@ -137,7 +137,8 @@ class Queues:
             self.filename = path_expand("~/.cloudmesh/queue.dat")
 
         self.queues = {}
-        self.db = QueueDB(name=name, filename=self.filename)
+        self.db = QueueDB(name=self.name, filename=self.filename)
+
 
     def save(self):
         """
@@ -216,3 +217,11 @@ class Queues:
             print(each, self.queues[each])
 
         # no save needed as just list
+
+    def dict(self):
+        d = {}
+        for each in self.queues:
+            d[each] = {}
+            for job, command in self.queues[each].jobs.items():
+                d[each][job] =command
+        return d

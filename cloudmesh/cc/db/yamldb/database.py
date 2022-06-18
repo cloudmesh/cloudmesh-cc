@@ -7,15 +7,18 @@ import pathlib
 
 class Database:
 
-    def __init__(self, filename=None, debug=False):
+    def __init__(self, name=None, filename=None, debug=False):
         self.debug = debug
         if filename:
             self.filename = filename
         else:
             self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
+        self.name = name
         self._create_directory()
         self.db = YamlDB(filename=self.filename)
         self.db["config.filename"] = self.filename
+        self.db["config.name"] = self.name
+
         self.db.save(self.filename)
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
