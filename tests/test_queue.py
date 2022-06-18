@@ -40,7 +40,7 @@ class Test_Queue:
 
         q = Queue(name='queue 1')
         size = 10
-        remove = size / 5
+        remove = int(size / 5)
         for x in range (0, size):
             job = f'job-{x}'
             command= f'command{x}'
