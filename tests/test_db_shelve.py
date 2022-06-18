@@ -19,7 +19,7 @@ import sys
 @pytest.mark.incremental
 class Test_db_shelve:
 
-    def test_shelveopen(self):
+    def test_shelve_open_and_close(self):
         HEADING()
         Benchmark.Start()
         computers = shelve.open('computers')
@@ -28,17 +28,18 @@ class Test_db_shelve:
             'blue': 40,
             'yellow': 50,
         }
-        print('Initial temperature:')
-        pprint(computers['temperature'])
         computers.close()
-
-        # develop a read function
-        c = shelve.open('computers')
-        pprint(str(c))
-        pprint(c['temperature'])
-
         Benchmark.Stop()
-        assert c['temperature']['red'] == 80
+
+    def test_shelve_read(self):
+        HEADING()
+        computers = shelve.open('computers')
+        Benchmark.Start()
+        temperature = computers['temperature']
+        Benchmark.Stop()
+        print('Initial temperature:')
+        pprint(temperature)
+        assert computers['temperature']['red'] == 80
 
     def test_create(self):
         HEADING()
@@ -46,9 +47,8 @@ class Test_db_shelve:
         db = Database()
         db.clear()
         db.save()
-        # db.info()
-        print(db)
         Benchmark.Stop()
+        print(db)
         assert os.path.exists(db.filename)
         assert len(list(db.data.keys())) == 0
 
@@ -59,8 +59,8 @@ class Test_db_shelve:
         db.data["queues"] = {'name': 'red'}
         db.save()
         db.info()
-        print(db.data["queues"])
         Benchmark.Stop()
+        print(db.data["queues"])
         assert os.path.exists(db.filename)
         assert len(db.data["queues"]) == 1
         assert db.data["queues"]["name"] == "red"
@@ -78,10 +78,10 @@ class Test_db_shelve:
     def test_remove(self):
         HEADING()
         Benchmark.Start()
-        db1 = Database()
-        db1.remove()
+        db = Database()
+        db.remove()
         Benchmark.Stop()
-        assert not os.path.exists(db1.filename)
+        assert not os.path.exists(db.filename)
 
     def test_save(self):
         HEADING()
