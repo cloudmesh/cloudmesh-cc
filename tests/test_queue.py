@@ -67,7 +67,7 @@ class Test_Queue:
         q = Queue(name='queue 1')
         q.add(name='job1', command='cd')
         q.add(name='job2', command='echo hello world')
-        q.add(name='job3', command='python3 /Users/jacksonmiskill/cm/python-test/banner.py')
+        q.add(name='job3', command='python3 ../cm/python-test/banner.py')
 
         Benchmark.Start()
         q.run(scheduler= "FIFO")
