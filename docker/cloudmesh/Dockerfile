@@ -53,6 +53,11 @@ RUN ln -s /usr/local/bin/python3.10 /usr/local/bin/python
 RUN ln -s /usr/local/bin/pip3.10 /usr/local/bin/pip
 RUN pip install pip -U
 
+#
+# install mpi4py
+#
+RUN apt install libopenmpi-dev -y && \
+    pip install mpi4py
 
 #
 # install cloudmesh from source
@@ -63,5 +68,6 @@ WORKDIR /root/cm
 RUN pip install cloudmesh-installer
 RUN /usr/local/bin/cloudmesh-installer get cmd5
 RUN cms help
+
 
 WORKDIR /root
