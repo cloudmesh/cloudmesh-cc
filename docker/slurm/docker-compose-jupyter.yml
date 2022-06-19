@@ -1,7 +1,7 @@
 services:
-  slurmjupyter:
+  jupyter:
         image: slurm-jupyter:latest
-        hostname: slurmjupyter
+        hostname: jupyter
         user: admin
         volumes:
                 - shared-vol:/home/admin

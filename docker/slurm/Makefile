@@ -1,9 +1,12 @@
 .PHONY:   manager node jupyter
 
-image:  manager node jupyter
+image:  cloudmesh manager node jupyter
 	docker image ls | fgrep slurm
 
- manager:
+cloudmesh:
+	cd  ../cloudmesh; make image
+
+manager:
 	cd  manager; docker build -t slurm-manager:latest .
 
 node:
@@ -31,3 +34,8 @@ ps:
 
 shell:
 	docker run --rm -it slurm-manager:latest  /bin/bash
+
+cleanall:
+	-docker kill $$(docker ps -q)
+	-docker rm -f $$(docker ps -a -q)
+	-docker rmi -f $$(docker images -q)
