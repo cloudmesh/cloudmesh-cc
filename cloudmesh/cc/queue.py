@@ -169,11 +169,10 @@ class Queues:
         Create a queue
 
         cms cc queues add --queues= abc --queue=d
-
-
         :param queue:
         :return: Updates the structure of the queues by addition
         """
+        self.load()
         self.queues[name] = Queue(name=name)
         self.save()
 
