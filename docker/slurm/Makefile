@@ -12,3 +12,9 @@ stop:
 
 log:
 	docker-compose -f docker-compose-jupyter.yml logs -
+
+ps:
+	docker-compose -f docker-compose-jupyter.yml ps
+
+shell:
+	docker run --rm -it slurm-master:latest  /bin/bash
