@@ -19,20 +19,19 @@ class Database:
         self. directory = os.path.dirname(self.fileprefix)
         self._create_directory_and_load()
         if debug:
-            print("cloudmesh.cc.db loading:", self.filename)
+            print("cloudmesh.cc.db loading:", self._filename)
 
     @property
-    def filename(self):
+    def _filename(self):
         if os_is_windows():
             return self.fileprefix + ".dat"
         else:
             return self.fileprefix + ".db"
 
     def _create_directory_and_load(self):
-        directory = os.path.dirname(self.fileprefix)
-        if not os.path.isdir(directory):
-            Shell.mkdir(directory)
-            self.data = shelve.open(self.fileprefix)
+        if not os.path.isdir(self.directory):
+            Shell.mkdir(self.directory)
+            self.data = shelve.open(self._filename)
             self.save()
         else:
             self.load()
@@ -40,7 +39,7 @@ class Database:
     def info(self):
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))
-        print("filename: ", self.filename)
+        print("filename: ", self._filename)
         print("fileprefix: ", self.fileprefix)
 
 
@@ -68,7 +67,7 @@ class Database:
 
         """
         # self.data.load()
-        self.data = shelve.open(self.filename)
+        self.data = shelve.open(self._filename)
         return self.data
 
     def remove(self):
