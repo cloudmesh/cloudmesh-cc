@@ -14,7 +14,8 @@ class Database:
     def __init__(self, filename=None, debug=False):
         self.debug = debug
         if filename is None:
-            filename = "~/.cloudmesh/queue/queues"
+            filename = "~/.cloudmesh/queue/queues.db"
+        self.fileprefix = path_expand(filename)
         self.fileprefix = filename.replace(".db", "").replace(".dat", "")
         self. directory = os.path.dirname(self.fileprefix)
         self._create_directory_and_load()
