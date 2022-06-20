@@ -14,7 +14,7 @@ class Database:
     def __init__(self, filename=None, debug=False):
         self.debug = debug
         if filename is None:
-            filename = "~/.cloudmesh/queue/queues.db"
+            filename = path_expand("~/.cloudmesh/queue/queues.db")
         self.fileprefix = path_expand(filename)
         self.fileprefix = filename.replace(".db", "").replace(".dat", "")
         self. directory = os.path.dirname(self.fileprefix)
@@ -30,11 +30,14 @@ class Database:
             return self.fileprefix + ".db"
 
     def _create_directory_and_load(self):
-        if not os.path.isdir(self.directory):
+        print ("CHECK", self.directory, self._filename)
+        if not os.path.isfile(self._filename):
             Shell.mkdir(self.directory)
             self.data = shelve.open(self._filename)
             self.save()
+            print ("OOOOO")
         else:
+            print ("PPPPP")
             self.load()
 
     def info(self):
