@@ -34,6 +34,7 @@ class Database:
         if not os.path.isfile(self._filename):
             Shell.mkdir(self.directory)
             self.data = shelve.open(self._filename)
+            self.data["queue"] = {}
             self.save()
             print ("OOOOO")
         else:

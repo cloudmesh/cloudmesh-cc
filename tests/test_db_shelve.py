@@ -45,6 +45,7 @@ class Test_db_shelve:
 
     def test_create(self):
         HEADING()
+        Shell.rmdir("~/.cloudmesh/queue")
         Benchmark.Start()
         db = Database()
         # db.clear()
@@ -54,6 +55,7 @@ class Test_db_shelve:
         assert os.path.exists(db.filename)
         assert len(list(db.data.keys())) == 0
 
+class rest:
     def test_add(self):
         HEADING()
         Benchmark.Start()
