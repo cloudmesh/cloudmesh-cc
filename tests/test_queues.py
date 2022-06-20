@@ -17,17 +17,17 @@ class TestConfig:
     def test_create(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues structure')
+        q = Queues(name='queues')
         print('Structure name: ', q.name)
         print('Current structure:', q.queues)
         print('Current file: ', q.db)
         Benchmark.Stop()
-        assert q.name == 'queues structure'
+        assert q.name == 'queues'
 
     def test_add(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues structure')
+        q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
             q.create(name=name)
@@ -39,7 +39,7 @@ class TestConfig:
     def test_remove(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues structure')
+        q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
             q.create(name=name)
@@ -55,7 +55,7 @@ class TestConfig:
     def test_list(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues structure')
+        q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
             q.create(name=name)
@@ -68,7 +68,7 @@ class TestConfig:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues structure')
+        q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
             q.create(name=name)
