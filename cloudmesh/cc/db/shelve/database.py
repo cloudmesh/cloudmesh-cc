@@ -3,6 +3,8 @@ import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.systeminfo import os_is_linux
 import pathlib
 
 #
@@ -11,30 +13,55 @@ import pathlib
 
 class Database:
 
+    #  Databese()
+    #  Database(filenae="a.db")   -> a.db only on linux and mac
+    #  Database(filenae="a.dat")  -> a.dat only on windows
+
+    #  Database(filenane="a")     -> a.db on linux and mac, .dat on windows
+
     def __init__(self, filename=None, debug=False):
+        """
+        filename is a prefix
+
+        Args:
+            filename ():
+            debug ():
+        """
+
+
         self.debug = debug
+
         if filename is None:
-            filename = path_expand("~/.cloudmesh/queue/queues.db")
+            filename = "~/.cloudmesh/queue/queues"
         self.fileprefix = path_expand(filename)
-        self.fileprefix = filename.replace(".db", "").replace(".dat", "")
-        self. directory = os.path.dirname(self.fileprefix)
+
+        self.fileprefix = self.fileprefix.replace(".db", "").replace(".dat", "")
+
+        self.directory = os.path.dirname(self.fileprefix)
+
+        print("D", self.directory)
+        print("F", self.filename)
+
+        input()
         self._create_directory_and_load()
         if debug:
-            print("cloudmesh.cc.db loading:", self._filename)
+            print("cloudmesh.cc.db loading:", self.filename)
 
     @property
-    def _filename(self):
+    def filename(self):
         if os_is_windows():
             return self.fileprefix + ".dat"
-        else:
+        elif os_is_mac() or os_is_linux():
             return self.fileprefix + ".db"
+        else:
+            raise ValueError("This os is not yet supported for shelve naming, pleaes fix.")
 
     def _create_directory_and_load(self):
-        print ("CHECK", self.directory, self._filename)
-        if not os.path.isfile(self._filename):
+        print ("CHECK", self.directory, self.fileprefix)
+        if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            self.data = shelve.open(self._filename)
-            self.data["queue"] = {}
+            self.data = shelve.open(self.filename)
+            self.data["filename"] = self.filename
             self.save()
             print ("OOOOO")
         else:
@@ -44,7 +71,7 @@ class Database:
     def info(self):
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))
-        print("filename: ", self._filename)
+        print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 
 
@@ -72,7 +99,7 @@ class Database:
 
         """
         # self.data.load()
-        self.data = shelve.open(self._filename)
+        self.data = shelve.open(self.filename)
         return self.data
 
     def remove(self):
