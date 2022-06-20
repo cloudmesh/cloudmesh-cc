@@ -9,4 +9,5 @@ cloudmesh-configuration
 #    pip-compile setup.py
 #
 fastapi[all]
+yamldb
 docker-compose
