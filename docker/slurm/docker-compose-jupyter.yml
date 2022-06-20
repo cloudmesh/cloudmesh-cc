@@ -1,15 +1,15 @@
 services:
-  slurmjupyter:
+  jupyter:
         image: slurm-jupyter:latest
-        hostname: slurmjupyter
+        hostname: jupyter
         user: admin
         volumes:
                 - shared-vol:/home/admin
         ports:
                 - 8888:8888
-  slurmmaster:
-        image: slurm-master:latest
-        hostname: slurmmaster
+  red:
+        image: slurm-manager:latest
+        hostname: red
         user: admin
         volumes:
                 - shared-vol:/home/admin
@@ -17,30 +17,30 @@ services:
                 - 6817:6817
                 - 6818:6818
                 - 6819:6819
-  slurmnode1:
+  red01:
         image: slurm-node:latest
-        hostname: slurmnode1
+        hostname: red01
         user: admin
         volumes:
                 - shared-vol:/home/admin
         links:
-                - slurmmaster
-  slurmnode2:
+                - red
+  red02:
         image: slurm-node:latest
-        hostname: slurmnode2
+        hostname: red02
         user: admin
         volumes:
                 - shared-vol:/home/admin
         links:
-                - slurmmaster
-  slurmnode3:
+                - red
+  red03:
         image: slurm-node:latest
-        hostname: slurmnode3
+        hostname: red03
         user: admin
         volumes:
                 - shared-vol:/home/admin
         links:
-                - slurmmaster
+                - red
 volumes:
         shared-vol:
 
