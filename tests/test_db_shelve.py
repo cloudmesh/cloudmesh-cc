@@ -40,18 +40,22 @@ class Test_db_shelve:
         print('Initial temperature:')
         pprint(temperature)
         assert computers['temperature']['red'] == 80
+        computers.close()
+
 
     def test_create(self):
         HEADING()
+        Shell.rmdir("~/.cloudmesh/queue")
         Benchmark.Start()
         db = Database()
-        db.clear()
-        db.save()
+        # db.clear()
+        # db.save()
         Benchmark.Stop()
         print(db)
         assert os.path.exists(db.filename)
         assert len(list(db.data.keys())) == 0
 
+class rest:
     def test_add(self):
         HEADING()
         Benchmark.Start()
