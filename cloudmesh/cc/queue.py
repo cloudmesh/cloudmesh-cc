@@ -32,15 +32,6 @@ class Queue:
         the data structure will be a dictionary because it is holding all of
         names: commands of the jobs. The queue will have several commands:
         instantiate, add, remove, run, get, and list.
-
-        Example of what we expect a command line to look like:
-
-        cms cc queue --queue=a
-        cms cc queue add --queue=a --jobname=jobname --command-command
-        cms cc queue remove --queue=a --jobname=jobname
-        cms cc queue get --queue=a --jobname=jobname
-        cms cc queue list --queue=a
-        cms cc queue run --queue=a
     """
 
     def __init__(self, name=None):
