@@ -20,8 +20,10 @@ class TestConfig:
         Benchmark.Stop()
         VERBOSE(result)
 
-        assert "quit" in result
-        assert "clear" in result
+        assert "cc add --queue=QUEUE --job=JOB --command=COMMAND" in result
+        assert "upload" in result
+        assert "start" in result
+
 
     def test_queue_create(self):
         HEADING()
