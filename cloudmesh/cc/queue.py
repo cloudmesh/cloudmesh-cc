@@ -124,7 +124,8 @@ class Queues:
         elif database.lower() == 'shelve':
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
             self.filename = path_expand("~/.cloudmesh/queue.shelve")
-
+        diretory = os.path.dirname(self.filename)
+        Shell.mkdir(directory=diretory)
         self.name = name
         self.queues = {}
         self.db = QueueDB(filename=self.filename)
