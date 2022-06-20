@@ -13,13 +13,13 @@ class Database:
 
     def __init__(self, filename=None, debug=False):
         self.debug = debug
-        self.fileprefix = filename or  path_expand("~/.cloudmesh/queue/queues")
-        self.fileprefix.replace(".db", "")
-        self.fileprefix.replace(".dat", "")
-
+        if filename is None:
+            filename = "~/.cloudmesh/queue/queues"
+        self.fileprefix = filename.replace(".db", "").replace(".dat", "")
+        self. directory = os.path.dirname(self.fileprefix)
         self._create_directory_and_load()
         if debug:
-            print("cloudmesh.cc.db loading:", self.filename)
+            print("cloudmesh.cc.db loading:", self.git commit -afilename)
 
     @property
     def filename(self):
