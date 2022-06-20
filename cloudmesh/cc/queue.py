@@ -129,6 +129,7 @@ class Queues:
         self.queues = {}
         self.db = QueueDB(filename=self.filename)
         self.db[self.name] = self.queues
+        self.load()
         self.db.save()
 
     def save(self):
