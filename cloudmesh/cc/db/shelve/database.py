@@ -19,7 +19,7 @@ class Database:
         self. directory = os.path.dirname(self.fileprefix)
         self._create_directory_and_load()
         if debug:
-            print("cloudmesh.cc.db loading:", self.git commit -afilename)
+            print("cloudmesh.cc.db loading:", self.filename)
 
     @property
     def filename(self):
