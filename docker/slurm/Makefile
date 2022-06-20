@@ -15,7 +15,6 @@ node:
 jupyter:
 	cd jupyter; docker build -t slurm-jupyter:latest .
 
-
 lab:
 	open http://localhost:8888
 
