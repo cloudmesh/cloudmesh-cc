@@ -1,6 +1,6 @@
 import os
 import shelve
-from cloudmesh.common.Shell import Shell
+# from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_mac
@@ -42,8 +42,16 @@ class Database:
         print("D", self.directory)
         print("F", self.filename)
 
-        input()
-        self._create_directory_and_load()
+        if not os.path.isfile(self.filename):
+            pathlib.Path.mkdir(self.directory, exist_ok=True)
+            self.data = shelve.open(self.filename)
+            self.data["filename"] = self.filename
+            self.save()
+            self.close()
+            print("OOOOO")
+
+        self.load()
+
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
@@ -56,17 +64,8 @@ class Database:
         else:
             raise ValueError("This os is not yet supported for shelve naming, pleaes fix.")
 
-    def _create_directory_and_load(self):
+    def _create_(self):
         print ("CHECK", self.directory, self.fileprefix)
-        if not os.path.isfile(self.filename):
-            Shell.mkdir(self.directory)
-            self.data = shelve.open(self.filename)
-            self.data["filename"] = self.filename
-            self.save()
-            print ("OOOOO")
-        else:
-            print ("PPPPP")
-            self.load()
 
     def info(self):
         print("keys: ", self.__str__())
@@ -130,10 +129,9 @@ class Database:
         self.save()
 
     def __str__(self):
-        self.load()
         s = ""
         keylist = list(self.data.keys())
-        for key in keylist:
+        for key in self.data:
             s += str(key) + ": " + str(self.data[key]) + "\n"
         return s
 
