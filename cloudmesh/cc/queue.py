@@ -134,7 +134,7 @@ class Queues:
         elif database.lower() == 'shelve':
             import shelve
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.dat")
+            self.filename = path_expand("~/.cloudmesh/queue.db")
 
         self.queues = {}
         self.db = QueueDB(name=self.name, filename=self.filename)
@@ -160,8 +160,8 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-
-        self.queues[name].add(job, command)
+        x = self.load()
+        x[name].add(job, command)
         self.save()
 
     def create(self, name: str):
@@ -172,7 +172,6 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.load()
         self.queues[name] = Queue(name=name)
         self.save()
 

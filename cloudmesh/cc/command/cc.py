@@ -182,11 +182,10 @@ class CcCommand(PluginCommand):
 
             # cc add --queue=QUEUE --job=JOB --command=COMMAND
             # here is what the command looks like  cc add --queue=QUEUE --job=JOB --command=COMMAND
-            job_name = arguments.job
+            job = arguments.job
             command = arguments.command
-            job = Job(job_name, command)
             q = Queues()  # how to we access the previously made queue?
-            q.add(arguments.queue, job)
+            q.add(arguments.queue, job, command)
 
         elif arguments.remove and arguments.queue:
             q = Queues()
