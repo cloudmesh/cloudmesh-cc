@@ -40,13 +40,15 @@ class Test_db_shelve:
         print('Initial temperature:')
         pprint(temperature)
         assert computers['temperature']['red'] == 80
+        computers.close()
+
 
     def test_create(self):
         HEADING()
         Benchmark.Start()
         db = Database()
-        db.clear()
-        db.save()
+        # db.clear()
+        # db.save()
         Benchmark.Stop()
         print(db)
         assert os.path.exists(db.filename)

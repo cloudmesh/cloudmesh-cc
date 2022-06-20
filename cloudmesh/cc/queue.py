@@ -119,13 +119,12 @@ class Queues:
         """
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.yaml")
+            self.filename = path_expand("~/.cloudmesh/queue/queue")
 
         elif database.lower() == 'shelve':
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.shelve")
-        diretory = os.path.dirname(self.filename)
-        Shell.mkdir(directory=diretory)
+            self.filename = path_expand("~/.cloudmesh/queue/queue")
+
         self.name = name
         self.queues = {}
         self.db = QueueDB(filename=self.filename)

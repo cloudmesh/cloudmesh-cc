@@ -68,7 +68,7 @@ class Database:
 
         """
         # self.data.load()
-        self.data = shelve.open(self.fileprefix)
+        self.data = shelve.open(self.filename)
         return self.data
 
     def remove(self):
