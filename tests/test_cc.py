@@ -29,7 +29,7 @@ class rest:
     def test_queue_create(self):
         HEADING()
         Benchmark.Start()
-        result = Shell.execute("cms cc create localhost", shell=True)
+        result = Shell.execute("cms cc create --queue=a,b,c --database=\'yamldb\'", shell=True)
         Benchmark.Stop()
         VERBOSE(result)
         assert "quit" in result

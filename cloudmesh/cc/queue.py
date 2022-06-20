@@ -1,5 +1,6 @@
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
+import os
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -116,20 +117,19 @@ class Queues:
         :param name: name of the structure
         :return: creates the queues structure
         """
-        self.name = name or "queues"
         if database.lower() == 'yamldb':
-            from yamldb import YamlDB
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
             self.filename = path_expand("~/.cloudmesh/queue.yaml")
 
         elif database.lower() == 'shelve':
-            import shelve
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.db")
+            self.filename = path_expand("~/.cloudmesh/queue.shelve")
 
+        self.name = name
         self.queues = {}
-        self.db = QueueDB(name=self.name, filename=self.filename)
-
+        self.db = QueueDB(filename=self.filename)
+        self.db[self.name] = self.queues
+        self.db.save()
 
     def save(self):
         """
@@ -138,8 +138,7 @@ class Queues:
         self.db.save()
 
     def load(self):
-        self.queues = self.db.load()
-        return self.queues
+        self.db.load()
 
     def add(self, name: str, job:str, command:str):
         """
@@ -151,8 +150,10 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        x = self.load()
-        x[name].add(job, command)
+        self.load()
+        q_structure = self.db[f'{self.name}']
+        q_structure[name] = Queue()
+        q_structure[name].add(job, command)
         self.save()
 
     def create(self, name: str):
@@ -163,8 +164,11 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
+
+        self.load()
         self.queues[name] = Queue(name=name)
         self.save()
+
 
     def remove(self, name):
         """

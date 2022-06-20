@@ -17,24 +17,21 @@ class TestConfig:
     def test_create(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues')
-        print('Structure name: ', q.name)
-        print('Current structure:', q.queues)
-        print('Current file: ', q.db)
+        q = Queues(name='queues', database='yamldb')
+        q.create(name='local device')
         Benchmark.Stop()
         assert q.name == 'queues'
 
     def test_add(self):
         HEADING()
+        q = Queues(name='queues', database='yamldb')
+        q.create(name='local device')
         Benchmark.Start()
-        q = Queues(name='queues')
-        for i in range(3):
-            name=f"queue-{i}"
-            q.create(name=name)
-            q.add(name=name, job=i, command=f"command-{i}")
-        print('Current structure: ', q.queues)
+        q.add(name='local device', job='job 1', command='echo hello world')
+        q.add(name='local device', job='job 2', command='echo is this working')
+        q.add(name='local device', job='job 3', command='echo I hope this is working')
         Benchmark.Stop()
-        assert len(q.queues) == 3
+        assert len(q.queues) == 1
 
     def test_remove(self):
         HEADING()
@@ -95,17 +92,3 @@ class TestConfig:
         print(yaml.dump(d))
 
         assert len(q.queues) == 3
-
-
-
-class a:
-
-
-    def test_benchmark(self):
-        HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cc-queues")
-
-
-
-
-

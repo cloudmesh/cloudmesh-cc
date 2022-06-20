@@ -204,9 +204,8 @@ class CcCommand(PluginCommand):
             q.run(scheduler=arguments.scheduler)
 
         elif arguments.list and arguments.queue:
-            list_name = arguments.list
-            queue_name = arguments.queue
+
             Queue.list(self)
-            # arguments.queue.list()
+
 
         return ""
