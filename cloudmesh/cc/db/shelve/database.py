@@ -1,6 +1,6 @@
 import os
 import shelve
-# from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_mac
@@ -39,21 +39,17 @@ class Database:
 
         self.directory = os.path.dirname(self.fileprefix)
 
-        print("D", self.directory)
-        print("F", self.filename)
-
         if not os.path.isfile(self.filename):
-            pathlib.Path.mkdir(self.directory, exist_ok=True)
+            Shell.mkdir(self.directory)
             self.data = shelve.open(self.filename)
             self.data["filename"] = self.filename
+            self.data["queues"] = {}
             self.save()
             self.close()
-            print("OOOOO")
-
         self.load()
 
         if debug:
-            print("cloudmesh.cc.db loading:", self.filename)
+            self.info()
 
     @property
     def filename(self):
@@ -70,6 +66,7 @@ class Database:
     def info(self):
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))
+        print("queues:", self.data["queues"])
         print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 
@@ -87,7 +84,6 @@ class Database:
         self.data.sync()
 
     def close(self):
-        print("closing shelf")
         self.data.close()
 
     def load(self):
@@ -98,7 +94,7 @@ class Database:
 
         """
         # self.data.load()
-        self.data = shelve.open(self.filename)
+        self.data = shelve.open(self.filename, writeback=True)
         return self.data
 
     def remove(self):
@@ -115,17 +111,13 @@ class Database:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        # special load for modification
-        self.data = shelve.open(self.fileprefix, writeback=True)
-        return self.data[name]
+        return self.data["queues"][name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        # special load for modification
-        self.data = shelve.open(self.fileprefix, writeback=True)
-        self.data[key] = value
+        self.data["queues"][key] = value
         self.save()
 
     def __str__(self):
@@ -135,18 +127,19 @@ class Database:
             s += str(key) + ": " + str(self.data[key]) + "\n"
         return s
 
+    def delete(self, key):
+        print(type(self.data["queues"]))
+        del self.data["queues"][key]
+        self.save()
+
     def __delitem__(self, key):
-        # special load for modification
-        # IS THI RIGHT?????
-        # ACCORDING TO DOCUMENTATION IT IS NOT
-        self.data = shelve.open(self.fileprefix, writeback=True)
-        del self.data[key]
+        self.delete(key)
 
     def clear(self):
-        # self.data = {}
-        self.load()
         keylist = list(self.data.keys())
         for key in keylist:
             del self.data[key]
+        self.save()
 
-        # self.data.clear()
+    def __len__(self):
+        return len(self.data["queues"])
