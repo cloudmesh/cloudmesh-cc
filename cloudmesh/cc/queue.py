@@ -1,6 +1,5 @@
 import yaml as pyyaml
 import json as pyjson
-
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import os
