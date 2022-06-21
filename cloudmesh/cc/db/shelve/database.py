@@ -58,7 +58,7 @@ class Database:
         elif os_is_mac() or os_is_linux():
             return self.fileprefix + ".db"
         else:
-            raise ValueError("This os is not yet supported for shelve naming, pleaes fix.")
+            raise ValueError("This os is not yet supported for shelve naming, please fix.")
 
     def info(self):
         print("keys: ", self.__str__())
@@ -90,8 +90,9 @@ class Database:
         Returns:
 
         """
-        # self.data.load()
-        self.data = shelve.open(self.filename, writeback=True)
+
+        # Alison
+        self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data
 
     def remove(self):

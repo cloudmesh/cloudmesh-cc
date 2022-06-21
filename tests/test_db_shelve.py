@@ -41,10 +41,11 @@ class Test_db_shelve:
         pprint(temperature)
         assert computers['temperature']['red'] == 80
         computers.close()
-        if os_is_windows():
-            raise ValueError("you need to fix this")
-        else:
-            os.remove("computers")
+        computers.remove()
+        # if os_is_windows():
+        #     raise ValueError("you need to fix this")
+        # else:
+        #     os.remove("computers")
 
     def test_create(self):
         HEADING()
