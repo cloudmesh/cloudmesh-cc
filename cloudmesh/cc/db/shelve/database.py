@@ -109,13 +109,13 @@ class Database:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        return self.data["queues"][name]
+        return self.data[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        self.data["queues"][key] = value
+        self.data[key] = value
         self.save()
 
     def __str__(self):
@@ -126,8 +126,8 @@ class Database:
         return s
 
     def delete(self, key):
-        print(type(self.data["queues"]))
-        del self.data["queues"][key]
+        # print(type(self.data["queues"]))
+        del self.data[key]
         self.save()
 
     def __delitem__(self, key):
@@ -140,4 +140,4 @@ class Database:
         self.save()
 
     def __len__(self):
-        return len(self.data["queues"])
+        return len(self.data)

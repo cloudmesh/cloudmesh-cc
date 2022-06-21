@@ -41,11 +41,13 @@ class Test_db_shelve:
         pprint(temperature)
         assert computers['temperature']['red'] == 80
         computers.close()
-        computers.remove()
-        # if os_is_windows():
-        #     raise ValueError("you need to fix this")
-        # else:
-        #     os.remove("computers")
+        # Alison: note that this is the code for shelve database remove() method
+        if os_is_windows():
+            os.remove("computers.bak")
+            os.remove("computers.dat")
+            os.remove("computers.dir")
+        else:
+            os.remove("computers.db")
 
     def test_create(self):
         HEADING()
@@ -78,11 +80,12 @@ class Test_db_shelve:
         HEADING()
         Benchmark.Start()
         db = Database()
-        db.delete("name")
+        db.data["queues"].pop("name")
+        # db.delete("queues")
         db.save()
         db.info()
         Benchmark.Stop()
-        assert len(db) == 0
+        assert len(db.data["queues"]) == 0
         db.close()
 
     def test_remove(self):
