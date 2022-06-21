@@ -22,22 +22,23 @@ class TestConfig:
         self.q = Queues(database='shelve')
         self.q.create(name='local')
         Benchmark.Stop()
-        assert 'local' in self.q.data['queues']
+        print ("HHHHH", self.q.db.data)
+        assert 'local' in self.q.db.data['queues']
 
     def test_add(self):
         HEADING()
         self.q.create(name='local')
         Benchmark.Start()
-        self.q.add(name='local', job='job 1', command='echo hello world')
-        self.q.add(name='local', job='job 2', command='echo is this working')
-        self.q.add(name='local', job='job 3', command='echo I hope this is working')
+        self.q.add(name='local', job='job-1', command='echo hello world')
+        self.q.add(name='local', job='job-2', command='echo is this working')
+        self.q.add(name='local', job='job-3', command='echo I hope this is working')
         Benchmark.Stop()
         assert len(self.q.queues) == 1
 
     def test_remove(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues')
+        q = Queues()
         for i in range(3):
             name=f"queue-{i}"
             self.q.create(name=name)

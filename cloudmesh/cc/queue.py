@@ -110,7 +110,7 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name="queues", database='yamldb'):
+    def __init__(self, database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
@@ -125,10 +125,8 @@ class Queues:
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
             self.filename = path_expand("~/.cloudmesh/queue/queue")
 
-        self.name = name
-        self.queues = {}
         self.db = QueueDB(filename=self.filename)
-        self.db[self.name] = self.queues
+        self.db.data["queues"] = {}
         self.db.save()
 
     def save(self):
@@ -150,9 +148,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.load()
-        q_structure = self.db[f'{self.name}']
-        q_structure[name] = Queue()
+        q_structure = self.db[self.name]
         q_structure[name].add(job, command)
         self.save()
 
@@ -164,9 +160,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-
-        self.load()
-        self.queues[name] = Queue(name=name)
+        self.db.data[name] = {}
         self.save()
 
 
@@ -179,7 +173,7 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.pop(name)
+        self.queues.db.delete()
         self.save()
 
     def run(self, scheduler):
