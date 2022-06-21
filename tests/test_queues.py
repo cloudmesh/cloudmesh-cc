@@ -23,8 +23,11 @@ class TestConfig:
         q = Queues(database='shelve')
         q.create(name='local')
         Benchmark.Stop()
+        print(q.db.info())
         print ("HHHHH", q.db.data)
-        assert 'local' in q.db.data['queues']
+        # assert 'local' in q.db.data['queues']
+        assert 'local' in q.db.data
+
 
     def test_add(self):
         HEADING()

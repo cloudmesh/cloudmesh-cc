@@ -28,7 +28,6 @@ class Database:
             debug ():
         """
 
-
         self.debug = debug
 
         if filename is None:
@@ -41,11 +40,15 @@ class Database:
 
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            self.data = shelve.open(self.filename)
+            # self.data = shelve.open(self.filename)
+            self.load()
             self.data["filename"] = self.filename
             self.data["queues"] = {}
             self.save()
             self.close()
+
+        # self.data["filename"] = self.filename
+
         self.load()
 
         if debug:
@@ -90,8 +93,6 @@ class Database:
         Returns:
 
         """
-
-        # Alison
         self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data
 

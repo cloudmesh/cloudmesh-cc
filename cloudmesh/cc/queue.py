@@ -127,6 +127,10 @@ class Queues:
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
             self.filename = path_expand("~/.cloudmesh/queue/queue")
 
+        else:
+            raise ValueError("This database is not supported for Queues, please fix.")
+
+
         self.db = QueueDB(filename=self.filename)
 
     def save(self):
@@ -152,6 +156,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
+        self.db.load()
         self.db.data["queues"][name][job] = {"name": job, "command": command}
         self.save()
 
@@ -164,6 +169,7 @@ class Queues:
         :return: Updates the structure of the queues by addition
         """
         self.db.data["queues"][name] = {}
+        # self.db.data[name] = {}
         self.save()
 
 
