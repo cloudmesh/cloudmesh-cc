@@ -1,3 +1,6 @@
+import yaml as pyyaml
+import json as pyjson
+
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import os
@@ -110,7 +113,7 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name=None, database='yamldb'):
+    def __init__(self, database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
@@ -125,12 +128,7 @@ class Queues:
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
             self.filename = path_expand("~/.cloudmesh/queue/queue")
 
-        self.name = name
-        self.queues = {}
         self.db = QueueDB(filename=self.filename)
-        self.db[self.name] = self.queues
-        self.load()
-        self.db.save()
 
     def save(self):
         """
@@ -140,6 +138,10 @@ class Queues:
 
     def load(self):
         self.db.load()
+
+    @property
+    def queues(self):
+        return self.db.data["queues"]
 
     def add(self, name: str, job:str, command:str):
         """
@@ -151,10 +153,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.load()
-        q_structure = self.db[f'{self.name}']
-        q_structure[name] = Queue()
-        q_structure[name].add(job, command)
+        self.db.data["queues"][name][job] = {"name": job, "command": command}
         self.save()
 
     def create(self, name: str):
@@ -165,9 +164,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-
-        self.load()
-        self.queues[name] = Queue(name=name)
+        self.db.data["queues"][name] = {}
         self.save()
 
 
@@ -180,7 +177,7 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.pop(name)
+        del self.queues[name]
         self.save()
 
     def run(self, scheduler):
@@ -207,15 +204,32 @@ class Queues:
         Returns a list of the queues that are in the queue
         :return:
         """
-        for each in self.queues:
-            print(each, self.queues[each])
+        for each in self.db.data["queues"]:
+            print(each)
 
         # no save needed as just list
 
     def dict(self):
         d = {}
-        for each in self.queues:
+        for each in self.db.data["queues"]:
             d[each] = {}
-            for job, command in self.queues[each].jobs.items():
-                d[each][job] =command
+            for job, command in self.db.data["queues"].jobs.items():
+                d[each][job] = command
         return d
+
+    def __len__(self):
+        return len(self.db.data["queues"])
+
+    def get(self, q):
+        return self.db.data["queues"][q]
+
+    def __str__(self):
+        return str(self.queues)
+
+    @property
+    def yaml(self):
+        return pyyaml.dump(self.queues, indent=2)
+
+    @property
+    def json(self):
+        return pyjson.dumps(self.queues, indent=2)
