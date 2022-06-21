@@ -11,27 +11,28 @@ import pytest
 from pprint import pprint
 import yaml
 
+
+
 @pytest.mark.incremental
 class TestConfig:
 
     def test_create(self):
         HEADING()
         Benchmark.Start()
-        q = Queues(name='queues', database='yamldb')
-        q.create(name='local device')
+        self.q = Queues(database='shelve')
+        self.q.create(name='local')
         Benchmark.Stop()
-        assert q.name == 'queues'
+        assert 'local' in self.q.data['queues']
 
     def test_add(self):
         HEADING()
-        q = Queues(name='queues', database='yamldb')
-        q.create(name='local device')
+        self.q.create(name='local')
         Benchmark.Start()
-        q.add(name='local device', job='job 1', command='echo hello world')
-        q.add(name='local device', job='job 2', command='echo is this working')
-        q.add(name='local device', job='job 3', command='echo I hope this is working')
+        self.q.add(name='local', job='job 1', command='echo hello world')
+        self.q.add(name='local', job='job 2', command='echo is this working')
+        self.q.add(name='local', job='job 3', command='echo I hope this is working')
         Benchmark.Stop()
-        assert len(q.queues) == 1
+        assert len(self.q.queues) == 1
 
     def test_remove(self):
         HEADING()
@@ -39,15 +40,15 @@ class TestConfig:
         q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
-            q.create(name=name)
-            q.add(name=name, job=i, command=f"command-{i}")
-        print('Current structure: ', q.queues)
+            self.q.create(name=name)
+            self.q.add(name=name, job=i, command=f"command-{i}")
+        print('Current structure: ', self.q.queues)
         print('Now removing 1 element')
         print(". . .")
-        q.remove("queue-1")
-        print('Current stricture: ', q.queues)
+        self.q.remove("queue-1")
+        print('Current stricture: ', self.q.queues)
         Benchmark.Stop()
-        assert len(q.queues) == 2
+        assert len(self.q.queues) == 2
 
     def test_list(self):
         HEADING()
@@ -55,12 +56,12 @@ class TestConfig:
         q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
-            q.create(name=name)
-            q.add(name=name, job=i, command=f"command-{i}")
+            self.q.create(name=name)
+            self.q.add(name=name, job=i, command=f"command-{i}")
         print('The queues list() function prints out the following:')
-        q.list()
+        self.q.list()
         Benchmark.Stop()
-        assert len(q.queues) == 3
+        assert len(self.q.queues) == 3
 
     def test_run(self):
         HEADING()
@@ -68,27 +69,27 @@ class TestConfig:
         q = Queues(name='queues')
         for i in range(3):
             name=f"queue-{i}"
-            q.create(name=name)
+            self.q.create(name=name)
 
         for i in range(3):
             name = f"queue-{i}"
 
-            q.add(name=name, job=1, command=f"pwd")
-            q.add(name=name, job=2, command=f"hostname")
-            q.add(name=name, job=3, command=f"uname")
+            self.q.add(name=name, job=1, command=f"pwd")
+            self.q.add(name=name, job=2, command=f"hostname")
+            self.q.add(name=name, job=3, command=f"uname")
 
-        print('Current structure: ', q.queues)
+        print('Current structure: ', self.q.queues)
         print('The list() function prints the following:')
-        q.list()
+        self.q.list()
 
 
-        for name, queue in q.queues.items():
+        for name, queue in self.q.queues.items():
             print (name)
             queue.run(scheduler='fifo')
         Benchmark.Stop()
 
-        d = q.dict()
+        d = self.q.dict()
         pprint(d)
         print(yaml.dump(d))
 
-        assert len(q.queues) == 3
+        assert len(self.q.queues) == 3

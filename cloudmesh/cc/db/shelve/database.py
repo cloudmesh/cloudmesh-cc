@@ -60,9 +60,6 @@ class Database:
         else:
             raise ValueError("This os is not yet supported for shelve naming, pleaes fix.")
 
-    def _create_(self):
-        print ("CHECK", self.directory, self.fileprefix)
-
     def info(self):
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))

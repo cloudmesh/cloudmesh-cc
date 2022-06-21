@@ -110,7 +110,7 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name=None, database='yamldb'):
+    def __init__(self, name="queues", database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
