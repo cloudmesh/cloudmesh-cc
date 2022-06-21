@@ -4,9 +4,8 @@ from cloudmesh.cc.queue import Queues
 
 app = FastAPI()
 
-q = Queues(name='queue')
+q = Queues(database='yamldb')
 
-print('Structure name: ', q.name)
 print('Current structure:', q.queues)
 print('Current file: ', q.db)
 

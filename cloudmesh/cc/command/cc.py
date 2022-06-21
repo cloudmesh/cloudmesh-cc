@@ -4,6 +4,7 @@ from pprint import pprint
 from cloudmesh.cc.queue import Queue
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
@@ -34,6 +35,7 @@ class CcCommand(PluginCommand):
                 cc stop
                 cc doc
                 cc test
+                cc temperature
 
           This command does some useful things.
 
@@ -138,11 +140,14 @@ class CcCommand(PluginCommand):
             r = requests.get(url)
             pprint(r)
             print(r.text)
+        elif arguments.temperature:
+            url = "http://127.0.0.1:8000/temperature"
+            Shell.browser(url)
         elif arguments.stop:
             print("Stop the service")
             commands = Shell.ps()
-            # pprint(commands)
-            # print(type(commands))
+            #pprint(commands)
+            #print(type(commands))
             for command in commands:
                 # print(command)
                 if command["name"].startswith('python'):
@@ -182,11 +187,10 @@ class CcCommand(PluginCommand):
 
             # cc add --queue=QUEUE --job=JOB --command=COMMAND
             # here is what the command looks like  cc add --queue=QUEUE --job=JOB --command=COMMAND
-            job_name = arguments.job
+            job = arguments.job
             command = arguments.command
-            job = Job(job_name, command)
             q = Queues()  # how to we access the previously made queue?
-            q.add(arguments.queue, job)
+            q.add(arguments.queue, job, command)
 
         elif arguments.remove and arguments.queue:
             q = Queues()
@@ -205,9 +209,8 @@ class CcCommand(PluginCommand):
             q.run(scheduler=arguments.scheduler)
 
         elif arguments.list and arguments.queue:
-            list_name = arguments.list
-            queue_name = arguments.queue
+
             Queue.list(self)
-            # arguments.queue.list()
+
 
         return ""

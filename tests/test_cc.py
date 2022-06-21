@@ -24,12 +24,12 @@ class TestConfig:
         assert "upload" in result
         assert "start" in result
 
-
     def test_queue_create(self):
         HEADING()
         QUEUES = 'testqueue'
         DATABASE= 'yamldb'
         Benchmark.Start()
+<<<<<<< HEAD
         result = Shell.run(f"cms cc create --queues={QUEUES} "
                                f"--database={DATABASE}")
         Benchmark.Stop()
@@ -37,6 +37,14 @@ class TestConfig:
         assert '' in result
         result = Shell.run(f'cms cc list --queue={QUEUES}')
         print(result)
+=======
+        result = Shell.execute("cms cc create --queue=a,b,c --database=\'yamldb\'", shell=True)
+        Benchmark.Stop()
+        VERBOSE(result)
+        print(result)
+        assert "a" in result
+        assert "b" in result
+>>>>>>> 851bfd967cf9c5ff2c82407b906e5004f3ed704a
 
     def test_benchmark(self):
         HEADING()

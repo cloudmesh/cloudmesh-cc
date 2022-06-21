@@ -40,7 +40,7 @@ class Database:
         Returns:
 
         """
-        self.db.save()
+        self.db.save(filename=self.filename)
 
     def load(self):
         """
@@ -49,7 +49,7 @@ class Database:
         Returns:
 
         """
-        self.db.load()
+        self.db.load(filename=self.filename)
 
     def remove(self):
         """

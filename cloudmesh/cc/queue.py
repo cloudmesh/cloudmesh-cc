@@ -1,5 +1,8 @@
+import yaml as pyyaml
+import json as pyjson
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
+import os
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -32,15 +35,6 @@ class Queue:
         the data structure will be a dictionary because it is holding all of
         names: commands of the jobs. The queue will have several commands:
         instantiate, add, remove, run, get, and list.
-
-        Example of what we expect a command line to look like:
-
-        cms cc queue --queue=a
-        cms cc queue add --queue=a --jobname=jobname --command-command
-        cms cc queue remove --queue=a --jobname=jobname
-        cms cc queue get --queue=a --jobname=jobname
-        cms cc queue list --queue=a
-        cms cc queue run --queue=a
     """
 
     def __init__(self, name=None):
@@ -118,27 +112,26 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, name=None, database='yamldb'):
+    def __init__(self, database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
         :param name: name of the structure
         :return: creates the queues structure
         """
-        self.name = name or "queues"
         if database.lower() == 'yamldb':
-            from yamldb import YamlDB
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.yaml")
+            self.filename = path_expand("~/.cloudmesh/queue/queue")
 
         elif database.lower() == 'shelve':
-            import shelve
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue.dat")
+            self.filename = path_expand("~/.cloudmesh/queue/queue")
 
-        self.queues = {}
-        self.db = QueueDB(name=self.name, filename=self.filename)
+        else:
+            raise ValueError("This database is not supported for Queues, please fix.")
 
+
+        self.db = QueueDB(filename=self.filename)
 
     def save(self):
         """
@@ -147,8 +140,11 @@ class Queues:
         self.db.save()
 
     def load(self):
-        self.queues = self.db.load()
-        return self.queues
+        self.db.load()
+
+    @property
+    def queues(self):
+        return self.db.data["queues"]
 
     def add(self, name: str, job:str, command:str):
         """
@@ -160,8 +156,8 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-
-        self.queues[name].add(job, command)
+        self.db.load()
+        self.db.data["queues"][name][job] = {"name": job, "command": command}
         self.save()
 
     def create(self, name: str):
@@ -172,9 +168,10 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.load()
-        self.queues[name] = Queue(name=name)
+        self.db.data["queues"][name] = {}
+        # self.db.data[name] = {}
         self.save()
+
 
     def remove(self, name):
         """
@@ -185,7 +182,7 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.pop(name)
+        del self.queues[name]
         self.save()
 
     def run(self, scheduler):
@@ -212,15 +209,32 @@ class Queues:
         Returns a list of the queues that are in the queue
         :return:
         """
-        for each in self.queues:
-            print(each, self.queues[each])
+        for each in self.db.data["queues"]:
+            print(each)
 
         # no save needed as just list
 
     def dict(self):
         d = {}
-        for each in self.queues:
+        for each in self.db.data["queues"]:
             d[each] = {}
-            for job, command in self.queues[each].jobs.items():
-                d[each][job] =command
+            for job, command in self.db.data["queues"].jobs.items():
+                d[each][job] = command
         return d
+
+    def __len__(self):
+        return len(self.db.data["queues"])
+
+    def get(self, q):
+        return self.db.data["queues"][q]
+
+    def __str__(self):
+        return str(self.queues)
+
+    @property
+    def yaml(self):
+        return pyyaml.dump(self.queues, indent=2)
+
+    @property
+    def json(self):
+        return pyjson.dumps(self.queues, indent=2)
