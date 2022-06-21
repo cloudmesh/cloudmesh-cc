@@ -126,8 +126,6 @@ class Queues:
             self.filename = path_expand("~/.cloudmesh/queue/queue")
 
         self.db = QueueDB(filename=self.filename)
-        self.db.data["queues"] = {}
-        self.db.save()
 
     def save(self):
         """
@@ -148,8 +146,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        q_structure = self.db[self.name]
-        q_structure[name].add(job, command)
+        self.db.data["queue"][name] = {"name": job, "command": command}
         self.save()
 
     def create(self, name: str):
@@ -160,7 +157,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.db.data[name] = {}
+        self.db.data["queues"][name] = {}
         self.save()
 
 
@@ -200,15 +197,18 @@ class Queues:
         Returns a list of the queues that are in the queue
         :return:
         """
-        for each in self.queues:
-            print(each, self.queues[each])
+        for each in self.db.data["queues"]:
+            print(each)
 
         # no save needed as just list
 
     def dict(self):
         d = {}
-        for each in self.queues:
+        for each in self.db.data["queues"]:
             d[each] = {}
-            for job, command in self.queues[each].jobs.items():
-                d[each][job] =command
+            for job, command in self.db.data["queues"].jobs.items():
+                d[each][job] = command
         return d
+
+    def __len__(self):
+        return len(self.db.data["queues"])

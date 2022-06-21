@@ -17,16 +17,16 @@ class Test_Queue:
     def test_create(self):
         HEADING()
         Benchmark.Start()
-        q = Queue(name='queue 1')
+        q = Queue(name='queue-1')
         print(q.name)
         print(q.jobs)
         Benchmark.Stop()
-        assert q.name == 'queue 1'
+        assert q.name == 'queue-1'
 
     def test_add(self):
         HEADING()
         Benchmark.Start()
-        q = Queue(name='queue 1')
+        q = Queue(name='queue-1')
 
         for x in range(0, 10):
             job = f'job-{x}'
@@ -39,7 +39,7 @@ class Test_Queue:
     def test_remove(self):
         HEADING()
 
-        q = Queue(name='queue 1')
+        q = Queue(name='queue-1')
         size = 10
         remove = int(size / 5)
         for x in range(0, size):
@@ -66,7 +66,7 @@ class Test_Queue:
 
     def test_run(self):
         HEADING()
-        q = Queue(name='queue 1')
+        q = Queue(name='queue-1')
         q.add(name='job1', command='cd')
         q.add(name='job2', command='echo hello world')
         q.add(name='job3', command='python3 ../cm/python-test/banner.py')
@@ -81,7 +81,7 @@ class Test_Queue:
     def test_list(self):
         HEADING()
 
-        q = Queue(name="queue 1")
+        q = Queue(name="queue-1")
         for x in range(0, 10):
             job = f'job-{x}'
             command = f'command{x}'
