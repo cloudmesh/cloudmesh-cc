@@ -16,7 +16,7 @@ class TestConfig:
     def test_help(self):
         HEADING()
         Benchmark.Start()
-        result = Shell.execute("cms cc help", shell=True)
+        result = Shell.run("cms cc help")
         Benchmark.Stop()
         VERBOSE(result)
 
@@ -27,12 +27,16 @@ class TestConfig:
 
     def test_queue_create(self):
         HEADING()
+        QUEUES = 'testqueue'
+        DATABASE= 'yamldb'
         Benchmark.Start()
-        result = Shell.execute("cms cc create localhost", shell=True)
+        result = Shell.run(f"cms cc create --queues={QUEUES} "
+                               f"--database={DATABASE}")
         Benchmark.Stop()
         VERBOSE(result)
-        assert "quit" in result
-        assert "clear" in result
+        assert '' in result
+        result = Shell.run(f'cms cc list --queue={QUEUES}')
+        print(result)
 
     def test_benchmark(self):
         HEADING()
