@@ -25,8 +25,7 @@ class TestConfig:
         Benchmark.Stop()
         print(q.db.info())
         print ("HHHHH", q.db.data)
-        # assert 'local' in q.db.data['queues']
-        assert 'local' in q.db.data
+        assert 'local' in q.db.data['queues']
 
 
     def test_add(self):
