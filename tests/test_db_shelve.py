@@ -40,17 +40,27 @@ class Test_db_shelve:
         print('Initial temperature:')
         pprint(temperature)
         assert computers['temperature']['red'] == 80
+        computers.close()
+        # Alison: note that this is the code for shelve database remove() method
+        if os_is_windows():
+            os.remove("computers.bak")
+            os.remove("computers.dat")
+            os.remove("computers.dir")
+        else:
+            os.remove("computers.db")
 
     def test_create(self):
         HEADING()
+        # Shell.rmdir("~/.cloudmesh/queue")
+        # input()
         Benchmark.Start()
         db = Database()
         db.clear()
-        db.save()
         Benchmark.Stop()
         print(db)
         assert os.path.exists(db.filename)
         assert len(list(db.data.keys())) == 0
+        db.close()
 
     def test_add(self):
         HEADING()
@@ -64,24 +74,29 @@ class Test_db_shelve:
         assert os.path.exists(db.filename)
         assert len(db.data["queues"]) == 1
         assert db.data["queues"]["name"] == "red"
+        db.close()
 
     def test_delete(self):
         HEADING()
         Benchmark.Start()
         db = Database()
-        db["queues"].pop("name")
+        db.data["queues"].pop("name")
+        # db.delete("queues")
         db.save()
         db.info()
         Benchmark.Stop()
-        assert len(db["queues"]) == 0
+        assert len(db.data["queues"]) == 0
+        db.close()
 
     def test_remove(self):
         HEADING()
         Benchmark.Start()
         db = Database()
+        filename = db.filename
         db.remove()
+        db.close()
         Benchmark.Stop()
-        assert not os.path.exists(db.filename)
+        assert not os.path.exists(filename)
 
     def test_save(self):
         HEADING()
@@ -90,6 +105,7 @@ class Test_db_shelve:
         db["queue.a"] = {"name": "gregor"}
         db["queue.b"] = {"name": "gregor"}
         db["queue.c"] = {"name": "gregor"}
+        db.close()
 
         n = Database()
         Benchmark.Stop()
@@ -97,7 +113,7 @@ class Test_db_shelve:
         assert n["queue.b"]["name"] == "gregor"
 
         print(n)
-
+        n.close()
 
     """
     def test_queue_create(self):

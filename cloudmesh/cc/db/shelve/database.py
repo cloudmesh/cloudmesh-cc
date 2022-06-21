@@ -3,6 +3,8 @@ import shelve
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.systeminfo import os_is_linux
 import pathlib
 
 #
@@ -11,35 +13,57 @@ import pathlib
 
 class Database:
 
-    def __init__(self, filename=None, debug=False):
-        self.debug = debug
-        self.fileprefix = filename or  path_expand("~/.cloudmesh/queue/queues")
-        self.fileprefix.replace(".db", "")
-        self.fileprefix.replace(".dat", "")
+    #  Databese()
+    #  Database(filenae="a.db")   -> a.db only on linux and mac
+    #  Database(filenae="a.dat")  -> a.dat only on windows
 
-        self._create_directory_and_load()
+    #  Database(filenane="a")     -> a.db on linux and mac, .dat on windows
+
+    def __init__(self, filename=None, debug=False):
+        """
+        filename is a prefix
+
+        Args:
+            filename ():
+            debug ():
+        """
+
+
+        self.debug = debug
+
+        if filename is None:
+            filename = "~/.cloudmesh/queue/queues"
+        self.fileprefix = path_expand(filename)
+
+        self.fileprefix = self.fileprefix.replace(".db", "").replace(".dat", "")
+
+        self.directory = os.path.dirname(self.fileprefix)
+
+        if not os.path.isfile(self.filename):
+            Shell.mkdir(self.directory)
+            self.data = shelve.open(self.filename)
+            self.data["filename"] = self.filename
+            self.data["queues"] = {}
+            self.save()
+            self.close()
+        self.load()
+
         if debug:
-            print("cloudmesh.cc.db loading:", self.filename)
+            self.info()
 
     @property
     def filename(self):
         if os_is_windows():
             return self.fileprefix + ".dat"
-        else:
+        elif os_is_mac() or os_is_linux():
             return self.fileprefix + ".db"
-
-    def _create_directory_and_load(self):
-        directory = os.path.dirname(self.fileprefix)
-        if not os.path.isdir(directory):
-            Shell.mkdir(directory)
-            self.data = shelve.open(self.fileprefix)
-            self.save()
         else:
-            self.load()
+            raise ValueError("This os is not yet supported for shelve naming, please fix.")
 
     def info(self):
         print("keys: ", self.__str__())
         print("n: ", len(self.data.keys()))
+        print("queues:", self.data["queues"])
         print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 
@@ -57,7 +81,6 @@ class Database:
         self.data.sync()
 
     def close(self):
-        print("closing shelf")
         self.data.close()
 
     def load(self):
@@ -67,8 +90,9 @@ class Database:
         Returns:
 
         """
-        # self.data.load()
-        self.data = shelve.open(self.fileprefix)
+
+        # Alison
+        self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data
 
     def remove(self):
@@ -85,39 +109,35 @@ class Database:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        # special load for modification
-        self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        # special load for modification
-        self.data = shelve.open(self.fileprefix, writeback=True)
         self.data[key] = value
         self.save()
 
     def __str__(self):
-        self.load()
         s = ""
         keylist = list(self.data.keys())
-        for key in keylist:
+        for key in self.data:
             s += str(key) + ": " + str(self.data[key]) + "\n"
         return s
 
-    def __delitem__(self, key):
-        # special load for modification
-        # IS THI RIGHT?????
-        # ACCORDING TO DOCUMENTATION IT IS NOT
-        self.data = shelve.open(self.fileprefix, writeback=True)
+    def delete(self, key):
+        # print(type(self.data["queues"]))
         del self.data[key]
+        self.save()
+
+    def __delitem__(self, key):
+        self.delete(key)
 
     def clear(self):
-        # self.data = {}
-        self.load()
         keylist = list(self.data.keys())
         for key in keylist:
             del self.data[key]
+        self.save()
 
-        # self.data.clear()
+    def __len__(self):
+        return len(self.data)
