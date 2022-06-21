@@ -58,7 +58,7 @@ class Database:
         elif os_is_mac() or os_is_linux():
             return self.fileprefix + ".db"
         else:
-            raise ValueError("This os is not yet supported for shelve naming, pleaes fix.")
+            raise ValueError("This os is not yet supported for shelve naming, please fix.")
 
     def info(self):
         print("keys: ", self.__str__())
@@ -90,8 +90,9 @@ class Database:
         Returns:
 
         """
-        # self.data.load()
-        self.data = shelve.open(self.filename, writeback=True)
+
+        # Alison
+        self.data = shelve.open(self.fileprefix, writeback=True)
         return self.data
 
     def remove(self):
@@ -108,13 +109,13 @@ class Database:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        return self.data["queues"][name]
+        return self.data[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        self.data["queues"][key] = value
+        self.data[key] = value
         self.save()
 
     def __str__(self):
@@ -125,8 +126,8 @@ class Database:
         return s
 
     def delete(self, key):
-        print(type(self.data["queues"]))
-        del self.data["queues"][key]
+        # print(type(self.data["queues"]))
+        del self.data[key]
         self.save()
 
     def __delitem__(self, key):
@@ -139,4 +140,4 @@ class Database:
         self.save()
 
     def __len__(self):
-        return len(self.data["queues"])
+        return len(self.data)
