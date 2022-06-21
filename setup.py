@@ -32,6 +32,7 @@ cloudmesh-cmd5
 cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
+fastapi[all]
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
