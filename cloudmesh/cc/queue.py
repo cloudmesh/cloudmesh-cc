@@ -1,3 +1,6 @@
+import yaml as pyyaml
+import json as pyjson
+
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import os
@@ -136,6 +139,10 @@ class Queues:
     def load(self):
         self.db.load()
 
+    @property
+    def queues(self):
+        return self.db.data["queues"]
+
     def add(self, name: str, job:str, command:str):
         """
         Adds a queue to the queues.
@@ -146,7 +153,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.db.data["queue"][name] = {"name": job, "command": command}
+        self.db.data["queues"][name][job] = {"name": job, "command": command}
         self.save()
 
     def create(self, name: str):
@@ -170,7 +177,7 @@ class Queues:
         :param queue:
         :return: updates the structure of the queues by deletion
         """
-        self.queues.db.delete()
+        del self.queues[name]
         self.save()
 
     def run(self, scheduler):
@@ -212,3 +219,17 @@ class Queues:
 
     def __len__(self):
         return len(self.db.data["queues"])
+
+    def get(self, q):
+        return self.db.data["queues"][q]
+
+    def __str__(self):
+        return str(self.queues)
+
+    @property
+    def yaml(self):
+        return pyyaml.dump(self.queues, indent=2)
+
+    @property
+    def json(self):
+        return pyjson.dumps(self.queues, indent=2)
