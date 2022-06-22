@@ -67,14 +67,15 @@ class Test_Queue:
     def test_run(self):
         HEADING()
         q = Queue(name='queue-1')
-        q.add(name='job1', command='cd')
+        q.add(name='job1', command='pwd')
         q.add(name='job2', command='echo hello world')
-        q.add(name='job3', command='python3 ../cm/python-test/banner.py')
+        q.add(name='job3', command='hostname')
 
         Benchmark.Start()
         q.run(scheduler="FIFO")
         Benchmark.Stop()
-        assert q.jobs.get('job1') == 'cd'
+        print("job object:", q.jobs['job1'])
+        assert q.jobs.get('job1') == 'pwd'
         assert 'echo' in q.jobs.get('job2')
         assert 'banner' in q.jobs.get('job3')
 

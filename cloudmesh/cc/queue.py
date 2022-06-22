@@ -1,3 +1,4 @@
+import yaml
 import yaml as pyyaml
 import json as pyjson
 from cloudmesh.common.Shell import Shell, Console
@@ -43,8 +44,7 @@ class Job:
         self.modified = DateTime.now()
 
     def __str__(self):
-        print(self.__dir__(), self.__dict__)
-        return f'Job Name= {self.name}, Command={self.command}'
+        return yaml.dump(self.__dict__, indent=2)
 
     def set(self, state):
         self.status = state
@@ -121,8 +121,10 @@ class Queue:
         :return: the commands that are in the queue, one at a time
         """
         if scheduler.lower() == 'fifo':
-            for name in self.jobs:
-                c = self.jobs.get(name)
+            for name, job in self.jobs.items():
+
+                print(job)
+                c = self.jobs.get(job)
                 r = Shell.run(c)
                 print(f"run queue={self.name} job={name} command={c}:", r)
         else:
