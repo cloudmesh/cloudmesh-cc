@@ -19,6 +19,10 @@ class Database:
 
     #  Database(filenane="a")     -> a.db on linux and mac, .dat on windows
 
+    # db["local"] -> local queue
+    # db["queues"]["local"]
+    # db.queues["local"]
+
     def __init__(self, filename=None, debug=False):
         """
         filename is a prefix
@@ -53,6 +57,10 @@ class Database:
 
         if debug:
             self.info()
+
+    @property
+    def queues(self):
+        return self.data["queues"]
 
     @property
     def filename(self):
