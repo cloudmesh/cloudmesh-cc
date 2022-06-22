@@ -36,7 +36,7 @@ class CcCommand(PluginCommand):
                 cc doc
                 cc test
                 cc temperature
-                cc workflow DEPENDENCIES
+                cc workflow NAME DEPENDENCIES
                 cc workflow status NAME --output=OUTPUT
                 cc workflow run NAME
                 cc workflow graph NAME
