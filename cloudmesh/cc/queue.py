@@ -3,6 +3,7 @@ import json as pyjson
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import os
+from cloudmesh.common.DateTime import DateTime
 
 """
     This is a program that allows for the instantiation of jobs and then
@@ -37,14 +38,18 @@ class Job:
         self.command = command
         self.status = status
         self.kind = kind
+        self.created = DateTime.now()
+        self.modified = DateTime.now()
 
     def __str__(self):
         return f'Job Name= {self.name}, Command={self.command}'
 
     def set(self, state):
         self.status = state
+        self.modified = DateTime.now()
 
     def update(self):
+        self.modified = DateTime.now()
         raise NotImplementedError("the update function will be implemented "
                                   "based on type of job")
 
