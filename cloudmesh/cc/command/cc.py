@@ -36,6 +36,11 @@ class CcCommand(PluginCommand):
                 cc doc
                 cc test
                 cc temperature
+                cc workflow DEPENDENCIES
+                cc workflow status NAME --output=OUTPUT
+                cc workflow run NAME
+                cc workflow graph NAME
+
 
           This command does some useful things.
 
@@ -64,6 +69,35 @@ class CcCommand(PluginCommand):
             cc stop
                 stop the service
 
+            cc workflow NAME DEPENDENCIES
+
+               with workflow command you can add dependencies between jobs. The dependencies
+               are added to a named workflow. Multiple workflows can be added to create a
+               complex workflow.
+               The dependency specification is simply a comma separated list of job names
+               introducing a direc acyclic graph.
+
+               > cms cc workflow simple a,b,d
+               > cms cc workflow simple a,c,d
+
+               which will introduce a workflow
+
+               >          a
+               >        /   \
+               >       b     c
+               >        \   /
+               >          d
+
+            cc workflow run NAME
+               runs the workflow with the given name
+
+            cc workflow graph NAME
+               creates a graph with the current status. Tasks that have been
+               executed will be augmented by metadata, such as runtime
+
+            cc workflow status NAME --output=OUTPUT
+               prints the tstatus of the workflow in various formats including
+               table, json, yaml
 
             > cms cc --parameter="a[1-2,5],a10"
             >    example on how to use Parameter.expand. See source code at
