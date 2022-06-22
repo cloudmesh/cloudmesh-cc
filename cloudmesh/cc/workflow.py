@@ -44,7 +44,12 @@ class workflow:
 
 
     def status(self):
+        raise NotImplementedError
 
-    def
+
+    def run(self):
+        raise NotImplementedError
+
+
 
 
