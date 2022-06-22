@@ -47,7 +47,7 @@ class CcCommand(PluginCommand):
           Arguments:
               FILENAME   a file name
               QUEUE  the name of the queue object as a variable in code
-              QUEUES the name of the queues (diciontary of queues) object
+              QUEUES the name of the queues (dictionary of queues) object
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
               SCHEDULER  designation of how jobs should be pulled from the queue
