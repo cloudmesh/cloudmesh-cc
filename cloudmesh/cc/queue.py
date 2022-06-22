@@ -37,12 +37,13 @@ class Job:
         """
         self.name = name
         self.command = command
-        self.status = status
+        self.status = 'defined'
         self.kind = kind
         self.created = DateTime.now()
         self.modified = DateTime.now()
 
     def __str__(self):
+        print(self.__dir__(), self.__dict__)
         return f'Job Name= {self.name}, Command={self.command}'
 
     def set(self, state):
@@ -89,7 +90,7 @@ class Queue:
         :return: edits a queue that was created by adding an element
         """
         job = Job(name, command)
-        self.jobs[job.name] = job.command
+        self.jobs[job.name] = job
 
     def remove(self, name):
         """

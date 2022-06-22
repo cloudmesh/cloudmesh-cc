@@ -3,6 +3,8 @@ from cloudmesh.cc import queue
 from cloudmesh.cc.db.yamldb import database as ymdb
 from cloudmesh.cc.db.shelve import database as shdb
 from queue import Queue
+from cloudmesh.cc.queue import Job
+from collections import OrderedDict
 
 
 """
@@ -10,9 +12,9 @@ from queue import Queue
     order that is requested by the user of this job queuing service. 
 """
 
-class workflow:
+class Workflow:
 
-    def __init__(self, name, dependencies, database, scheduler=None):
+    def __init__(self, name='workflow', dependencies=None, database=None, scheduler=None):
 
         # checking which type of database there is, so we know which to load
         if database.lower() == 'yamldb':
@@ -22,13 +24,23 @@ class workflow:
         else:
             raise ValueError("Not one of the implemented databases")
 
+        if dependencies is not None:
+            self.add_nodes(dependencies)
+            self.add_edges(dependencies)
+
         # creating the workflow
+        """
+        
+        
+        
+        
+        
         if scheduler is None:
             scheduler = 'fifo'
             q = Queue()
-
+            
             for d in dependencies:
-                value = queue.get(d)
+                value = self.queue.get(d)
                 q.put(value)
 
             self.nodes = []
@@ -40,15 +52,48 @@ class workflow:
             for i in self.nodes - 1:
                 edge = (i, i + 1)
                 self.edges.append(edge)
+        """
 
 
 
-    def status(self):
+    def status(self, name):
         raise NotImplementedError
+
 
 
     def run(self):
         raise NotImplementedError
+
+    def add_nodes(self, nodes):
+        print(nodes)
+        self.nodes = []
+        for node in nodes:
+            job = Job(name=node)
+            self.nodes.append(job)
+
+    def add_edges(self, edges):
+        print(edges)
+        self.edges = []
+        for i in range(0, self.nodes - 1):
+            edge = (edges[i], edges[i + 1])
+            self.edges.append(edge)
+
+    def get_node(self, name):
+        for node in self.nodes:
+            if node["name"] == name:
+                return node
+
+        return None
+
+
+    #job = Job(name='abc')  can add labels even if they don't exist
+    #job.label = 'abc'
+
+
+
+
+
+
 
 
 

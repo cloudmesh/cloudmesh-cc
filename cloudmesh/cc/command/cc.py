@@ -11,6 +11,7 @@ from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
 from cloudmesh.cc.queue import Job
+from cloudmesh.cc.workflow import Workflow
 
 
 class CcCommand(PluginCommand):
@@ -245,6 +246,18 @@ class CcCommand(PluginCommand):
         elif arguments.list and arguments.queue:
 
             Queue.list(self)
+
+
+        elif arguments.workflow and \
+            arguments.NAME and \
+            arguments.DEPENDENCIES:
+
+            name = arguments.NAME
+            dependencies = Parameter.expand(arguments.DEPENDENCIES)
+            workflow = Workflow(name=name, dependencies=dependencies)
+            print(workflow)
+
+            # cc workflow NAME DEPENDENCIES
 
 
         return ""
