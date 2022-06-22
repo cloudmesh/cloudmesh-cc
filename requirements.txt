@@ -11,3 +11,4 @@ cloudmesh-configuration
 fastapi[all]
 yamldb
 docker-compose
+networkx[default]

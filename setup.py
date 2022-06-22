@@ -34,6 +34,7 @@ cloudmesh-inventory
 cloudmesh-configuration
 fastapi[all]
 yamldb
+networkx[default]
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
