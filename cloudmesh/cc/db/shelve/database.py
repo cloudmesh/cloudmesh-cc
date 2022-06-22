@@ -44,14 +44,9 @@ class Database:
 
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            # self.data = shelve.open(self.filename)
             self.load()
-            self.data["filename"] = self.filename
-            self.data["queues"] = {}
             self.save()
             self.close()
-
-        # self.data["filename"] = self.filename
 
         self.load()
 
@@ -60,7 +55,7 @@ class Database:
 
     @property
     def queues(self):
-        return self.data["queues"]
+        return self.data
 
     @property
     def filename(self):
@@ -74,7 +69,7 @@ class Database:
     def info(self):
         print("keys:\n" + self.__str__())
         print("n: ", len(self.data.keys()))
-        print("queues:", self.data["queues"])
+        print("queues:", self.data)
         print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 

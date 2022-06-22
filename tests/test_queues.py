@@ -17,11 +17,11 @@ q = None
 @pytest.mark.incremental
 class TestConfig:
 
-    def test_filesOS(self):
-        # q1 = Queues(filename="~/.cloudmesh/queue/queue")
-        # q2 = Queues(filename="~/.cloudmesh/queue/queue.db")
-        q3 = Queues(filename="~/.cloudmesh/queue/queue.dat")
-        assert True
+    # def test_filesOS(self):
+    #     # q1 = Queues(filename="~/.cloudmesh/queue/queue")
+    #     # q2 = Queues(filename="~/.cloudmesh/queue/queue.db")
+    #     q3 = Queues(filename="~/.cloudmesh/queue/queue.dat")
+    #     assert True
 
     def test_create(self):
         HEADING()
@@ -32,7 +32,7 @@ class TestConfig:
         Benchmark.Stop()
         print(q.db.info())
         print ("HHHHH", q.db.data)
-        assert 'local' in q.db.data['queues']
+        assert 'local' in q.queues
 
     def test_add(self):
         HEADING()
