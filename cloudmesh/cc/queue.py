@@ -21,12 +21,33 @@ class Job:
         to the command.
     """
 
-    def __init__(self, name=None, command=None):
+    def __init__(self, name=None, command=None, kind=None, status=None):
+        """
+
+        :param name:
+        :type name:
+        :param command:
+        :type command:
+        :param kind: the kind of teh job: local, ssh, slurm remote-slurm
+        :type kind: str
+        :param status:
+        :type status:
+        """
         self.name = name
         self.command = command
+        self.status = status
+        self.kind = kind
 
     def __str__(self):
         return f'Job Name= {self.name}, Command={self.command}'
+
+    def set(self, state):
+        self.status = state
+
+    def update(self):
+        raise NotImplementedError("the update function will be implemented "
+                                  "based on type of job")
+
 
 
 class Queue:
