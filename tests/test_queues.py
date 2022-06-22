@@ -2,6 +2,7 @@
 # pytest -v --capture=no tests/test_queues.py
 # pytest -v  tests/test_queues.py
 # pytest -v --capture=no  tests/test_queues.py::Test_queue::<METHODNAME>
+# pytest -v --capture=no  tests/test_queues.py::TestConfig::<METHODNAME>
 ###############################################################
 from cloudmesh.cc.queue import Queue, Queues
 import os.path
@@ -11,10 +12,25 @@ import pytest
 from pprint import pprint
 import yaml
 
+from cloudmesh.common.util import path_expand
+
+
 q = None
 
 @pytest.mark.incremental
 class TestConfig:
+
+    def test_filesOS(self):
+        s1 = "~/.cloudmesh/queue/queuetest1"
+        s2 = "~/.cloudmesh/queue/queuetest2.db"
+        s3 = "~/.cloudmesh/queue/queuetest3.dat"
+        q1 = Queues(filename=s1)
+        # q2 = Queues(filename=s2)
+        q3 = Queues(filename=s3)
+
+        assert os.path.exists(q1.filename)
+        # assert os.path.exists(q2.filename)
+        assert os.path.exists(q3.filename)
 
     def test_create(self):
         HEADING()
@@ -25,8 +41,7 @@ class TestConfig:
         Benchmark.Stop()
         print(q.db.info())
         print ("HHHHH", q.db.data)
-        assert 'local' in q.db.data['queues']
-
+        assert 'local' in q.queues
 
     def test_add(self):
         HEADING()

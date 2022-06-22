@@ -1,7 +1,8 @@
 import yaml as pyyaml
 import json as pyjson
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Shell, Console
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.systeminfo import os_is_mac, os_is_windows, os_is_linux
 import os
 from cloudmesh.common.DateTime import DateTime
 
@@ -138,7 +139,8 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, database='yamldb'):
+    # def __init__(self, filename=None, database='yamldb'):
+    def __init__(self, filename=None, database='shelve'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
@@ -147,21 +149,21 @@ class Queues:
         """
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue/queue")
-
+            # self.filename = path_expand("~/.cloudmesh/queue/queue")
         elif database.lower() == 'shelve':
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue/queue")
-
+            # self.filename = path_expand("~/.cloudmesh/queue/queue")
         else:
             raise ValueError("This database is not supported for Queues, please fix.")
 
+        if filename is None:
+            filename = "~/.cloudmesh/queue/queue"
 
-        self.db = QueueDB(filename=self.filename)
+        self.db = QueueDB(filename=filename)
 
     def save(self):
         """
-        save the queue to persistant storage
+        save the queue to persistent storage
         """
         self.db.save()
 
@@ -169,8 +171,12 @@ class Queues:
         self.db.load()
 
     @property
+    def filename(self):
+        return self.db.filename
+
+    @property
     def queues(self):
-        return self.db.data["queues"]
+        return self.db.queues
 
     def add(self, name: str, job:str, command:str):
         """
@@ -183,7 +189,7 @@ class Queues:
         :return: Updates the structure of the queues by addition
         """
         self.db.load()
-        self.db.data["queues"][name][job] = {"name": job, "command": command}
+        self.queues[name][job] = {"name": job, "command": command}
         self.save()
 
     def create(self, name: str):
@@ -194,8 +200,8 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        self.db.data["queues"][name] = {}
-        # self.db.data[name] = {}
+
+        self.queues[name] = {}
         self.save()
 
 
@@ -235,24 +241,24 @@ class Queues:
         Returns a list of the queues that are in the queue
         :return:
         """
-        for each in self.db.data["queues"]:
+        for each in self.queues:
             print(each)
 
         # no save needed as just list
 
     def dict(self):
         d = {}
-        for each in self.db.data["queues"]:
+        for each in self.queues:
             d[each] = {}
-            for job, command in self.db.data["queues"].jobs.items():
+            for job, command in self.queues.jobs.items():
                 d[each][job] = command
         return d
 
     def __len__(self):
-        return len(self.db.data["queues"])
+        return len(self.queues)
 
     def get(self, q):
-        return self.db.data["queues"][q]
+        return self.queues[q]
 
     def __str__(self):
         return str(self.queues)
@@ -263,4 +269,4 @@ class Queues:
 
     @property
     def json(self):
-        return pyjson.dumps(self.queues, indent=2)
+        return pyjson.dumps(dict(self.queues), indent=2)

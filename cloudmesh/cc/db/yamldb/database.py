@@ -9,12 +9,18 @@ class Database:
 
     def __init__(self, name=None, filename=None, debug=False):
         self.debug = debug
-        if filename:
-            self.filename = filename
-        else:
-            self.filename = path_expand("~/.cloudmesh/queue/queues.yaml")
-        self.name = name
-        self._create_directory()
+        if filename is None:
+            filename = path_expand("~/.cloudmesh/queue/queues.yaml")
+        self.fileprefix = path_expand(filename)
+        # self.name = name
+
+        directory = os.path.dirname(self.fileprefix)
+        if not os.path.isdir(directory):
+            Shell.mkdir(directory)
+            self.data = {}
+            self.save()
+
+
         self.db = YamlDB(filename=self.filename)
         self.db["config.filename"] = self.filename
         self.db["config.name"] = self.name
@@ -23,12 +29,6 @@ class Database:
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
-    def _create_directory(self):
-        directory = os.path.dirname(self.filename)
-        if not os.path.isdir(directory):
-            Shell.mkdir(directory)
-            self.data = {}
-            self.save()
 
     def save(self):
         """
