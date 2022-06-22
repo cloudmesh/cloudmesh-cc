@@ -139,7 +139,8 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, filename=None, database='yamldb'):
+    # def __init__(self, filename=None, database='yamldb'):
+    def __init__(self, filename=None, database='shelve'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
@@ -156,19 +157,9 @@ class Queues:
             raise ValueError("This database is not supported for Queues, please fix.")
 
         if filename is None:
-            self.filename = "~/.cloudmesh/queue/queue"
+            filename = "~/.cloudmesh/queue/queue"
 
-        if os_is_windows and self.filename.endswith(".dat"):
-            try:
-                self.fileprefix = self.filename.replace(".dat", "")
-            except:
-                raise Console.warning(f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use {prefix}.{ending_for_os})")
-        else:
-            print("hi")
-
-
-
-        self.db = QueueDB(filename=self.filename)
+        self.db = QueueDB(filename=filename)
 
     def save(self):
         """
@@ -178,6 +169,10 @@ class Queues:
 
     def load(self):
         self.db.load()
+
+    @property
+    def filename(self):
+        return self.db.filename
 
     @property
     def queues(self):

@@ -12,16 +12,25 @@ import pytest
 from pprint import pprint
 import yaml
 
+from cloudmesh.common.util import path_expand
+
+
 q = None
 
 @pytest.mark.incremental
 class TestConfig:
 
-    # def test_filesOS(self):
-    #     # q1 = Queues(filename="~/.cloudmesh/queue/queue")
-    #     # q2 = Queues(filename="~/.cloudmesh/queue/queue.db")
-    #     q3 = Queues(filename="~/.cloudmesh/queue/queue.dat")
-    #     assert True
+    def test_filesOS(self):
+        s1 = "~/.cloudmesh/queue/queuetest1"
+        s2 = "~/.cloudmesh/queue/queuetest2.db"
+        s3 = "~/.cloudmesh/queue/queuetest3.dat"
+        q1 = Queues(filename=s1)
+        # q2 = Queues(filename=s2)
+        q3 = Queues(filename=s3)
+
+        assert os.path.exists(q1.filename)
+        # assert os.path.exists(q2.filename)
+        assert os.path.exists(q3.filename)
 
     def test_create(self):
         HEADING()

@@ -1,6 +1,6 @@
 import os
 import shelve
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Shell, Console
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_mac
@@ -13,7 +13,7 @@ import pathlib
 
 class Database:
 
-    #  Databese()
+    #  Database()
     #  Database(filenae="a.db")   -> a.db only on linux and mac
     #  Database(filenae="a.dat")  -> a.dat only on windows
 
@@ -38,10 +38,7 @@ class Database:
             filename = "~/.cloudmesh/queue/queues"
         self.fileprefix = path_expand(filename)
 
-        self.fileprefix = self.fileprefix.replace(".db", "").replace(".dat", "")
-
         self.directory = os.path.dirname(self.fileprefix)
-
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
             self.load()
@@ -59,9 +56,29 @@ class Database:
 
     @property
     def filename(self):
+        slashpos = self.fileprefix.rfind("/")
+        dotpos = self.fileprefix.rfind(".",slashpos,len(self.fileprefix))
         if os_is_windows():
+            if self.fileprefix.endswith(".dat"):
+                self.fileprefix = self.fileprefix.replace(".dat", "")
+            elif dotpos == -1:
+                # has no inherent file ending
+                self.fileprefix = self.fileprefix
+            else:
+                print("ERROR")
+                # raise Console.warning(
+                #     f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use fileprefix.dat)")
             return self.fileprefix + ".dat"
         elif os_is_mac() or os_is_linux():
+            if self.fileprefix.endswith(".db"):
+                self.fileprefix = self.fileprefix.replace(".db", "")
+            elif dotpos == -1:
+                # has no inherent file ending
+                self.fileprefix = self.fileprefix
+            else:
+                print("ERROR")
+                # raise Console.warning(
+                #     f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use fileprefix.db)")
             return self.fileprefix + ".db"
         else:
             raise ValueError("This os is not yet supported for shelve naming, please fix.")
