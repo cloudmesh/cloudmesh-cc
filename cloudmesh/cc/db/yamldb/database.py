@@ -7,7 +7,7 @@ import pathlib
 
 class Database:
 
-    def __init__(self, name=None, filename=None, debug=False):
+    def __init__(self, name="queue", filename=None, debug=False):
         self.debug = debug
         self.name = name
 

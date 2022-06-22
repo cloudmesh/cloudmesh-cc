@@ -264,7 +264,8 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        return str(self.queues)
+        return yaml.dump(self.queues, indent=2)
+        # return str(self.queues)
 
     @property
     def yaml(self):
