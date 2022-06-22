@@ -1,7 +1,8 @@
 import yaml as pyyaml
 import json as pyjson
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Shell, Console
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.systeminfo import os_is_mac, os_is_windows, os_is_linux
 import os
 
 """
@@ -112,7 +113,7 @@ class Queues:
         cms cc queues list --queues=ab
     """
 
-    def __init__(self, database='yamldb'):
+    def __init__(self, filename=None, database='yamldb'):
         """
         Initializes the giant queue structure.
         Default database is yamldb
@@ -121,14 +122,24 @@ class Queues:
         """
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue/queue")
-
+            # self.filename = path_expand("~/.cloudmesh/queue/queue")
         elif database.lower() == 'shelve':
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            self.filename = path_expand("~/.cloudmesh/queue/queue")
-
+            # self.filename = path_expand("~/.cloudmesh/queue/queue")
         else:
             raise ValueError("This database is not supported for Queues, please fix.")
+
+        if filename is None:
+            self.filename = "~/.cloudmesh/queue/queue"
+
+        if os_is_windows and self.filename.endswith(".dat"):
+            try:
+                self.fileprefix = self.filename.replace(".dat", "")
+            except:
+                raise Console.warning(f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use {prefix}.{ending_for_os})")
+        else:
+            print("hi")
+
 
 
         self.db = QueueDB(filename=self.filename)

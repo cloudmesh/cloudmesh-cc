@@ -64,7 +64,7 @@ class Database:
             raise ValueError("This os is not yet supported for shelve naming, please fix.")
 
     def info(self):
-        print("keys: ", self.__str__())
+        print("keys:\n" + self.__str__())
         print("n: ", len(self.data.keys()))
         print("queues:", self.data["queues"])
         print("filename: ", self.filename)
@@ -119,11 +119,12 @@ class Database:
         self.data[key] = value
         self.save()
 
+    # prints the keys
     def __str__(self):
         s = ""
-        keylist = list(self.data.keys())
         for key in self.data:
-            s += str(key) + ": " + str(self.data[key]) + "\n"
+            # s += f"{key}: {self.data[key]}\n"
+            s += str(key) + "\n"
         return s
 
     def delete(self, key):
