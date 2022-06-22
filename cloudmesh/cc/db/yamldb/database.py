@@ -9,8 +9,12 @@ class Database:
 
     def __init__(self, name=None, filename=None, debug=False):
         self.debug = debug
+        self.name = name
+
         if filename is None:
-            filename = path_expand("~/.cloudmesh/queue/queues.yaml")
+            filename = "~/.cloudmesh/queue/queues.yaml"
+        self.filename = path_expand(filename)
+
         self.fileprefix = path_expand(filename)
         # self.name = name
 
@@ -22,6 +26,7 @@ class Database:
 
 
         self.db = YamlDB(filename=self.filename)
+        self.db["config"] = {}
         self.db["config.filename"] = self.filename
         self.db["config.name"] = self.name
 
