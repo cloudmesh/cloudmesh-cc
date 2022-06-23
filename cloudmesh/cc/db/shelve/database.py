@@ -45,53 +45,21 @@ class Database:
         self.directory = os.path.dirname(self.fileprefix)
 
         if not os.path.isfile(self.filename):
-            print ("CCCC")
 
             Shell.mkdir(self.directory)
 
             self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
-<<<<<<< HEAD
-            self.save()
-
-=======
->>>>>>> 33c1085050bc88019516510b1a920b5a3929111b
 
         else:
-            print ("AAAA")
             self.load()
 
-        x = self.data["queue"]
-        print (x)
-        return
-        print (str(dict(self.data)))
-
-        return
-
-
-        print (str(self))
-        print (type(self.data["config"]))
-        print (type(self.data["queue"]))
-
-        return
-        if "config" in self.data:
-            print("Y")
-        else:
-            print ("booo")
-
-        return
         self.data["config"] = {
             "filename": filename,
             "name": name,
             "kind": "shelve"
         }
-
-        return
-
-        print (self.data["config"])
-
-        return
 
         if debug:
             self.info()
