@@ -46,15 +46,15 @@ class Database:
         self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
 
+
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            self.data = self.load()
+            self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
             self.save()
-            self.close()
-
-        self.load()
+        else:
+            self.load()
 
         self.data["config"] = {
             "filename": filename,
@@ -80,6 +80,16 @@ class Database:
         else:
             raise ValueError("This os is not yet supported for shelve naming, please fix.")
 
+    @property
+    def shelvename(self):
+        if os_is_windows() or os_is_mac():
+            return self.fileprefix
+        else:
+            return self.filename
+
+
+
+
     def info(self):
         return str(self)
 
@@ -91,7 +101,6 @@ class Database:
 
         """
         self.data = shelve.open(self.fileprefix, writeback=True)
-        return self.data
 
     def save(self):
         """

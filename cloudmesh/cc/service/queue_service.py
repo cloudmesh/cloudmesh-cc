@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import logging
+
 from cloudmesh.cc.queue import Queues
 
 app = FastAPI()
@@ -29,6 +29,7 @@ async def get_queue(name: str):
     return {"queue": q[name]}
 
 @app.get("/job/")
+
 async def get_queue(name: str):
     return {"job": "todo"}
 
