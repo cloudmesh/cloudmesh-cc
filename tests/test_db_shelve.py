@@ -50,8 +50,6 @@ class Test_db_shelve:
 
     def test_create(self):
         HEADING()
-        # Shell.rmdir("~/.cloudmesh/queue")
-        # input()
         Benchmark.Start()
         db = Database()
         db.clear()
@@ -113,17 +111,6 @@ class Test_db_shelve:
 
         print(n)
         n.close()
-
-    """
-    def test_queue_create(self):
-        HEADING()
-        Benchmark.Start()
-        result = Shell.execute("cms cc create localhost", shell=True)
-        Benchmark.Stop()
-        VERBOSE(result)
-        assert "quit" in result
-        assert "clear" in result
-    """
 
     def test_benchmark(self):
         HEADING()
