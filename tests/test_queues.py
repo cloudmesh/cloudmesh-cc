@@ -12,6 +12,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
+from cloudmesh.common.systeminfo import os_is_windows
 
 kind = "yamldb"
 # kind = "shelve"
