@@ -39,9 +39,12 @@ class Database:
 
         if filename is None:
             filename = "~/.cloudmesh/queue/queues"
-        self.fileprefix = path_expand(filename)
+        filename = path_expand(filename)
+        prefix = filename.replace(".dat","").replace(".db", "")
 
+        self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
+
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
             self.load()
@@ -67,30 +70,16 @@ class Database:
         return self.data["queue"]
 
     @property
+    def queues(self):
+        if "queue" not in self.data:
+            self.data["queue"] ={}
+        return self.data["queue"]
+
+    @property
     def filename(self):
-        slashpos = self.fileprefix.rfind("/")
-        dotpos = self.fileprefix.rfind(".",slashpos,len(self.fileprefix))
         if os_is_windows():
-            if self.fileprefix.endswith(".dat"):
-                self.fileprefix = self.fileprefix.replace(".dat", "")
-            elif dotpos == -1:
-                # has no inherent file ending
-                self.fileprefix = self.fileprefix
-            else:
-                print("ERROR")
-                # raise Console.warning(
-                #     f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use fileprefix.dat)")
             return self.fileprefix + ".dat"
         elif os_is_mac() or os_is_linux():
-            if self.fileprefix.endswith(".db"):
-                self.fileprefix = self.fileprefix.replace(".db", "")
-            elif dotpos == -1:
-                # has no inherent file ending
-                self.fileprefix = self.fileprefix
-            else:
-                print("ERROR")
-                # raise Console.warning(
-                #     f"On this OS you specified the wrong ending to the filename. You can simply leave it off, or use fileprefix.db)")
             return self.fileprefix + ".db"
         else:
             raise ValueError("This os is not yet supported for shelve naming, please fix.")
@@ -127,8 +116,6 @@ class Database:
     def close(self):
         self.data.close()
 
-
-
     def remove(self):
         """
         remove the database
@@ -163,15 +150,14 @@ class Database:
 
     def delete(self, key):
         # print(type(self.data["queues"]))
-        del self.queues[key]
+        if key in self.queues:
+            del self.queues[key]
         self.save()
 
     def __delitem__(self, key):
         self.delete(key)
 
     def clear(self):
-        print(self.data["config"])
-        print(self.data["queue"])
         self.data["queue"] = {}
         self.save()
 
