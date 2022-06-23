@@ -171,11 +171,11 @@ class Queues:
 
     @property
     def filename(self):
-        return self.db.filename
+        return self.db["filename"]
 
     @property
     def queues(self):
-        return self.db.queues
+        return self.db["queue"]
 
     def add(self, name: str, job: str, command: str):
         """
@@ -250,7 +250,9 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        return str(yaml.dump(self.queues, indent=2))
+        result = str(self.queues)
+        return result
+        # return str(yaml.dump(self.queues, indent=2))
 
     @property
     def yaml(self):
