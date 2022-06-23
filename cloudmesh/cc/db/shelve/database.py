@@ -41,12 +41,7 @@ class Database:
             filename = "~/.cloudmesh/queue/queues"
         filename = path_expand(filename)
         prefix = filename.replace(".dat", "").replace(".db", "")
-
-        if os_is_windows():
-            self.fileprefix = prefix
-        else:
-            self.fileprefix = filename
-
+        self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
 
 
@@ -120,7 +115,6 @@ class Database:
             return self.fileprefix
         else:
             return self.filename
-
 
 
 
