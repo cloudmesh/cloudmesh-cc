@@ -175,7 +175,7 @@ class Queues:
 
     @property
     def queues(self):
-        return self.db["queue"]
+        return self.db.queues
 
     def add(self, name: str, job: str, command: str):
         """
