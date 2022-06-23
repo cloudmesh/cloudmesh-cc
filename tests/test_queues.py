@@ -15,7 +15,10 @@ import yaml
 from cloudmesh.common.util import path_expand
 
 
+kind = "shelve"
+kind = "yamldb"
 q = None
+
 
 @pytest.mark.incremental
 class TestConfig:
@@ -36,7 +39,7 @@ class TestConfig:
         HEADING()
         global q
         Benchmark.Start()
-        q = Queues(database='yamldb')
+        q = Queues(database='shelve')
         q.create(name='local')
         Benchmark.Stop()
         print(q.db.info())

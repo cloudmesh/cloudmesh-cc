@@ -21,7 +21,7 @@ class Database:
         directory = os.path.dirname(self.fileprefix)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.data = {}
+            self.db = {}
             self.save()
 
 
@@ -29,6 +29,7 @@ class Database:
         self.db["config"] = {}
         self.db["config.filename"] = self.filename
         self.db["config.name"] = self.name
+        self.db["config.kind"] = "yamldb"
 
         self.db.save(self.filename)
         if debug:

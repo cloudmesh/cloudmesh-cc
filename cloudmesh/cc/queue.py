@@ -204,7 +204,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        print(self.queues)
+        print("GGGGG", self.queues)
         self.queues[name] = {}
         self.save()
 

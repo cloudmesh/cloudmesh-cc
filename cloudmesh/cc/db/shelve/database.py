@@ -55,7 +55,8 @@ class Database:
 
         self.data["config"] = {
             "filename" : filename,
-            "name": name
+            "name": name,
+            "kind": "shelve"
         }
 
         if debug:
@@ -154,9 +155,8 @@ class Database:
     def __str__(self):
         print ("DDDDDD")
         d = {
-
             "config": self.data["config"],
-            "queue": str(self.data["queue"])
+            "queue": self.data["queue"]
         }
         return str(yaml.dump(d, indent=2))
 
