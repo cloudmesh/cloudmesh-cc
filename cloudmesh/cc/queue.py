@@ -190,7 +190,11 @@ class Queues:
 
         """
         self.db.load()
-        self.queues[name][job] = {"name": job, "command": command, "queue": name}
+        self.queues[name][job] = {"name": job,
+                                  "command": command,
+                                  "queue": name,
+                                  "status": 'ready',
+                                  "error": None}
         self.save()
 
     def create(self, name: str):
@@ -224,8 +228,13 @@ class Queues:
                 for job in q:
                     c = self.queues[queue][job]['command']
                     print(c)
+                    self.queues[queue][job]['status'] = 'running'
                     r = Shell.run(c)
                     self.queues[queue][job]['output'] = r
+                    if 'ERROR' in r:
+                        self.queues[queue][job]['status'] = 'failed'
+                    else:
+                        self.queues[queue][job]['status'] = 'done'
                     self.counter = self.counter + 1
                     print(r)
 
