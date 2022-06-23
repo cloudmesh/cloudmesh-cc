@@ -26,10 +26,10 @@ class TestConfig:
 
     def test_queue_create(self):
         HEADING()
-        QUEUES = 'testqueue'
-        DATABASE= 'yamldb'
+        queues = 'testqueue'
+        database= 'yamldb'
         Benchmark.Start()
-        result = Shell.execute("cms cc create --queue=a,b,c --database=\'yamldb\'", shell=True)
+        result = Shell.execute("cms cc create --queue=a,b,c --database=yamldb", shell=True)
         Benchmark.Stop()
         VERBOSE(result)
         print(result)

@@ -1,8 +1,9 @@
 import os
+
 from yamldb import YamlDB
+
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
-import pathlib
 
 
 class Database:
@@ -21,32 +22,24 @@ class Database:
         directory = os.path.dirname(self.fileprefix)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.db = {}
+            self.data = {}
             self.save()
 
+        self.data = YamlDB(filename=self.filename)
+        self.data["config"] = {}
+        self.data["config.filename"] = self.filename
+        self.data["config.name"] = self.name
+        self.data["config.kind"] = "yamldb"
 
-        self.db = YamlDB(filename=self.filename)
-        self.db["config"] = {}
-        self.db["config.filename"] = self.filename
-        self.db["config.name"] = self.name
-        self.db["config.kind"] = "yamldb"
-
-        self.db.save(self.filename)
+        self.data.save(self.filename)
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
-
 
     def save(self):
         """
         save the data to the database
-
-        Args:
-            data ():
-
-        Returns:
-
         """
-        self.db.save(filename=self.filename)
+        self.data.save(filename=self.filename)
 
     def load(self):
         """
@@ -55,7 +48,7 @@ class Database:
         Returns:
 
         """
-        self.db.load(filename=self.filename)
+        self.data.load(filename=self.filename)
 
     def remove(self):
         """
@@ -66,25 +59,25 @@ class Database:
         os.remove(self.filename)
 
     def get(self, name):
-        return self.db[name]
+        return self.data[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        self.db[key] = value
+        self.data[key] = value
 
     def __str__(self):
-        return str(self.db)
+        return str(self.data)
 
     def clear(self):
-        self.db.clear()
+        self.data.clear()
 
     @property
     def queues(self):
-        if "queue" not in self.db:
-            self.db["queue"] ={}
-        return self.db["queue"]
+        if "queue" not in self.data:
+            self.data["queue"] = {}
+        return self.data["queue"]
 
     def info(self):
-        return str(self.db)
+        return str(self.data)

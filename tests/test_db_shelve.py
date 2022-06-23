@@ -4,16 +4,15 @@
 # pytest -v --capture=no  tests/test_db_shelve.py::Test_db_shelve::<METHODNAME>
 ###############################################################
 import os.path
-import pytest
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.debug import VERBOSE
-from cloudmesh.common.util import HEADING
-from cloudmesh.cc.db.shelve.database import Database
-from cloudmesh.common.systeminfo import os_is_mac, os_is_windows
 import shelve
 from pprint import pprint
-import sys
+
+import pytest
+
+from cloudmesh.cc.db.shelve.database import Database
+from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import HEADING
 
 
 @pytest.mark.incremental

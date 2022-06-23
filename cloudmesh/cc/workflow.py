@@ -1,11 +1,5 @@
-import networkx
-from cloudmesh.cc import queue
 from cloudmesh.cc.db.yamldb import database as ymdb
-from cloudmesh.cc.db.shelve import database as shdb
-from queue import Queue
 from cloudmesh.cc.queue import Job
-from collections import OrderedDict
-
 
 """
     This is the workflow class, which will create a graph of nodes(jobs) in the 
@@ -16,6 +10,8 @@ class Workflow:
 
     def __init__(self, name='workflow', dependencies=None, database=None, scheduler=None):
 
+        self.nodes = None
+        self.edges = None
         # checking which type of database there is, so we know which to load
         if database.lower() == 'yamldb':
             self.queue = ymdb.get(name)

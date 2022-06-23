@@ -4,12 +4,12 @@
 # pytest -v --capture=no  tests/test_db_yaml.py::Test_db_yaml::<METHODNAME>
 ###############################################################
 import os.path
+
 import pytest
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.debug import VERBOSE
-from cloudmesh.common.util import HEADING
+
 from cloudmesh.cc.db.yamldb.database import Database
+from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.util import HEADING
 
 
 @pytest.mark.incremental
@@ -20,7 +20,7 @@ class Test_db_yaml:
         Benchmark.Start()
         db = Database()
         db.clear()
-        print (db.filename)
+        print(db.filename)
         Benchmark.Stop()
         assert os.path.exists(db.filename)
 
@@ -32,14 +32,12 @@ class Test_db_yaml:
         db["queue.b"] = {"name": "gregor"}
         db["queue.c"] = {"name": "gregor"}
 
-
         n = Database()
         Benchmark.Stop()
         assert n["queue.a.name"] == "gregor"
         assert n["queue.b.name"] == "gregor"
 
         print(n)
-
 
     """
     def test_queue_create(self):

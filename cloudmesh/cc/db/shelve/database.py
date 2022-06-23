@@ -3,12 +3,12 @@ import shelve
 
 import yaml
 
-from cloudmesh.common.Shell import Shell, Console
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.systeminfo import os_is_linux
-import pathlib
+from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import path_expand
+
 
 #
 # convert this to use shelve keep all methods signatures the same
@@ -17,10 +17,10 @@ import pathlib
 class Database:
 
     #  Database()
-    #  Database(filenae="a.db")   -> a.db only on linux and mac
-    #  Database(filenae="a.dat")  -> a.dat only on windows
+    #  Database(filename="a.db")   -> a.db only on linux and mac
+    #  Database(filename="a.dat")  -> a.dat only on windows
 
-    #  Database(filenane="a")     -> a.db on linux and mac, .dat on windows
+    #  Database(filename="a")     -> a.db on linux and mac, .dat on Windows
 
     # db["local"] -> local queue
     # db["queue"]["local"]
@@ -36,11 +36,12 @@ class Database:
         """
 
         self.debug = debug
+        self.data = None
 
         if filename is None:
             filename = "~/.cloudmesh/queue/queues"
         filename = path_expand(filename)
-        prefix = filename.replace(".dat","").replace(".db", "")
+        prefix = filename.replace(".dat", "").replace(".db", "")
 
         self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
@@ -53,11 +54,10 @@ class Database:
             self.save()
             self.close()
 
-
         self.load()
 
         self.data["config"] = {
-            "filename" : filename,
+            "filename": filename,
             "name": name,
             "kind": "shelve"
         }
@@ -67,12 +67,8 @@ class Database:
 
     @property
     def queues(self):
-        return self.data["queue"]
-
-    @property
-    def queues(self):
         if "queue" not in self.data:
-            self.data["queue"] ={}
+            self.data["queue"] = {}
         return self.data["queue"]
 
     @property
@@ -100,12 +96,6 @@ class Database:
     def save(self):
         """
         save the data to the database
-
-        Args:
-            data ():
-
-        Returns:
-
         """
         self.data.sync()
 
@@ -118,15 +108,16 @@ class Database:
         Returns:
 
         """
+        self.close()
         if os_is_windows():
-            os.remove(f"{self.fileprefix}.bak")
-            os.remove(f"{self.fileprefix}.dat")
-            os.remove(f"{self.fileprefix}.dir")
+            for ending in ["bak", "dat", "dir"]:
+                os.remove(f"{self.fileprefix}.{ending}")
         else:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        return self.queues[name]
+        return self.data["queue"][name]
+
 
     def __getitem__(self, name):
         return self.get(name)
@@ -142,11 +133,10 @@ class Database:
         }
         return str(yaml.dump(d, indent=2))
 
-
     def delete(self, key):
         # print(type(self.data["queues"]))
         if key in self.queues:
-            del self.queues[key]
+            del self.data["queue"][key]
         self.save()
 
     def __delitem__(self, key):

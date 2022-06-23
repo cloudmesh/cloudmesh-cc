@@ -1,11 +1,10 @@
+import json as pyjson
+
 import yaml
 import yaml as pyyaml
-import json as pyjson
-from cloudmesh.common.Shell import Shell, Console
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.systeminfo import os_is_mac, os_is_windows, os_is_linux
-import os
+
 from cloudmesh.common.DateTime import DateTime
+from cloudmesh.common.Shell import Shell
 
 """
 This is a program that allows for the instantiation of jobs and then
@@ -57,11 +56,10 @@ class Job:
                                   "based on type of job")
 
 
-
 class Queue:
     """
         The queue is data structure that holds the jobs. This means that
-        the data structure will be a dictionary because it is holding all of
+        the data structure will be a dictionary because it is holding all
         names: commands of the jobs. The queue will have several commands:
         instantiate, add, remove, run, get, and list.
     """
@@ -114,7 +112,7 @@ class Queue:
 
     def run(self, scheduler):
         """
-        Take a specific queue and then accesses all of the jobs and runs the
+        Take a specific queue and then accesses all jobs and runs the
         commands of the jobs in the correct order. The order is FIFO (first
         in first out).
 
@@ -123,7 +121,6 @@ class Queue:
         """
         if scheduler.lower() == 'fifo':
             for name, job in self.jobs.items():
-
                 print(job)
                 c = self.jobs.get(job)
                 r = Shell.run(c)
@@ -134,7 +131,7 @@ class Queue:
 
 class Queues:
     """
-    The Queues data structure is a structure that holds all of the queues
+    Queues holds all of the queues
     with their corresponding names. It is a meta-queue, essentially. The queues
     class will be a dictionary of dictionaries of jobs, which are
     job names and commands.
@@ -147,9 +144,6 @@ class Queues:
     def __init__(self, filename=None, database='shelve'):
         """
         Initializes the giant queue structure.
-        Default database is yamldb
-        :param name: name of the structure
-        :return: creates the queues structure
         """
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
@@ -182,15 +176,12 @@ class Queues:
     def queues(self):
         return self.db.queues
 
-    def add(self, name: str, job:str, command:str):
+    def add(self, name: str, job: str, command: str):
         """
         Adds a queue to the queues.
 
         cms cc queues add --queues= abc --queue=d
 
-
-        :param queue:
-        :return: Updates the structure of the queues by addition
         """
         self.db.load()
         self.queues[name][job] = {"name": job, "command": command}
@@ -201,23 +192,17 @@ class Queues:
         Create a queue
 
         cms cc queues add --queues= abc --queue=d
-        :param queue:
-        :return: Updates the structure of the queues by addition
         """
         self.queues[name] = {}
         self.save()
-
 
     def remove(self, name):
         """
         removes a queue from the queues
 
         cms cc queues remove --queues=abc --queue=c
-
-        :param queue:
-        :return: updates the structure of the queues by deletion
         """
-        del self.queues[name]
+        # del self.queues[name]
         self.save()
 
     def run(self, scheduler):
@@ -276,3 +261,6 @@ class Queues:
 
     def info(self):
         return self.db.info()
+
+    def __getitem__(self, item):
+        return self.queues[item]

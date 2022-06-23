@@ -1,6 +1,6 @@
 # slurm-cluster
 
-Adapted from: Rodrigo Ancavil del Pino
+Adapted from:
 
 * <https://github.com/rancavil/slurm-cluster>
 * <https://medium.com/analytics-vidhya/slurm-cluster-with-docker-9f242deee601>

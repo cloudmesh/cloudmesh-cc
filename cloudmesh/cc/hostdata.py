@@ -5,14 +5,21 @@ from cloudmesh.common.util import path_expand
 from os.path import expanduser
 import shutil
 
+
 class Host:
 
     def __int__(self, location):
+        self.user = None
+        self.host = None
+        self.path = None
+        self.location = None
+        self.name = None
+        self.directory = None
         self.set(location)
 
     def set(self, location):
         """
-        location hhas the form username@host:directory
+        location has the form username@host:directory
 
             abc@localhost:~/cm/cloudmesh-cc/test/dir
             xyz1jk@rivanna.hpc.virginia.edu:~/cm/cloudmesh-cc/test/dir
@@ -96,7 +103,6 @@ rivanna:
 
 
 class Data:
-
     """
     local and remote have the form
 
@@ -143,11 +149,10 @@ class Data:
         """
         if directory is None:
             raise ValueError("creating directory with value None is not supported")
-            return ""
         try:
             self.remote_host.mkdir(directory)
         except Exception as e:
-            print (e)
+            print(e)
             raise ValueError(f"can not create directory on {self.remote_host}")
 
     def upload(self, name=None):
@@ -203,9 +208,7 @@ class Data:
         Returns:
 
         """
-        # deletin is needed in case the new dire has not all files as the old one has
-        # i would actually prefer to use rsync
+        # deleting is needed in case the new dire has not all files as the old one has
+        # I would actually prefer to use rsync
         self.delete(name)
         self.upload(name)
-
-

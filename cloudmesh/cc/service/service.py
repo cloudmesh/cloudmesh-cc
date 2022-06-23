@@ -40,18 +40,3 @@ async def read_main():
 @app.get("/items/")
 async def read_items():
     return {"msg": "Hello World"}
-
-
-@app.get("/search/")
-async def search_item(name: str):
-    result = None
-    for item in items:
-        if item['name'] == name:
-            result = name
-    return result
-
-
-@app.get("/temperature/")
-async def temperature():
-    from cloudmesh.computer import temp
-    return temp.HnameTemp()

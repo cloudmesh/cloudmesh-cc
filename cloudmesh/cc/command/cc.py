@@ -76,7 +76,7 @@ class CcCommand(PluginCommand):
                are added to a named workflow. Multiple workflows can be added to create a
                complex workflow.
                The dependency specification is simply a comma separated list of job names
-               introducing a direc acyclic graph.
+               introducing a direct acyclic graph.
 
                > cms cc workflow simple a,b,d
                > cms cc workflow simple a,c,d
@@ -97,7 +97,7 @@ class CcCommand(PluginCommand):
                executed will be augmented by metadata, such as runtime
 
             cc workflow status NAME --output=OUTPUT
-               prints the tstatus of the workflow in various formats including
+               prints the status of the workflow in various formats including
                table, json, yaml
 
             > cms cc --parameter="a[1-2,5],a10"
@@ -138,7 +138,7 @@ class CcCommand(PluginCommand):
 
         # VERBOSE(arguments)
 
-        # banner("rewriting arguments so we convert to appropriate types for easier handeling", color="RED")
+        # banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
@@ -152,7 +152,7 @@ class CcCommand(PluginCommand):
         # It is important to keep the programming here to a minimum and any substantial programming ought
         # to be conducted in a separate class outside the command parameter manipulation. If between the
         # elif statement you have more than 10 lines, you may consider putting it in a class that you import
-        # here and have propper methods in that class to handle the functionality. See the Manager class for
+        # here and have proper methods in that class to handle the functionality. See the Manager class for
         # an example.
         #
 
@@ -248,9 +248,7 @@ class CcCommand(PluginCommand):
             Queue.list(self)
 
 
-        elif arguments.workflow and \
-            arguments.NAME and \
-            arguments.DEPENDENCIES:
+        elif arguments.workflow and arguments.NAME and arguments.DEPENDENCIES:
 
             name = arguments.NAME
             dependencies = Parameter.expand(arguments.DEPENDENCIES)
