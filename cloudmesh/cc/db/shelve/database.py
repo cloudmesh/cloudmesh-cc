@@ -44,7 +44,6 @@ class Database:
         self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
 
-
         if not os.path.isfile(self.filename):
             print ("CCCC")
 
@@ -53,8 +52,11 @@ class Database:
             self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
+<<<<<<< HEAD
             self.save()
 
+=======
+>>>>>>> 33c1085050bc88019516510b1a920b5a3929111b
 
         else:
             print ("AAAA")
@@ -93,6 +95,8 @@ class Database:
 
         if debug:
             self.info()
+
+        self.save()
 
     @property
     def queues(self):

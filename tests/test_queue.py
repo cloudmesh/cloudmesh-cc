@@ -10,58 +10,50 @@ from cloudmesh.cc.queue import Queue
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 
+q = None
+
 
 @pytest.mark.incremental
 class Test_Queue:
 
     def test_create(self):
         HEADING()
+        global q
         Benchmark.Start()
         q = Queue(name='queue-1')
-        print(q.name)
-        print(q.jobs)
+        print(q)
         Benchmark.Stop()
         assert q.name == 'queue-1'
 
     def test_add(self):
         HEADING()
+        global q
         Benchmark.Start()
-        q = Queue(name='queue-1')
-
         for x in range(0, 10):
             job = f'job-{x}'
             command = f'command{x}'
             q.add(name=job, command=command)
+        print('The jobs: ')
         q.list()
         Benchmark.Stop()
         assert len(q.jobs) == 10
 
     def test_remove(self):
         HEADING()
-
-        q = Queue(name='queue-1')
-        size = 10
-        remove = int(size / 5)
-        for x in range(0, size):
-            job = f'job-{x}'
-            command = f'command{x}'
-            q.add(name=job, command=command)
-
+        global q
+        size = len(q.jobs)
+        remove = int(size / 2)
         # result = q.list() should return a list of the items
         result = "temp"
-
         Benchmark.Start()
+        print('Before removal')
+        q.list()
         for x in range(0, remove):
             job = f'job-{x}'
             q.remove(name=job)
+        print('After removal')
+        q.list()
         Benchmark.Stop()
-        print("Before removal:")
-        print()
-        print(q.list())
-        print()
-        print("After removal")
-        print()
-        print(result)
         assert len(q.jobs) == size - remove
 
     def test_run(self):
@@ -83,16 +75,12 @@ class Test_Queue:
 
     def test_list(self):
         HEADING()
-
-        q = Queue(name="queue-1")
-        for x in range(0, 10):
-            job = f'job-{x}'
-            command = f'command{x}'
-            q.add(name=job, command=command)
+        global q
+        print("Testing to see if the q.list() method works for queue not queues")
         Benchmark.Start()
         q.list()
         Benchmark.Stop()
-        assert len(q.jobs) == 10
+        assert len(q.jobs) == 5
 
     def test_benchmark(self):
         HEADING()
