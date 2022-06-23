@@ -110,59 +110,23 @@ class Test_queues:
         # pprint(n)
         assert len(q.get("local")) == 3
 
-
-class r:
-
     def test_remove(self):
-        HEADING()
-        global q
-        Benchmark.Start()
-        for i in range(3):
-            name=f"queue-{i}"
-            q.create(name=name)
-            q.add(name=name, job=f"job-{i}", command=f"command-{i}")
-        print('Current structure:')
-        pprint(q.queues)
-        print('Now removing 1 element')
-        print(". . .")
-        q.remove("queue-1")
-        print('Current stricture: ')
-        print(q.queues)
-        Benchmark.Stop()
-        assert len(q.queues) == 3
-
-    """
-        def test_remove(self):
         HEADING()
         global q
         Benchmark.Start()
         print('Before removal: ')
         print()
-        print(q)
+        print(q.queues)
         q.remove('local')
         Benchmark.Stop()
         print("After removal: ")
         print()
-        print(q)
+        print(q.queues)
         assert len(q.queues) == 1  # this is because there were 2 queues and now there is only one.
         print()
-    """
+
 
     def test_list(self):
-        HEADING()
-        global q
-        Benchmark.Start()
-        for i in range(3):
-            name=f"queue-{i}"
-            q.create(name=name)
-            q.add(name=name, job=i, command=f"command-{i}")
-        print('The queues list() function prints out the following:')
-        q.list()
-        Benchmark.Stop()
-        assert len(q.queues) == 4
-
-    """
-        def test_list(self):
         HEADING()
         global q
         q.create(name='local')
@@ -173,20 +137,15 @@ class r:
         q.list()  #appears to list only the higher level queues, not everything within the queues
         Benchmark.Stop()
         assert len(q.queues) == 2
-    """
+
 
     def test_run(self):
-        raise NotImplementedError
-    """
-        def test_run(self):
         HEADING()
         global q
         print('Everything to be run: ')
-        pprint(q)
         Benchmark.Start()
         q.run(scheduler='fifo')
         print('Everything that has been run: ')
-        pprint(q)
+        pprint(q.queues)
         Benchmark.Stop()
         assert q.counter == 6
-    """

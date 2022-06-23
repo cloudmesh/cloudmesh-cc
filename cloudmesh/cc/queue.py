@@ -159,6 +159,7 @@ class Queues:
             filename = "~/.cloudmesh/queue/queue"
 
         self.db = QueueDB(filename=filename)
+        self.counter = 0
 
     def save(self):
         """
@@ -207,7 +208,7 @@ class Queues:
 
         cms cc queues remove --queues=abc --queue=c
         """
-        # del self.queues[name]
+        del self.queues[name]
         self.save()
 
     def run(self, scheduler):
@@ -217,12 +218,15 @@ class Queues:
         :return: the commands that are issued from the jobs.
         """
         if scheduler.lower() == 'fifo':
+            self.counter = 0
             for queue in self.queues:
-                q = self.queues.get(queue)
-                print(type(q))
+                q = self.queues[queue]
                 for job in q:
-                    c = q.get(job)
+                    c = self.queues[queue][job]['command']
+                    print(c)
                     r = Shell.run(c)
+                    self.queues[queue][job]['output'] = r
+                    self.counter = self.counter + 1
                     print(r)
 
                 # self.queues[queue].run(scheduler=scheduler)
