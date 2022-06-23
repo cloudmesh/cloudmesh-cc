@@ -20,10 +20,10 @@ class Database:
     #  Database(filenane="a")     -> a.db on linux and mac, .dat on windows
 
     # db["local"] -> local queue
-    # db["queues"]["local"]
+    # db["queue"]["local"]
     # db.queues["local"]
 
-    def __init__(self, filename=None, debug=False):
+    def __init__(self, name="queue", filename=None, debug=False):
         """
         filename is a prefix
 
@@ -41,18 +41,27 @@ class Database:
         self.directory = os.path.dirname(self.fileprefix)
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            self.load()
+
+            self.data = {
+                "queues": {},
+                "config": {}
+            }
             self.save()
             self.close()
 
         self.load()
+
+        self.data["config"] = {
+            "filename" : filename,
+            "name": name
+        }
 
         if debug:
             self.info()
 
     @property
     def queues(self):
-        return self.data
+        return self.data["queue"]
 
     @property
     def filename(self):
@@ -86,7 +95,7 @@ class Database:
     def info(self):
         print("keys:\n" + self.__str__())
         print("n: ", len(self.data.keys()))
-        print("queues:", self.data)
+        print("queues:", self.queues)
         print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 
@@ -130,13 +139,13 @@ class Database:
             os.remove(f"{self.fileprefix}.db")
 
     def get(self, name):
-        return self.data[name]
+        return self.queues[name]
 
     def __getitem__(self, name):
         return self.get(name)
 
     def __setitem__(self, key, value):
-        self.data[key] = value
+        self.queues[key] = value
         self.save()
 
     # prints the keys
@@ -149,17 +158,17 @@ class Database:
 
     def delete(self, key):
         # print(type(self.data["queues"]))
-        del self.data[key]
+        del self.queues[key]
         self.save()
 
     def __delitem__(self, key):
         self.delete(key)
 
     def clear(self):
-        keylist = list(self.data.keys())
-        for key in keylist:
-            del self.data[key]
+        print(self.data["config"])
+        print(self.data["queue"])
+        self.data["queue"] = {}
         self.save()
 
     def __len__(self):
-        return len(self.data)
+        return len(self.queues)

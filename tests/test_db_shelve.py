@@ -59,7 +59,7 @@ class Test_db_shelve:
         Benchmark.Stop()
         print(db)
         assert os.path.exists(db.filename)
-        assert len(list(db.data.keys())) == 0
+        assert len(list(db.queues.keys())) == 0
         db.close()
 
     def test_add(self):
