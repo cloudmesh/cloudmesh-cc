@@ -1,68 +1,53 @@
 from cloudmesh.cc.db.yamldb import database as ymdb
+from cloudmesh.cc.db.shelve import database as shdb
 from cloudmesh.cc.queue import Job
+import networkx as nx
+from matplotlib import pyplot as plt
+from queue import Queue
 
 """
     This is the workflow class, which will create a graph of nodes(jobs) in the 
     order that is requested by the user of this job queuing service. 
+
+    We are assuming that the dependencies are the jobs that we will be working 
+    with. Additionally, the dependencies are a list of the jobs. Therefore, 
+    following these specifications, the following methods are built. 
+
 """
+
 
 class Workflow:
 
-    def __init__(self, name='workflow', dependencies=None, database=None, scheduler=None):
+    def __init__(self, name='workflow', dependencies=None, database=None,
+                 scheduler=None):
 
-        self.nodes = None
+        self.nodes = dependencies
         self.edges = None
-        # checking which type of database there is, so we know which to load
-        if database.lower() == 'yamldb':
-            self.queue = ymdb.get(name)
-        elif database.lower() == 'shelve':
-            self.queue = shdb.get(name)
-        else:
-            raise ValueError("Not one of the implemented databases")
+        self.db = self.database(database)
+        self.graph = None
+        self.flow = None
 
         if dependencies is not None:
             self.add_nodes(dependencies)
             self.add_edges(dependencies)
 
-        # creating the workflow
-        """
-        
-        
-        
-        
-        
-        if scheduler is None:
-            scheduler = 'fifo'
-            q = Queue()
-            
-            for d in dependencies:
-                value = self.queue.get(d)
-                q.put(value)
-
-            self.nodes = []
-            for n in q:
-                node = q.get(n)
-                self.flow.append(node)
-
-            self.edges = []
-            for i in self.nodes - 1:
-                edge = (i, i + 1)
-                self.edges.append(edge)
-        """
-
-
+    def database(self):
+        # checking which type of database there is, so we know which to load
+        if self.database.lower() == 'yamldb':
+            self.db = ymdb.load()
+        elif self.database.lower() == 'shelve':
+            self.db = shdb.load()
+        else:
+            raise ValueError("Not one of the implemented databases")
 
     def status(self, name):
         raise NotImplementedError
-
-
 
     def run(self):
         raise NotImplementedError
 
     def add_nodes(self, nodes):
         print(nodes)
-        self.nodes = []
         for node in nodes:
             job = Job(name=node)
             self.nodes.append(job)
@@ -81,16 +66,17 @@ class Workflow:
 
         return None
 
+    def create_graph(self):
+        self.graph = nx.Graph()
+        self.graph.add_nodes_from(self.nodes)
+        self.graph.add_edges_from(self.edges)
 
-    #job = Job(name='abc')  can add labels even if they don't exist
-    #job.label = 'abc'
+    def display(self):
+        color_map = []
+        for n in self.nodes:
+            color_map.append('blue')
+        nx.draw(self.graph, node_color=color_map, with_labels=True)
+        plt.show()
 
-
-
-
-
-
-
-
-
-
+    # job = Job(name='abc')  can add labels even if they don't exist
+    # job.label = 'abc'
