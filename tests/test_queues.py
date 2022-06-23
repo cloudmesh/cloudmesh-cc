@@ -36,12 +36,12 @@ class TestConfig:
         HEADING()
         global q
         Benchmark.Start()
-        q = Queues(database='shelve')
+        q = Queues(database='yamldb')
         q.create(name='local')
         Benchmark.Stop()
         print(q.db.info())
         print(q)
-        print ("HHHHH", q.db.data)
+        print ("HHHHH", q.queues)
         assert 'local' in q.queues
 
     def test_add(self):
@@ -86,31 +86,31 @@ class TestConfig:
         Benchmark.Stop()
         assert len(q.queues) == 4
 
-    def test_run(self):
-        HEADING()
-        global q
-        Benchmark.Start()
-        for i in range(3):
-            name=f"queue-{i}"
-            q.create(name=name)
-
-        for i in range(3):
-            name = f"queue-{i}"
-
-            q.add(name=name, job=1, command=f"pwd")
-            q.add(name=name, job=2, command=f"hostname")
-            q.add(name=name, job=3, command=f"uname")
-
-        print('Current structure: ', q.queues)
-        print('The list() function prints the following:')
-        q.list()
 
 
-        print(q)
 
-        print(q.yaml)
-        print(q.json)
 
-        #for name, queue in q.queues.items():
-        #    print (queue)
-        Benchmark.Stop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

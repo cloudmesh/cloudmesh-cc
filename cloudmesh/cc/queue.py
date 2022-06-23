@@ -8,13 +8,13 @@ import os
 from cloudmesh.common.DateTime import DateTime
 
 """
-    This is a program that allows for the instantiation of jobs and then
-    allowing those jobs to be manipulated in a queue. These manipulations
-    are add, create, remove, list, and run. This way, once a remote computer
-    (such as Rivanna) is accessed, the jobs that need to be executed can be).
+This is a program that allows for the instantiation of jobs and then
+allowing those jobs to be manipulated in a queue. These manipulations
+are add, create, remove, list, and run. This way, once a remote computer
+(such as Rivanna) is accessed, the jobs that need to be executed can be).
 
-    Below are the objects and what they can do with examples of the type of
-    command that would theoretically be run in the command line.
+Below are the objects and what they can do with examples of the type of
+command that would theoretically be run in the command line.
 """
 
 
@@ -204,7 +204,7 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-
+        print(self.queues)
         self.queues[name] = {}
         self.save()
 

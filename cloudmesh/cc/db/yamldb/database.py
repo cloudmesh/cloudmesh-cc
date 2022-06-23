@@ -78,3 +78,12 @@ class Database:
 
     def clear(self):
         self.db.clear()
+
+    @property
+    def queues(self):
+        if "queue" not in self.db:
+            self.db["queue"] ={}
+        return self.db["queue"]
+
+    def info(self):
+        return str(self.db)
