@@ -46,13 +46,12 @@ class Database:
         self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
 
-
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
             self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
-            self.save()
+
         else:
             self.load()
 
@@ -64,6 +63,8 @@ class Database:
 
         if debug:
             self.info()
+
+        self.save()
 
     @property
     def queues(self):
