@@ -5,7 +5,7 @@
 ###############################################################
 import os.path
 from pprint import pprint
-
+import shelve
 import pytest
 
 from cloudmesh.common.Printer import Printer
@@ -19,6 +19,35 @@ q = None
 
 @pytest.mark.incremental
 class Test_queues:
+    def test_shelve_open_and_close(self):
+        HEADING()
+        Benchmark.Start()
+        computers = shelve.open('computers')
+        computers['temperature'] = {
+            'red': 80,
+            'blue': 40,
+            'yellow': 50,
+        }
+        computers.close()
+        Benchmark.Stop()
+
+    def test_shelve_read(self):
+        HEADING()
+        computers = shelve.open('computers')
+        Benchmark.Start()
+        temperature = computers['temperature']
+        Benchmark.Stop()
+        print('Initial temperature:')
+        pprint(temperature)
+        assert computers['temperature']['red'] == 80
+        computers.close()
+        # Alison: note that this is the code for shelve database remove() method
+        if os_is_windows():
+            os.remove("computers.bak")
+            os.remove("computers.dat")
+            os.remove("computers.dir")
+        else:
+            os.remove("computers.db")
 
     def test_create(self):
         HEADING()
