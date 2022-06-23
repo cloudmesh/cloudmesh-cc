@@ -44,7 +44,8 @@ class Job:
         self.modified = DateTime.now()
 
     def __str__(self):
-        return yaml.dump(self.__dict__, indent=2)
+        d = self.__dict__
+        return str(yaml.dump(d, indent=2))
 
     def set(self, state):
         self.status = state
@@ -264,7 +265,8 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        return yaml.dump(self.queues, indent=2)
+        print ("UUUUU")
+        return str(yaml.dump(self.queues, indent=2))
         # return str(self.queues)
 
     @property

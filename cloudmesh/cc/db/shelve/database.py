@@ -1,5 +1,8 @@
 import os
 import shelve
+
+import yaml
+
 from cloudmesh.common.Shell import Shell, Console
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
@@ -41,13 +44,12 @@ class Database:
         self.directory = os.path.dirname(self.fileprefix)
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-
-            self.data = {
-                "queues": {},
-                "config": {}
-            }
+            self.load()
+            self.data["queue"] = {}
+            self.data["config"] = {}
             self.save()
             self.close()
+
 
         self.load()
 
@@ -99,6 +101,15 @@ class Database:
         print("filename: ", self.filename)
         print("fileprefix: ", self.fileprefix)
 
+    def load(self):
+        """
+        load the database and return as data
+
+        Returns:
+
+        """
+        self.data = shelve.open(self.fileprefix, writeback=True)
+        return self.data
 
     def save(self):
         """
@@ -115,15 +126,7 @@ class Database:
     def close(self):
         self.data.close()
 
-    def load(self):
-        """
-        load the database and return as data
 
-        Returns:
-
-        """
-        self.data = shelve.open(self.fileprefix, writeback=True)
-        return self.data
 
     def remove(self):
         """
@@ -148,13 +151,15 @@ class Database:
         self.queues[key] = value
         self.save()
 
-    # prints the keys
     def __str__(self):
-        s = ""
-        for key in self.data:
-            # s += f"{key}: {self.data[key]}\n"
-            s += str(key) + "\n"
-        return s
+        print ("DDDDDD")
+        d = {
+
+            "config": self.data["config"],
+            "queue": str(self.data["queue"])
+        }
+        return str(yaml.dump(d, indent=2))
+
 
     def delete(self, key):
         # print(type(self.data["queues"]))

@@ -71,13 +71,15 @@ class Test_Queue:
         q.add(name='job2', command='echo hello world')
         q.add(name='job3', command='hostname')
 
+        print(q)
+
         Benchmark.Start()
-        q.run(scheduler="FIFO")
+        #q.run(scheduler="FIFO")
         Benchmark.Stop()
         print("job object:", q.jobs['job1'])
-        assert q.jobs.get('job1') == 'pwd'
-        assert 'echo' in q.jobs.get('job2')
-        assert 'banner' in q.jobs.get('job3')
+        assert q.jobs.get('job1').command == 'pwd'
+        assert 'echo' in q.jobs.get('job2').command
+        assert 'hostname' in q.jobs.get('job3').command
 
     def test_list(self):
         HEADING()
