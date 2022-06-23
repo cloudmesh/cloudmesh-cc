@@ -16,7 +16,6 @@ kind = "yamldb"
 kind = "shelve"
 q = None
 
-
 @pytest.mark.incremental
 class Test_queues:
     def test_shelve_open_and_close(self):
@@ -54,6 +53,7 @@ class Test_queues:
         global q
         Benchmark.Start()
         q = Queues(database=kind)
+        print(q)
         # q.create(name='local')
         Benchmark.Stop()
         # print(q.info())

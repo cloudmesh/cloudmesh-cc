@@ -154,8 +154,10 @@ class Queues:
         else:
             raise ValueError("This database is not supported for Queues, please fix.")
 
+
         if filename is None:
             filename = "~/.cloudmesh/queue/queue"
+
         self.db = QueueDB(filename=filename)
 
     def save(self):
@@ -169,7 +171,7 @@ class Queues:
 
     @property
     def filename(self):
-        return self.db.filename
+        return self.db["filename"]
 
     @property
     def queues(self):
@@ -248,7 +250,9 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        return str(yaml.dump(self.queues, indent=2))
+        result = str(self.queues)
+        return result
+        # return str(yaml.dump(self.queues, indent=2))
 
     @property
     def yaml(self):

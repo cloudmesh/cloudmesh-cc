@@ -15,6 +15,17 @@ from cloudmesh.common.util import HEADING
 @pytest.mark.incremental
 class Test_db_yaml:
 
+    """
+    def yaml_open_and_close():
+    def yaml_read()
+    def test_create
+    def test_add
+    def test_delete
+    def test_remove
+    def test_save()
+    def test_benchmark()
+    """
+
     def test_create(self):
         HEADING()
         Benchmark.Start()
@@ -39,16 +50,7 @@ class Test_db_yaml:
 
         print(n)
 
-    """
-    def test_queue_create(self):
-        HEADING()
-        Benchmark.Start()
-        result = Shell.execute("cms cc create localhost", shell=True)
-        Benchmark.Stop()
-        VERBOSE(result)
-        assert "quit" in result
-        assert "clear" in result
-    """
+    def
 
     def test_benchmark(self):
         HEADING()

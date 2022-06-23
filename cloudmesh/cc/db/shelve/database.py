@@ -34,7 +34,6 @@ class Database:
             filename ():
             debug ():
         """
-
         self.debug = debug
         self.data = None
 
@@ -42,17 +41,17 @@ class Database:
             filename = "~/.cloudmesh/queue/queues"
         filename = path_expand(filename)
         prefix = filename.replace(".dat", "").replace(".db", "")
-
         self.fileprefix = prefix
         self.directory = os.path.dirname(self.fileprefix)
 
-
         if not os.path.isfile(self.filename):
+
             Shell.mkdir(self.directory)
+
             self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
-            self.save()
+
         else:
             self.load()
 
@@ -64,6 +63,8 @@ class Database:
 
         if debug:
             self.info()
+
+        self.save()
 
     @property
     def queues(self):
@@ -89,7 +90,6 @@ class Database:
 
 
 
-
     def info(self):
         return str(self)
 
@@ -100,7 +100,9 @@ class Database:
         Returns:
 
         """
-        self.data = shelve.open(self.fileprefix, writeback=True)
+        name = self.shelvename
+        print ("Loading:", name)
+        self.data = shelve.open(name, writeback=True)
 
     def save(self):
         """
