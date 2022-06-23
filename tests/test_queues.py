@@ -20,18 +20,6 @@ q = None
 @pytest.mark.incremental
 class Test_queues:
 
-    def test_filename(self):
-        s1 = "~/.cloudmesh/queue/queuetest1"
-        s2 = "~/.cloudmesh/queue/queuetest2.db"
-        s3 = "~/.cloudmesh/queue/queuetest3.dat"
-        q1 = Queues(filename=s1)
-        # q2 = Queues(filename=s2)
-        q3 = Queues(filename=s3)
-
-        assert os.path.exists(q1.filename)
-        # assert os.path.exists(q2.filename)
-        assert os.path.exists(q3.filename)
-
     def test_create(self):
         HEADING()
         global q
@@ -41,6 +29,22 @@ class Test_queues:
         Benchmark.Stop()
         # print(q.info())
         #assert 'local' in q.queues
+
+class a:
+    def test_filename(self):
+        s1 = "~/.cloudmesh/queue/queuetest1"
+        s2 = "~/.cloudmesh/queue/queuetest2.db"
+        s3 = "~/.cloudmesh/queue/queuetest3.dat"
+        q1 = Queues(filename=s1)
+        q1.close()
+        # q2 = Queues(filename=s2)
+        q3 = Queues(filename=s3)
+        q3.close()
+        assert os.path.exists(q1.filename)
+        # assert os.path.exists(q2.filename)
+        assert os.path.exists(q3.filename)
+
+
 
 class r:
     def test_add(self):

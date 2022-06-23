@@ -48,7 +48,7 @@ class Database:
 
         if not os.path.isfile(self.filename):
             Shell.mkdir(self.directory)
-            self.load()
+            self.data = self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
             self.save()

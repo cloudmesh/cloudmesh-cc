@@ -119,7 +119,7 @@ class Data:
         """
         self.remote_host = None
         self.local_host = None
-        self.set(loacl_host=local, remote_host=remote)
+        self.set(loacl=local, remote=remote)
         if self.remote_host is None:
             Console.error("Remote Host not set")
         if self.local_host is None:

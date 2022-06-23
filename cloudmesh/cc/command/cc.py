@@ -3,15 +3,13 @@ from pprint import pprint
 # from cloudmesh.cc.hostdata import Data
 from cloudmesh.cc.queue import Queue
 from cloudmesh.cc.queue import Queues
+from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.Shell import Shell
-from cloudmesh.common.Shell import Console
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
-from cloudmesh.cc.queue import Job
-from cloudmesh.cc.workflow import Workflow
 
 
 class CcCommand(PluginCommand):
@@ -244,8 +242,8 @@ class CcCommand(PluginCommand):
             q.run(scheduler=arguments.scheduler)
 
         elif arguments.list and arguments.queue:
-
-            Queue.list(self)
+            q = Queues()
+            q.list(self)
 
 
         elif arguments.workflow and arguments.NAME and arguments.DEPENDENCIES:
