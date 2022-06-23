@@ -204,7 +204,6 @@ class Queues:
         :param queue:
         :return: Updates the structure of the queues by addition
         """
-        print("GGGGG", self.queues)
         self.queues[name] = {}
         self.save()
 
@@ -265,9 +264,7 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        print ("UUUUU")
         return str(yaml.dump(self.queues, indent=2))
-        # return str(self.queues)
 
     @property
     def yaml(self):
@@ -276,3 +273,6 @@ class Queues:
     @property
     def json(self):
         return pyjson.dumps(dict(self.queues), indent=2)
+
+    def info(self):
+        return self.db.info()
