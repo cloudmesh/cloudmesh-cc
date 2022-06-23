@@ -145,7 +145,6 @@ class Queues:
         """
         Initializes the giant queue structure.
         """
-        print ("AAA")
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
             # self.filename = path_expand("~/.cloudmesh/queue/queue")
@@ -154,14 +153,10 @@ class Queues:
             # self.filename = path_expand("~/.cloudmesh/queue/queue")
         else:
             raise ValueError("This database is not supported for Queues, please fix.")
-        print("BBB")
 
         if filename is None:
             filename = "~/.cloudmesh/queue/queue"
-
-        print("CCC")
         self.db = QueueDB(filename=filename)
-        print("DDD")
 
     def save(self):
         """
