@@ -16,7 +16,6 @@ kind = "yamldb"
 kind = "shelve"
 q = None
 
-
 @pytest.mark.incremental
 class Test_queues:
 

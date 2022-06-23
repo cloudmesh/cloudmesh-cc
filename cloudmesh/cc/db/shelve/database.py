@@ -34,7 +34,6 @@ class Database:
             filename ():
             debug ():
         """
-
         self.debug = debug
         self.data = None
 
@@ -43,24 +42,59 @@ class Database:
         filename = path_expand(filename)
         prefix = filename.replace(".dat", "").replace(".db", "")
 
-        self.fileprefix = prefix
+        if os_is_windows():
+            self.fileprefix = prefix
+        else:
+            self.fileprefix = filename
+
         self.directory = os.path.dirname(self.fileprefix)
 
 
         if not os.path.isfile(self.filename):
+            print ("CCCC")
+
             Shell.mkdir(self.directory)
+
             self.load()
             self.data["queue"] = {}
             self.data["config"] = {}
             self.save()
+
+
         else:
+            print ("AAAA")
             self.load()
 
+        x = self.data["queue"]
+        print (x)
+        return
+        print (str(dict(self.data)))
+
+        return
+
+
+        print (str(self))
+        print (type(self.data["config"]))
+        print (type(self.data["queue"]))
+
+        return
+        if "config" in self.data:
+            print("Y")
+        else:
+            print ("booo")
+
+        return
         self.data["config"] = {
             "filename": filename,
             "name": name,
             "kind": "shelve"
         }
+
+        return
+
+        print (self.data["config"])
+
+        return
 
         if debug:
             self.info()
@@ -100,7 +134,9 @@ class Database:
         Returns:
 
         """
-        self.data = shelve.open(self.fileprefix, writeback=True)
+        name = self.shelvename
+        print ("Loading:", name)
+        self.data = shelve.open(name, writeback=True)
 
     def save(self):
         """
