@@ -177,6 +177,10 @@ class Queues:
     def queues(self):
         return self.db.queues
 
+    @property
+    def config(self):
+        return self.db.data['config']
+
     def add(self, name: str, job: str, command: str):
         """
         Adds a queue to the queues.
@@ -185,7 +189,7 @@ class Queues:
 
         """
         self.db.load()
-        self.queues[name][job] = {"name": job, "command": command}
+        self.queues[name][job] = {"name": job, "command": command, "queue": name}
         self.save()
 
     def create(self, name: str):
@@ -250,8 +254,12 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        result = str(self.queues)
-        return result
+        d = {"config":self.db.data["config"],
+             "queue":self.queues}
+        return pyyaml.dump(d, indent=2)
+
+        # result = str(self.queues)
+        # return result
         # return str(yaml.dump(self.queues, indent=2))
 
     @property

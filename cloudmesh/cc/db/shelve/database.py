@@ -133,9 +133,14 @@ class Database:
     def __getitem__(self, name):
         return self.get(name)
 
-    def __setitem__(self, key, value):
+    def set(self, key, value):
         self.queues[key] = value
         self.save()
+
+    def __setitem__(self, key, value):
+        self.set(key, value)
+        # self.queues[key] = value
+        # self.save()
 
     def __str__(self):
         d = {
