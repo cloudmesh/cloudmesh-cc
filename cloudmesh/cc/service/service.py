@@ -56,7 +56,7 @@ async def read_alex(request: Request, id: str):
                                        "id": id,
                                        "jobs": jobs})
 
-@app.get("/abduhl/{id}", response_class=HTMLResponse)
+@app.get("/abdul/{id}", response_class=HTMLResponse)
 async def read_anduhl(request: Request, id: str):
     global q
     jobs = []
@@ -64,7 +64,7 @@ async def read_anduhl(request: Request, id: str):
         for job in q.queues[queue]:
             jobs.append(q.queues[queue][job])
 
-    return templates.TemplateResponse("templates/abduhl.html",
+    return templates.TemplateResponse("templates/abdul.html",
                                       {"request": request,
                                        "id": id,
                                        "jobs": jobs})
