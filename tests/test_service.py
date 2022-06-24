@@ -19,7 +19,7 @@ client = TestClient(app)
 @pytest.mark.incremental
 class TestService:
 
-    def test_hone(self):
+    def test_home(self):
         HEADING()
         Benchmark.Start()
         response = client.get("/")
