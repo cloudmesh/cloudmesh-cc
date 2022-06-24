@@ -79,6 +79,7 @@ async def read_item(request: Request, id: str):
 
     order = q.queues[queue][job].keys()
     order = [word.capitalize() for word in order]
+    Console.error(str(order))
 
     return templates.TemplateResponse("templates/item.html",
                                       {"request": request,
