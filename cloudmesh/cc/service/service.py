@@ -11,12 +11,12 @@ def test_run():
     q = Queues(filename='~/.cloudmesh/queue/queuetest1', database=kind)
     q.create(name='local')
     q.create(name='rivanna')
-    q.add(name='local', job='job-1', command='pwd')
-    q.add(name='local', job='job-2', command='ls')
-    q.add(name='local', job='job-3', command='hostname')
-    q.add(name='rivanna', job='job-1', command='pwd')
-    q.add(name='rivanna', job='job-2', command='ls')
-    q.add(name='rivanna', job='job-3', command='hostname')
+    q.add(name='local', job='job01', command='pwd')
+    q.add(name='local', job='job02', command='ls')
+    q.add(name='local', job='job03', command='hostname')
+    q.add(name='rivanna', job='job04', command='pwd')
+    q.add(name='rivanna', job='job05', command='ls - a')
+    q.add(name='rivanna', job='job06', command='hostname')
     return q
 
 q = test_run()
@@ -29,7 +29,7 @@ async def read_home():
     return {"msg": "Hello World"}
 
 
-@app.get("/items/", response_class=HTMLResponse)
+@app.get("/jobs/", response_class=HTMLResponse)
 async def read_items():
     global q
     n = []
@@ -51,7 +51,7 @@ async def read_items():
         """
     return page
 
-@app.get("/item/{queue}/{job}", response_class=HTMLResponse)
+@app.get("/job/{queue}/{job}", response_class=HTMLResponse)
 async def read_job(queue:str, job:str):
     global q
     result = Printer.attribute(q.queues[queue][job], output='html')
