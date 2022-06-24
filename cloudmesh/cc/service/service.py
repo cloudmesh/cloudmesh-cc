@@ -21,6 +21,7 @@ def test_run():
     q.add(name='rivanna', job='job04', command='pwd')
     q.add(name='rivanna', job='job05', command='ls - a')
     q.add(name='rivanna', job='job06', command='hostname')
+    q.add(name='rivanna', job='job07', command='git status')
     return q
 
 q = test_run()
