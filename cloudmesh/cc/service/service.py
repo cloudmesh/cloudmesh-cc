@@ -55,19 +55,19 @@ async def read_alex(request: Request, id: str):
                                       {"request": request,
                                        "id": id,
                                        "jobs": jobs})
-
-@app.get("/abdul/{id}", response_class=HTMLResponse)
-async def read_anduhl(request: Request, id: str):
-    global q
-    jobs = []
-    for queue in q.queues:
-        for job in q.queues[queue]:
-            jobs.append(q.queues[queue][job])
-
-    return templates.TemplateResponse("templates/abdul.html",
-                                      {"request": request,
-                                       "id": id,
-                                       "jobs": jobs})
+#
+# @app.get("/abdul/{id}", response_class=HTMLResponse)
+# async def read_anduhl(request: Request, id: str):
+#     global q
+#     jobs = []
+#     for queue in q.queues:
+#         for job in q.queues[queue]:
+#             jobs.append(q.queues[queue][job])
+#
+#     return templates.TemplateResponse("templates/abdul.html",
+#                                       {"request": request,
+#                                        "id": id,
+#                                        "jobs": jobs})
 
 @app.get("/item/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
@@ -122,7 +122,6 @@ async def read_items():
 @app.get("/job/{queue}/{job}", response_class=HTMLResponse)
 async def read_job(queue:str, job:str):
     global q
-    global result
     result = Printer.attribute(q.queues[queue][job], output='html')
     name = q.queues[queue][job]["name"]
     d = f"<h1>{name}</h1>"
