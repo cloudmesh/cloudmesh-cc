@@ -55,6 +55,7 @@ async def read_items():
 async def read_job(queue:str, job:str):
     global q
     result = Printer.attribute(q.queues[queue][job], output='html')
+    print(Printer.attribute(q.queues[queue][job]))
     page = f"""
     <html>
         <head>
