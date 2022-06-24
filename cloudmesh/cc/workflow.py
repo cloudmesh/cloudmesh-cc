@@ -25,9 +25,11 @@ g.add_nodes("a,b,d", "status"="ready")
 
 g.export("a.pdf")
 
+we then use this graph to implement workflow?
+
 """
 
-class GregorWorkflow:
+class Graph:
     # this is pseudocode
 
     def __init__(self, filename=None):
