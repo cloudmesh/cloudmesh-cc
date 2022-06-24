@@ -55,7 +55,7 @@ async def read_item(request: Request):
 
 @app.get("/")
 async def read_home():
-    return {"msg": "Hello World z"}
+    return {"msg": "Hello World"}
 
 
 @app.get("/jobs/", response_class=HTMLResponse)
