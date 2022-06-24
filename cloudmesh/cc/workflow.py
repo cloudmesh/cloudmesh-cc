@@ -2,17 +2,96 @@ import networkx as nx
 from matplotlib import pyplot as plt
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.parameter import Parameter
 
 """
 This class enables to manage dependencies between jobs.
 To specifie dependencies we can use a string that includes comma 
 separated names of jobs. The workflow can be stored into a yaml file.
+
+g = Graph()
+g.edges
+g.nodes
+
+g.add_edges("a,b,d")
+g.add_edges("a,c,d") # will also add missing nodes
+
+g.add_nodes("a", {"status"="ready"})
+g.add_nodes("b", "status"="ready")    # will use dict update not eliminate other fields
+
+g.add_nodes("a,b,d", "status"="ready")
+    # will add the nodes, but also update the interanal attributes for the nodes, 
+    eg sets state to ready
+
+g.export("a.pdf")
+
 """
 
+class GregorWorkflow:
+    # this is pseudocode
+
+    def __init__(self, filename=None):
+        self.edges = {
+            "edge1": {}
+        }
+        self.nodes = {
+                "node1": {}
+        }
+        pass
+
+
+    def add_node(self, name, **data ):
+        ...
+        if name not in self.nodes:
+            self.node[name] = {}
+        self.nodes[name].update(data)
+        pass
+
+    def add_edge(self, name, source, destination, **data ):
+        pass
+
+    def set_status(self, name, status):
+        pass
+
+    def get_status(self, name):
+        pass
+
+    def add_dependencies(self, dependency, **data):
+        nodes = Parameter.expand(dependency)
+        # check if all nodes exists if not create the missing once
+        # loop through all node pairs and create adges, as name for adges
+        # you use {source}-{destination}
+        for node in nodes:
+            self.add_node(node, **data)
+        for i in range(len(nodes) -1):
+            source = nodes[i]
+            destination = nodes[i+1]
+            name = f"{source}-{destination}"
+            self.add_edge(name, source, destination)
+
+    def export(self, filename="show,a.png,a.svg,a.pdf"):
+        # comma separated list of output files in one command
+        # if show is included show() is used
+        pass
+
+        output = Parameter.expand(filename)
+        for filename in output:
+            if "show" == filename:
+                self.show()
+            elif filename.endswith(".pdf"):
+                pass
+            # and so on
+
+    def show(self):
+        # ...
+        pass
 
 class Workflow:
 
-    def __init__(self, name=None, dependencies=None, database=None,
+    def __init__(self,
+                 name=None,
+                 dependencies=None,
+                 database=None,
                  filename=None):
         """
         :param name: name of the queue we are loading jobs in from
