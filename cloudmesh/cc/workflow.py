@@ -48,12 +48,14 @@ class Workflow:
         elif database.lower() == 'shelve':
             from cloudmesh.cc.db.shelve.database import Database as QueueDB
         else:
-            raise ValueError("This database is not supported for Queues, please fix.")
+            raise ValueError(
+                "This database is not supported for Queues, please fix.")
 
         if filename is None:
             filename = path_expand("~/.cloudmesh/queue/queues")
 
-        self.db = QueueDB(filename=filename)  # now we have access to the correct database
+        self.db = QueueDB(
+            filename=filename)  # now we have access to the correct database
 
         if dependencies is not None:
             self.add_nodes(name)
@@ -66,16 +68,29 @@ class Workflow:
     def run(self):
         self.counter = 0
         for name in range(0, len(self.graph)):
+            self.nodes[name]['color'] = 'yellow'
+            self.nodes[name]['status'] = 'submitted'
             c = self.nodes[name]['command']
             r = Shell.run(c)
+            self.nodes[name]['color'] = 'blue'
+            self.nodes[name]['status'] = 'running'
+            if "CheckProcessError" in r:
+                self.nodes[name]['color'] = 'red'
+                self.nodes[name]['status'] = 'failed'
+            else:
+                self.nodes[name]['color'] = 'green'
+                self.nodes[name]['status'] = 'done'
+
             self.counter = self.counter + 1
             print(r)
-            #self.db.data['queue'][self.name]['output'] = r
+            self.db.data['queue'][self.name]['output'] = r
 
     def add_nodes(self, name):
         self.db.load()
         for j in self.dependencies:
             job = self.db.get_job(self.name, j)
+            job['status'] = 'ready'
+            job['color']= 'white'
             self.nodes.append(job)
 
     def add_edges(self):
@@ -116,7 +131,7 @@ class Workflow:
 
     def display(self, color=None, filename=None):
         # establishing where the graph will go
-       # if filename is None:
+        # if filename is None:
         #    filename = "~/cloudmesh/cc/images/"
 
         # setting the color
@@ -127,7 +142,7 @@ class Workflow:
         for n in self.nodes_names:
             color_map.append(color)
         nx.draw(self.graph, node_color=color_map, with_labels=True)
-        #plt.savefig(f'{filename}digraph.png')
+        # plt.savefig(f'{filename}digraph.png')
         plt.show()
 
     # job = Job(name='abc')  can add labels even if they don't exist
