@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 sudo sed -i "s/REPLACE_IT/CPUs=$(nproc)/g" /etc/slurm/slurm.conf
 
