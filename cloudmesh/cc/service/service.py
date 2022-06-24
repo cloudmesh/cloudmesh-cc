@@ -1,10 +1,10 @@
-from fastapi import FastAPI
 import logging
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Printer import Printer
 from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI
+from fastapi.templating import Jinja2Templates
 
 def test_run():
     kind = 'yamldb'
@@ -26,7 +26,7 @@ app = FastAPI()
 
 @app.get("/")
 async def read_home():
-    return {"msg": "Hello World"}
+    return {"msg": "Hello World z"}
 
 
 @app.get("/jobs/", response_class=HTMLResponse)
@@ -55,7 +55,19 @@ async def read_items():
 async def read_job(queue:str, job:str):
     global q
     result = Printer.attribute(q.queues[queue][job], output='html')
+    name = q.queues[queue][job]["name"]
+    d = f"<h1>{name}</h1>"
+    d += "<table>"
+    d += f"<tr> <th> attribute </th><th> value </th> </tr>"
+
+    for attribute in q.queues[queue][job]:
+        value = q.queues[queue][job][attribute]
+        d += f"<tr> <td> {attribute} </td><td> {value} </td> </tr>"
+    d += "</table>"
+    result = d
     print(Printer.attribute(q.queues[queue][job]))
+    print(result)
+
     page = f"""
     <html>
         <head>
