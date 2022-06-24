@@ -5,6 +5,10 @@ from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
+from fastapi import Request
+from fastapi.staticfiles import StaticFiles
+import pkg_resources
+from cloudmesh.common.console import Console
 
 def test_run():
     kind = 'yamldb'
@@ -24,6 +28,15 @@ q = test_run()
 app = FastAPI()
 
 
+template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/templates")
+Console.error(f"GGGGG >{template_dir}<")
+
+templates = Jinja2Templates(directory=template_dir)
+
+@app.get("/items/{id}", response_class=HTMLResponse)
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse("item.html", {"request": request, "id": id})
+
 @app.get("/")
 async def read_home():
     return {"msg": "Hello World z"}
@@ -32,13 +45,14 @@ async def read_home():
 @app.get("/jobs/", response_class=HTMLResponse)
 async def read_items():
     global q
-    n = []
+    jobs = []
     for queue in q.queues:
         for job in q.queues[queue]:
-            n.append(q.queues[queue][job])
+            jobs.append(q.queues[queue][job])
 
-    result = Printer.write(n, output='html')
+    result = Printer.write(jobs, output='html')
     result = result.replace('\n', '')
+
     page = f"""
         <html>
             <head>
@@ -70,6 +84,8 @@ async def read_job(queue:str, job:str):
 
     page = f"""
     <html>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
         <head>
             <title>Some HTML in here</title>
         </head>
