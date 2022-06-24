@@ -136,12 +136,27 @@ class Test_workflow:
         Benchmark.Stop()
         assert len(w.graph) == 6
 
+    def test_list_1(self):
+        HEADING()
+        Benchmark.Start()
+        for job in w.nodes:
+            print(job)
+        Benchmark.Stop()
+
     def test_run(self):
         HEADING()
         Benchmark.Start()
         w.run()
         Benchmark.Stop()
         assert w.counter == 6
+
+    def test_list_2(self):
+        HEADING()
+        Benchmark.Start()
+        for job in w.nodes:
+            print(job)
+        Benchmark.Stop()
+
 
 class rest:
 
@@ -153,5 +168,3 @@ class rest:
         Benchmark.Stop()
         print(w.sorted_graph)
         assert len(w.sorted_graph) == 6
-
-
