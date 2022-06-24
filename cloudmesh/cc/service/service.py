@@ -43,6 +43,32 @@ templates = Jinja2Templates(directory=template_dir)
 # ROUTES
 
 
+@app.get("/alex/{id}", response_class=HTMLResponse)
+async def read_alex(request: Request, id: str):
+    global q
+    jobs = []
+    for queue in q.queues:
+        for job in q.queues[queue]:
+            jobs.append(q.queues[queue][job])
+
+    return templates.TemplateResponse("templates/alex.html",
+                                      {"request": request,
+                                       "id": id,
+                                       "jobs": jobs})
+
+@app.get("/abdul/{id}", response_class=HTMLResponse)
+async def read_anduhl(request: Request, id: str):
+    global q
+    jobs = []
+    for queue in q.queues:
+        for job in q.queues[queue]:
+            jobs.append(q.queues[queue][job])
+
+    return templates.TemplateResponse("templates/abdul.html",
+                                      {"request": request,
+                                       "id": id,
+                                       "jobs": jobs})
+
 @app.get("/item/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
     global q
