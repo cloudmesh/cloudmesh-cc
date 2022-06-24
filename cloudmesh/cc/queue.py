@@ -154,7 +154,6 @@ class Queues:
         else:
             raise ValueError("This database is not supported for Queues, please fix.")
 
-
         if filename is None:
             filename = "~/.cloudmesh/queue/queue"
 
