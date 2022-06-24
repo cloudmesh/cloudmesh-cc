@@ -122,6 +122,7 @@ async def read_items():
 @app.get("/job/{queue}/{job}", response_class=HTMLResponse)
 async def read_job(queue:str, job:str):
     global q
+    global result
     result = Printer.attribute(q.queues[queue][job], output='html')
     name = q.queues[queue][job]["name"]
     d = f"<h1>{name}</h1>"
