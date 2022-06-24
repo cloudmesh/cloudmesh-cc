@@ -48,6 +48,11 @@ async def read_item(request: Request, id: str):
                                       {"request": request,
                                        "id": id})
 
+@app.get("/table", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("templates/table.html",
+                                      {"request": request})
+
 @app.get("/")
 async def read_home():
     return {"msg": "Hello World z"}
