@@ -89,22 +89,22 @@ class Test_queues:
         q.add(name='rivanna', job='job-2', command='ls')
         q.add(name='rivanna', job='job-3', command='hostname')
         Benchmark.Stop()
-        # print(q)
+        print(q)
         #pprint(q.queues)
         n = []
         for queue in q.queues:
             for job in q.queues[queue]:
                 n.append(q.queues[queue][job])
 
-        print(Printer.list(n))
+        #print(Printer.list(n))
 
-        for f in ['yaml', 'json', 'csv', 'html', 'table']:
+        #for f in ['yaml', 'json', 'csv', 'html', 'table']:
 
-            print(Printer.write(n, output=f))
+            #print(Printer.write(n, output=f))
 
-        print(q.config)
-        print(Printer.attribute(q.config))
-        print(Printer.attribute(q.config, output='json'))
+        #print(q.config)
+        #print(Printer.attribute(q.config))
+        #print(Printer.attribute(q.config, output='json'))
 
 
         # pprint(n)
