@@ -4,15 +4,9 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 
 """
-    This is the workflow class, which will create a graph of nodes(jobs) in the 
-    order that is requested by the user of this job queuing service. 
-
-    We are assuming that the dependencies are the jobs that we will be working 
-    with. Additionally, the dependencies are a list of the jobs. Therefore, 
-    following these specifications, the following methods are built. 
-
-    Also, we are loading the jobs from the yaml database that we created. Because
-    that is how the service works. 
+This class enables to manage dependencies between jobs.
+To specifie dependencies we can use a string that includes comma 
+separated names of jobs. The workflow can be stored into a yaml file.
 """
 
 
