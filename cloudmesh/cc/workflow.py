@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
-
+from cloudmesh.common.dotdict import dotdict
 """
 This class enables to manage dependencies between jobs.
 To specifie dependencies we can use a string that includes comma 
@@ -33,30 +33,36 @@ class Graph:
     # this is pseudocode
 
     def __init__(self, filename=None):
-        self.edges = {
-            "edge1": {}
-        }
-        self.nodes = {
-                "node1": {}
-        }
-        pass
+        self,sep = "-"
+        self.edges = dotdict()
+        self.nodes = dotdict()
+        self.load(filename=filename)
 
+    def load(self, filename=None):
+        if filename is not None:
+            raise NotImplementedError
+            # shoudl read from file the graph, but as we do Queues yaml dic
+            # we do not need filename read right now
 
     def add_node(self, name, **data ):
-        ...
         if name not in self.nodes:
-            self.node[name] = {}
-        self.nodes[name].update(data)
-        pass
+            self.node[name] = data
+        else:
+            self.nodes[name].update(data)
 
-    def add_edge(self, name, source, destination, **data ):
-        pass
+    def add_edge(self, source, destination, **data ):
+        name = f"{source}{self.sep}{destination}"
+        self.edges[name] = {
+            "source": source,
+            "destination": destination
+        }
+        self.edges[name].update(**data)
 
     def set_status(self, name, status):
-        pass
+        self.nodes[name]["status"] = status
 
     def get_status(self, name):
-        pass
+        self.nodes[name]["status"]
 
     def add_dependencies(self, dependency, **data):
         nodes = Parameter.expand(dependency)
@@ -68,8 +74,7 @@ class Graph:
         for i in range(len(nodes) -1):
             source = nodes[i]
             destination = nodes[i+1]
-            name = f"{source}-{destination}"
-            self.add_edge(name, source, destination)
+            self.add_edge(source, destination)
 
     def export(self, filename="show,a.png,a.svg,a.pdf"):
         # comma separated list of output files in one command
