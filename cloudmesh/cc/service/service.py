@@ -44,10 +44,16 @@ templates = Jinja2Templates(directory=template_dir)
 
 @app.get("/item/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
+    global q
+    jobs = []
+    for queue in q.queues:
+        for job in q.queues[queue]:
+            jobs.append(q.queues[queue][job])
+
     return templates.TemplateResponse("templates/item.html",
                                       {"request": request,
                                        "id": id,
-                                       "queues": q.queues})
+                                       "jobs": jobs})
 
 @app.get("/table", response_class=HTMLResponse)
 async def read_item(request: Request):
