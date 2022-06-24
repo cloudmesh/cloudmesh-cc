@@ -50,10 +50,14 @@ async def read_item(request: Request, id: str):
         for job in q.queues[queue]:
             jobs.append(q.queues[queue][job])
 
+    order = q.queues[queue][job].keys()
+    order = [word.capitalize() for word in order]
+
     return templates.TemplateResponse("templates/item.html",
                                       {"request": request,
                                        "id": id,
-                                       "jobs": jobs})
+                                       "jobs": jobs,
+                                       "order": order})
 
 @app.get("/table", response_class=HTMLResponse)
 async def read_item(request: Request):
