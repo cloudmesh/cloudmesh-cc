@@ -42,6 +42,7 @@ class Workflow:
         self.dependencies = dependencies
         self.name = name
         self.counter = 0
+        self.stat = {}
 
         if database.lower() == 'yamldb':
             from cloudmesh.cc.db.yamldb.database import Database as QueueDB
@@ -62,8 +63,29 @@ class Workflow:
             self.add_nodes_names()
             self.add_edges()
 
-    def status(self, name):
-        return name['status']
+        # setting up the database to save the nodes and all that jazz
+        if 'workflow' not in self.db.data:
+            self.db.data['workflow'] = {}
+            self.db.data['workflow'][self.name] = {}
+        else:
+            self.db.data['workflow'][self.name] = {}
+
+    def update_status(self):
+        self.stat = {}
+        for job in self.nodes:
+            name = job['name']
+            s = job['status']
+            print(name, s)
+            self.stat[name] = s
+
+    def display_status(self):
+        for job in self.stat:
+            print(job, self.stat[job])
+
+    def get_status(self, name):
+        for job in self.stat:
+            if name == job:
+                return self.stat[job]
 
     def run(self):
         self.counter = 0
@@ -83,14 +105,14 @@ class Workflow:
 
             self.counter = self.counter + 1
             print(r)
-            self.db.data['queue'][self.name]['output'] = r
+            self.db.data['workflow'][self.name]['output'] = r
 
     def add_nodes(self, name):
         self.db.load()
         for j in self.dependencies:
             job = self.db.get_job(self.name, j)
             job['status'] = 'ready'
-            job['color']= 'white'
+            job['color'] = 'white'
             self.nodes.append(job)
 
     def add_edges(self):

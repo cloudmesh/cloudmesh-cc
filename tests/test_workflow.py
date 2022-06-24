@@ -96,19 +96,6 @@ class Test_workflow:
         assert len(w.edges) == 5
         assert w.name == 'local'
 
-    def test_status(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        sta = {}
-        for job in w.nodes:
-            name = job['name']
-            s = w.status(job)
-            sta[name] = s
-        print(sta)
-        Benchmark.Stop()
-        assert sta[2] == 'ready'
-
     def test_get_node(self):
         HEADING()
         Benchmark.Start()
@@ -116,7 +103,6 @@ class Test_workflow:
         Benchmark.Stop()
         print(node)
         assert node['name'] == 9
-
 
     def test_create_graph(self):
         HEADING()
@@ -127,7 +113,6 @@ class Test_workflow:
         print(w.graph)
         assert len(w.graph) == 6
 
-
     def test_display(self):
         HEADING()
         global w
@@ -136,27 +121,25 @@ class Test_workflow:
         Benchmark.Stop()
         assert len(w.graph) == 6
 
-    def test_list_1(self):
-        HEADING()
-        Benchmark.Start()
-        for job in w.nodes:
-            print(job)
-        Benchmark.Stop()
-
     def test_run(self):
         HEADING()
+        before = w.update_status()
+        w.display_status()
         Benchmark.Start()
         w.run()
         Benchmark.Stop()
+        after = w.update_status()
+        w.display_status()
         assert w.counter == 6
 
-    def test_list_2(self):
+    def test_status(self):
         HEADING()
+        global w
         Benchmark.Start()
-        for job in w.nodes:
-            print(job)
+        w.update_status
+        w.display_status
         Benchmark.Stop()
-
+        assert w.get_status(name=2) == 'done'
 
 class rest:
 
