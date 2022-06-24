@@ -27,15 +27,26 @@ q = test_run()
 
 app = FastAPI()
 
+#
+# REGISTER template and static dir
+#
 
-template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/templates")
-Console.error(f"GGGGG >{template_dir}<")
+statis_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
 
+app.mount("/static", StaticFiles(directory=statis_dir), name="static")
+
+template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
+
+#
+# ROUTES
+
 
 @app.get("/items/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
-    return templates.TemplateResponse("item.html", {"request": request, "id": id})
+    return templates.TemplateResponse("templates/item.html",
+                                      {"request": request,
+                                       "id": id})
 
 @app.get("/")
 async def read_home():
