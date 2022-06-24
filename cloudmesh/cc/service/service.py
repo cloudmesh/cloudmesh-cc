@@ -3,6 +3,8 @@ import logging
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Printer import Printer
 from fastapi.responses import HTMLResponse
+import uvicorn
+from fastapi import FastAPI
 
 def test_run():
     kind = 'yamldb'
@@ -19,18 +21,11 @@ def test_run():
 
 q = test_run()
 
-import uvicorn
-from fastapi import FastAPI
-
 app = FastAPI()
 
 
 @app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
-
-async def read_main():
+async def read_home():
     return {"msg": "Hello World"}
 
 
