@@ -42,11 +42,12 @@ templates = Jinja2Templates(directory=template_dir)
 # ROUTES
 
 
-@app.get("/items/{id}", response_class=HTMLResponse)
+@app.get("/item/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
     return templates.TemplateResponse("templates/item.html",
                                       {"request": request,
-                                       "id": id})
+                                       "id": id,
+                                       "queues": q.queues})
 
 @app.get("/table", response_class=HTMLResponse)
 async def read_item(request: Request):
