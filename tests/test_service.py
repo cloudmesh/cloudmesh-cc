@@ -10,6 +10,7 @@ from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
 from fastapi.testclient import TestClient
 
+
 import cloudmesh.cc.service
 from cloudmesh.cc.service.service import app
 
@@ -26,7 +27,6 @@ class TestService:
         Benchmark.Stop()
         assert response.status_code == 200
         assert response.json() == {"msg": "Hello World"}
-
 
     def test_benchmark(self):
         HEADING()

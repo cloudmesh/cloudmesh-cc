@@ -24,6 +24,7 @@ class TestConfig:
         assert "upload" in result
         assert "start" in result
 
+
     def test_queue_create(self):
         HEADING()
         queues = 'testqueue'
