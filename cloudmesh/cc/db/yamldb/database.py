@@ -35,20 +35,26 @@ class Database:
         if debug:
             print("cloudmesh.cc.db loading:", self.filename)
 
-    def save(self):
+    def save(self, filename=None):
         """
         save the data to the database
         """
-        self.data.save(filename=self.filename)
+        if filename is None:
+            self.data.save(filename=self.filename)
+        else:
+            self.data.save(filename=filename)
 
-    def load(self):
+    def load(self, filename=None):
         """
         load the database and return as data
 
         Returns:
 
         """
-        self.data.load(filename=self.filename)
+        if filename is None:
+            self.data.load(filename=self.filename)
+        else:
+            self.data.load(filename=filename)
 
     def remove(self):
         """

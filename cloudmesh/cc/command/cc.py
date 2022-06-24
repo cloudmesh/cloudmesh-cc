@@ -30,7 +30,7 @@ class CcCommand(PluginCommand):
                 cc remove --queue=QUEUE --job=JOB
                 cc remove --queue=QUEUE
                 cc list --queue=QUEUE
-                cc start
+                cc start [--reload]
                 cc stop
                 cc doc
                 cc test
@@ -53,6 +53,7 @@ class CcCommand(PluginCommand):
               QUEUES  the name of the queues object that has been created
 
           Options:
+              --reload               reload for debugging
               --queue=QUEUE          specify the queue that you want to access
               --data=FILENAME        specify the data that you want to access
               --job=JOB              specify the job name
@@ -132,6 +133,7 @@ class CcCommand(PluginCommand):
                        "command",
                        "scheduler",
                        "queues"
+                       "reload"
                        )
 
         # VERBOSE(arguments)
@@ -156,14 +158,14 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
-
-            # command = "uvicorn cloudmesh.cc.service.service:queue_app"
-            # os.system(command)
-            if True:
-                import uvicorn
-                from cloudmesh.cc.service.service import app
-                r = uvicorn.run(app, host="127.0.0.1", port=8000)
-                print(r)
+            if arguments.reload:
+                reload = True
+            else:
+                reload=False
+            import uvicorn
+            from cloudmesh.cc.service.service import app
+            r = uvicorn.run(app, host="127.0.0.1", port=8000, reload=reload)
+            print(r)
         elif arguments.doc:
             url = "http://127.0.0.1:8000/docs"
             Shell.browser(url)
