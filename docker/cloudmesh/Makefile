@@ -2,10 +2,10 @@
 # DOCKER
 ######################################################################
 
-VERSION=latest
+include ../makefile.sys
 
 image:
-	docker build -t cloudmesh/python:${VERSION} .
+	docker build ${PROGRESS} -t cloudmesh/python:${VERSION} .
 
 shell:
 	docker run --rm -it cloudmesh/python:${VERSION}  /bin/bash

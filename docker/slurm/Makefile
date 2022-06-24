@@ -1,5 +1,7 @@
 .PHONY:   manager node jupyter
 
+include ../makefile.sys
+
 image:  cloudmesh manager node jupyter
 	docker image ls | fgrep slurm
 
@@ -7,13 +9,13 @@ cloudmesh:
 	cd  ../cloudmesh; make image
 
 manager:
-	cd  manager; docker build -t slurm-manager:latest .
+	cd  manager; docker build ${PROGRESS} -t slurm-manager:latest .
 
 node:
-	cd node;  docker build -t slurm-node:latest .
+	cd node;  docker build ${PROGRESS} -t slurm-node:latest .
 
 jupyter:
-	cd jupyter; docker build -t slurm-jupyter:latest .
+	cd jupyter; docker build ${PROGRESS} -t slurm-jupyter:latest .
 
 lab:
 	open http://localhost:8888

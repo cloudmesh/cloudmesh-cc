@@ -69,5 +69,4 @@ RUN pip install cloudmesh-installer
 RUN /usr/local/bin/cloudmesh-installer get cmd5
 RUN cms help
 
-
 WORKDIR /root
