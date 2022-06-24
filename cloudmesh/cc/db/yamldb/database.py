@@ -67,10 +67,12 @@ class Database:
     def get(self, name):
         return self.data[name]
 
-    def get_job(self, queue, name):
-        queue = self.get(queue)
-        job = queue[name]
-        return job
+    def get_queue(self, name):
+        return self.data['queue'][name]
+
+    def get_job(self, queue=None, name=None):
+        queue = self.get_queue(queue)
+        return queue[name]
 
     def __getitem__(self, name):
         return self.get(name)
