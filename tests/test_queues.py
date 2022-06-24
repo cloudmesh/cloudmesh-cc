@@ -149,3 +149,11 @@ class Test_queues:
         pprint(q.queues)
         Benchmark.Stop()
         assert q.counter == 6
+
+    def test_get(self):
+        HEADING()
+        global q
+        Benchmark.Start()
+        job = q.db.get_job(queue='local', name='job-1')
+        print(job)
+        Benchmark.Stop()
