@@ -58,14 +58,18 @@ class Graph:
             self.nodes[name] = data
         else:
             self.nodes[name].update(**data)
+        self.nodes[name]["name"] = name
 
-    def add_edge(self, source, destination, **data ):
+    def add_edge(self, source, destination, **data):
         name = f"{source}{self.sep}{destination}"
-        self.edges[name] = {
-            "source": source,
-            "destination": destination
-        }
+        if name not in self.edges:
+            self.edges[name] = {
+                "source": source,
+                "destination": destination,
+                "name": name
+            }
         self.edges[name].update(**data)
+
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -73,17 +77,23 @@ class Graph:
     def get_status(self, name):
         self.nodes[name]["status"]
 
-    def add_dependencies(self, dependency, **data):
+    def add_dependencies(self, dependency, nodedata=None, edgedata=None):
         nodes = Parameter.expand(dependency)
         # check if all nodes exists if not create the missing once
         # loop through all node pairs and create adges, as name for adges
         # you use {source}-{destination}
         for node in nodes:
-            self.add_node(node, **data)
+            if nodedata is None:
+                self.add_node(node)
+            else:
+                self.add_node(node, **nodedata)
         for i in range(len(nodes) -1):
             source = nodes[i]
             destination = nodes[i+1]
-            self.add_edge(source, destination)
+            if edgedata is None:
+                self.add_edge(source, destination)
+            else:
+                self.add_edge(source, destination, **edgedata)
 
     def export(self, filename="show,a.png,a.svg,a.pdf"):
         # comma separated list of output files in one command

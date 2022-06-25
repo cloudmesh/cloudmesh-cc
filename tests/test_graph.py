@@ -8,7 +8,7 @@ import os.path
 import pytest
 
 from cloudmesh.cc.workflow import Graph
-from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.Benchmark import Benchmark, StopWatch
 from cloudmesh.common.util import HEADING
 
 g = Graph()
@@ -27,7 +27,7 @@ class Test_graph:
         assert len(g.nodes) == 0
         assert len(g.edges) == 0
 
-    def test_create(self):
+    def test_nodes(self):
         HEADING()
         Benchmark.Start()
         g.add_node("a", status="ready")
@@ -38,7 +38,7 @@ class Test_graph:
         assert len(g.nodes) == 2
         assert len(g.edges) == 0
 
-    def test_edge(self):
+    def test_edges(self):
         HEADING()
         Benchmark.Start()
         g.add_edge("a", "b", speed=50, temperature=10, status="ready")
@@ -61,8 +61,21 @@ class Test_graph:
         assert g.edges["a_b"]["status"] == "ready"
         print(g.edges.a_b["status"])
 
-class rest:
+    def test_dependency(self):
+        HEADING()
+        dependency = "c,d,e,f"
+        Benchmark.Start()
+        for n in dependency.split(","):
+            g.add_node(n, status="ready")
+        g.add_dependencies(dependency, edgedata={"status":"ready", "speed":"300"}, nodedata={"test": "one"})
+        Benchmark.Stop()
+        for n in dependency.split(","):
+            assert g.nodes[n]["status"] == "ready"
+            assert g.nodes[n]["test"] == "one"
+        for name, e in g.edges.items():
+            assert e["status"] == "ready"
+        print(g)
 
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cc-db")
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
