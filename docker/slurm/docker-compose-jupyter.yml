@@ -43,4 +43,10 @@ services:
                 - red
 volumes:
         shared-vol:
+          driver: local
+          driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '/mnt/nfs'
+
 

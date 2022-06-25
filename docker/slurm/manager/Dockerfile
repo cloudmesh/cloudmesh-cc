@@ -1,11 +1,20 @@
 FROM cloudmesh/python:latest
 
 RUN apt update -y && \
-    apt install munge -y && \
-    apt-get install mariadb-server -y
+    apt-get install mariadb-server -y && \
+    apt install ntpdate -y && \
+    apt install systemctl -y
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt install slurmd slurm-client slurmctld -y
+RUN groupadd -g 3456 munge
+RUN useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u 3456 -g munge  -s /sbin/nologin munge
+RUN groupadd -g 3457 slurm
+RUN useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u 3457 -g slurm  -s /bin/bash slurm
+RUN apt install munge libmunge2 libmunge-dev
+RUN chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/
+RUN chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/
+RUN systemctl enable munge
+RUN apt install slurm-wlm -y
 RUN apt install sudo -y && \
     useradd -m admin -s /usr/bin/bash -d /home/admin && \
     echo "admin:admin" | chpasswd && \
@@ -15,6 +24,15 @@ RUN apt install sudo -y && \
 RUN apt update -y && \
     apt install libopenmpi-dev -y && \
     pip install mpi4py
+
+RUN mkdir /var/spool/slurmctld && \
+    chown admin:admin /var/spool/slurmctld && \
+    chmod 755 /var/spool/slurmctld && \
+    touch /var/log/slurm/slurmctld.log && \
+    touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log && \
+    chown -R admin:admin /var/log/slurm/ && \
+    touch /var/log/slurm_jobcomp.log && \
+    chmod 777 /var/log/slurm_jobcomp.log
 
 COPY slurm.conf /etc/slurm/
 COPY cgroup.conf /etc/slurm/
