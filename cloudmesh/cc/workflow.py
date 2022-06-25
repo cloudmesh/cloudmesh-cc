@@ -129,7 +129,7 @@ class Graph:
                 pass
             # and so on
 
-    def show(self, colors=None):
+    def show(self, colors=None, layout=nx.spring_layout):
         graph = nx.DiGraph()
         color_map = []
         for name, e in self.nodes.items():
@@ -144,7 +144,9 @@ class Graph:
         for name, e in self.edges.items():
             graph.add_edge(e["source"], e["destination"])
 
-        nx.draw(graph, with_labels=True, node_color=color_map)
+        pos = layout(graph)
+        nx.draw(graph, with_labels=True, node_color=color_map, pos=pos)
+
         plt.show(block=False)
         _ = input("Press [enter] to continue. ")
 

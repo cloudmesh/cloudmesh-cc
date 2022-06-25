@@ -5,6 +5,7 @@
 ###############################################################
 import os.path
 
+import networkx as nx
 import pytest
 
 from cloudmesh.cc.workflow import Graph
@@ -94,11 +95,14 @@ class Test_graph:
         g.nodes["b"]["status"] = "failed"
         g.nodes["c"]["status"] = "running"
 
+        g.add_dependencies("a,1,2,3,4,5,6,7,8,f", {"status": "done"})
+        g.add_dependencies("b,c")
+
         g.add_color("status", ready="white", done="green")
         print(g)
         Benchmark.Start()
         print(g.colors)
-        g.show(colors="status")
+        g.show(colors="status", layout=nx.circular_layout)
         Benchmark.Stop()
 
 class todo:
