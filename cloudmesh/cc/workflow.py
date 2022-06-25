@@ -44,12 +44,15 @@ class Graph:
     def add_color(self, key, **colors):
         if self.colors is None:
             self.colors = {}
+        if key not in self.colors:
+            self.colors[key] = {}
         self.colors[key].update(**colors)
 
     def __str__(self):
         data = {
             "nodes": dict(self.nodes),
-            "edges": dict(self.edges)
+            "edges": dict(self.edges),
+            "colors": dict(self.colors)
         }
         return yaml.dump(data, indent=2)
 
@@ -60,7 +63,6 @@ class Graph:
             # we do not need filename read right now
 
     def add_node(self, name, **data ):
-        print("ADD NODE:", name)
         if name not in self.nodes:
             self.nodes[name] = data
         else:
@@ -68,7 +70,6 @@ class Graph:
         self.nodes[name]["name"] = name
 
     def add_edge(self, source, destination, **data):
-        print("ADD EDGE:", source, destination)
         name = f"{source}{self.sep}{destination}"
         if name not in self.edges:
             self.edges[name] = {
@@ -119,15 +120,20 @@ class Graph:
             # and so on
 
     def show(self, colors=None):
-
         graph = nx.DiGraph()
+        color_map = []
         for name, e in self.nodes.items():
-            print(name)
-            graph.add_node(name)
+            if colors is None:
+                graph.add_node(name)
+                color_map.append('white')
+            else:
+                value = e[colors]
+                color_map.append(self.colors[colors][value])
+
         for name, e in self.edges.items():
-            print(name)
             graph.add_edge(e["source"], e["destination"])
-        nx.draw(graph, with_labels=True)
+
+        nx.draw(graph, with_labels=True, node_color=color_map)
         print(self)
         plt.show(block=False)
         _ = input("Press [enter] to continue. ")
