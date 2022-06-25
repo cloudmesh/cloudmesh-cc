@@ -76,6 +76,12 @@ class Test_graph:
             assert e["status"] == "ready"
         print(g)
 
+    def test_dependency(self):
+        HEADING()
+        Benchmark.Start()
+        g.show()
+        Benchmark.Stop()
+
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

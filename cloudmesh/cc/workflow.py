@@ -5,6 +5,7 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.dotdict import dotdict
+from networkx import DiGraph
 """
 This class enables to manage dependencies between jobs.
 To specifie dependencies we can use a string that includes comma 
@@ -38,6 +39,12 @@ class Graph:
         self.edges = dotdict()
         self.nodes = dotdict()
         self.load(filename=filename)
+        self.colors = None
+
+    def add_color(self, key, **colors):
+        if self.colors is None:
+            self.colors = {}
+        self.colors[key].update(**colors)
 
     def __str__(self):
         data = {
@@ -108,9 +115,12 @@ class Graph:
                 pass
             # and so on
 
-    def show(self):
-        # ...
-        pass
+    def show(self, colors=None):
+        graph = nx.DiGraph()
+        graph.add_nodes_from(self.nodes.keys())
+        graph.add_edges_from(self.edges)
+        nx.draw(graph, with_labels=True)
+        plt.show()
 
 class Workflow:
 
