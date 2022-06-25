@@ -39,7 +39,15 @@ class Graph:
         self.edges = dotdict()
         self.nodes = dotdict()
         self.load(filename=filename)
-        self.colors = None
+        self.colors = {}
+        self.set_status_colors()
+
+    def set_status_colors(self):
+        self.add_color("status",
+                       ready="white",
+                       done="green",
+                       failed="red",
+                       running="blue")
 
     def add_color(self, key, **colors):
         if self.colors is None:
@@ -52,8 +60,10 @@ class Graph:
         data = {
             "nodes": dict(self.nodes),
             "edges": dict(self.edges),
-            "colors": dict(self.colors)
         }
+        if self.colors:
+            data["colors"] = dict(self.colors)
+
         return yaml.dump(data, indent=2)
 
     def load(self, filename=None):
@@ -129,12 +139,12 @@ class Graph:
             else:
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
+                print (value)
 
         for name, e in self.edges.items():
             graph.add_edge(e["source"], e["destination"])
 
         nx.draw(graph, with_labels=True, node_color=color_map)
-        print(self)
         plt.show(block=False)
         _ = input("Press [enter] to continue. ")
 

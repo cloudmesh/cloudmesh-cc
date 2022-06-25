@@ -90,8 +90,12 @@ class Test_graph:
     def test_show(self):
         HEADING()
         global g
-        g.nodes["a"]["status"] == "done"
+        g.nodes["a"]["status"] = "done"
+        g.nodes["b"]["status"] = "failed"
+        g.nodes["c"]["status"] = "running"
+
         g.add_color("status", ready="white", done="green")
+        print(g)
         Benchmark.Start()
         print(g.colors)
         g.show(colors="status")
