@@ -1,4 +1,5 @@
 import networkx as nx
+import yaml
 from matplotlib import pyplot as plt
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
@@ -33,10 +34,18 @@ class Graph:
     # this is pseudocode
 
     def __init__(self, filename=None):
-        self,sep = "-"
+        self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
         self.load(filename=filename)
+
+    def __str__(self):
+        data = {
+            "nodes": dict(self.nodes),
+            "edges": dict(self.edges)
+        }
+        output = yaml.dump(data, indent=2)
+        return output
 
     def load(self, filename=None):
         if filename is not None:
@@ -46,9 +55,9 @@ class Graph:
 
     def add_node(self, name, **data ):
         if name not in self.nodes:
-            self.node[name] = data
+            self.nodes[name] = data
         else:
-            self.nodes[name].update(data)
+            self.nodes[name].update(**data)
 
     def add_edge(self, source, destination, **data ):
         name = f"{source}{self.sep}{destination}"
