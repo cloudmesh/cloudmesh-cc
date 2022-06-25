@@ -20,15 +20,18 @@ class Test_graph:
 
     def test_create(self):
         HEADING()
+        global g
         Benchmark.Start()
         print("Edges:", g.nodes)
         print("Nodes:", g.edges)
         Benchmark.Stop()
+        print(g)
         assert len(g.nodes) == 0
         assert len(g.edges) == 0
 
     def test_nodes(self):
         HEADING()
+        global g
         Benchmark.Start()
         g.add_node("a", status="ready")
         g.add_node("b", **{"status": "ready"})
@@ -40,18 +43,20 @@ class Test_graph:
 
     def test_edges(self):
         HEADING()
+        global g
         Benchmark.Start()
         g.add_edge("a", "b", speed=50, temperature=10, status="ready")
-        print("Edges:", g.nodes)
-        print("Nodes:", g.edges)
+        print(g)
         Benchmark.Stop()
         assert len(g.nodes) == 2
         assert len(g.edges) == 1
 
     def test_str(self):
         HEADING()
+        global g
         Benchmark.Start()
         print (g)
+        output = str(g)
         print (g.nodes.a["status"])
         print(g.nodes["a"]["status"])
         print(g.edges["a_b"]["status"])
@@ -60,10 +65,14 @@ class Test_graph:
         assert g.nodes["a"]["status"] == "ready"
         assert g.edges["a_b"]["status"] == "ready"
         print(g.edges.a_b["status"])
+        assert ":" in output
+        assert "ready" in output
 
     def test_dependency(self):
         HEADING()
+        global g
         dependency = "c,d,e,f"
+        print (dependency)
         Benchmark.Start()
         for n in dependency.split(","):
             g.add_node(n, status="ready")
@@ -74,13 +83,18 @@ class Test_graph:
             assert g.nodes[n]["test"] == "one"
         for name, e in g.edges.items():
             assert e["status"] == "ready"
+        assert "f" in g.nodes.keys()
         print(g)
 
-    def test_dependency(self):
+
+    def test_show(self):
         HEADING()
+        global g
         Benchmark.Start()
         g.show()
         Benchmark.Stop()
+
+class todo:
 
     def test_benchmark(self):
         HEADING()

@@ -51,8 +51,7 @@ class Graph:
             "nodes": dict(self.nodes),
             "edges": dict(self.edges)
         }
-        output = yaml.dump(data, indent=2)
-        return output
+        return yaml.dump(data, indent=2)
 
     def load(self, filename=None):
         if filename is not None:
@@ -61,6 +60,7 @@ class Graph:
             # we do not need filename read right now
 
     def add_node(self, name, **data ):
+        print("ADD NODE:", name)
         if name not in self.nodes:
             self.nodes[name] = data
         else:
@@ -68,6 +68,7 @@ class Graph:
         self.nodes[name]["name"] = name
 
     def add_edge(self, source, destination, **data):
+        print("ADD EDGE:", source, destination)
         name = f"{source}{self.sep}{destination}"
         if name not in self.edges:
             self.edges[name] = {
@@ -86,10 +87,12 @@ class Graph:
 
     def add_dependencies(self, dependency, nodedata=None, edgedata=None):
         nodes = Parameter.expand(dependency)
+        print(nodes)
         # check if all nodes exists if not create the missing once
         # loop through all node pairs and create adges, as name for adges
         # you use {source}-{destination}
         for node in nodes:
+            print(node)
             if nodedata is None:
                 self.add_node(node)
             else:
@@ -116,11 +119,18 @@ class Graph:
             # and so on
 
     def show(self, colors=None):
+
         graph = nx.DiGraph()
-        graph.add_nodes_from(self.nodes.keys())
-        graph.add_edges_from(self.edges)
+        for name, e in self.nodes.items():
+            print(name)
+            graph.add_node(name)
+        for name, e in self.edges.items():
+            print(name)
+            graph.add_edge(e["source"], e["destination"])
         nx.draw(graph, with_labels=True)
-        plt.show()
+        print(self)
+        plt.show(block=False)
+        _ = input("Press [enter] to continue. ")
 
 class Workflow:
 
