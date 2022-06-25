@@ -27,8 +27,31 @@ g.add_nodes("a,b,d", "status"="ready")
 
 g.export("a.pdf")
 
-we then use this graph to implement workflow?
+A show function is available that alloew the plotting of nodes with a default layout 
+and color values defined by a color map. By default a colormap for status with
 
+ready = white
+failed = red
+running = blue 
+done= green
+
+is used. One has the ability to define color maps for any key that contains strings.
+
+To for example change the status colors you could use
+
+g.set_color("status", 
+            {"ready": "green", 
+             "failed": "yellow",
+             "running": "orange", 
+             "done": "white"}
+             "other": "grey"
+            )
+            
+as you can see you can also define colors for otehr values that could be set in this case 
+for the node status. To display the graph you can say:
+            
+g.show()
+        
 """
 
 class Graph:
