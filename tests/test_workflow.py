@@ -46,8 +46,8 @@ class Test_workflow:
         user = login["localhost"]["user"]
         host = login["localhost"]["host"]
 
-        w.add_job(name=f"job-start", kind="local", command='pwd', user=user, host=host)
-        w.add_job(name=f"job-end", kind="local", command='pwd', user=user, host=host)
+        w.add_job(name=f"start", kind="local", command='pwd', user=user, host=host)
+        w.add_job(name=f"end", kind="local", command='pwd', user=user, host=host)
 
         for host, kind in [("localhost", "local"),
                            ("rivanna", "remote-slurm"),
@@ -67,8 +67,8 @@ class Test_workflow:
             third = n -1
             w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
             w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
-            w.add_dependencies(f"job-{host}-{third},job-end")
-            w.add_dependencies(f"job-start,job-{host}-{first}")
+            w.add_dependencies(f"job-{host}-{third},end")
+            w.add_dependencies(f"start,job-{host}-{first}")
 
         Benchmark.Stop()
         print(len(w.jobs) == n)
