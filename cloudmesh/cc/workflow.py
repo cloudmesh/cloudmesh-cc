@@ -161,7 +161,8 @@ class Graph:
                 pass
             # and so on
 
-    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout, engine="networkx"):
+    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
+             engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
         graph = nx.DiGraph()
         color_map = []
@@ -253,12 +254,11 @@ class Workflow2:
         else:
             self.host = 'local host'
 
-
         self.status = []
         self.order = None
         self.progress = None
         self.command = None
-        self.db = ydb(filename= filename)
+        self.db = ydb(filename=filename)
         self.db.data['workflow'] = self.workflow
         self.save()
 
@@ -290,7 +290,7 @@ class Workflow2:
     def add_dependencies(self, dependency):
         w = self.db.data['workflow']
         w['dependencies'] = []
-        for job in range (0, len(w)):
+        for job in range(0, len(w)):
             name = w[job]
             w['dependencies'].append(name)
 
@@ -322,8 +322,6 @@ class Workflow2:
 
         self.save()
 
-
-
     def run(self, order=None, parallel=False):
 
         w = self.workflow
@@ -336,7 +334,6 @@ class Workflow2:
             command = job['command']
             r = Shell.run(command)
             self.db.data['workflow'][job]['output'] = r
-
 
     def sequential_order(self):
         order = list(nx.topological_sort(self.graph))
@@ -355,6 +352,7 @@ class Workflow2:
     def json(self):
         # print as json dump
         pass
+
 
 class Workflow:
 
