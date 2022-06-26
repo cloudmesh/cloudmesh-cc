@@ -32,8 +32,8 @@ RUN mkdir /var/spool/slurmctld && \
     touch /var/log/slurm/slurmctld.log && \
     touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log && \
     chown -R admin:admin /var/log/slurm/ && \
-    touch /var/log/slurm_jobcomp.log && \
-    chmod 777 /var/log/slurm_jobcomp.log && \
+    touch /var/log/slurm/slurm_jobcomp.log && \
+    chmod 777 /var/log/slurm/slurm_jobcomp.log && \
     chown admin:admin /var/spool/
 
 COPY slurm.conf /etc/slurm/
