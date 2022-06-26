@@ -5,7 +5,14 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.dotdict import dotdict
+from cloudmesh.common.util import writefile
 from networkx import DiGraph
+import matplotlib.image as mpimg
+import graphviz
+import pydot
+import io
+
+
 """
 This class enables to manage dependencies between jobs.
 To specifie dependencies we can use a string that includes comma 
@@ -152,26 +159,61 @@ class Graph:
                 pass
             # and so on
 
-    def show(self, colors=None, layout=nx.spring_layout):
+    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout, engine="networkx"):
+        dot = graphviz.Digraph(comment='Dot Graph')
         graph = nx.DiGraph()
         color_map = []
         for name, e in self.nodes.items():
             if colors is None:
                 graph.add_node(name)
+                dot.node(name, color='white')
                 color_map.append('white')
             else:
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
-                print (value)
+                dot.node(name, color=self.colors[colors][value])
 
         for name, e in self.edges.items():
             graph.add_edge(e["source"], e["destination"])
+            dot.edge(e["source"], e["destination"])
 
-        pos = layout(graph)
-        nx.draw(graph, with_labels=True, node_color=color_map, pos=pos)
+        if engine == "dot":
 
-        plt.show(block=False)
-        _ = input("Press [enter] to continue. ")
+            prefix, ending = filename.split(".")
+            dot_filename = prefix + ".dot"
+            writefile(dot_filename, str(dot.source))
+            if ".dot" not in filename:
+                Shell.run(f"dot -T{ending} {dot_filename} -o {filename}")
+
+        elif engine == "graphviz":
+            pos = layout(graph)
+            nx.draw(graph, with_labels=True, node_color=color_map, pos=pos)
+            plt.axis('off')
+            plt.savefig(filename)
+
+        elif engine == 'pyplot':
+
+            # generate dot graph
+            P = nx.nx_pydot.to_pydot(graph)
+            print(P)
+
+            # convert from `networkx` to a `pydot` graph
+            pydot_graph = nx.drawing.nx_pydot.to_pydot(graph)
+
+            # render the `pydot` by calling `dot`, no file saved to disk
+            png_str = pydot_graph.create_png(prog='dot')
+
+            # treat the DOT output as an image file
+            sio = io.BytesIO()
+            sio.write(png_str)
+            sio.seek(0)
+            img = mpimg.imread(sio)
+
+            # plot the image
+            imgplot = plt.imshow(img, aspect='equal')
+            plt.savefig(filename)
+
+
 
 class Workflow:
 

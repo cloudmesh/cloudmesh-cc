@@ -35,6 +35,7 @@ cloudmesh-configuration
 fastapi[all]
 yamldb
 networkx[default]
+pydot
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']

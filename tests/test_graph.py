@@ -11,6 +11,7 @@ import pytest
 from cloudmesh.cc.workflow import Graph
 from cloudmesh.common.Benchmark import Benchmark, StopWatch
 from cloudmesh.common.util import HEADING
+from cloudmesh.common.Shell import Shell
 
 g = Graph()
 g.sep = "_"
@@ -102,7 +103,17 @@ class Test_graph:
         print(g)
         Benchmark.Start()
         print(g.colors)
-        g.show(colors="status", layout=nx.circular_layout)
+        # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
+        g.save(filename="/tmp/test-graphviz.svg",colors="status", layout=nx.circular_layout, engine="graphviz")
+        #g.save(filename="/tmp/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
+        g.save(filename="/tmp/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+        Shell.browser("/tmp/test-graphviz.svg")
+        #Shell.browser("/tmp/test-pyplot.svg")
+        r = Shell.cat("/tmp/test-dot.dot")
+        print (r)
+        g.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        Shell.browser("/tmp/test-dot.svg")
+
         Benchmark.Stop()
 
 class todo:
