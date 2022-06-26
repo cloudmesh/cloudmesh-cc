@@ -1,17 +1,16 @@
+import io
+
+import graphviz
+import matplotlib.image as mpimg
 import networkx as nx
 import yaml
 from matplotlib import pyplot as plt
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.parameter import Parameter
-from cloudmesh.common.dotdict import dotdict
-from cloudmesh.common.util import writefile
-from networkx import DiGraph
-import matplotlib.image as mpimg
-import graphviz
-import pydot
-import io
 
+from cloudmesh.common.Shell import Shell
+from cloudmesh.common.dotdict import dotdict
+from cloudmesh.common.parameter import Parameter
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import writefile
 
 """
 This class enables to manage dependencies between jobs.
@@ -61,6 +60,7 @@ g.show()
         
 """
 
+
 class Graph:
     # this is pseudocode
 
@@ -102,7 +102,7 @@ class Graph:
             # shoudl read from file the graph, but as we do Queues yaml dic
             # we do not need filename read right now
 
-    def add_node(self, name, **data ):
+    def add_node(self, name, **data):
         if name not in self.nodes:
             self.nodes[name] = data
         else:
@@ -118,7 +118,6 @@ class Graph:
                 "name": name
             }
         self.edges[name].update(**data)
-
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -138,9 +137,9 @@ class Graph:
                 self.add_node(node)
             else:
                 self.add_node(node, **nodedata)
-        for i in range(len(nodes) -1):
+        for i in range(len(nodes) - 1):
             source = nodes[i]
-            destination = nodes[i+1]
+            destination = nodes[i + 1]
             if edgedata is None:
                 self.add_edge(source, destination)
             else:
@@ -211,9 +210,70 @@ class Graph:
 
             # plot the image
             imgplot = plt.imshow(img, aspect='equal')
+            plt.axis('off')
             plt.savefig(filename)
 
 
+class Workflow2:
+
+    def __init__(self, name=None, filename=None):
+        # if filename exists, load filename
+        # if graph is not None overwrite the graph potentially read from filename
+
+        pass
+
+    def load(self, filename):
+        pass
+
+    def add(self, filename):
+        pass
+
+    def save(self, filename):
+        # implicitly done when using yamldb
+        pass
+
+    def add_job(self,
+                name,
+                label,
+                user,
+                host,
+                status,
+                progress,
+                command
+                ):
+        pass
+
+    def add_dependencies(self, dependency):
+        pass
+
+    def set_status(self, name, status):
+        pass
+
+    def run(self, order=None, parallel=False):
+
+        if order == None:
+            order = self.order
+
+        # now runn in order
+
+
+    def sequential_order(self):
+        order = list(nx.topological_sort(self.graph))
+        return order
+
+    @property
+    def table(self):
+        # print the table use cloudmesh table printer
+        pass
+
+    @property
+    def yaml(self):
+        # print the workflow as texttable use yaml.dump
+        pass
+
+    def json(self):
+        # print as json dump
+        pass
 
 class Workflow:
 
@@ -298,6 +358,9 @@ class Workflow:
             r = Shell.run(c)
             self.nodes[name]['color'] = 'blue'
             self.nodes[name]['status'] = 'running'
+            #
+            # bug process error depends on jon
+            #
             if "CheckProcessError" in r:
                 self.nodes[name]['color'] = 'red'
                 self.nodes[name]['status'] = 'failed'

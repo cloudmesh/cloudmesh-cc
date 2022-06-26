@@ -36,8 +36,12 @@ class Job:
         :type status:
         """
         self.name = name
+        self.user = None
+        self.label = None
         self.command = command
         self.status = 'defined'
+        self.output = None
+        self.error = None
         self.kind = kind
         self.created = DateTime.now()
         self.modified = DateTime.now()
@@ -127,9 +131,6 @@ class Queue:
                 print(f"run queue={self.name} job={name} command={c}:", r)
         else:
             print("LIFO and PQ are not yet implemented")
-
-
-
 
 
 class Queues:
