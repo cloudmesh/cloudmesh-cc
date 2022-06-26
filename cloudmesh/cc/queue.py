@@ -76,11 +76,11 @@ class Job:
         if not dryrun:
             if self.kind in ["local"]:
                 r = Shell.run(self.command)
-            elif self.kind. in ["ssh"]:
+            elif self.kind in ["ssh"]:
                 raise NotImplementedError
-            elif self.kind. in ["local-slurm"]:
+            elif self.kind in ["local-slurm"]:
                 raise NotImplementedError
-            elif self.kind. in ["remote-slurm"]:
+            elif self.kind in ["remote-slurm"]:
                 raise NotImplementedError
 
     def get_progress(self):
