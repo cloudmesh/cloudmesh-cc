@@ -71,8 +71,12 @@ ps:
 shell:
 	docker run --rm -it slurm-manager:latest  /bin/bash
 
+red:
+	docker exec -it slurm_red_1  /bin/bash
+
 cleanall:
 	-docker kill $$(docker ps -q)
 	-docker rm -f $$(docker ps -a -q)
 	-docker rmi -f $$(docker images -q)
 	-docker volume rm $$(docker volume ls -q)
+	-docker system prune -a --volumes
