@@ -109,8 +109,9 @@ class Graph:
         return yaml.dump(data, indent=2)
 
     def load(self, filename=None):
-        if filename is not None:
-            raise NotImplementedError
+        pass
+        #if filename is not None:
+        #    raise NotImplementedError
             # shoudl read from file the graph, but as we do Queues yaml dic
             # we do not need filename read right now
 
@@ -136,6 +137,9 @@ class Graph:
 
     def get_status(self, name):
         self.nodes[name]["status"]
+
+    def add_dependency(self, source, destination):
+        self.add_dependencies(self, f"{source},{destination}")
 
     def add_dependencies(self, dependency, nodedata=None, edgedata=None):
         nodes = Parameter.expand(dependency)
@@ -292,6 +296,9 @@ class Workflow:
 
         # self.label = None
 
+    @property
+    def jobs(self):
+        return self.graph.nodes
 
     def load(self, filename):
         """
@@ -306,6 +313,7 @@ class Workflow:
         :rtype:
         """
         # self.graph.load(...)
+        pass
 
     def add(self, filename):
         """
@@ -366,6 +374,9 @@ class Workflow:
             created=now,
             modified=now
         )
+
+    def add_dependency(self, source, destination):
+        self.graph.add_dependency(source, destination)
 
     def add_dependencies(self, dependency):
         self.graph.add_dependencies(dependency=dependency)

@@ -13,9 +13,10 @@ from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.Shell import Shell
+import networkx as nx
 
 global w
-global q
 """
     This is a python file to test to make sure the workflow class works.
     It will draw upon the the test_queues file, because there is a file that
@@ -30,51 +31,55 @@ class Test_workflow:
         :return: no return
         """
         HEADING()
-        global q
+        global w
         Benchmark.Start()
-        q = Queues(filename="~/.cloudmesh/queue/queues", database='yamldb')
-        q.create(name='local')
-        q.create(name='rivanna')
-        q.create(name='raspberry')
+        w = Workflow()
 
-        # adding jobs to 'local' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='local', job=1, command='pwd')
-        q.add(name='local', job=2, command='ls')
-        q.add(name='local', job=3, command='hostname')
-        q.add(name='local', job=4, command='pwd')
-        q.add(name='local', job=5, command='hostname')
-        q.add(name='local', job=6, command='ls')
-        q.add(name='local', job=7, command='hostname')
-        q.add(name='local', job=8, command='pwd')
-        q.add(name='local', job=9, command='hostname')
-        q.add(name='local', job=10, command='ls')
+        login = {
+            "localhost": {"user": "gregor", "host":"local"},
+            "rivanna": {"user": "ggg", "host":"rivanna"},
+            "pi": {"user": "gregor", "host":"red"},
+        }
 
-        # adding jobs to 'rivanna' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='rivanna', job=1, command='pwd')
-        q.add(name='rivanna', job=2, command='ls')
-        q.add(name='rivanna', job=3, command='hostname')
-        q.add(name='rivanna', job=4, command='pwd')
-        q.add(name='rivanna', job=5, command='hostname')
-        q.add(name='rivanna', job=6, command='ls')
-        q.add(name='rivanna', job=7, command='hostname')
-        q.add(name='rivanna', job=8, command='pwd')
-        q.add(name='rivanna', job=9, command='hostname')
-        q.add(name='rivanna', job=10, command='ls')
+        n = 0
 
-        # adding jobs to 'raspberry' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='raspberry', job=1, command='pwd')
-        q.add(name='raspberry', job=2, command='ls')
-        q.add(name='raspberry', job=3, command='hostname')
-        q.add(name='raspberry', job=4, command='pwd')
-        q.add(name='raspberry', job=5, command='hostname')
-        q.add(name='raspberry', job=6, command='ls')
-        q.add(name='raspberry', job=7, command='hostname')
-        q.add(name='raspberry', job=8, command='pwd')
-        q.add(name='raspberry', job=9, command='hostname')
-        q.add(name='raspberry', job=10, command='ls')
+        user = login["localhost"]["user"]
+        host = login["localhost"]["host"]
+
+        w.add_job(name=f"job-start", kind="local", command='pwd', user=user, host=host)
+        w.add_job(name=f"job-end", kind="local", command='pwd', user=user, host=host)
+
+        for host, kind in [("localhost", "local"),
+                           ("rivanna", "remote-slurm"),
+                           ("pi", "ssh")]:
+            print ("HOST:", host)
+            user = login[host]["user"]
+            host = login[host]["host"]
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='pwd', user=user, host=host)
+            n = n + 1
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='ls', user=user, host=host)
+            n = n + 1
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='hostname', user=user, host=host)
+            n = n + 1
+
+            first = n - 3
+            second = n -2
+            third = n -1
+            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+            w.add_dependencies(f"job-{host}-{third},job-end")
+            w.add_dependencies(f"job-start,job-{host}-{first}")
+
         Benchmark.Stop()
-        print(q)
-        assert len(q.queues) == 3
+        print(len(w.jobs) == n)
+
+    def test_show(self):
+        HEADING()
+        global w
+        w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        Shell.browser("/tmp/test-dot.svg")
+
+class rest:
 
 
     def test_build(self):
