@@ -11,6 +11,9 @@ from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import writefile
+from pathlib import Path
+from cloudmesh.cc.db.yamldb import database as ydb
+from cloudmesh.cc.queue import Job
 
 """
 This class enables to manage dependencies between jobs.
@@ -219,18 +222,38 @@ class Workflow2:
     def __init__(self, name=None, filename=None):
         # if filename exists, load filename
         # if graph is not None overwrite the graph potentially read from filename
+        if filename is None:
+            filename = f"~/.cloudmesh/workflow/workflow-{name}"
 
-        pass
+        if Path.exists(filename):
+            self.load(filename)
+        else:
+            directory = path_expand(filename)
+            Shell.mkdir(directory)
+            self.data = {}
+            self.save()
+
+        self.name = name
+        self.label = None
+        self.user = None
+        self.host = None
+        self.status = None
+        self.progress = None
+        self.command = None
+        self.db = ydb(filename= filename)
+        self.db.data['workflow'] = {}
+        self.save()
 
     def load(self, filename):
-        pass
+        workflow = self.db.load()
+        return workflow
 
     def add(self, filename):
         pass
 
     def save(self, filename):
         # implicitly done when using yamldb
-        pass
+        self.db.save()
 
     def add_job(self,
                 name,
@@ -241,7 +264,8 @@ class Workflow2:
                 progress,
                 command
                 ):
-        pass
+        w = self.load()
+
 
     def add_dependencies(self, dependency):
         pass
@@ -254,8 +278,7 @@ class Workflow2:
         if order == None:
             order = self.order
 
-        # now runn in order
-
+        # now run in order
 
     def sequential_order(self):
         order = list(nx.topological_sort(self.graph))
