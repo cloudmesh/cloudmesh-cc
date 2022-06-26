@@ -315,6 +315,7 @@ class Workflow2:
                 user=None,
                 host=None,
                 label=None,
+                kind="local",
                 status="ready",
                 progress=0,
                 ):
@@ -342,6 +343,7 @@ class Workflow2:
         self.graph.add_node(
             name=name,
             label=label,
+            kind=kind,
             user=user,
             host=host,
             status=status,
@@ -373,7 +375,14 @@ class Workflow2:
         for job in order():
             command = job['command']
             if not dryrun:
-                r = Shell.run(command)
+                if job['kind'] in ["local"]:
+                    r = Shell.run(command)
+                elif job['kind'] in ["ssh"]:
+                    raise NotImplementedError
+                elif job['kind'] in ["local-slurm"]:
+                    raise NotImplementedError
+                elif job['kind'] in ["remote-slurm"]:
+                    raise NotImplementedError
                 self.graph.nodes[job]['output'] = r
             else:
                 self.graph.nodes[job]['output'] = command
