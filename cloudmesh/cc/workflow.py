@@ -161,7 +161,8 @@ class Graph:
                 pass
             # and so on
 
-    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout, engine="networkx"):
+    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
+             engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
         graph = nx.DiGraph()
         color_map = []
@@ -219,29 +220,46 @@ class Graph:
 
 class Workflow2:
 
-    def __init__(self, name=None, filename=None):
+    def __init__(self, name=None, filename=None, user=None,
+                 host=None):
+        # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None overwrite the graph potentially read from filename
         if filename is None:
             filename = f"~/.cloudmesh/workflow/workflow-{name}"
 
         if Path.exists(filename):
-            self.load(filename)
+            self.workflow = self.load(filename)
         else:
             directory = path_expand(filename)
             Shell.mkdir(directory)
             self.data = {}
             self.save()
 
-        self.name = name
-        self.label = None
-        self.user = None
-        self.host = None
-        self.status = None
+        self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
+        if name is not None:
+            self.name = name
+        else:
+            name = 'workflow1'
+
+        # self.label = None
+
+        if user is not None:
+            self.user = user
+        else:
+            self.user = 'local user'
+
+        if host is not None:
+            self.host = host
+        else:
+            self.host = 'local host'
+
+        self.status = []
+        self.order = None
         self.progress = None
         self.command = None
-        self.db = ydb(filename= filename)
-        self.db.data['workflow'] = {}
+        self.db = ydb(filename=filename)
+        self.db.data['workflow'] = self.workflow
         self.save()
 
     def load(self, filename):
@@ -265,20 +283,57 @@ class Workflow2:
                 command
                 ):
         w = self.load()
-
+        job = Job(name=name, label=label, user=user, host=host, status=status,
+                  progress=progress, command=command)
+        self.db.data['workflow'][job.name] = job
 
     def add_dependencies(self, dependency):
-        pass
+        w = self.db.data['workflow']
+        w['dependencies'] = []
+        for job in range(0, len(w)):
+            name = w[job]
+            w['dependencies'].append(name)
 
-    def set_status(self, name, status):
-        pass
+    def update_status(self, name, status):
+        self.status = []
+        for job in self.db.data['workflow']:
+            s = self.db.data['workflow'][job]
+            self.status.append(s)
+
+        return self.status
+
+    def set_progress(self):
+        self.progress = {'ready': 0, 'submitted': 0, 'running': 0, 'done': 0,
+                         'failed': 0}
+        self.save()
+
+    def update_progress(self):
+        for job in self.status:
+            if job == 'ready':
+                self.progress['ready'] = self.progress['ready'] + 1
+            elif job == 'submitted':
+                self.progress['submitted'] = self.progress['submitted'] + 1
+            elif job == 'running':
+                self.progress['running'] = self.progress['running'] + 1
+            elif job == 'done':
+                self.progress['done'] = self.progress['done'] + 1
+            elif job == 'failed':
+                self.progress['failed'] = self.progress['failed'] + 1
+
+        self.save()
 
     def run(self, order=None, parallel=False):
+
+        w = self.workflow
 
         if order == None:
             order = self.order
 
         # now run in order
+        for job in w:
+            command = job['command']
+            r = Shell.run(command)
+            self.db.data['workflow'][job]['output'] = r
 
     def sequential_order(self):
         order = list(nx.topological_sort(self.graph))
@@ -297,6 +352,7 @@ class Workflow2:
     def json(self):
         # print as json dump
         pass
+
 
 class Workflow:
 
