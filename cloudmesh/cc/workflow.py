@@ -242,14 +242,28 @@ class Graph:
 
 
 
-class Workflow2:
+class Workflow:
     """
     Workflow doocumentation
 
     w = Workflow(filename="workflow.yaml")
     w.load(filename="abc.yaml") <- loads in teh graph, but will save it still to workflow.yaml
     w.add(filename="add.yaml") <-adds a new worflow into the existing one.
-    w.add_job(
+    w.add_job(name="a",
+                command="hostname",
+                user=None, # bug if kind is local and user is None, we do not need user, but can take local user
+                host=None, # bug:  if host is none and kind is local use localhost
+                label="a",
+                kind="local",
+                status="ready",
+                progress=0)
+    w.add_job(name="b", command="ls")
+    w.add_job(name="c", command="pwd")
+    w.add_job(name="d", command="uname -a")
+    w.add_dependencies(dependency="a,b,d")
+    w.add_dependencies(dependency="a,c,d")
+
+    w.run()
 
 
     """
@@ -406,7 +420,7 @@ class Workflow2:
         pass
 
 
-class Workflow:
+class Workflow_old:
 
     def __init__(self,
                  name=None,
