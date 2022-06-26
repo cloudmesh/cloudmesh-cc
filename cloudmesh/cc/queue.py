@@ -26,6 +26,10 @@ class Job:
     def __init__(self, name=None, command=None, kind=None, status=None):
         """
 
+        # this is not realy that good, as we need to be able to overwrite from **data ...
+        # atend we want to see that values are defined, and if they have not been passed
+        # we create the defaults
+
         :param name:
         :type name:
         :param command:
@@ -41,14 +45,23 @@ class Job:
         self.command = command
         self.status = 'defined'
         self.output = None
+        self.output_file = None
+        self.error_file = None
         self.error = None
         self.kind = kind
+        self.progress = 0
         self.created = DateTime.now()
         self.modified = DateTime.now()
 
     def __str__(self):
         d = self.__dict__
         return str(yaml.dump(d, indent=2))
+
+    @property
+    def dict(self):
+        # check if dict is ok
+        d = self.__dict__
+        return d
 
     def set(self, state):
         self.status = state
@@ -58,6 +71,22 @@ class Job:
         self.modified = DateTime.now()
         raise NotImplementedError("the update function will be implemented "
                                   "based on type of job")
+
+    def run(self, dryrun=False):
+        if not dryrun:
+            if self.kind in ["local"]:
+                r = Shell.run(self.command)
+            elif self.kind. in ["ssh"]:
+                raise NotImplementedError
+            elif self.kind. in ["local-slurm"]:
+                raise NotImplementedError
+            elif self.kind. in ["remote-slurm"]:
+                raise NotImplementedError
+
+    def get_progress(self):
+        pass
+        # depends on job type, festches progress from output file which may
+        # be local, or remote
 
 
 class Queue:
