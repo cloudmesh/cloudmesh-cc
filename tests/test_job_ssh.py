@@ -97,4 +97,3 @@ class TestJobssh:
 
         assert not wrong
         assert correct
-        

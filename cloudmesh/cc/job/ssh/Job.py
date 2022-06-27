@@ -118,3 +118,7 @@ class Job():
         if "cannot acces" in r:
             return False
         return True
+
+    def watch(self, period=10):
+        """waits and wathes every seconds in period, till the job has completed"""
+        pass
