@@ -17,14 +17,10 @@ class Job(AbstractJob):
         pass
 
     def get_error(self):
-
-        pass
+        return readfile('run.error', 'r')
 
     def get_log(self):
         return readfile('run.log', 'r')
-
-    def get_error(self):
-        pass
 
 
     def get_progress(self):
