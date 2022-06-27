@@ -127,8 +127,8 @@ class AbstractJob:
         """
         return self.get_status()
 
-    @property
-    def get(self, atribute):
+
+    def __getitem__(self, item):
         """
         returns the last value of the given attribute.
 
@@ -136,10 +136,11 @@ class AbstractJob:
         :rtype:
         """
         # see status
-        pass
+
+        return self[item]
 
     def progress(self):
-        return self.get("progress")
+        return self["progress"]
 
     def watch(self, period=10):
         """

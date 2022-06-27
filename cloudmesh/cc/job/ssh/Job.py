@@ -17,20 +17,16 @@ class Job(AbstractJob):
         self.get_status()
 
     def run(self):
-        Shell.sh("./test.sh atl9rn")
+        Shell.sh("./test.sh", self['username'])
 
     def get_status(self):
         pass
 
     def get_error(self):
-
-        pass
+        return readfile('run.error', 'r')
 
     def get_log(self):
         return readfile('run.log', 'r')
-
-    def get_error(self):
-        pass
 
 
     def get_progress(self):
@@ -46,16 +42,6 @@ class Job(AbstractJob):
 
         return self.get_status()
 
-    @property
-    def get(self, attribute):
-        pass
-
-    def progress(self):
-        return self.get("progress")
 
     def watch(self, period=10):
         pass
-
-
-j = Job()
-j.run()
