@@ -46,7 +46,7 @@ templates = Jinja2Templates(directory=template_dir)
 
 #
 # @app.get("/abdul/{id}", response_class=HTMLResponse)
-# async def read_anduhl(request: Request, id: str):
+# async def read_abdul(request: Request, id: str):
 #     global q
 #     jobs = []
 #     for queue in q.queues:
