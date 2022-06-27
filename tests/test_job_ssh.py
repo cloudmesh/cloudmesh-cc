@@ -62,6 +62,7 @@ class TestJobssh:
         # successful exit status
         assert r == 0
 
+
     def test_run(self):
         HEADING()
         global job

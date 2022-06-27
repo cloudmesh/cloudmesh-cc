@@ -60,9 +60,9 @@ class Job():
 
 
     def run(self):
-        command = f'ssh {self.username}@{self.host} "chmod ug+x ./{self.name}.sh"'
-        os.systems(command)
-        command = f'ssh {self.username}@{self.host} "nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
+        command = f'chmod ug+x ./{self.name}.sh'
+        os.system(command)
+        command = f'ssh {self.username}@{self.host} "nohup sh ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
         error = self.get_error()
