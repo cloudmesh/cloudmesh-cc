@@ -6,7 +6,7 @@ a number of files that can be quered to identify its execution state.
 A job can be created as follows
 
     job = Job(name=f"job1",
-              command="/usr/bin/sleep 120",
+              command="./test.sh",
               user="user",
               host="host")
 
@@ -14,7 +14,7 @@ it will create an experiment directory where the job specification is
 located. To run it, it needs first to be syncronized and copied to the
 remote host.
 
-    job.rsync()
+    job.sync()
 
 After this we can run it with
 
