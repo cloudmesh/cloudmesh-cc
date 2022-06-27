@@ -5,13 +5,15 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.Shell import Shell
 
 
-
 class Job(AbstractJob):
+
     # def __init__(self, command):
     #
     #     self.command = command
     #     self.status = 'ready'
 
+    def set_name(self, name):
+        self.name = name
 
     def probe(self):
         self.get_status()
@@ -24,10 +26,10 @@ class Job(AbstractJob):
         pass
 
     def get_error(self):
-        return readfile('run.error', 'r')
+        return readfile('{self.name}.error', 'r')
 
     def get_log(self):
-        return readfile('run.log', 'r')
+        return readfile('{self.name}.log', 'r')
 
 
     def get_progress(self):
