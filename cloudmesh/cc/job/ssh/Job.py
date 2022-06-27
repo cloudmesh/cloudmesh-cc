@@ -1,12 +1,11 @@
-from cloudmesh.cc.job.AbstractJob import AbstractJob
-from cloudmesh.common.util import readfile, path_expand
-from cloudmesh.common.util import writefile
+import os
+
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 from cloudmesh.common.Shell import Shell
-from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
+from cloudmesh.common.util import readfile
+from cloudmesh.common.variables import Variables
 
-import os
 
 class Job():
 
@@ -34,7 +33,7 @@ class Job():
         #    raise ValueError
 
         if "username" not in self.data:
-            self.data["username"]=variables["username"]
+            self.data["username"] = variables["username"]
         if "name" not in self.data:
             Console.error("Name not defined")
             raise ValueError
@@ -57,7 +56,6 @@ class Job():
     @property
     def status(self):
         return self.get_status()
-
 
     def run(self):
         command = f'chmod ug+x ./{self.name}.sh'

@@ -3,25 +3,25 @@
 # pytest -v  tests/test_job_ssh.py
 # pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
 ###############################################################
-import pytest
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.debug import VERBOSE
-from cloudmesh.common.util import HEADING
-from cloudmesh.cc.job.ssh.Job import Job
-from cloudmesh.common.variables import Variables
 import os
+
+import pytest
+
+from cloudmesh.cc.job.ssh.Job import Job
+from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.util import HEADING
+from cloudmesh.common.variables import Variables
 
 variables = Variables()
 
-name="run"
+name = "run"
 
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
 else:
-    host=variables["host"]
+    host = variables["host"]
 
-username=variables["username"]
+username = variables["username"]
 
 job = None
 
@@ -57,13 +57,12 @@ class TestJobssh:
         # successful exit status
         assert r == 0
 
-
     def test_run(self):
         HEADING()
         global job
 
         Benchmark.Start()
-        s,l,e = job.run()
+        s, l, e = job.run()
         print("State:", s)
         # print(l)
         # print(e)
@@ -79,9 +78,9 @@ class TestJobssh:
         Benchmark.Start()
         job.get_log()
         progress = job.get_progress()
-        print("Progress:",progress)
+        print("Progress:", progress)
         status = job.get_status()
-        print("Status:",status)
+        print("Status:", status)
         Benchmark.Stop()
 
         assert progress == "100"
