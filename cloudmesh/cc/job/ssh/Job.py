@@ -6,6 +6,9 @@ class Job(AbstractJob):
     def get_log(self):
         return
 
+    def get_error(self):
+        return
+
 
     def get_progress(self):
         prog = TextFinder.find("progress=")
