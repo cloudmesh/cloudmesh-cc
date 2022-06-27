@@ -5,19 +5,17 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.Shell import Shell
 
 
-
 class Job(AbstractJob):
     # def __init__(self, command):
     #
     #     self.command = command
     #     self.status = 'ready'
 
-
     def probe(self):
         self.get_status()
 
     def run(self):
-        r = Shell.sh("test.sh","atl9rn")
+        r = Shell.sh("test.sh", "atl9rn")
         return r
 
     def get_status(self):
@@ -29,25 +27,24 @@ class Job(AbstractJob):
     def get_log(self):
         return readfile('run.log', 'r')
 
-
     def get_progress(self):
-        prog = TextFinder.find("progress=", self.get_log())
+        search = readfile('run.log', 'r')
+        search.rfind(get_log())
+        prog = readfile("progress=", search)
         return prog
 
     def sync(self):
-
         pass
 
     @property
     def status(self):
-
         return self.get_status()
-
 
     def watch(self, period=10):
         pass
 
-dict1 = {"username":"atl9rn","age":100}
+
+dict1 = {"username": "atl9rn", "age": 100}
 # j = Job("username"="atl9rn",age=100)
 j = Job()
 j.run()
