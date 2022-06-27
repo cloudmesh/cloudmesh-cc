@@ -5,6 +5,7 @@ import yaml as pyyaml
 
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 
 """
 This is a program that allows for the instantiation of jobs and then
@@ -26,6 +27,10 @@ class Job:
     def __init__(self, name=None, command=None, kind=None, status=None):
         """
 
+        # this is not realy that good, as we need to be able to overwrite from **data ...
+        # atend we want to see that values are defined, and if they have not been passed
+        # we create the defaults
+
         :param name:
         :type name:
         :param command:
@@ -36,15 +41,28 @@ class Job:
         :type status:
         """
         self.name = name
+        self.user = None
+        self.label = None
         self.command = command
         self.status = 'defined'
+        self.output = None
+        self.output_file = None
+        self.error_file = None
+        self.error = None
         self.kind = kind
+        self.progress = 0
         self.created = DateTime.now()
         self.modified = DateTime.now()
 
     def __str__(self):
         d = self.__dict__
         return str(yaml.dump(d, indent=2))
+
+    @property
+    def dict(self):
+        # check if dict is ok
+        d = self.__dict__
+        return d
 
     def set(self, state):
         self.status = state
@@ -54,6 +72,22 @@ class Job:
         self.modified = DateTime.now()
         raise NotImplementedError("the update function will be implemented "
                                   "based on type of job")
+
+    def run(self, dryrun=False):
+        if not dryrun:
+            if self.kind in ["local"]:
+                r = Shell.run(self.command)
+            elif self.kind in ["ssh"]:
+                raise NotImplementedError
+            elif self.kind in ["local-slurm"]:
+                raise NotImplementedError
+            elif self.kind in ["remote-slurm"]:
+                raise NotImplementedError
+
+    def get_progress(self):
+        pass
+        # depends on job type, festches progress from output file which may
+        # be local, or remote
 
 
 class Queue:
@@ -141,21 +175,13 @@ class Queues:
     """
 
     # def __init__(self, filename=None, database='yamldb'):
-    def __init__(self, filename=None, database='shelve'):
+    def __init__(self, filename=None):
         """
         Initializes the giant queue structure.
         """
-        if database.lower() == 'yamldb':
-            from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            # self.filename = path_expand("~/.cloudmesh/queue/queue")
-        elif database.lower() == 'shelve':
-            from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            # self.filename = path_expand("~/.cloudmesh/queue/queue")
-        else:
-            raise ValueError("This database is not supported for Queues, please fix.")
 
         if filename is None:
-            filename = "~/.cloudmesh/queue/queue"
+            filename = "~/.cloudmesh/queue/queue.yamldb"
 
         self.db = QueueDB(filename=filename)
         self.counter = 0

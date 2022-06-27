@@ -13,9 +13,10 @@ from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.Shell import Shell
+import networkx as nx
 
 global w
-global q
 """
     This is a python file to test to make sure the workflow class works.
     It will draw upon the the test_queues file, because there is a file that
@@ -30,96 +31,82 @@ class Test_workflow:
         :return: no return
         """
         HEADING()
-        global q
-        Benchmark.Start()
-        q = Queues(filename="~/.cloudmesh/queue/queues", database='yamldb')
-        q.create(name='local')
-        q.create(name='rivanna')
-        q.create(name='raspberry')
-
-        # adding jobs to 'local' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='local', job=1, command='pwd')
-        q.add(name='local', job=2, command='ls')
-        q.add(name='local', job=3, command='hostname')
-        q.add(name='local', job=4, command='pwd')
-        q.add(name='local', job=5, command='hostname')
-        q.add(name='local', job=6, command='ls')
-        q.add(name='local', job=7, command='hostname')
-        q.add(name='local', job=8, command='pwd')
-        q.add(name='local', job=9, command='hostname')
-        q.add(name='local', job=10, command='ls')
-
-        # adding jobs to 'rivanna' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='rivanna', job=1, command='pwd')
-        q.add(name='rivanna', job=2, command='ls')
-        q.add(name='rivanna', job=3, command='hostname')
-        q.add(name='rivanna', job=4, command='pwd')
-        q.add(name='rivanna', job=5, command='hostname')
-        q.add(name='rivanna', job=6, command='ls')
-        q.add(name='rivanna', job=7, command='hostname')
-        q.add(name='rivanna', job=8, command='pwd')
-        q.add(name='rivanna', job=9, command='hostname')
-        q.add(name='rivanna', job=10, command='ls')
-
-        # adding jobs to 'raspberry' the commands are semi randomized because I wanted them to work on any OS
-        q.add(name='raspberry', job=1, command='pwd')
-        q.add(name='raspberry', job=2, command='ls')
-        q.add(name='raspberry', job=3, command='hostname')
-        q.add(name='raspberry', job=4, command='pwd')
-        q.add(name='raspberry', job=5, command='hostname')
-        q.add(name='raspberry', job=6, command='ls')
-        q.add(name='raspberry', job=7, command='hostname')
-        q.add(name='raspberry', job=8, command='pwd')
-        q.add(name='raspberry', job=9, command='hostname')
-        q.add(name='raspberry', job=10, command='ls')
-        Benchmark.Stop()
-        print(q)
-        assert len(q.queues) == 3
-
-
-    def test_build(self):
-        """
-        This also tests the add nodes.
-        :return:
-        """
-        HEADING()
         global w
         Benchmark.Start()
-        w = Workflow(name= 'local',
-                     dependencies=[2, 5, 3, 6, 9, 4],
-                     database= 'yamldb',
-                     filename="~/.cloudmesh/queue/queues")
+        w = Workflow()
+
+        login = {
+            "localhost": {"user": "gregor", "host":"local"},
+            "rivanna": {"user": "ggg", "host":"rivanna"},
+            "pi": {"user": "gregor", "host":"red"},
+        }
+
+        n = 0
+
+        user = login["localhost"]["user"]
+        host = login["localhost"]["host"]
+
+        w.add_job(name=f"start", kind="local", command='pwd', user=user, host=host)
+        w.add_job(name=f"end", kind="local", command='pwd', user=user, host=host)
+
+        for host, kind in [("localhost", "local"),
+                           ("rivanna", "remote-slurm"),
+                           ("pi", "ssh")]:
+            print ("HOST:", host)
+            user = login[host]["user"]
+            host = login[host]["host"]
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='pwd', user=user, host=host)
+            n = n + 1
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='ls', user=user, host=host)
+            n = n + 1
+            w.add_job(name=f"job-{host}-{n}", kind=kind, command='hostname', user=user, host=host)
+            n = n + 1
+
+            first = n - 3
+            second = n -2
+            third = n -1
+            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+            w.add_dependencies(f"job-{host}-{third},end")
+            w.add_dependencies(f"start,job-{host}-{first}")
+
         Benchmark.Stop()
-        # print(w.nodes)
-        # print(w.edges)
-        assert len(w.nodes) == 6
-        assert len(w.edges) == 5
-        assert w.name == 'local'
+        print(len(w.jobs) == n)
+
+    def test_show(self):
+        HEADING()
+        global w
+        w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        Shell.browser("/tmp/test-dot.svg")
 
     def test_get_node(self):
         HEADING()
+        global w
         Benchmark.Start()
-        node = w.get_node(name=9)
+        s1 = w["start"]
+        s2 = w.job("start")
         Benchmark.Stop()
-        print(node)
-        assert node['name'] == 9
+        print(s1)
+        assert s1 == s2
 
-    def test_create_graph(self):
+    def test_table(self):
         HEADING()
         global w
         Benchmark.Start()
-        w.create_graph()
+        print(w.table)
         Benchmark.Stop()
-        print(w.graph)
-        assert len(w.graph) == 6
+        assert True
 
-    def test_display(self):
+    def test_order(self):
         HEADING()
         global w
         Benchmark.Start()
-        w.display()
+        order = w.sequential_order()
         Benchmark.Stop()
-        assert len(w.graph) == 6
+        print (order)
+        assert len(order) == len(w.jobs)
+
+class rest:
 
     def test_run(self):
         HEADING()
@@ -132,16 +119,6 @@ class Test_workflow:
         w.display_status()
         assert w.counter == 6
 
-    def test_status(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w.update_status
-        w.display_status
-        Benchmark.Stop()
-        assert w.get_status(name=2) == 'done'
-
-class rest:
 
     def test_create_sorted_graph(self):
         HEADING()
@@ -151,3 +128,11 @@ class rest:
         Benchmark.Stop()
         print(w.sorted_graph)
         assert len(w.sorted_graph) == 6
+
+
+
+class todo:
+
+    def test_benchmark(self):
+        HEADING()
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

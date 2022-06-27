@@ -1,0 +1,6 @@
+VERSION=latest
+
+PROGRESS=--progress plain
+
+#PROGRESS=--progress auto
+

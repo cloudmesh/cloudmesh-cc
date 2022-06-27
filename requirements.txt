@@ -12,3 +12,5 @@ fastapi[all]
 yamldb
 docker-compose
 networkx[default]
+pydot
+graphviz

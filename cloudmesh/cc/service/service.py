@@ -93,6 +93,39 @@ async def read_item(request: Request):
 async def read_home():
     return {"msg": "Hello World"}
 
+@app.post("/postQueue")
+async def add_queue(name:str):
+    global q
+    q.create(name=name)
+    return {
+        "Queues": q.queues
+    }
+
+
+@app.post("/postJob")
+async def add_job(name:str, job:str, command:str):
+    global q
+    q.add(name=name, job=job, command=command)
+    return {
+        "Queue_Jobs": q.queues[name]
+    }
+
+@app.delete("/deleteJob/{job_name}")
+async def delete_job(job_name:str):
+    global q
+    # not implemented yet
+    return {
+        "Queue_Jobs": q.queues[name]
+    }
+
+@app.delete("/deleteQueue/{job_name}")
+async def delete_job(queue_name:str):
+    global q
+    q.remove(queue_name)
+    return {
+        "Queues": q.queues
+    }
+
 
 @app.get("/jobs/", response_class=HTMLResponse)
 async def read_items():
