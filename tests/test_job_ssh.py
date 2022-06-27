@@ -14,7 +14,7 @@ from cloudmesh.common.variables import Variables
 
 variables = Variables()
 
-name="~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run"
+name="run"
 host="rivanna.hpc.virginia.edu"
 username=variables["username"]
 
@@ -25,7 +25,7 @@ job = None
 @pytest.mark.incremental
 class TestJobssh:
 
-    def test_run(self):
+    def test_create(self):
         HEADING()
         global job
         global variables
@@ -48,14 +48,11 @@ class TestJobssh:
         global name
 
         Benchmark.Start()
-        r = job.sync()
-        print("R:::::::::",r)
+        r = job.sync("~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run")
 
         Benchmark.Stop()
-        assert True
-
-
-class a:
+        # successful exit status
+        assert r == 0
 
     def test_run(self):
         HEADING()
@@ -65,12 +62,25 @@ class a:
         Benchmark.Start()
         s,l,e = job.run()
         print(s)
-        print(l)
-        print(e)
+        # print(l)
+        # print(e)
 
         Benchmark.Stop()
-        assert True
 
-    def test_benchmark(self):
+        assert s == 0
+
+    def test_progress_status(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cc")
+        global job
+        global variables
+
+        Benchmark.Start()
+        job.get_log()
+        prog = job.get_progress()
+        print("PROGRESS",prog)
+        status = job.get_status()
+        print("STATUS",status)
+        Benchmark.Stop()
+
+        assert prog == "100"
+        assert status == "done"

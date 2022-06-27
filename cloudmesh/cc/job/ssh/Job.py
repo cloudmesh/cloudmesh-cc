@@ -48,6 +48,13 @@ class Job():
     def name(self):
         return self.data["name"]
 
+    # @property
+    # def namepath(self):
+    #     # p = path_expand(self.name)
+    #     # print(p)
+    #     p = "~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run"
+    #     return p
+
     @property
     def username(self):
         return self.data["username"]
@@ -56,11 +63,12 @@ class Job():
     def host(self):
         return self.data["host"]
 
-    def probe(self):
-        self.get_status()
+    @property
+    def status(self):
+        return self.get_status()
+
 
     def run(self):
-        # return tuple
         command = f'ssh {self.username}@{self.host} "nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
@@ -71,18 +79,32 @@ class Job():
     def get_status(self, refresh=False):
         if refresh:
             log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
             status = status.split()[0]
+            return status
 
+    def get_progress(self, refresh=False):
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log", 'r')
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            status = lines[-1].split("progress=")[1]
+            status = status.split()[0]
+            return status
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
         command = f"scp {self.username}@{self.host}:{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
-        return readfile(f"{self.name}.error", 'r')
+        content = readfile(f"{self.name}.error", 'r')
+        return content
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
@@ -92,45 +114,13 @@ class Job():
         content = readfile(f"{self.name}.log", 'r')
         return content
 
-    def get_progress(self, refresh=False):
-        if refresh:
-            log = self.get_log()
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            status = lines[-1].split("progress=")[1]
-            status = status.split()[0]
-        # search = readfile('run.log', 'r')
-        # last = search.rfind(self.get_log())
-        # prog = readfile("progress=", last)
-        # return prog
-
-
-    '''
-    #!/bin/bash -x
-    username="$1"
-
-    scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-    ssh "$username"@rivanna.hpc.virginia.edu cat run.sh
-    ssh "$username"@rivanna.hpc.virginia.edu "nohup ./run.sh > run.log 2>run.error; echo $pid"
-    #ssh "$username"@rivanna.hpc.virginia.edu "nohup ./run.sh > run.error; echo $pid"
-    scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-    scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-
-    cat run.log
-    '''
-    def sync(self):
+    def sync(self, filepath):
         # scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-        command = f"scp {path_expand(self.name)}.sh {self.username}@{self.host}:."
+        command = f"scp {filepath}.sh {self.username}@{self.host}:."
         print(command)
         r = os.system(command)
         return r
 
-    @property
-    def status(self):
-        return self.get_status()
-
-    def watch(self, period=10):
-        pass
 
     def exists(self, filename):
         return True
