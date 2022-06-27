@@ -41,5 +41,5 @@ class Job(AbstractJob):
         pass
 
 
-j = Job({"username": 'jnn7nd'})
+j = Job(username='jnn7nd')
 j.run()
