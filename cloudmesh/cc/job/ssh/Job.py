@@ -18,7 +18,7 @@ class Job(AbstractJob):
 
     def run(self):
         r = Shell.run(self.command)
-        return r
+        print(r)
 
     def get_status(self):
         pass
@@ -47,6 +47,7 @@ class Job(AbstractJob):
     def watch(self, period=10):
         pass
 
-
+"""
 j = Job(username='jnn7nd')
 j.run()
+"""
