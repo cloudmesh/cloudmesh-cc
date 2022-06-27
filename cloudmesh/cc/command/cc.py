@@ -4,12 +4,14 @@ from pprint import pprint
 from cloudmesh.cc.queue import Queue
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common import banner, VERBOSE
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
+from cloudmesh.cc.job.ssh.Job import Job
 
 
 class CcCommand(PluginCommand):
@@ -26,7 +28,7 @@ class CcCommand(PluginCommand):
                 cc delete --data=FILENAME
                 cc create --queues=QUEUES --database=DATABASE
                 cc add --queue=QUEUE --job=JOB --command=COMMAND
-                cc run --queue=QUEUE --scheduler=SCHEDULER
+                cc run --command=COMMAND
                 cc remove --queue=QUEUE --job=JOB
                 cc remove --queue=QUEUE
                 cc list --queue=QUEUE
@@ -39,6 +41,8 @@ class CcCommand(PluginCommand):
                 cc workflow status NAME --output=OUTPUT
                 cc workflow run NAME
                 cc workflow graph NAME
+                cc status
+
 
 
           This command does some useful things.
@@ -114,17 +118,18 @@ class CcCommand(PluginCommand):
         """
 
         # arguments.FILE = arguments['--file'] or None
+        arguments.COMMAND = arguments['--command']
 
         # switch debug on
 
         variables = Variables()
         variables["debug"] = True
 
-        # banner("original arguments", color="RED")
+        banner("original arguments", color="RED")
 
-        # VERBOSE(arguments)
+        VERBOSE(arguments)
 
-        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
                        "filename",
@@ -136,9 +141,9 @@ class CcCommand(PluginCommand):
                        "reload"
                        )
 
-        # VERBOSE(arguments)
+        VERBOSE(arguments)
 
-        # banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
+        banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
@@ -194,7 +199,6 @@ class CcCommand(PluginCommand):
                         # print(command)
                         Shell.kill_pid(command["pid"])
 
-
         elif arguments.upload and arguments.data:
             filename = arguments.data
             raise NotImplementedError
@@ -204,7 +208,6 @@ class CcCommand(PluginCommand):
 
         elif arguments.delete and arguments.data:
             filename = arguments.data
-
 
         elif arguments.create and \
                 arguments.queues and \
@@ -237,11 +240,12 @@ class CcCommand(PluginCommand):
             q = Queues()
             q[arguments.queue].remove(arguments.job)
 
-        elif arguments.run and \
-                arguments.queue and \
-                arguments.scheduler:
-            q = Queues()
-            q.run(scheduler=arguments.scheduler)
+        elif arguments.run and arguments.command:
+
+                print('Here')
+                job = Job(command=arguments.command)
+                r = job.run()
+
 
         elif arguments.list and arguments.queue:
             q = Queues()

@@ -5,13 +5,20 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.Shell import Shell
 
 
+
 class Job(AbstractJob):
+    def __init__(self, command):
+
+        self.command = command
+        self.status = 'ready'
+
 
     def probe(self):
-        pass
+        self.get_status()
 
     def run(self):
-        Shell.sh("./test.sh", self['username'])
+        r = Shell.run(self.command)
+        return r
 
     def get_status(self):
         pass
