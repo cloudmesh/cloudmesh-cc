@@ -1,10 +1,11 @@
 from cloudmesh.cc.job.AbstractJob import AbstractJob
-from cloudmesh.common.util import readfile
+from cloudmesh.common.util import readfile, path_expand
 from cloudmesh.common.util import writefile
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
+
 import os
 
 class Job():
@@ -30,26 +31,12 @@ class Job():
         
         '''
 
-        for a in argv:
-            print("AAA",a)
-
-        # super().__init__(**argv)
-
-        print("argv", argv)
-
-        self.data = {} #dict(argv)
-        for key in argv:
-            self.data[key] = argv[key]
-
-        self.username = None
-        self.host = None
-        self.name = None
-
-        print("self.data", self.data)
+        self.data = argv
+        print("self,data", self.data)
 
         variables = Variables()
         if "username" not in self.data:
-            self.username=variables["username"]
+            self.data["username"]=variables["username"]
         if "name" not in self.data:
             Console.error("Name not defined")
             raise ValueError
@@ -57,6 +44,17 @@ class Job():
             Console.error("Host not defined")
             raise ValueError
 
+    @property
+    def name(self):
+        return self.data["name"]
+
+    @property
+    def username(self):
+        return self.data["username"]
+
+    @property
+    def host(self):
+        return self.data["host"]
 
     def probe(self):
         self.get_status()
@@ -64,32 +62,47 @@ class Job():
     def run(self):
         # return tuple
         command = f'ssh {self.username}@{self.host} "nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
+        print(command)
         state = os.system(command)
         error = self.get_error()
         log = self.get_log()
         return state, log, error
 
-    def get_status(self):
-        pass
+    def get_status(self, refresh=False):
+        if refresh:
+            log = self.get_log()
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            status = lines[-1].split("status=")[1]
+            status = status.split()[0]
+
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
         command = f"scp {self.username}@{self.host}:{self.name}.error {self.name}.error"
+        print(command)
         os.system(command)
         return readfile(f"{self.name}.error", 'r')
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
         command = f"scp {self.username}@{self.host}:{self.name}.log {self.name}.log"
+        print(command)
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         return content
 
-    def get_progress(self):
-        search = readfile('run.log', 'r')
-        last = search.rfind(self.get_log())
-        prog = readfile("progress=", last)
-        return prog
+    def get_progress(self, refresh=False):
+        if refresh:
+            log = self.get_log()
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            status = lines[-1].split("progress=")[1]
+            status = status.split()[0]
+        # search = readfile('run.log', 'r')
+        # last = search.rfind(self.get_log())
+        # prog = readfile("progress=", last)
+        # return prog
 
 
     '''
@@ -107,8 +120,10 @@ class Job():
     '''
     def sync(self):
         # scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-        command = f"scp {self.name}.sh {self.username}@{self.host}:."
-        os.system(command)
+        command = f"scp {path_expand(self.name)}.sh {self.username}@{self.host}:."
+        print(command)
+        r = os.system(command)
+        return r
 
     @property
     def status(self):

@@ -11,9 +11,15 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.cc.job.ssh.Job import Job
 from cloudmesh.common.variables import Variables
 
-job = None
 
 variables = Variables()
+
+name="~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run"
+host="rivanna.hpc.virginia.edu"
+username=variables["username"]
+
+job = None
+
 
 
 @pytest.mark.incremental
@@ -23,15 +29,34 @@ class TestJobssh:
         HEADING()
         global job
         global variables
+        global username
+        global host
+        global name
         Benchmark.Start()
-        job = Job(name="run",host="rivanna.hpc.virginia.edu",username=variables["username"])
-        # job.sync()
+        job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
-        # VERBOSE(result)
+        assert job.name == name
+        assert job.host == host
+        assert job.username == username
 
+    def test_sync(self):
+        HEADING()
+        global job
+        global variables
+        global username
+        global host
+        global name
+
+        Benchmark.Start()
+        r = job.sync()
+        print("R:::::::::",r)
+
+        Benchmark.Stop()
         assert True
 
+
 class a:
+
     def test_run(self):
         HEADING()
         global job

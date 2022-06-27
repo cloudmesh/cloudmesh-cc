@@ -58,8 +58,9 @@ class AbstractJob:
         """
         print("argv", argv)
         self.data = dict(argv)
-        # for attribute in data:
-        #     self[attribute] = data[attribute]
+        print("gggggg",self.data)
+        # for attribute in self.data:
+        #     self[attribute] = self.data[attribute]
 
     def probe(self):
         """
