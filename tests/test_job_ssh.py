@@ -10,7 +10,7 @@ from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
 from cloudmesh.cc.job.ssh.Job import Job
 from cloudmesh.common.variables import Variables
-
+import os
 
 variables = Variables()
 
@@ -28,6 +28,10 @@ job = None
 
 @pytest.mark.incremental
 class TestJobssh:
+
+    def test_create_run(self):
+        os.system("cp ./tests/run.sh .")
+        assert os.path.isfile("./run.sh")
 
     def test_create(self):
         HEADING()

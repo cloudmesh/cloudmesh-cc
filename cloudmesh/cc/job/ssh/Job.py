@@ -9,6 +9,7 @@ from cloudmesh.common.console import Console
 import os
 
 class Job():
+
     def __init__(self, **argv):
         """
         cms set username=abc123
