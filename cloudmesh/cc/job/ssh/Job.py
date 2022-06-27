@@ -39,3 +39,7 @@ class Job(AbstractJob):
 
     def watch(self, period=10):
         pass
+
+
+j = Job({"username": 'jnn7nd'})
+j.run()

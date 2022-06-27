@@ -12,7 +12,7 @@ from cloudmesh.common.console import Console
 
 def test_run():
     kind = 'yamldb'
-    q = Queues(filename='~/.cloudmesh/queue/queuetest1', database=kind)
+    q = Queues(filename='~/.cloudmesh/queue/queuetest1')
     q.create(name='local')
     q.create(name='rivanna')
     q.add(name='local', job='job01', command='pwd')
@@ -76,8 +76,9 @@ async def read_item(request: Request, id: str):
                                        "jobs": jobs,
                                        "order": order})
 
-@app.get("/queues", response_class=HTMLResponse)
+@app.get("/queues/", response_class=HTMLResponse)
 async def info(request: Request):
+    global q
     return templates.TemplateResponse('templates/queue.html',
                                       {"request": request,
                                        "queues": q.queues})
