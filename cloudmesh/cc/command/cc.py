@@ -10,6 +10,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
+from cloudmesh.cc.job.ssh.Job import Job
 
 
 class CcCommand(PluginCommand):
@@ -237,7 +238,11 @@ class CcCommand(PluginCommand):
             q = Queues()
             q[arguments.queue].remove(arguments.job)
 
-        elif arguments.run:
+        elif arguments.run and \
+                arguments.command:
+
+                job = Job(command = (arguments.command)
+                
 
 
         elif arguments.list and arguments.queue:
