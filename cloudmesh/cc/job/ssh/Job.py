@@ -6,9 +6,6 @@ from cloudmesh.common.Shell import Shell
 
 class Job(AbstractJob):
 
-    def __init__(self):
-        pass
-
     def probe(self):
         pass
 
