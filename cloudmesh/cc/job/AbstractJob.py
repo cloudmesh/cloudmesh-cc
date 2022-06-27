@@ -47,19 +47,34 @@ the value None
 class AbstractJob:
 
     def __int__(self, **data):
-        pass
+        """
+        craetes a job by passing either a dict with **dict or named arguments
+        attribute1 = value1, ...
+
+        :param data:
+        :type data:
+        :return:
+        :rtype:
+        """
+        for attribute in data:
+            self[attribute] = data[attribute]
 
     def probe(self):
         """
-        gets the error and log files, as well as teh status
+        gets the error and log files, as well as the status
+        and places it localy into
 
         :return:
         :rtype:
         """
-        self.get_error()
-        self.get_log()
+        self.error_file = self.get_error()
+        self.log_file = self.get_log()
         # state records the last probed status
         self.state = self.status
+
+        self.error = None # find error in error file
+        self.progress = None # find last progress in log file
+
 
     def run(self):
         pass
@@ -68,14 +83,20 @@ class AbstractJob:
         pass
 
     def get_error(self):
+        """returns the content of the error file"""
         pass
 
     def get_log(self):
+        """returns the content of ths stdout file"""
+        pass
+
+    def get_progress(self):
+        """returns the current progress as reported last in the log file"""
         pass
 
     def sync(self):
         """
-        copies the job script into the right location
+        copies the job script into the right location onto the executing host.
 
         :return:
         :rtype:
@@ -84,7 +105,41 @@ class AbstractJob:
 
     @property
     def status(self):
+        """
+        returns the status of the job as reported in status messages in the
+        log file. If additional states need to be defined they can be used as strings
+        A status can be followed by a stringified dict, so that more sophisticated
+        status messaged can be created.
+
+        # cloudmesh status=ready
+        ...
+        # cloudmesh status=running {"progress":0, "result": 50}
+        ...
+        # cloudmesh status=running {"progress": 25, "result": 50}
+        ...
+        # cloudmesh status=failed
+        ...
+        # cloudmesh status=done
+
+        :return: returns only the status string. To find other values, use
+        get(attribute)
+        :rtype:
+        """
         return self.get_status()
+
+    @property
+    def get(self, atribute):
+        """
+        returns the last value of the given attribute.
+
+        :return:
+        :rtype:
+        """
+        # see status
+        pass
+
+    def progress(self):
+        return self.get("progres")
 
     def watch(self, period=10):
         """
