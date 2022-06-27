@@ -7,10 +7,11 @@ from cloudmesh.common.Shell import Shell
 
 
 class Job(AbstractJob):
-    def __init__(self, command, status):
+    def __init__(self, command):
 
         self.command = command
-        self.status = status
+        self.status = 'ready'
+
 
     def probe(self):
         self.get_status()
