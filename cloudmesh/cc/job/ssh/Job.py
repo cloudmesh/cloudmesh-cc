@@ -112,6 +112,9 @@ class Job():
         return r
 
     def exists(self, filename):
+        command = f'ssh {self.username}@{self.host} "ls ./{filename}"'
+        print(command)
+        r = Shell.run(command)
+        if "cannot acces" in r:
+            return False
         return True
-        # shell run ls check if file exists
-        raise NotImplementedError

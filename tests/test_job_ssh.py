@@ -85,3 +85,16 @@ class TestJobssh:
 
         assert progress == "100"
         assert status == "done"
+
+    def test_exists(self):
+        HEADING()
+        global job
+
+        Benchmark.Start()
+        wrong = job.exists(name)
+        correct = job.exists(f"{name}.sh")
+        Benchmark.Stop()
+
+        assert not wrong
+        assert correct
+        
