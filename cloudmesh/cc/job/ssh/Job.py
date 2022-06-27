@@ -4,6 +4,7 @@ from cloudmesh.common.util import writefile
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 from cloudmesh.common.Shell import Shell
 
+<<<<<<< HEAD
 
 class Job(AbstractJob):
 
@@ -21,10 +22,10 @@ class Job(AbstractJob):
         pass
 
     def get_log(self):
-        return True
+        return readfile('run.log', 'r')
 
     def get_progress(self):
-        prog = TextFinder.find("progress=")
+        prog = TextFinder.find("progress=", self.get_log())
         return prog
 
     def sync(self):
