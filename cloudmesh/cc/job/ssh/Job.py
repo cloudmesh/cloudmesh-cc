@@ -17,7 +17,8 @@ class Job(AbstractJob):
         self.get_status()
 
     def run(self):
-        Shell.sh("./test.sh", self['username'])
+        r = Shell.run(self.command)
+        return r
 
     def get_status(self):
         pass
