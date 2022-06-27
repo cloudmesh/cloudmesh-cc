@@ -1,6 +1,7 @@
 #!/bin/bash -x
-scp run.sh atl9rn@rivanna.hpc.virginia.edu:.
-ssh atl9rn@rivanna.hpc.virginia.edu cat run.sh
-ssh atl9rn@rivanna.hpc.virginia.edu "nohup ./run.sh > run.log; echo $pid"
-scp atl9rn@rivanna.hpc.virginia.edu:run.log run.log
+username="$1"
+scp run.sh "$username"@rivanna.hpc.virginia.edu:.
+ssh "$username"@rivanna.hpc.virginia.edu cat run.sh
+ssh "$username"@rivanna.hpc.virginia.edu "nohup ./run.sh > run.log; echo $pid"
+scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
 cat run.log
