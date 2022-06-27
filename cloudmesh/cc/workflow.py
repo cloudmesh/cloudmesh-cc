@@ -300,6 +300,12 @@ class Workflow:
     def jobs(self):
         return self.graph.nodes
 
+    def __getitem__(self, name):
+        return self.jobs[name]
+
+    def job(self, name):
+        return self.jobs[name]
+
     def load(self, filename):
         """
         Loads a workflow graph from file. However the file is still stored in

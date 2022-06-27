@@ -79,52 +79,18 @@ class Test_workflow:
         w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-dot.svg")
 
-class rest:
-
-
-    def test_build(self):
-        """
-        This also tests the add nodes.
-        :return:
-        """
-        HEADING()
-        global w
-        Benchmark.Start()
-        w = Workflow(name= 'local',
-                     dependencies=[2, 5, 3, 6, 9, 4],
-                     database= 'yamldb',
-                     filename="~/.cloudmesh/queue/queues")
-        Benchmark.Stop()
-        # print(w.nodes)
-        # print(w.edges)
-        assert len(w.nodes) == 6
-        assert len(w.edges) == 5
-        assert w.name == 'local'
 
     def test_get_node(self):
         HEADING()
-        Benchmark.Start()
-        node = w.get_node(name=9)
-        Benchmark.Stop()
-        print(node)
-        assert node['name'] == 9
-
-    def test_create_graph(self):
-        HEADING()
         global w
         Benchmark.Start()
-        w.create_graph()
+        s1 = w["start"]
+        s2 = w.job("start")
         Benchmark.Stop()
-        print(w.graph)
-        assert len(w.graph) == 6
+        print(s1)
+        assert s1 == s2
 
-    def test_display(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w.display()
-        Benchmark.Stop()
-        assert len(w.graph) == 6
+class rest:
 
     def test_run(self):
         HEADING()
@@ -137,16 +103,6 @@ class rest:
         w.display_status()
         assert w.counter == 6
 
-    def test_status(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w.update_status
-        w.display_status
-        Benchmark.Stop()
-        assert w.get_status(name=2) == 'done'
-
-class rest:
 
     def test_create_sorted_graph(self):
         HEADING()
@@ -156,3 +112,11 @@ class rest:
         Benchmark.Stop()
         print(w.sorted_graph)
         assert len(w.sorted_graph) == 6
+
+
+
+class todo:
+
+    def test_benchmark(self):
+        HEADING()
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
