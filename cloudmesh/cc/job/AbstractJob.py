@@ -139,7 +139,7 @@ class AbstractJob:
         pass
 
     def progress(self):
-        return self.get("progres")
+        return self.get("progress")
 
     def watch(self, period=10):
         """
