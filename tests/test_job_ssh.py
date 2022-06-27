@@ -15,11 +15,15 @@ from cloudmesh.common.variables import Variables
 variables = Variables()
 
 name="run"
-host="rivanna.hpc.virginia.edu"
+
+if "host" not in variables:
+    host = "rivanna.hpc.virginia.edu"
+else:
+    host=variables["host"]
+
 username=variables["username"]
 
 job = None
-
 
 
 @pytest.mark.incremental
@@ -48,7 +52,7 @@ class TestJobssh:
         global name
 
         Benchmark.Start()
-        r = job.sync("~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run")
+        r = job.sync("./tests/run.sh")
 
         Benchmark.Stop()
         # successful exit status

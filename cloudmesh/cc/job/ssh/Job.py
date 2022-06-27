@@ -22,19 +22,16 @@ class Job():
         :rtype:
         """
 
-        '''
-        if self.colors is None:
-            self.colors = {}
-        if key not in self.colors:
-            self.colors[key] = {}
-        self.colors[key].update(**colors)
-        
-        '''
-
         self.data = argv
         print("self,data", self.data)
 
         variables = Variables()
+        # try:
+        #    a,b,c, = self.name, self.username, self.host
+        # except:
+        #    Console.error("name, username, or host not set")
+        #    raise ValueError
+
         if "username" not in self.data:
             self.data["username"]=variables["username"]
         if "name" not in self.data:
@@ -47,13 +44,6 @@ class Job():
     @property
     def name(self):
         return self.data["name"]
-
-    # @property
-    # def namepath(self):
-    #     # p = path_expand(self.name)
-    #     # print(p)
-    #     p = "~/cm/cloudmesh-cc/cloudmesh/cc/job/ssh/run"
-    #     return p
 
     @property
     def username(self):
@@ -115,12 +105,10 @@ class Job():
         return content
 
     def sync(self, filepath):
-        # scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-        command = f"scp {filepath}.sh {self.username}@{self.host}:."
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:."
         print(command)
         r = os.system(command)
         return r
-
 
     def exists(self, filename):
         return True
