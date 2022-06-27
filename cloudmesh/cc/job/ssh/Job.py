@@ -7,17 +7,17 @@ from cloudmesh.common.Shell import Shell
 
 
 class Job(AbstractJob):
-    def __init__(self, command):
-
-        self.command = command
-        self.status = 'ready'
+    # def __init__(self, command):
+    #
+    #     self.command = command
+    #     self.status = 'ready'
 
 
     def probe(self):
         self.get_status()
 
     def run(self):
-        r = Shell.run(self.command)
+        r = Shell.sh("test.sh","atl9rn")
         return r
 
     def get_status(self):
@@ -47,6 +47,7 @@ class Job(AbstractJob):
     def watch(self, period=10):
         pass
 
-
-j = Job(username='jnn7nd')
+dict1 = {"username":"atl9rn","age":100}
+# j = Job("username"="atl9rn",age=100)
+j = Job()
 j.run()
