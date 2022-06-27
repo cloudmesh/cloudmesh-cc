@@ -12,14 +12,6 @@ class Job():
         """
         cms set username=abc123
 
-<<<<<<< HEAD
-class Job(AbstractJob):
-
-    # def __init__(self, command):
-    #
-    #     self.command = command
-    #     self.status = 'ready'
-=======
         craetes a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
 
@@ -64,7 +56,6 @@ class Job(AbstractJob):
         if "host" not in self.data:
             Console.error("Host not defined")
             raise ValueError
->>>>>>> 159f09235033c20f0d1b670303277a8d7246b15b
 
     def set_name(self, name):
         self.name = name
@@ -84,13 +75,10 @@ class Job(AbstractJob):
         pass
 
     def get_error(self):
-<<<<<<< HEAD
         return readfile('{self.name}.error', 'r')
 
     def get_log(self):
         return readfile('{self.name}.log', 'r')
-
-=======
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
         command = f"scp {self.username}@{self.host}:{self.name}.error {self.name}.error"
         os.system(command)
@@ -102,7 +90,6 @@ class Job(AbstractJob):
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         return content
->>>>>>> 159f09235033c20f0d1b670303277a8d7246b15b
 
     def get_progress(self):
         search = readfile('run.log', 'r')
