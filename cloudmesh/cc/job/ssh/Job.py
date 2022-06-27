@@ -23,9 +23,6 @@ class Job(AbstractJob):
     def get_log(self):
         return readfile('run.log', 'r')
 
-    def get_error(self):
-        pass
-
 
     def get_progress(self):
         prog = TextFinder.find("progress=", self.get_log())
@@ -40,16 +37,6 @@ class Job(AbstractJob):
 
         return self.get_status()
 
-    @property
-    def get(self, attribute):
-        pass
-
-    def progress(self):
-        return self.get("progress")
 
     def watch(self, period=10):
         pass
-
-
-j = Job()
-j.run()
