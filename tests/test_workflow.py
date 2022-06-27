@@ -97,6 +97,15 @@ class Test_workflow:
         Benchmark.Stop()
         assert True
 
+    def test_order(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        order = w.sequential_order()
+        Benchmark.Stop()
+        print (order)
+        assert len(order) == len(w.jobs)
+
 class rest:
 
     def test_run(self):

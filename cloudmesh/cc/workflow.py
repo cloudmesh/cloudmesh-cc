@@ -425,7 +425,12 @@ class Workflow:
                 self.graph.nodes[job]['output'] = command
 
     def sequential_order(self):
-        order = list(nx.topological_sort(self.graph))
+        tuples = []
+        for name, edge in self.graph.edges.items():
+            print (edge["source"], edge["destination"])
+            tuples.append((edge["source"], edge["destination"]))
+        g = nx.DiGraph(tuples)
+        order = list(nx.topological_sort(g))
         return order
 
 
