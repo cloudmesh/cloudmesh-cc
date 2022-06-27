@@ -57,6 +57,7 @@ class Job():
             Console.error("Host not defined")
             raise ValueError
 
+
     def probe(self):
         self.get_status()
 
@@ -84,11 +85,12 @@ class Job():
         content = readfile(f"{self.name}.log", 'r')
         return content
 
-
     def get_progress(self):
-        pass
-        # prog = TextFinder.find("progress=", self.get_log())
-        # return prog
+        search = readfile('run.log', 'r')
+        last = search.rfind(self.get_log())
+        prog = readfile("progress=", last)
+        return prog
+
 
     '''
     #!/bin/bash -x
@@ -110,9 +112,7 @@ class Job():
 
     @property
     def status(self):
-
         return self.get_status()
-
 
     def watch(self, period=10):
         pass
@@ -121,8 +121,3 @@ class Job():
         return True
         # shell run ls check if file exists
         raise NotImplementedError
-
-
-
-# j = Job()
-# j.run()
