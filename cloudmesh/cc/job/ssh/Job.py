@@ -4,13 +4,14 @@ from cloudmesh.common.util import writefile
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 from cloudmesh.common.Shell import Shell
 
+
 class Job(AbstractJob):
 
     def probe(self):
         pass
 
     def run(self):
-        Shell.sh("./run.sh atl9rn")
+        Shell.sh("./test.sh atl9rn")
 
     def get_status(self):
         pass
@@ -44,3 +45,8 @@ class Job(AbstractJob):
         return self.get("progress")
 
     def watch(self, period=10):
+        pass
+
+
+j = Job()
+j.run()
