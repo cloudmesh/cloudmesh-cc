@@ -29,8 +29,8 @@ class Job(AbstractJob):
 
     def get_progress(self):
         search = readfile('run.log', 'r')
-        search.rfind(get_log())
-        prog = readfile("progress=", search)
+        last = search.rfind(self.get_log())
+        prog = readfile("progress=", last)
         return prog
 
     def sync(self):
