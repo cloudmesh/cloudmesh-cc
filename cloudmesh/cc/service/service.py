@@ -57,7 +57,7 @@ async def read_alex(request: Request, id: str):
                                        "jobs": jobs})
 #
 # @app.get("/abdul/{id}", response_class=HTMLResponse)
-# async def read_anduhl(request: Request, id: str):
+# async def read_abdul(request: Request, id: str):
 #     global q
 #     jobs = []
 #     for queue in q.queues:
