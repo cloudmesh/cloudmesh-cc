@@ -36,7 +36,6 @@ class TestJobssh:
     def test_create(self):
         HEADING()
         global job
-        global variables
         global username
         global host
         global name
@@ -50,10 +49,6 @@ class TestJobssh:
     def test_sync(self):
         HEADING()
         global job
-        global variables
-        global username
-        global host
-        global name
 
         Benchmark.Start()
         r = job.sync("./tests/run.sh")
@@ -66,11 +61,10 @@ class TestJobssh:
     def test_run(self):
         HEADING()
         global job
-        global variables
 
         Benchmark.Start()
         s,l,e = job.run()
-        print(s)
+        print("State:", s)
         # print(l)
         # print(e)
 
@@ -81,15 +75,14 @@ class TestJobssh:
     def test_progress_status(self):
         HEADING()
         global job
-        global variables
 
         Benchmark.Start()
         job.get_log()
-        prog = job.get_progress()
-        print("PROGRESS",prog)
+        progress = job.get_progress()
+        print("Progress:",progress)
         status = job.get_status()
-        print("STATUS",status)
+        print("Status:",status)
         Benchmark.Stop()
 
-        assert prog == "100"
+        assert progress == "100"
         assert status == "done"
