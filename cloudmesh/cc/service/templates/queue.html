@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
 	<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico">
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
 	<title>DataTables example - Default ordering (sorting)</title>
@@ -22,27 +22,20 @@ $(document).ready(function() {
 	</script>
 </head>
 <body>
-    <h1>Item ID: {{ id }}</h1>
+    <h1>Queue List</h1>
 
     <table id="example" class = "display" style = "width:100%">
         <thead>
             <tr>
-            {% for key in order %}
-              <th>{{key}}</th>
-            {% endfor %}
+            <th>Queues</th>
             </tr>
         </thead>
         <tbody>
-            {% for dict_item in jobs %}
+            {% for queue in queues %}
             <tr>
-            {% for key, value in dict_item.items() %}
-              <td>{{value}}</td>
-            {% endfor %}
-            </tr>
+              <td>{{queue}}</td>
             {% endfor %}
         </tbody>
     </table>
-
-
 </body>
 </html>

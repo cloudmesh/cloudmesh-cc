@@ -5,6 +5,7 @@ import yaml as pyyaml
 
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 
 """
 This is a program that allows for the instantiation of jobs and then
@@ -174,21 +175,13 @@ class Queues:
     """
 
     # def __init__(self, filename=None, database='yamldb'):
-    def __init__(self, filename=None, database='shelve'):
+    def __init__(self, filename=None):
         """
         Initializes the giant queue structure.
         """
-        if database.lower() == 'yamldb':
-            from cloudmesh.cc.db.yamldb.database import Database as QueueDB
-            # self.filename = path_expand("~/.cloudmesh/queue/queue")
-        elif database.lower() == 'shelve':
-            from cloudmesh.cc.db.shelve.database import Database as QueueDB
-            # self.filename = path_expand("~/.cloudmesh/queue/queue")
-        else:
-            raise ValueError("This database is not supported for Queues, please fix.")
 
         if filename is None:
-            filename = "~/.cloudmesh/queue/queue"
+            filename = "~/.cloudmesh/queue/queue.yamldb"
 
         self.db = QueueDB(filename=filename)
         self.counter = 0
