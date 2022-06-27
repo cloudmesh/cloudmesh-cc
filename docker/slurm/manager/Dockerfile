@@ -17,7 +17,7 @@ RUN systemctl enable munge
 RUN apt install slurm-wlm -y
 RUN apt install sudo -y && \
     useradd -m admin -s /usr/bin/bash -d /home/admin && \
-    chmod x+u /home/admin \
+    chmod a+rwx /home/admin \
     echo "admin:admin" | chpasswd && \
     adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
