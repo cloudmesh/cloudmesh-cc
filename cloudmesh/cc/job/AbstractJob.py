@@ -46,7 +46,7 @@ the value None
 """
 class AbstractJob:
 
-    def __int__(self, **data):
+    def __init__(self, **data):
         """
         craetes a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
