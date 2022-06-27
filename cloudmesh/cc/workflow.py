@@ -352,6 +352,7 @@ class Workflow:
                 kind="local",
                 status="ready",
                 progress=0,
+                pid=None
                 ):
 
         label = label or name
@@ -432,7 +433,6 @@ class Workflow:
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))
         return order
-
 
     @property
     def yaml(self):
