@@ -237,11 +237,8 @@ class CcCommand(PluginCommand):
             q = Queues()
             q[arguments.queue].remove(arguments.job)
 
-        elif arguments.run and \
-                arguments.queue and \
-                arguments.scheduler:
-            q = Queues()
-            q.run(scheduler=arguments.scheduler)
+        elif arguments.run:
+
 
         elif arguments.list and arguments.queue:
             q = Queues()
