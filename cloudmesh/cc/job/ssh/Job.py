@@ -6,11 +6,13 @@ from cloudmesh.common.Shell import Shell
 
 class Job(AbstractJob):
 
-    def __init__(self):
-        pass
+    def __init__(self, command, status):
+
+        self.command = command
+        self.status = status
 
     def probe(self):
-        pass
+        self.get_status()
 
     def run(self):
         Shell.sh("./run.sh atl9rn")
