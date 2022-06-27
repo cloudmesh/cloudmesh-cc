@@ -14,6 +14,9 @@ from cloudmesh.common.util import writefile
 from pathlib import Path
 from cloudmesh.cc.db.yamldb import database as ydb
 from cloudmesh.cc.queue import Job
+from cloudmesh.common.console import Console
+from cloudmesh.common.DateTime import DateTime
+from cloudmesh.common.Printer import Printer
 
 """
 This class enables to manage dependencies between jobs.
@@ -60,20 +63,27 @@ as you can see you can also define colors for otehr values that could be set in 
 for the node status. To display the graph you can say:
             
 g.show()
-        
+
 """
 
 
 class Graph:
     # this is pseudocode
 
-    def __init__(self, filename=None):
+    def __init__(self, name="graph", filename=None):
         self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
         self.load(filename=filename)
         self.colors = {}
         self.set_status_colors()
+        self.name = name
+        #
+        # maybe
+        # config:
+        #    name:
+        #    colors:
+
 
     def set_status_colors(self):
         self.add_color("status",
@@ -100,8 +110,9 @@ class Graph:
         return yaml.dump(data, indent=2)
 
     def load(self, filename=None):
-        if filename is not None:
-            raise NotImplementedError
+        pass
+        #if filename is not None:
+        #    raise NotImplementedError
             # shoudl read from file the graph, but as we do Queues yaml dic
             # we do not need filename read right now
 
@@ -113,6 +124,11 @@ class Graph:
         self.nodes[name]["name"] = name
 
     def add_edge(self, source, destination, **data):
+        #
+        # TODO: add dependnecy to attribute in node dependency_in,
+        #   dependency_out, we could use a set for that. so multiple
+        #   dependencies are ignored
+        #
         name = f"{source}{self.sep}{destination}"
         if name not in self.edges:
             self.edges[name] = {
@@ -127,6 +143,9 @@ class Graph:
 
     def get_status(self, name):
         self.nodes[name]["status"]
+
+    def add_dependency(self, source, destination):
+        self.add_dependencies(self, f"{source},{destination}")
 
     def add_dependencies(self, dependency, nodedata=None, edgedata=None):
         nodes = Parameter.expand(dependency)
@@ -148,6 +167,20 @@ class Graph:
             else:
                 self.add_edge(source, destination, **edgedata)
 
+    def rename(self, source, destination):
+        """
+        renames a name with the name source to destination. The destination
+        must not exist. All edges will be renamed accordingly.
+
+        :param source:
+        :type source:
+        :param destination:
+        :type destination:
+        :return:
+        :rtype:
+        """
+        pass
+
     def export(self, filename="show,a.png,a.svg,a.pdf"):
         # comma separated list of output files in one command
         # if show is included show() is used
@@ -161,7 +194,8 @@ class Graph:
                 pass
             # and so on
 
-    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout, engine="networkx"):
+    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
+             engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
         graph = nx.DiGraph()
         color_map = []
@@ -217,77 +251,188 @@ class Graph:
             plt.savefig(filename)
 
 
-class Workflow2:
 
-    def __init__(self, name=None, filename=None):
+class Workflow:
+    """
+    Workflow doocumentation
+
+    w = Workflow(filename="workflow.yaml")
+    w.load(filename="abc.yaml") <- loads in teh graph, but will save it still to workflow.yaml
+    w.add(filename="add.yaml") <-adds a new worflow into the existing one.
+    w.add_job(name="a",
+                command="hostname",
+                user=None, # bug if kind is local and user is None, we do not need user, but can take local user
+                host=None, # bug:  if host is none and kind is local use localhost
+                label="a",
+                kind="local",
+                status="ready",
+                progress=0)
+    w.add_job(name="b", command="ls")
+    w.add_job(name="c", command="pwd")
+    w.add_job(name="d", command="uname -a")
+    w.add_dependencies(dependency="a,b,d")
+    w.add_dependencies(dependency="a,c,d")
+
+    w.run()
+
+
+    """
+
+    def __init__(self, name="workflow", filename=None, user=None, host=None):
+        # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None overwrite the graph potentially read from filename
         if filename is None:
             filename = f"~/.cloudmesh/workflow/workflow-{name}"
 
-        if Path.exists(filename):
-            self.load(filename)
-        else:
-            directory = path_expand(filename)
-            Shell.mkdir(directory)
-            self.data = {}
-            self.save()
+        self.graph = Graph(name=name, filename=filename)
+        self.user = user
+        self.host = host
 
-        self.name = name
-        self.label = None
-        self.user = None
-        self.host = None
-        self.status = None
-        self.progress = None
-        self.command = None
-        self.db = ydb(filename= filename)
-        self.db.data['workflow'] = {}
-        self.save()
+        # should this go into graph?
+        # if Path.exists(filename):
+        #    self.workflow = self.load(filename)
+        # else:
+        #    directory = path_expand(filename)
+        #    Shell.mkdir(directory)
+        #    self.data = {}
+        #    self.save()
+
+        # self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
+
+        # self.label = None
+
+    @property
+    def jobs(self):
+        return self.graph.nodes
+
+    def __getitem__(self, name):
+        return self.jobs[name]
+
+    def job(self, name):
+        return self.jobs[name]
 
     def load(self, filename):
-        workflow = self.db.load()
-        return workflow
+        """
+        Loads a workflow graph from file. However the file is still stored in
+        the filename that was used when the Workflow was created. This allows to
+        load in a saved workflow in another file, but continue working on it in
+        the file used in init
+
+        :param filename:
+        :type filename:
+        :return:
+        :rtype:
+        """
+        # self.graph.load(...)
+        pass
 
     def add(self, filename):
+        """
+        This method adds another workflow to the existing one. If nodes with the
+        same name exists, they will be simply overwritten by the existing nodes
+
+        :param filename:
+        :type filename:
+        :return:
+        :rtype:
+        """
         pass
 
     def save(self, filename):
         # implicitly done when using yamldb
-        self.db.save()
+        self.graph.save()
 
     def add_job(self,
-                name,
-                label,
-                user,
-                host,
-                status,
-                progress,
-                command
+                name=None,
+                command=None,
+                user=None,
+                host=None,
+                label=None,
+                kind="local",
+                status="ready",
+                progress=0,
+                pid=None
                 ):
-        w = self.load()
 
+        label = label or name
+        user = user or self.user
+        host = host or self.host
+        defined = True
+        if name is None:
+            defined = False
+            Console.error("name is None")
+        if command is None:
+            defined = False
+            Console.error("comamnd is None")
+        if user is None:
+            defined = False
+            Console.error("user is None")
+        if host is None:
+            defined = False
+            Console.error("host is None")
+        if not defined:
+            raise ValueError("user or host not specified")
+
+        now = DateTime.now()
+        self.graph.add_node(
+            name=name,
+            label=label,
+            kind=kind,
+            user=user,
+            host=host,
+            status=status,
+            progress=progress,
+            command=command,
+            created=now,
+            modified=now
+        )
+
+    def add_dependency(self, source, destination):
+        self.graph.add_dependency(source, destination)
 
     def add_dependencies(self, dependency):
+        self.graph.add_dependencies(dependency=dependency)
+
+    def update_status(self, name, status):
+        self.graph[name]["status"] = status
+
+    def set_progress(self, name, percent):
         pass
 
-    def set_status(self, name, status):
+    def update_progress(self, name):
+        # fetches log file and looks for progress event TBD
+        # once progress is fetched set it for the named job
         pass
 
-    def run(self, order=None, parallel=False):
+    def run(self, order=None, parallel=False, dryrun=False):
 
         if order == None:
-            order = self.order
+            order = self.sequential_order
 
-        # now run in order
+        for job in order():
+            command = job['command']
+            if not dryrun:
+                if job['kind'] in ["local"]:
+                    r = Shell.run(command)
+                elif job['kind'] in ["ssh"]:
+                    raise NotImplementedError
+                elif job['kind'] in ["local-slurm"]:
+                    raise NotImplementedError
+                elif job['kind'] in ["remote-slurm"]:
+                    raise NotImplementedError
+                self.graph.nodes[job]['output'] = r
+            else:
+                self.graph.nodes[job]['output'] = command
 
     def sequential_order(self):
-        order = list(nx.topological_sort(self.graph))
+        tuples = []
+        for name, edge in self.graph.edges.items():
+            print (edge["source"], edge["destination"])
+            tuples.append((edge["source"], edge["destination"]))
+        g = nx.DiGraph(tuples)
+        order = list(nx.topological_sort(g))
         return order
-
-    @property
-    def table(self):
-        # print the table use cloudmesh table printer
-        pass
 
     @property
     def yaml(self):
@@ -298,7 +443,13 @@ class Workflow2:
         # print as json dump
         pass
 
-class Workflow:
+    @property
+    def table(self):
+        return Printer.write(self.graph.nodes)
+        pass
+
+
+class Workflow_old:
 
     def __init__(self,
                  name=None,

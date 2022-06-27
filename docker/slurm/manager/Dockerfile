@@ -17,6 +17,7 @@ RUN systemctl enable munge
 RUN apt install slurm-wlm -y
 RUN apt install sudo -y && \
     useradd -m admin -s /usr/bin/bash -d /home/admin && \
+    chmod a+rwx /home/admin \
     echo "admin:admin" | chpasswd && \
     adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -31,8 +32,8 @@ RUN mkdir /var/spool/slurmctld && \
     touch /var/log/slurm/slurmctld.log && \
     touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log && \
     chown -R admin:admin /var/log/slurm/ && \
-    touch /var/log/slurm_jobcomp.log && \
-    chmod 777 /var/log/slurm_jobcomp.log && \
+    touch /var/log/slurm/slurm_jobcomp.log && \
+    chmod 777 /var/log/slurm/slurm_jobcomp.log && \
     chown admin:admin /var/spool/
 
 COPY slurm.conf /etc/slurm/
