@@ -128,7 +128,7 @@ class AbstractJob:
         return self.get_status()
 
     @property
-    def get(self, atribute):
+    def get(self, attribute):
         """
         returns the last value of the given attribute.
 
@@ -137,6 +137,9 @@ class AbstractJob:
         """
         # see status
         pass
+
+    def __getitem__(self, item):
+        return self[item]
 
     def progress(self):
         return self.get("progress")
