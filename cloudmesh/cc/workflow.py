@@ -16,6 +16,7 @@ from cloudmesh.cc.db.yamldb import database as ydb
 from cloudmesh.cc.queue import Job
 from cloudmesh.common.console import Console
 from cloudmesh.common.DateTime import DateTime
+from cloudmesh.common.Printer import Printer
 
 """
 This class enables to manage dependencies between jobs.
@@ -123,6 +124,11 @@ class Graph:
         self.nodes[name]["name"] = name
 
     def add_edge(self, source, destination, **data):
+        #
+        # TODO: add dependnecy to attribute in node dependency_in,
+        #   dependency_out, we could use a set for that. so multiple
+        #   dependencies are ignored
+        #
         name = f"{source}{self.sep}{destination}"
         if name not in self.edges:
             self.edges[name] = {
@@ -422,10 +428,6 @@ class Workflow:
         order = list(nx.topological_sort(self.graph))
         return order
 
-    @property
-    def table(self):
-        # print the table use cloudmesh table printer
-        pass
 
     @property
     def yaml(self):
@@ -434,6 +436,11 @@ class Workflow:
 
     def json(self):
         # print as json dump
+        pass
+
+    @property
+    def table(self):
+        return Printer.write(self.graph.nodes)
         pass
 
 

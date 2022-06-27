@@ -79,7 +79,6 @@ class Test_workflow:
         w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-dot.svg")
 
-
     def test_get_node(self):
         HEADING()
         global w
@@ -89,6 +88,14 @@ class Test_workflow:
         Benchmark.Stop()
         print(s1)
         assert s1 == s2
+
+    def test_table(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        print(w.table)
+        Benchmark.Stop()
+        assert True
 
 class rest:
 
