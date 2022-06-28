@@ -121,4 +121,17 @@ class Job():
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
+        raise NotImplementedError
         pass
+
+    def get_pid(self):
+        """get the pid from the job"""
+        raise NotImplementedError
+        pid = 0
+        return pid
+
+    def kill(self):
+        """
+        kills the job
+        """
+        raise NotImplementedError
