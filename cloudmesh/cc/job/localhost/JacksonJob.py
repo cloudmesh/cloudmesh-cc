@@ -7,6 +7,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.util import path_expand
 
 
 class Job():
@@ -184,15 +185,15 @@ class Job():
         """
         kills the job
         """
-        if os.path.exists("f{name.log"):
+        if os.path.exists(path_expand(f"{self.directory}/{self.name}.log")):
             pid = self.get_pid()
-
-        while not os.path.exists("f{name.log"):
-            time.sleep(1)
-            try:
-                pid = self.get_pid()
-            except:
-                pass
+        else:
+            while not os.path.exists(path_expand(f"{self.directory}/{self.name}.log")):
+                time.sleep(1)
+                try:
+                    pid = self.get_pid()
+                except:
+                    pass
 
         command = f'kill -9 {pid}'
         print(command)
