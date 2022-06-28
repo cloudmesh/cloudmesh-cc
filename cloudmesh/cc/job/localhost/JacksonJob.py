@@ -94,7 +94,7 @@ class Job():
         self.mkdir_local()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.out && echo $pid'
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.log && echo $pid'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -105,7 +105,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.directory}/{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
