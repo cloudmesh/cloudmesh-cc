@@ -9,7 +9,7 @@ from cloudmesh.common.variables import Variables
 
 class Job():
 
-    def __init__(self, name=None, username=None, host=None, **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, **argv):
         """
         cms set username=abc123
 
@@ -38,8 +38,13 @@ class Job():
         self.username = username
         self.host = host
         self.name = name
+        if label is None:
+            label = name
 
         print("self.data", self.data)
+        for key, value in self.data.items():
+            setattr(self, key, value)
+
 
         if self.name is None:
             Console.error("Name is not defined")
@@ -64,7 +69,7 @@ class Job():
         else:
             self.directory = f"~/experiment/{self.name}"
 
-        #print (self)
+        print (self)
 
     def __str__(self):
         msg = []
@@ -73,6 +78,7 @@ class Job():
         msg.append(f"name: {self.name}")
         msg.append(f"directory: {self.directory}")
         msg.append(f"data: {self.data}")
+        msg.append(f"locals  {locals()}")
         return "\n".join(msg)
 
     @property
