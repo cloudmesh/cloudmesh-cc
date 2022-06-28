@@ -1,6 +1,8 @@
 import os
 
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
+import time
+
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
@@ -120,9 +122,13 @@ class Job():
             log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
-            status = lines[-1].split("progress=")[1]
-            status = status.split()[0]
-            return status
+            try:
+                progress = lines[-1].split("progress=")[1]
+                progress = progress.split()[0]
+                return int(progress)
+            except:
+                return 0
+        return 0
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
@@ -157,8 +163,12 @@ class Job():
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
-        raise NotImplementedError
-        pass
+        finished = False
+        while not finished:
+            progress = int(self.get_progress(refresh=True))
+            finished = progress == 100
+            if not finished:
+                time.sleep(period)
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
