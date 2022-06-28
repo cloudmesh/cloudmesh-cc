@@ -95,6 +95,7 @@ class Job():
         self.mkdir_local()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
+        # stdbuf -oL
         command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.log && echo $pid'
         print(command)
         state = os.system(command)
@@ -193,10 +194,11 @@ class Job():
         """
         kills the job
         """
-        if os.path.exists(path_expand(f"{self.directory}/{self.name}.log")):
+        if os.path.exists(path_expand(f"{self.name}.log")):
             pid = self.get_pid()
         else:
-            while not os.path.exists(path_expand(f"{self.directory}/{self.name}.log")):
+            while not os.path.exists(path_expand(f"{self.name}.log")):
+                print(f"cehck for {self.name}.log")
                 time.sleep(1)
                 try:
                     pid = self.get_pid()
