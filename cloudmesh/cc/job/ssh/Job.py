@@ -177,4 +177,9 @@ class Job():
         """
         kills the job
         """
-        raise NotImplementedError
+        pid = self.get_pid()
+        command = ""
+        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
+        print(command)
+        r = Shell.run(command)
+        print (r)
