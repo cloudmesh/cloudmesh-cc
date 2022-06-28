@@ -94,7 +94,7 @@ class Job():
         self.mkdir_local()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.out ; echo $pid'
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.out && echo $pid'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -128,24 +128,24 @@ class Job():
         return 0
 
     def get_error(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"cd ~ ; cd {self.directory}"
+        command = f"cp {self.directory}/{self.name}.err ."
         print(command)
         os.system(command)
         content = readfile(f"{self.directory}/{self.name}.err", 'r')
         return content
 
     def get_log(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"cd ~ ; cd {self.directory}"
+        command = f"cp {self.directory}/{self.name}.log ."
         print(command)
         os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.out", 'r')
+        content = readfile(f"{self.directory}/{self.name}.log", 'r')
         return content
 
-    def sync(self, filepath):
+    def sync(self, filename=None):
+        if filename is None:
+            filename = f"{self.name}.sh"
         self.mkdir_local()
-        command = f'cp {filepath} {self.directory}'
+        command = f'cp {filename} {self.directory}/.'
         print(command)
         r = os.system(command)
         return r
@@ -172,7 +172,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.directory}/{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
@@ -184,6 +184,9 @@ class Job():
         """
         kills the job
         """
+        return
+        #while not os.path.exists("f{name.log"):
+        #    time.sleep(1)
         pid = self.get_pid()
         command = f'kill -9 {pid}'
         print(command)
