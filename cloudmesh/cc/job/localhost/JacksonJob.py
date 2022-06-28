@@ -96,7 +96,9 @@ class Job():
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         # stdbuf -oL
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.log && echo $pid'
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1 && echo $pid'
+        # command = f'cd {self.directory} && ./{self.name}.sh > {self.name}.log 2>&1 &'
+
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -130,6 +132,7 @@ class Job():
         return 0
 
     def get_error(self):
+        return
         try:
             command = f"cp {self.directory}/{self.name}.err ."
             print(command)

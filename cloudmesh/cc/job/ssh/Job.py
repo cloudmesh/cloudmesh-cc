@@ -65,7 +65,7 @@ class Job():
                 raise ValueError
 
         if "directory" in self.data:
-            self.directory = self.data["directry"]
+            self.directory = self.data["directory"]
         else:
             self.directory = f"~/experiment/{self.name}"
 

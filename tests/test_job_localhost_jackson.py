@@ -26,10 +26,64 @@ job = None
 class TestJoblocalhost:
 
     def test_create_run(self):
+        os.system("rm -r ~/experiment")
         os.system("cp ./tests/run.sh .")
         os.system("cp ./tests/wait.sh .")
         assert os.path.isfile("./run.sh")
         assert os.path.isfile("./wait.sh")
+
+    def test_watch_run(self):
+        HEADING()
+        global job
+        global username
+        global host
+        global name
+
+        Benchmark.Start()
+        # os.remove(path_expand(f"{job.directory}/{name}.err"))
+        job = Job(name=name, host=host, username=username)
+
+        os.system(f" rm -f {job.directory}/{name}.log")
+
+        r = job.sync(f"./tests/{name}.sh")
+        job.run()
+        job.watch(period=1)
+        status = job.get_status()
+        progress = job.get_progress()
+        Benchmark.Stop()
+        assert status == "done"
+        assert progress == 100
+
+    def test_watch_wait(self):
+        HEADING()
+        global job
+        global username
+        global host
+        global name
+        name = "wait"
+
+        Benchmark.Start()
+        # os.remove(path_expand(f"{job.directory}/{name}.err"))
+        job = Job(name=name, host=host, username=username)
+
+        os.system(f" rm -f {job.directory}/{name}.log")
+
+
+        r = job.sync(f"./tests/{name}.sh")
+        print("GGGGGGGGGGGG")
+
+        job.run()
+
+        print ("HHHHHHHHHHHHHH")
+
+        # job.watch(period=1)
+        status = job.get_status()
+        progress = job.get_progress()
+        Benchmark.Stop()
+        assert status == "done"
+        assert progress == 100
+
+class f:
 
     def test_create(self):
         HEADING()
@@ -96,23 +150,8 @@ class TestJoblocalhost:
         assert not wrong
         assert correct
 
-    def test_watch(self):
-        HEADING()
-        global job
-        global username
-        global host
-        global name
-        Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.log"))
-        os.remove(path_expand(f"{job.directory}/run.err"))
-        job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
-        job.run()
-        job.watch(period=1)
-        status = job.get_status()
-        Benchmark.Stop()
-        assert status == "done"
 
+class r:
     def test_kill(self):
         HEADING()
         global job
