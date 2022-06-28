@@ -1,5 +1,5 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_ssh.py
+# pytest -v --capture=no tests/test_job_localhost_alison.py
 # pytest -v  tests/test_job_ssh.py
 # pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
 ###############################################################
@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from cloudmesh.cc.job.localhost.AlexJob import Job
+from cloudmesh.cc.job.localhost.AlisonJob import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
@@ -17,7 +17,8 @@ variables = Variables()
 name = "run"
 
 if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
+    # host = "rivanna.hpc.virginia.edu"
+    host = "localhost"
 else:
     host = variables["host"]
 
@@ -64,8 +65,8 @@ class TestJobssh:
         Benchmark.Start()
         s, l, e = job.run()
         print("State:", s)
-        # print(l)
-        # print(e)
+        print(l)
+        print(e)
 
         Benchmark.Stop()
 
@@ -105,8 +106,8 @@ class TestJobssh:
         global host
         global name
         Benchmark.Start()
-        os.remove("run.log")
-        os.remove("run.error")
+        os.remove("run-log.txt")
+        os.remove("run-error.txt")
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
         job.run

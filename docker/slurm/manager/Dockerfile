@@ -22,6 +22,10 @@ RUN apt install sudo -y && \
     adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN sudo chmod a+rwx /home/admin
+
+RUN sudo usermod -aG sudo admin
+
 RUN apt update -y && \
     apt install libopenmpi-dev -y && \
     pip install mpi4py
@@ -35,6 +39,8 @@ RUN mkdir /var/spool/slurmctld && \
     touch /var/log/slurm/slurm_jobcomp.log && \
     chmod 777 /var/log/slurm/slurm_jobcomp.log && \
     chown admin:admin /var/spool/
+
+RUN sudo chown -R admin:admin /home/admin
 
 COPY slurm.conf /etc/slurm/
 COPY cgroup.conf /etc/slurm/

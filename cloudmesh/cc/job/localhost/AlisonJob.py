@@ -8,6 +8,8 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 
+from cloudmesh.common.systeminfo import os_is_windows
+
 
 class Job():
 
@@ -27,7 +29,6 @@ class Job():
         self.data = argv
 
         print(self.data)
-        variables = Variables()
         # try:
         #    a,b,c, = self.name, self.username, self.host
         # except:
@@ -65,9 +66,15 @@ class Job():
                 raise ValueError
 
         if "directory" in self.data:
-            self.directory = self.data["directry"]
+            self.directory = self.data["directory"]
         else:
-            self.directory = f"~/experiment/{self.name}"
+            # if os_is_windows():
+            #     self.directory = f"~\\experiment\\{self.name}"
+            # else:
+            #     self.directory = f"~/experiment/{self.name}"
+
+            from cloudmesh.common.util import path_expand
+            self.directory = path_expand(f"~/experiment/{self.name}")
 
         print(self)
 
@@ -85,19 +92,31 @@ class Job():
     def status(self):
         return self.get_status()
 
-    def mkdir_remote(self):
-        command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
+    def mkdir(self):
+        command = f'mkdir {self.directory}'
         print(command)
-        os.system(command)
+        Shell.mkdir(self.directory)
 
     def run(self):
-        self.mkdir_remote()
+        self.mkdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        # command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        # command = f'cd {self.directory} && start /min {self.name} > {self.name}.log'
+
+        from pathlib import Path
+        path = Path(self.directory)
+        print(f'cd {self.directory}')
+
+        os.chdir(str(path))
+        print(Shell.run("pwd"))
+        # os.chdir(self.directory)
+
+        command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
         print(command)
         state = os.system(command)
+
         error = self.get_error()
         log = self.get_log()
         return state, log, error
@@ -106,7 +125,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}-log.txt", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
@@ -117,7 +136,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}-log.txt", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             try:
@@ -130,36 +149,36 @@ class Job():
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.error", 'r')
+        # command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
+        # print(command)
+        # os.system(command)
+        content = readfile(f"{self.name}-error.txt", 'r')
         return content
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.log", 'r')
+        # command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+        # print(command)
+        # os.system(command)
+        content = readfile(f"{self.name}-log.txt", 'r')
         return content
 
 
     def sync(self, filepath):
-        self.mkdir_remote()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        self.mkdir()
+        command = f"scp ./{self.name}.sh {self.directory}/."
         print(command)
         r = os.system(command)
         return r
 
 
     def exists(self, filename):
-        command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
+        command = f'{self.directory}/{filename}'
         print(command)
-        r = Shell.run(command)
-        if "cannot acces" in r:
-            return False
-        return True
+        r = Shell.ls(command)
+        if len(r) > 0:
+            return True
+        return False
 
 
     def watch(self, period=10):
@@ -177,7 +196,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}-log.txt", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
@@ -185,14 +204,14 @@ class Job():
             return pid
         return None
 
-
+class a:
     def kill(self):
         """
         kills the job
         """
         pid = self.get_pid()
         command = ""
-        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
+        command = f'kill -9 {pid}'
         print(command)
         r = Shell.run(command)
         print(r)
