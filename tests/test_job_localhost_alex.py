@@ -121,5 +121,4 @@ class TestJobLocalWin:
         # assert status == "done"
         # check with ps if pid is running
 
-j=TestJobLocalWin.test_run()
-j
+
