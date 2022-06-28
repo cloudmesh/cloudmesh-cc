@@ -193,3 +193,5 @@ class Job():
         print(command)
         r = Shell.run(command)
         print (r)
+        if "No such process" in r:
+            Console.warning("Process {pid} not found. It is likely it already completed.")
