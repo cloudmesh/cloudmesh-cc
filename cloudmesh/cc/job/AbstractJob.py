@@ -46,7 +46,7 @@ the value None
 """
 class AbstractJob:
 
-    def __init__(self, **data):
+    def __init__(self, **argv):
         """
         craetes a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
@@ -56,8 +56,11 @@ class AbstractJob:
         :return:
         :rtype:
         """
-        for attribute in data:
-            self[attribute] = data[attribute]
+        print("argv", argv)
+        self.data = dict(argv)
+        print("gggggg",self.data)
+        # for attribute in self.data:
+        #     self[attribute] = self.data[attribute]
 
     def probe(self):
         """
