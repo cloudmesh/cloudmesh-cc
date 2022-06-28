@@ -105,7 +105,7 @@ class TestJoblocalhost:
         global host
         global name
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.out"))
+        os.remove(path_expand(f"{job.directory}/run.log"))
         os.remove(path_expand(f"{job.directory}/run.err"))
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
@@ -122,7 +122,7 @@ class TestJoblocalhost:
         global host
         global name
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.out")) if os.path.exists(path_expand(f"{job.directory}/run.out")) else None
+        os.remove(path_expand(f"{job.directory}/run.log")) if os.path.exists(path_expand(f"{job.directory}/run.log")) else None
         os.remove(path_expand(f"{job.directory}/run.err")) if os.path.exists(path_expand(f"{job.directory}/run.err")) else None
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")

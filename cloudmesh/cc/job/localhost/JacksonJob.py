@@ -116,7 +116,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.directory}/{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             try:
@@ -184,10 +184,16 @@ class Job():
         """
         kills the job
         """
-        return
-        #while not os.path.exists("f{name.log"):
-        #    time.sleep(1)
-        pid = self.get_pid()
+        if os.path.exists("f{name.log"):
+            pid = self.get_pid()
+
+        while not os.path.exists("f{name.log"):
+            time.sleep(1)
+            try:
+                pid = self.get_pid()
+            except:
+                pass
+
         command = f'kill -9 {pid}'
         print(command)
         r = Shell.run(command)
