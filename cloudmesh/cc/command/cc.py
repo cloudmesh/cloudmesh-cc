@@ -14,6 +14,18 @@ from cloudmesh.shell.command import map_parameters
 from cloudmesh.cc.job.ssh.Job import Job
 
 
+# if kind == "remote":
+#     from cloudmesh.cc.job.ssh.Job import Job
+#
+# elif kind == "slurm":
+#     from cloudmesh.cc.job.slurm.Job import Job
+#
+# elif kind =="localhost":
+#     from cloudmesh.cc.job.local.Job import Job
+#
+# else:
+#     Console.error("kind not supported")
+
 class CcCommand(PluginCommand):
 
     # noinspection PyUnusedLocal
