@@ -83,7 +83,7 @@ class TestJobssh:
         print("Status:", status)
         Benchmark.Stop()
 
-        assert progress == "100"
+        assert progress == 100
         assert status == "done"
 
     def test_exists(self):
