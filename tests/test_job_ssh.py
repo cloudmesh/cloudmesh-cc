@@ -97,3 +97,19 @@ class TestJobssh:
 
         assert not wrong
         assert correct
+
+    def test_watch(self):
+        HEADING()
+        global job
+        global username
+        global host
+        global name
+        Benchmark.Start()
+        os.remove("run.log")
+        os.remove("run.error")
+        job = Job(name=name, host=host, username=username)
+        job.watch(period=1)
+        status = job.get_status()
+        Benchmark.Stop()
+        assert status == "done"
+
