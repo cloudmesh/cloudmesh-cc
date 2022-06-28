@@ -9,7 +9,7 @@ from cloudmesh.common.variables import Variables
 
 class Job():
 
-    def __init__(self, **argv):
+    def __init__(self, name=None, username=None, host=None, **argv):
         """
         cms set username=abc123
 
@@ -23,8 +23,8 @@ class Job():
         """
 
         self.data = argv
-        print("self,data", self.data)
 
+        print (self.data)
         variables = Variables()
         # try:
         #    a,b,c, = self.name, self.username, self.host
@@ -33,53 +33,64 @@ class Job():
         #    raise ValueError
 
 
-        self.username = None
-        self.host = None
-        self.name = None
+        variables = Variables()
+
+        self.username = username
+        self.host = host
+        self.name = name
 
         print("self.data", self.data)
 
-        variables = Variables()
-        if "username" not in self.data:
-            self.username = variables["username"]
-        else:
-            self.username = self.data["username"]
-        if "name" not in self.data:
-            Console.error("Name not defined")
+        if self.name is None:
+            Console.error("Name is not defined")
             raise ValueError
-        else:
-            self.name = self.data["name"]
-        if "host" not in self.data:
-            Console.error("Host not defined")
-            raise ValueError
+
+        if self.username is None:
+            try:
+                self.username = variables["username"]
+            except:
+                Console.error("Username is not defined")
+                raise ValueError
+
+        if self.host is None:
+            try:
+                self.host = variables["host"]
+            except:
+                Console.error("Username is not defined")
+                raise ValueError
+
         if "directory" in self.data:
             self.directory = self.data["directry"]
         else:
             self.directory = f"~/experiment/{self.name}"
 
-    @property
-    def name(self):
-        return self.data["name"]
+        #print (self)
 
-    @property
-    def username(self):
-        return self.data["username"]
-
-    @property
-    def host(self):
-        return self.data["host"]
+    def __str__(self):
+        msg = []
+        msg.append(f"host: {self.host}")
+        msg.append(f"username: {self.username}")
+        msg.append(f"name: {self.name}")
+        msg.append(f"directory: {self.directory}")
+        msg.append(f"data: {self.data}")
+        return "\n".join(msg)
 
     @property
     def status(self):
         return self.get_status()
 
-    def run(self):
-        command = f'ssh {self.username}@{self.host} mkdir -p {self.directory}'
+    def mkdir_remote(self):
+        command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}/{self.name}"'
+        print (command)
         os.system(command)
+
+    def run(self):
+        self.mkdir_remote()
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "nohup sh ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
+        command = f'ssh {self.username}@{self.host} "cd {self.directory}/{self.name} ; "' \
+                  f'"nohup sh {self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -110,7 +121,7 @@ class Job():
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.error", 'r')
@@ -118,20 +129,21 @@ class Job():
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         return content
 
     def sync(self, filepath):
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/"
+        self.mkdir_remote()
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/{self.name}."
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
-        command = f'ssh {self.username}@{self.host} "ls ./{self.directory}/{filename}"'
+        command = f'ssh {self.username}@{self.host} "ls ./{self.directory}/{self.name}/{filename}"'
         print(command)
         r = Shell.run(command)
         if "cannot acces" in r:
