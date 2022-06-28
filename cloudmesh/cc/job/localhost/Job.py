@@ -21,22 +21,6 @@ class Job():
         :rtype:
         """
 
-        '''
-        if self.colors is None:
-            self.colors = {}
-        if key not in self.colors:
-            self.colors[key] = {}
-        self.colors[key].update(**colors)
-        
-        '''
-
-        for a in argv:
-            print("AAA",a)
-
-        # super().__init__(**argv)
-
-        print("argv", argv)
-
         self.data = {} #dict(argv)
         for key in argv:
             self.data[key] = argv[key]
@@ -122,9 +106,23 @@ class Job():
         return self.get_status()
 
     def watch(self, period=10):
+        """waits and wathes every seconds in period, till the job has completed"""
+        raise NotImplementedError
         pass
 
     def exists(self, filename):
         return True
         # shell run ls check if file exists
+        raise NotImplementedError
+
+    def get_pid(self):
+        """get the pid from the job"""
+        raise NotImplementedError
+        pid = 0
+        return pid
+
+    def kill(self):
+        """
+        kills the job
+        """
         raise NotImplementedError
