@@ -6,16 +6,18 @@ import time
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import writefile
 from cloudmesh.common.variables import Variables
+
 
 
 class Job():
 
-    def __init__(self, name=None, username=None, host=None, label=None, **argv):
+    def __init__(self, name=None,  label=None, **argv):
         """
         cms set username=abc123
 
-        craetes a job by passing either a dict with **dict or named arguments
+        creates a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
 
         :param data:
@@ -26,23 +28,21 @@ class Job():
 
         self.data = argv
 
-        print(self.data)
+        #print(self.data)
         variables = Variables()
         # try:
-        #    a,b,c, = self.name, self.username, self.host
+        #    a,b,c, = self.name, self.host
         # except:
-        #    Console.error("name, username, or host not set")
+        #    Console.error("name, or host not set")
         #    raise ValueError
 
         variables = Variables()
 
-        self.username = username
-        self.host = host
         self.name = name
         if label is None:
             label = name
 
-        print("self.data", self.data)
+        #print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
 
@@ -50,31 +50,15 @@ class Job():
             Console.error("Name is not defined")
             raise ValueError
 
-        if self.username is None:
-            try:
-                self.username = variables["username"]
-            except:
-                Console.error("Username is not defined")
-                raise ValueError
-
-        if self.host is None:
-            try:
-                self.host = variables["host"]
-            except:
-                Console.error("Username is not defined")
-                raise ValueError
-
         if "directory" in self.data:
-            self.directory = self.data["directry"]
+            self.directory = self.data["directory"]
         else:
             self.directory = f"~/experiment/{self.name}"
 
-        print(self)
+        #print(self)
 
     def __str__(self):
         msg = []
-        msg.append(f"host: {self.host}")
-        msg.append(f"username: {self.username}")
         msg.append(f"name: {self.name}")
         msg.append(f"directory: {self.directory}")
         msg.append(f"data: {self.data}")
@@ -85,22 +69,29 @@ class Job():
     def status(self):
         return self.get_status()
 
-    def mkdir_remote(self):
-        command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
-        print(command)
+    def mkdir_local(self):
+        command = f"mkdir -p {self.directory}"
+        # print(command)
         os.system(command)
+
+    def create_log(self):
+        log = writefile(f'{self.name}.log', 'e')
+        return log
+
 
     def run(self):
-        self.mkdir_remote()
+        self.mkdir_local()
+        self.create_log()
 
-        command = f'chmod ug+x ./{self.name}.sh'
-        os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        # command = f'chmod ug+x ./{self.name}.sh'
+        # os.system(command)
+        command = f"cd {self.directory} && nohup {self.name} > " \
+                  f"{self.name}.log 2> {self.name}.err"
         print(command)
         state = os.system(command)
-        error = self.get_error()
+#        error = self.get_error()
         log = self.get_log()
-        return state, log, error
+        return state, log
 
     def get_status(self, refresh=False):
         if refresh:
@@ -128,36 +119,35 @@ class Job():
                 return 0
         return 0
 
-    def get_error(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.error", 'r')
-        return content
+    # def get_error(self):
+    #     command = f"scp{self.directory}/{self.name}.error {self.name}.error"
+    #     print(command)
+    #     os.system(command)
+    #     content = readfile(f"{self.name}.error", 'r')
+    #     return content
 
     def get_log(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+        global status
+        command = f"{self.directory}/{self.name}.log"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         return content
 
 
-    def sync(self, filepath):
-        self.mkdir_remote()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-        print(command)
-        r = os.system(command)
-        return r
+    # def sync(self, filepath):
+    #     self.mkdir_local()
+    #     command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+    #     print(command)
+    #     r = os.system(command)
+    #     return r
 
 
     def exists(self, filename):
-        command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
+        command = f"ls {self.directory}/{filename}"
         print(command)
         r = Shell.run(command)
-        if "cannot acces" in r:
+        if "cannot access" in r:
             return False
         return True
 
@@ -191,13 +181,16 @@ class Job():
         kills the job
         """
         pid = self.get_pid()
-        command = ""
-        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
+        command = f"kill -9 {pid}"
         print(command)
         r = Shell.run(command)
         print(r)
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
+
+j=Job(name='alex', directory='cm/cloudmesh-cc/cloudmesh/cc/localhost')
+j.run()
+
 
 

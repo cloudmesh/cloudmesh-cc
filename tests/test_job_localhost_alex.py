@@ -1,7 +1,8 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_ssh.py
-# pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
+# pytest -v --capture=no tests/test_job_localhost_alex.py
+# pytest -v  tests/test_job_localhost_alex.py
+# pytest -v --capture=no  tests/test_job_localhost_alex.py::TestJobLocalWin
+# ::<METHODNAME>
 ###############################################################
 import os
 
@@ -16,18 +17,11 @@ variables = Variables()
 
 name = "run"
 
-if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
-else:
-    host = variables["host"]
-
-username = variables["username"]
-
 job = None
 
 
 @pytest.mark.incremental
-class TestJobssh:
+class TestJobLocalWin:
 
     def test_create_run(self):
         os.system("cp ./tests/run.sh .")
@@ -36,26 +30,22 @@ class TestJobssh:
     def test_create(self):
         HEADING()
         global job
-        global username
-        global host
         global name
         Benchmark.Start()
-        job = Job(name=name, host=host, username=username)
+        job = Job(name=name)
         Benchmark.Stop()
         assert job.name == name
-        assert job.host == host
-        assert job.username == username
 
-    def test_sync(self):
-        HEADING()
-        global job
-
-        Benchmark.Start()
-        r = job.sync("./tests/run.sh")
-
-        Benchmark.Stop()
-        # successful exit status
-        assert r == 0
+    # def test_sync(self):
+    #     HEADING()
+    #     global job
+    #
+    #     Benchmark.Start()
+    #     r = job.sync("./tests/run.sh")
+    #
+    #     Benchmark.Stop()
+    #     # successful exit status
+    #     assert r == 0
 
     def test_run(self):
         HEADING()
@@ -101,14 +91,12 @@ class TestJobssh:
     def test_watch(self):
         HEADING()
         global job
-        global username
-        global host
         global name
         Benchmark.Start()
-        os.remove("run.log")
-        os.remove("run.error")
-        job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
+#        os.remove(log)
+ #       os.remove("run.error")
+        job = Job(name=name)
+#        r = job.sync("./tests/run.sh")
         job.run()
         job.watch(period=1)
         status = job.get_status()
@@ -118,14 +106,12 @@ class TestJobssh:
     def test_kill(self):
         HEADING()
         global job
-        global username
-        global host
         global name
         Benchmark.Start()
-        os.remove("run.log") if os.path.exists("run.log") else None
-        os.remove("run.error") if os.path.exists("run.error") else None
-        job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
+#        os.remove(log) if os.path.exists(log) else None
+#        os.remove("run.error") if os.path.exists("run.error") else None
+        job = Job(name=name)
+#        r = job.sync("./tests/run.sh")
         job.run()
         pid = job.get_pid()
         job.kill()
@@ -134,3 +120,6 @@ class TestJobssh:
         Benchmark.Stop()
         # assert status == "done"
         # check with ps if pid is running
+
+j=TestJobLocalWin.test_run()
+j
