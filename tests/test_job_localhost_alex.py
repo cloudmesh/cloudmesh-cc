@@ -24,7 +24,7 @@ job = None
 class TestJobLocalWin:
 
     def test_create_run(self):
-        os.system("cp ./tests/run.sh .")
+        os.system("copy ./tests/run.sh .")
         assert os.path.isfile("./run.sh")
 
     def test_create(self):

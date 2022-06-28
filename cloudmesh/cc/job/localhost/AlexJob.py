@@ -85,13 +85,15 @@ class Job():
 
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
-        command = f"cd {self.directory} && nohup {self.name} > " \
-                  f"{self.name}.log 2> {self.name}.err"
-        print(command)
-        state = os.system(command)
+        command1 = 'cd'
+        print(command1)
+        state1 = os.system(command1)
+        command2 = 'cd cm/cloudmesh-cc/cloudmesh/cc/job/localhost'
+        print(command2)
+        state2 = os.system(command2)
 #        error = self.get_error()
         log = self.get_log()
-        return state, log
+        return state1, state2, log
 
     def get_status(self, refresh=False):
         if refresh:
@@ -189,7 +191,7 @@ class Job():
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
 
-j=Job(name='alex', directory='cm/cloudmesh-cc/cloudmesh/cc/localhost')
+j=Job(name='alex', directory='cm/cloudmesh-cc/cloudmesh/cc/job/localhost')
 j.run()
 
 
