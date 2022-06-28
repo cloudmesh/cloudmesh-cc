@@ -28,6 +28,8 @@ RUN mkdir /var/spool/slurmd && \
     touch /var/log/slurm/slurmd.log && \
     chown -R admin:admin /var/log/slurm/slurmd.log
 
+RUN sudo chown -R admin:admin /home/admin
+
 COPY slurm.conf /etc/slurm/
 COPY cgroup.conf /etc/slurm/
 COPY docker-entrypoint.sh /etc/slurm/
