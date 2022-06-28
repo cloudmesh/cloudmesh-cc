@@ -26,20 +26,13 @@ class Job():
 
         self.data = argv
 
-<<<<<<< HEAD
-    def run(self):
-        r = Shell.run(self.command)
-        print(r)
-=======
-        print (self.data)
+        print(self.data)
         variables = Variables()
         # try:
         #    a,b,c, = self.name, self.username, self.host
         # except:
         #    Console.error("name, username, or host not set")
         #    raise ValueError
->>>>>>> d88d3d4abae2ee8135985c30db11e91c886a7f74
-
 
         variables = Variables()
 
@@ -52,7 +45,6 @@ class Job():
         print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
-
 
         if self.name is None:
             Console.error("Name is not defined")
@@ -77,7 +69,7 @@ class Job():
         else:
             self.directory = f"~/experiment/{self.name}"
 
-        print (self)
+        print(self)
 
     def __str__(self):
         msg = []
@@ -95,7 +87,7 @@ class Job():
 
     def mkdir_remote(self):
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
-        print (command)
+        print(command)
         os.system(command)
 
     def run(self):
@@ -144,12 +136,6 @@ class Job():
         content = readfile(f"{self.name}.error", 'r')
         return content
 
-<<<<<<< HEAD
-"""
-j = Job(username='jnn7nd')
-j.run()
-"""
-=======
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
@@ -158,12 +144,14 @@ j.run()
         content = readfile(f"{self.name}.log", 'r')
         return content
 
+
     def sync(self, filepath):
         self.mkdir_remote()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
+
 
     def exists(self, filename):
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
@@ -173,6 +161,7 @@ j.run()
             return False
         return True
 
+
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
@@ -181,6 +170,7 @@ j.run()
             finished = progress == 100
             if not finished:
                 time.sleep(period)
+
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
@@ -195,6 +185,7 @@ j.run()
             return pid
         return None
 
+
     def kill(self):
         """
         kills the job
@@ -204,7 +195,9 @@ j.run()
         command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
         print(command)
         r = Shell.run(command)
-        print (r)
+        print(r)
         if "No such process" in r:
-            Console.warning("Process {pid} not found. It is likely it already completed.")
->>>>>>> d88d3d4abae2ee8135985c30db11e91c886a7f74
+            Console.warning(
+                "Process {pid} not found. It is likely it already completed.")
+
+
