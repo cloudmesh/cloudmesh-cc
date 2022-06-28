@@ -1,5 +1,5 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_localhost_jackson.py
+# pytest -v --capture=no tests/test_job_ssh.py
 # pytest -v  tests/test_job_ssh.py
 # pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
 ###############################################################
@@ -7,17 +7,17 @@ import os
 
 import pytest
 
-from cloudmesh.cc.job.localhost.JacksonJob import Job
+from cloudmesh.cc.job.slurm.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import path_expand
+
 variables = Variables()
 
 name = "run"
 
 if "host" not in variables:
-    host = "localhost"
+    host = "rivanna.hpc.virginia.edu"
 else:
     host = variables["host"]
 
@@ -27,7 +27,7 @@ job = None
 
 
 @pytest.mark.incremental
-class TestJoblocalhost:
+class TestJobssh:
 
     def test_create_run(self):
         os.system("cp ./tests/run.sh .")
@@ -105,8 +105,8 @@ class TestJoblocalhost:
         global host
         global name
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.out"))
-        os.remove(path_expand(f"{job.directory}/run.err"))
+        os.remove("run.log")
+        os.remove("run.error")
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
         job.run()
@@ -122,8 +122,8 @@ class TestJoblocalhost:
         global host
         global name
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.out")) if os.path.exists(path_expand(f"{job.directory}/run.out")) else None
-        os.remove(path_expand(f"{job.directory}/run.err")) if os.path.exists(path_expand(f"{job.directory}/run.err")) else None
+        os.remove("run.log") if os.path.exists("run.log") else None
+        os.remove("run.error") if os.path.exists("run.error") else None
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
         job.run()

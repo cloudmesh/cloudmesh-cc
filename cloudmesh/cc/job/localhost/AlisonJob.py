@@ -65,7 +65,7 @@ class Job():
                 raise ValueError
 
         if "directory" in self.data:
-            self.directory = self.data["directory"]
+            self.directory = self.data["directry"]
         else:
             self.directory = f"~/experiment/{self.name}"
 
@@ -85,16 +85,17 @@ class Job():
     def status(self):
         return self.get_status()
 
-    def mkdir_local(self):
-        command = f'mkdir -p {self.directory}'
+    def mkdir_remote(self):
+        command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
         os.system(command)
 
     def run(self):
-        self.mkdir_local()
+        self.mkdir_remote()
+
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.out ; echo $pid'
+        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -105,7 +106,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
@@ -116,7 +117,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             try:
@@ -129,37 +130,40 @@ class Job():
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"cd ~ ; cd {self.directory}"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        content = readfile(f"{self.name}.error", 'r')
         return content
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"cd ~ ; cd {self.directory}"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.out", 'r')
+        content = readfile(f"{self.name}.log", 'r')
         return content
 
+
     def sync(self, filepath):
-        self.mkdir_local()
-        command = f'cp {filepath} {self.directory}'
+        self.mkdir_remote()
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
 
+
     def exists(self, filename):
-        command = f'ls {self.directory}/{filename}'
+        command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
-        if "No such file or directory" in r:
+        if "cannot acces" in r:
             return False
         return True
 
+
     def watch(self, period=10):
-        """waits and watches every seconds in period, till the job has completed"""
+        """waits and wathes every seconds in period, till the job has completed"""
         finished = False
         while not finished:
             progress = int(self.get_progress(refresh=True))
@@ -167,12 +171,13 @@ class Job():
             if not finished:
                 time.sleep(period)
 
+
     def get_pid(self, refresh=False):
         """get the pid from the job"""
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.directory}/{self.name}.out", 'r')
+            log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
@@ -180,12 +185,14 @@ class Job():
             return pid
         return None
 
+
     def kill(self):
         """
         kills the job
         """
         pid = self.get_pid()
-        command = f'kill -9 {pid}'
+        command = ""
+        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
         print(command)
         r = Shell.run(command)
         print(r)
