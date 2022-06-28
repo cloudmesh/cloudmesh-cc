@@ -28,6 +28,8 @@ WORKDIR /home/admin
 COPY job.sh /home/admin
 COPY test.py /home/admin
 
+RUN sudo chown -R admin:admin /home/admin
+
 EXPOSE 8888
 
 ENV USER admin

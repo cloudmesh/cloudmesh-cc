@@ -7,6 +7,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.util import path_expand
 
 
 class Job():
@@ -94,6 +95,7 @@ class Job():
         self.mkdir_local()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
+        # stdbuf -oL
         command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.err > {self.name}.log && echo $pid'
         print(command)
         state = os.system(command)
@@ -128,17 +130,23 @@ class Job():
         return 0
 
     def get_error(self):
-        command = f"cp {self.directory}/{self.name}.err ."
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        try:
+            command = f"cp {self.directory}/{self.name}.err ."
+            print(command)
+            os.system(command)
+            content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        except:
+            content = None
         return content
 
     def get_log(self):
-        command = f"cp {self.directory}/{self.name}.log ."
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        try:
+            command = f"cp {self.directory}/{self.name}.log ."
+            print(command)
+            os.system(command)
+            content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        except:
+            content = None
         return content
 
     def sync(self, filename=None):
@@ -168,31 +176,34 @@ class Job():
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.directory}/{self.name}.log", 'r')
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            pid = lines[0].split("pid=")[1]
-            pid = pid.split()[0]
-            return pid
+        try:
+            """get the pid from the job"""
+            if refresh:
+                log = self.get_log()
+            log = readfile(f"{self.name}.log", 'r')
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                pid = lines[0].split("pid=")[1]
+                pid = pid.split()[0]
+                return pid
+        except:
+            pass
         return None
 
     def kill(self):
         """
         kills the job
         """
-        if os.path.exists("f{name.log"):
+        if os.path.exists(path_expand(f"{self.name}.log")):
             pid = self.get_pid()
-
-        while not os.path.exists("f{name.log"):
-            time.sleep(1)
-            try:
-                pid = self.get_pid()
-            except:
-                pass
+        else:
+            while not os.path.exists(path_expand(f"{self.name}.log")):
+                print(f"cehck for {self.name}.log")
+                time.sleep(1)
+                try:
+                    pid = self.get_pid()
+                except:
+                    pass
 
         command = f'kill -9 {pid}'
         print(command)
