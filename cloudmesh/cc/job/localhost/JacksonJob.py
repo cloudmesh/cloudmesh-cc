@@ -129,17 +129,23 @@ class Job():
         return 0
 
     def get_error(self):
-        command = f"cp {self.directory}/{self.name}.err ."
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        try:
+            command = f"cp {self.directory}/{self.name}.err ."
+            print(command)
+            os.system(command)
+            content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        except:
+            content = None
         return content
 
     def get_log(self):
-        command = f"cp {self.directory}/{self.name}.log ."
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        try:
+            command = f"cp {self.directory}/{self.name}.log ."
+            print(command)
+            os.system(command)
+            content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        except:
+            content = None
         return content
 
     def sync(self, filename=None):
@@ -169,15 +175,18 @@ class Job():
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
-        if refresh:
-            log = self.get_log()
-        log = readfile(f"{self.name}.log", 'r')
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            pid = lines[0].split("pid=")[1]
-            pid = pid.split()[0]
-            return pid
+        try:
+            """get the pid from the job"""
+            if refresh:
+                log = self.get_log()
+            log = readfile(f"{self.name}.log", 'r')
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                pid = lines[0].split("pid=")[1]
+                pid = pid.split()[0]
+                return pid
+        except:
+            pass
         return None
 
     def kill(self):
