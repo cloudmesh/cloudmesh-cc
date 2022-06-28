@@ -5,6 +5,7 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
+from cloudmesh.common.systeminfo import os_is_windows
 import os
 
 class Job():
@@ -34,12 +35,20 @@ class Job():
         variables = Variables()
         if "username" not in self.data:
             self.username=variables["username"]
+        else:
+            self.username = self.data["username"]
         if "name" not in self.data:
             Console.error("Name not defined")
             raise ValueError
+        else:
+            self.name = self.data["name"]
         if "host" not in self.data:
             Console.error("Host not defined")
             raise ValueError
+        if "directory" in self.data:
+            self.directory = self.data["directry"]
+        else:
+            self.directory = f"~/experiment/{self.name}"
 
     def set_name(self, name):
         self.name = name
@@ -48,8 +57,13 @@ class Job():
         self.get_status()
 
     def run(self):
-        # return tuple
-        command = f'ssh {self.username}@{self.host} "nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
+        if os_is_windows():
+            #
+            # TODO: sus start to submit in background after you try this waiting call first
+            #
+            command = f'./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid'
+        else:
+            command = f'nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid'
         state = os.system(command)
         error = self.get_error()
         log = self.get_log()

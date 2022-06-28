@@ -32,14 +32,30 @@ class Job():
         #    Console.error("name, username, or host not set")
         #    raise ValueError
 
+
+        self.username = None
+        self.host = None
+        self.name = None
+
+        print("self.data", self.data)
+
+        variables = Variables()
         if "username" not in self.data:
-            self.data["username"] = variables["username"]
+            self.username = variables["username"]
+        else:
+            self.username = self.data["username"]
         if "name" not in self.data:
             Console.error("Name not defined")
             raise ValueError
+        else:
+            self.name = self.data["name"]
         if "host" not in self.data:
             Console.error("Host not defined")
             raise ValueError
+        if "directory" in self.data:
+            self.directory = self.data["directry"]
+        else:
+            self.directory = f"~/experiment/{self.name}"
 
     @property
     def name(self):
@@ -58,6 +74,9 @@ class Job():
         return self.get_status()
 
     def run(self):
+        command = f'ssh {self.username}@{self.host} mkdir -p {self.directory}'
+        os.system(command)
+
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} "nohup sh ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
@@ -91,7 +110,7 @@ class Job():
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.name}.error {self.name}.error"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.error", 'r')
@@ -99,20 +118,20 @@ class Job():
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.name}.log {self.name}.log"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         return content
 
     def sync(self, filepath):
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:."
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/"
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
-        command = f'ssh {self.username}@{self.host} "ls ./{filename}"'
+        command = f'ssh {self.username}@{self.host} "ls ./{self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
         if "cannot acces" in r:
