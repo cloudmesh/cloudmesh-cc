@@ -113,7 +113,7 @@ class rest:
         before = w.update_status()
         w.display_status()
         Benchmark.Start()
-        w.run()
+        w.run
         Benchmark.Stop()
         after = w.update_status()
         w.display_status()

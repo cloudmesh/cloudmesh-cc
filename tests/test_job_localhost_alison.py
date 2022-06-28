@@ -129,7 +129,7 @@ class ret:
         os.remove("run.error") if os.path.exists("run.error") else None
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
-        job.run()
+        job.run
         pid = job.get_pid()
         job.kill()
         status = job.get_status()

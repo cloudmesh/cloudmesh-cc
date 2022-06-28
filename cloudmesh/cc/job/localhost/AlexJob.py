@@ -8,8 +8,7 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import writefile
 from cloudmesh.common.variables import Variables
-
-
+from cloudmesh.common.util import path_expand
 
 class Job():
 
@@ -71,29 +70,29 @@ class Job():
 
     def mkdir_local(self):
         command = f"mkdir -p {self.directory}"
-        # print(command)
-        os.system(command)
-
-    def create_log(self):
-        log = writefile(f'{self.name}.log', 'e')
-        return log
-
+        try:
+            Shell.run(command)
+        except Exception as e:
+            if "already exists" in str(e.output):
+                Console.warning('Folder already exists!')
 
     def run(self):
         self.mkdir_local()
-        self.create_log()
-
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
-        command1 = 'cd'
-        print(command1)
-        state1 = os.system(command1)
-        command2 = 'cd cm/cloudmesh-cc/cloudmesh/cc/job/localhost'
-        print(command2)
-        state2 = os.system(command2)
+
+        command = f'cd {self.directory} && nohup bash {self.name}.sh >' \
+                  f' {self.name}.log ' \
+                  f'2> {self.name}.err && echo hello world'
+        # command = 'ls'
+        state = None
+        try:
+            state = Shell.run(command)
+        except Exception as e:
+            print(e.output)
 #        error = self.get_error()
         log = self.get_log()
-        return state1, state2, log
+        return state, log
 
     def get_status(self, refresh=False):
         if refresh:
@@ -130,10 +129,14 @@ class Job():
 
     def get_log(self):
         global status
-        command = f"{self.directory}/{self.name}.log"
+        print(f"{self.directory}")
+        print(f"{self.name}")
+        command = f"{self.directory}{self.name}.log"
         print(command)
-        os.system(command)
+        # os.system(command)
         content = readfile(f"{self.name}.log", 'r')
+        print(f"{content}")
+        print(content)
         return content
 
 
@@ -189,10 +192,14 @@ class Job():
         print(r)
         if "No such process" in r:
             Console.warning(
-                "Process {pid} not found. It is likely it already completed.")
+                f"Process {pid} not found. It is likely it already completed.")
 
-j=Job(name='alex', directory='cm/cloudmesh-cc/cloudmesh/cc/job/localhost')
+# test commands
+directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
+j=Job(name='alex', directory=directory)
 j.run()
+#j.get_log()
+
 
 
 
