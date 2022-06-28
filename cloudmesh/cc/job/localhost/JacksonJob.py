@@ -172,8 +172,7 @@ class Job():
         """get the pid from the job"""
         if refresh:
             log = self.get_log()
-        else:
-            log = readfile(f"{self.directory}/{self.name}.log", 'r')
+        log = readfile(f"{self.name}.log", 'r')
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
