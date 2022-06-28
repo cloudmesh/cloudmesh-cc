@@ -113,7 +113,9 @@ class Job():
         print(Shell.run("pwd"))
         # os.chdir(self.directory)
 
-        command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
+        # command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
+        bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
+        command = f'start /min "{bash}" {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
         print(command)
         state = os.system(command)
 
