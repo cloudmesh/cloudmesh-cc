@@ -31,7 +31,9 @@ class TestJoblocalhost:
 
     def test_create_run(self):
         os.system("cp ./tests/run.sh .")
+        os.system("cp ./tests/wait.sh .")
         assert os.path.isfile("./run.sh")
+        assert os.path.isfile("./wait.sh")
 
     def test_create(self):
         HEADING()
@@ -121,13 +123,14 @@ class TestJoblocalhost:
         global username
         global host
         global name
+
+        name = "wait"
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/run.log")) if os.path.exists(path_expand(f"{job.directory}/run.log")) else None
-        os.remove(path_expand(f"{job.directory}/run.err")) if os.path.exists(path_expand(f"{job.directory}/run.err")) else None
+        os.remove(path_expand(f"{job.directory}/{name}.log")) if os.path.exists(path_expand(f"{job.directory}/{name}.log")) else None
+        os.remove(path_expand(f"{job.directory}/{name}.err")) if os.path.exists(path_expand(f"{job.directory}/{name}.err")) else None
         job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
-        job.run()
-        pid = job.get_pid()
+        r = job.sync(f"./tests/{name}.sh")
+        pid = job.get_pid(refresh=True)
         job.kill()
         status = job.get_status()
         print ("Status", status)
