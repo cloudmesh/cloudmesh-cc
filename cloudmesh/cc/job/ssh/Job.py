@@ -160,11 +160,18 @@ class Job():
         raise NotImplementedError
         pass
 
-    def get_pid(self):
+    def get_pid(self, refresh=False):
         """get the pid from the job"""
-        raise NotImplementedError
-        pid = 0
-        return pid
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log", 'r')
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            pid = lines[0].split("pid=")[1]
+            pid = pid.split()[0]
+            return pid
+        return None
 
     def kill(self):
         """
