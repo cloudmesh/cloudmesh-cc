@@ -16,12 +16,8 @@ variables = Variables()
 
 name = "run"
 
-if "host" not in variables:
-    host = "localhost"
-else:
-    host = variables["host"]
-
-username = variables["username"]
+host = "localhost"
+username = os.environ["USER"]
 
 job = None
 
@@ -125,10 +121,13 @@ class TestJoblocalhost:
         global name
 
         name = "wait"
+
+        os.system("rm -f ~/experiment/wait/wait.log")
+        os.system("rm -f ~/experiment/wait/wait.error")
+
         Benchmark.Start()
-        os.remove(path_expand(f"{job.directory}/{name}.log")) if os.path.exists(path_expand(f"{job.directory}/{name}.log")) else None
-        os.remove(path_expand(f"{job.directory}/{name}.err")) if os.path.exists(path_expand(f"{job.directory}/{name}.err")) else None
         job = Job(name=name, host=host, username=username)
+        print(job)
         r = job.sync(f"./tests/{name}.sh")
         pid = job.get_pid(refresh=True)
         job.kill()
