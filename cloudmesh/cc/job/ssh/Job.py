@@ -89,8 +89,7 @@ class Job():
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory}/{self.name} ; "' \
-                  f'"nohup sh {self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid"'
+        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -121,7 +120,7 @@ class Job():
 
     def get_error(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}/{self.name}.error {self.name}.error"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.error", 'r')
@@ -129,7 +128,7 @@ class Job():
 
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}/{self.name}.log {self.name}.log"
+        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.log", 'r')
@@ -137,13 +136,13 @@ class Job():
 
     def sync(self, filepath):
         self.mkdir_remote()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/{self.name}."
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
-        command = f'ssh {self.username}@{self.host} "ls ./{self.directory}/{self.name}/{filename}"'
+        command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
         if "cannot acces" in r:
