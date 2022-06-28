@@ -26,6 +26,11 @@ class Job():
 
         self.data = argv
 
+<<<<<<< HEAD
+    def run(self):
+        r = Shell.run(self.command)
+        print(r)
+=======
         print (self.data)
         variables = Variables()
         # try:
@@ -33,6 +38,7 @@ class Job():
         # except:
         #    Console.error("name, username, or host not set")
         #    raise ValueError
+>>>>>>> d88d3d4abae2ee8135985c30db11e91c886a7f74
 
 
         variables = Variables()
@@ -138,6 +144,12 @@ class Job():
         content = readfile(f"{self.name}.error", 'r')
         return content
 
+<<<<<<< HEAD
+"""
+j = Job(username='jnn7nd')
+j.run()
+"""
+=======
     def get_log(self):
         # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
@@ -195,3 +207,4 @@ class Job():
         print (r)
         if "No such process" in r:
             Console.warning("Process {pid} not found. It is likely it already completed.")
+>>>>>>> d88d3d4abae2ee8135985c30db11e91c886a7f74
