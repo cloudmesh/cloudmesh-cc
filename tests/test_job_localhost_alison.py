@@ -110,12 +110,14 @@ class TestJobssh:
         os.remove("run-error.txt")
         job = Job(name=name, host=host, username=username)
         r = job.sync("./tests/run.sh")
-        job.run
-        job.watch(period=1)
+        job.run()
+        # job.watch(period=1)
+        print("hello")
         status = job.get_status()
         Benchmark.Stop()
         assert status == "done"
 
+class ret:
     def test_kill(self):
         HEADING()
         global job
