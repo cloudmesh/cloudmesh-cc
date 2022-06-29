@@ -19,12 +19,13 @@ name = "run"
 
 job = None
 
+directory = ('cd cm/cloudmesh-cc/')
 
 @pytest.mark.incremental
 class TestJobLocalWin:
 
     def test_create_run(self):
-        os.system("copy ./tests/run.sh .")
+        os.system("cp tests/run.sh .")
         assert os.path.isfile("./run.sh")
 
     def test_create(self):
@@ -36,16 +37,16 @@ class TestJobLocalWin:
         Benchmark.Stop()
         assert job.name == name
 
-    # def test_sync(self):
-    #     HEADING()
-    #     global job
-    #
-    #     Benchmark.Start()
-    #     r = job.sync("./tests/run.sh")
-    #
-    #     Benchmark.Stop()
-    #     # successful exit status
-    #     assert r == 0
+    def test_sync(self):
+        HEADING()
+        global job
+
+        Benchmark.Start()
+        r = job.sync("./tests/run.sh")
+
+        Benchmark.Stop()
+        # successful exit status
+        assert r == 0
 
     def test_run(self):
         HEADING()

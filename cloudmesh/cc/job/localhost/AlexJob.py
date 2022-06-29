@@ -69,38 +69,19 @@ class Job():
         return self.get_status()
 
     def mkdir_local(self):
-        command = f"mkdir -p {self.directory}"
-        try:
-            Shell.run(command)
-        except Exception as e:
-            if "already exists" in str(e.output):
-                Console.warning('Folder already exists!')
+        command = f"mkdir {self.directory}"
+        Shell.mkdir(f'{self.directory}')
 
     def run(self):
         self.mkdir_local()
-        # command = f'chmod ug+x ./{self.name}.sh'
-        # os.system(command)
-
-        # command = f'cd {self.directory} && nohup bash {self.name}.sh >' \
-        #           f' {self.name}.log ' \
-        #           f'2> {self.name}.err && echo $$'
-
-        # from pathlib import Path
-        # path = Path(self.directory)
-        # print(f'cd {self.directory}')
-        # Shell.run(f'cd {self.directory}')
+        command = f'chmod ug+x ./{self.name}.sh'
+        os.system(command)
 
         bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
 
         command = f'cd {self.directory} && start /min "{bash}" {self.name}.sh > {self.name}.log 2>' \
                   f' {self.name}.err'
-        # command = 'ls'
-        # state = None
-        # try:
         state = os.system(command)
-        # except Exception as e:
-        #     print(e.output)
-        #        error = self.get_error()
         log = self.get_log()
         return state, log
 
@@ -141,28 +122,28 @@ class Job():
         global status
         # print(f"{self.directory}")
         # print(f"{self.name}")
-        command = f"cd {self.directory}{self.name}.log"
-        #        print(command)
-        Shell.run(command)
+        # command = f"cd {self.directory}{self.name}.log"
+        # #        print(command)
+        # os.system(command)
         content = readfile(f"{self.name}.log", 'r')
         # print(f"{content}")
         # print(content)
         return content
 
-    # def sync(self, filepath):
-    #     self.mkdir_local()
-    #     command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-    #     print(command)
-    #     r = os.system(command)
-    #     return r
+    def sync(self, filepath):
+        self.mkdir_local()
+        command = f"scp ./{self.name}.sh {self.directory}/."
+        print(command)
+        r = os.system(command)
+        return r
 
     def exists(self, filename):
-        command = f"ls {self.directory}/{filename}"
+        command = f"{self.directory}/{filename}"
         #        print(command)
-        r = Shell.run(command)
-        if "cannot access" in r:
-            return False
-        return True
+        r = Shell.ls(command)
+        if len(r) > 0:
+            return True
+        return False
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
@@ -186,6 +167,7 @@ class Job():
             return pid
         return None
 
+class Kill:
     def kill(self):
         """
         kills the job
@@ -201,7 +183,7 @@ class Job():
 
 
 # test commands
-directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
-j = Job(name='alex', directory=directory)
-j.run()
+# directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
+# j = Job(name='alex', directory=directory)
+# j.run()
 # j.get_log()
