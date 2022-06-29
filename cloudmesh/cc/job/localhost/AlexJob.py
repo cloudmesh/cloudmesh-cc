@@ -5,14 +5,14 @@ import time
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
-from cloudmesh.common.util import readfile
-from cloudmesh.common.util import writefile
-from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import readfile
+from cloudmesh.common.variables import Variables
+
 
 class Job():
 
-    def __init__(self, name=None,  label=None, **argv):
+    def __init__(self, name=None, label=None, **argv):
         """
         cms set username=abc123
 
@@ -27,7 +27,7 @@ class Job():
 
         self.data = argv
 
-        #print(self.data)
+        # print(self.data)
         variables = Variables()
         # try:
         #    a,b,c, = self.name, self.host
@@ -41,7 +41,7 @@ class Job():
         if label is None:
             label = name
 
-        #print("self.data", self.data)
+        # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
 
@@ -54,7 +54,7 @@ class Job():
         else:
             self.directory = f"~/experiment/{self.name}"
 
-        #print(self)
+        # print(self)
 
     def __str__(self):
         msg = []
@@ -100,7 +100,7 @@ class Job():
         state = os.system(command)
         # except Exception as e:
         #     print(e.output)
-#        error = self.get_error()
+        #        error = self.get_error()
         log = self.get_log()
         return state, log
 
@@ -142,13 +142,12 @@ class Job():
         # print(f"{self.directory}")
         # print(f"{self.name}")
         command = f"cd {self.directory}{self.name}.log"
-#        print(command)
+        #        print(command)
         Shell.run(command)
         content = readfile(f"{self.name}.log", 'r')
         # print(f"{content}")
         # print(content)
         return content
-
 
     # def sync(self, filepath):
     #     self.mkdir_local()
@@ -157,15 +156,13 @@ class Job():
     #     r = os.system(command)
     #     return r
 
-
     def exists(self, filename):
         command = f"ls {self.directory}/{filename}"
-#        print(command)
+        #        print(command)
         r = Shell.run(command)
         if "cannot access" in r:
             return False
         return True
-
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
@@ -175,7 +172,6 @@ class Job():
             finished = progress == 100
             if not finished:
                 time.sleep(period)
-
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
@@ -190,26 +186,22 @@ class Job():
             return pid
         return None
 
-
     def kill(self):
         """
         kills the job
         """
         pid = self.get_pid()
         command = f"kill -9 {pid}"
-#        print(command)
+        #        print(command)
         r = Shell.run(command)
-#        print(r)
+        #        print(r)
         if "No such process" in r:
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
 
+
 # test commands
 directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
-j=Job(name='alex', directory=directory)
+j = Job(name='alex', directory=directory)
 j.run()
-#j.get_log()
-
-
-
-
+# j.get_log()
