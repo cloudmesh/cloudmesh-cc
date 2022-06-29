@@ -5,7 +5,6 @@ import time
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 
@@ -28,7 +27,6 @@ class Job():
         self.data = argv
 
         # print(self.data)
-        variables = Variables()
         # try:
         #    a,b,c, = self.name, self.host
         # except:
@@ -74,16 +72,19 @@ class Job():
 
     def run(self):
         self.mkdir_local()
-        command = f'chmod ug+x ./{self.name}.sh'
-        os.system(command)
+        # command = f'chmod ug+x ./{self.name}.sh'
+        # os.system(command)
 
         bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
 
-        command = f'cd {self.directory} && start /min "{bash}" {self.name}.sh > {self.name}.log 2>' \
-                  f' {self.name}.err'
+        command = f'cd {self.directory} && start /min "{bash}" && nohup' \
+                  f' {self.name}.sh > {self.name}.log 2> {self.name}.err'
+        # command = f'cd {self.directory}/{self.name}.sh > {self.name}.log 2>' \
+        #           f' {self.name}.err'
         state = os.system(command)
-        log = self.get_log()
-        return state, log
+        print(state)
+        # log = self.get_log()
+        return state
 
     def get_status(self, refresh=False):
         if refresh:
@@ -183,7 +184,11 @@ class Kill:
 
 
 # test commands
-# directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
-# j = Job(name='alex', directory=directory)
-# j.run()
+directory = ('cm/cloudmesh-cc/tests/')
+j = Job(name='run', directory=directory)
+j.run()
 # j.get_log()
+
+
+
+

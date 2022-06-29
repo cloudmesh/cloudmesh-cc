@@ -71,8 +71,7 @@ class Job():
             # else:
             #     self.directory = f"~/experiment/{self.name}"
 
-            from cloudmesh.common.util import path_expand
-            self.directory = path_expand(f"~/experiment/{self.name}")
+            self.directory = f"~/experiment/{self.name}"
 
         print(self)
 

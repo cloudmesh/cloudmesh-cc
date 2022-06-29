@@ -1,1 +1,2 @@
-sleep 3600
+echo hello world
+echo $$

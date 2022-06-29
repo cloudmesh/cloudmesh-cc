@@ -19,7 +19,7 @@ name = "run"
 
 job = None
 
-directory = ('cd cm/cloudmesh-cc/')
+# directory = ('cd cm/cloudmesh-cc/')
 
 @pytest.mark.incremental
 class TestJobLocalWin:
@@ -53,8 +53,8 @@ class TestJobLocalWin:
         global job
 
         Benchmark.Start()
-        s, l, e = job.run()
-        print("State:", s)
+        s = job.run()
+        print("State:", type(s))
         # print(l)
         # print(e)
 
