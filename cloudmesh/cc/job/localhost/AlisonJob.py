@@ -8,8 +8,6 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 
-from cloudmesh.common.systeminfo import os_is_windows
-
 
 class Job():
 
@@ -98,27 +96,40 @@ class Job():
         Shell.mkdir(self.directory)
 
     def run(self):
-        self.mkdir()
+        # self.mkdir()
+        #
+        # command = f'chmod ug+x ./{self.name}.sh'
+        # os.system(command)
+        # # command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        # # command = f'cd {self.directory} && start /min {self.name} > {self.name}.log'
+        #
+        # from pathlib import Path
+        # path = Path(self.directory)
+        # print(f'cd {self.directory}')
+        #
+        # os.chdir(str(path))
+        # print(Shell.run("pwd"))
+        # # os.chdir(self.directory)
+        #
+        # # command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
+        # bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
+        # command = f'start /min "{bash}" {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
+        # print(command)
+        # state = os.system(command)
+        #
+        # error = self.get_error()
+        # log = self.get_log()
+        # return state, log, error
 
+        self.mkdir()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        # command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
-        # command = f'cd {self.directory} && start /min {self.name} > {self.name}.log'
+        # stdbuf -oL
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.err && echo $pid'
+        # command = f'cd {self.directory} && ./{self.name}.sh > {self.name}.log 2>&1 &'
 
-        from pathlib import Path
-        path = Path(self.directory)
-        print(f'cd {self.directory}')
-
-        os.chdir(str(path))
-        print(Shell.run("pwd"))
-        # os.chdir(self.directory)
-
-        # command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
-        bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
-        command = f'start /min "{bash}" {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
         print(command)
         state = os.system(command)
-
         error = self.get_error()
         log = self.get_log()
         return state, log, error
@@ -165,14 +176,12 @@ class Job():
         content = readfile(f"{self.name}-log.txt", 'r')
         return content
 
-
     def sync(self, filepath):
         self.mkdir()
         command = f"scp ./{self.name}.sh {self.directory}/."
         print(command)
         r = os.system(command)
         return r
-
 
     def exists(self, filename):
         command = f'{self.directory}/{filename}'
@@ -182,7 +191,6 @@ class Job():
             return True
         return False
 
-
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
@@ -191,7 +199,6 @@ class Job():
             finished = progress == 100
             if not finished:
                 time.sleep(period)
-
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
@@ -205,6 +212,7 @@ class Job():
             pid = pid.split()[0]
             return pid
         return None
+
 
 class a:
     def kill(self):
@@ -220,5 +228,3 @@ class a:
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
-
-

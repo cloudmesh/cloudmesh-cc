@@ -7,7 +7,6 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import path_expand
 
 
 class Job():
@@ -88,19 +87,18 @@ class Job():
 
     def mkdir_local(self):
         command = f'mkdir -p {self.directory}'
-        print(command)
         os.system(command)
 
     def run(self):
         self.mkdir_local()
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
+
         # stdbuf -oL
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1 && echo $pid'
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.err && echo $pid'
         # command = f'cd {self.directory} && ./{self.name}.sh > {self.name}.log 2>&1 &'
 
-        print(command)
-        state = os.system(command)
+        state = os.system(f'{command} &')
         error = self.get_error()
         log = self.get_log()
         return state, log, error
@@ -193,27 +191,26 @@ class Job():
             pass
         return None
 
-    def kill(self):
+    def kill(self, period=1):
         """
         kills the job
         """
-        if os.path.exists(path_expand(f"{self.name}.log")):
-            pid = self.get_pid()
-        else:
-            while not os.path.exists(path_expand(f"{self.name}.log")):
-                print(f"cehck for {self.name}.log")
-                time.sleep(1)
-                try:
-                    pid = self.get_pid()
-                except:
-                    pass
 
-        command = f'kill -9 {pid}'
-        print(command)
+        found = False
+        while not found:
+            log = self.get_log()
+            if 'pid=' in log:
+                found = True
+            else:
+                print(f"check for {self.name}.log")
+                time.sleep(period)
+
+        pid = self.get_pid()
+        command = f'pgrep -P {pid}'
+        child = Shell.run(command).strip()
+        command = f'kill -9 {pid} {child}'
         r = Shell.run(command)
         print(r)
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
-
-

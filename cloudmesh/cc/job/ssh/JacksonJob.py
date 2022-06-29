@@ -14,6 +14,7 @@ class Job():
     def __init__(self, name=None, username=None, host=None, label=None, **argv):
         """
         cms set username=abc123
+        cms set host= rivanna.hpc.virginia.edu
 
         craetes a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
@@ -67,7 +68,7 @@ class Job():
         if "directory" in self.data:
             self.directory = self.data["directory"]
         else:
-            self.directory = f"~/experiment/{self.name}"
+            self.directory = f"experiment/{self.name}"
 
         print(self)
 
@@ -86,7 +87,10 @@ class Job():
         return self.get_status()
 
     def mkdir_remote(self):
-        command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
+        enter = f'ssh {self.username}@{self.host} mkdir -p {self.directory}'
+        print(enter)
+        os.system(enter)
+        command = f'mkdir -p {self.directory}'
         print(command)
         os.system(command)
 
@@ -95,9 +99,9 @@ class Job():
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error && echo $pid"'
         print(command)
-        state = os.system(command)
+        state = os.system(f'{command} &')
         error = self.get_error()
         log = self.get_log()
         return state, log, error
@@ -146,16 +150,19 @@ class Job():
 
     def sync(self, filepath):
         self.mkdir_remote()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-        print(command)
-        r = os.system(command)
+        do_sync = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        print(do_sync)
+        r = os.system(do_sync)
+        do_copy = f'cp {filepath} {self.directory}/.'
+        print(do_copy)
+        y = os.system(do_copy)
         return r
 
     def exists(self, filename):
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
-        if "cannot acces" in r:
+        if "No such file or directory" in r:
             return False
         return True
 
@@ -170,25 +177,37 @@ class Job():
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
-        if refresh:
-            log = self.get_log()
-        else:
+        try:
+            """get the pid from the job"""
+            if refresh:
+                log = self.get_log()
             log = readfile(f"{self.name}.log", 'r')
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            pid = lines[0].split("pid=")[1]
-            pid = pid.split()[0]
-            return pid
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                pid = lines[0].split("pid=")[1]
+                pid = pid.split()[0]
+                return pid
+        except:
+            pass
         return None
 
-    def kill(self):
+    def kill(self, period=1):
         """
         kills the job
         """
+        found = False
+        while not found:
+            log = self.get_log()
+            if 'pid=' in log:
+                found = True
+            else:
+                print(f"check for {self.name}.log")
+                time.sleep(period)
+
         pid = self.get_pid()
-        command = ""
-        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
-        print(command)
+        command = f'pgrep -P {pid}'
+        child = Shell.run(command).strip()
+        command = f'kill -9 {pid} {child}'
         r = Shell.run(command)
         print(r)
         if "No such process" in r:
