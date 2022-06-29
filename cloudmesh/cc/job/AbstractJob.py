@@ -44,6 +44,8 @@ Note that prior to running the command job.run(), the variable job.pid has
 the value None
 
 """
+
+
 class AbstractJob:
 
     def __init__(self, **argv):
@@ -58,7 +60,7 @@ class AbstractJob:
         """
         print("argv", argv)
         self.data = dict(argv)
-        print("gggggg",self.data)
+        print("gggggg", self.data)
         # for attribute in self.data:
         #     self[attribute] = self.data[attribute]
 
@@ -75,9 +77,8 @@ class AbstractJob:
         # state records the last probed status
         self.state = self.status
 
-        self.error = None # find error in error file
-        self.progress = None # find last progress in log file
-
+        self.error = None  # find error in error file
+        self.progress = None  # find last progress in log file
 
     def run(self):
         pass
@@ -129,7 +130,6 @@ class AbstractJob:
         :rtype:
         """
         return self.get_status()
-
 
     def __getitem__(self, item):
         """
