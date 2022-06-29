@@ -72,7 +72,7 @@ class TestJobssh:
 
         Benchmark.Start()
         job = Job(name=name, host=host, username=username)
-        r = job.sync()
+        r = job.sync(filepath='./tests/run.sh')
 
         s, l, e = job.run()
         time.sleep(1)
@@ -106,7 +106,7 @@ class TestJobssh:
 
         Benchmark.Start()
         job = Job(name=name, host=host, username=username)
-        r = job.sync()
+        r = job.sync('./tests/run.sh')
 
         s, l, e = job.run()
 
@@ -160,7 +160,7 @@ class TestJobssh:
         Benchmark.Start()
         job = Job(name=name, host=host, username=username)
         print(job)
-        r = job.sync()
+        r = job.sync('./tests/run.sh')
         job.run()
         time.sleep(2)
         parent = job.get_pid()
