@@ -1,12 +1,11 @@
-from cloudmesh.cc.job.AbstractJob import AbstractJob
-from cloudmesh.common.util import readfile
-from cloudmesh.common.util import writefile
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.variables import Variables
+import os
+
 from cloudmesh.common.console import Console
 from cloudmesh.common.systeminfo import os_is_windows
-import os
+from cloudmesh.common.util import readfile
+# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
+from cloudmesh.common.variables import Variables
+
 
 class Job():
     def __init__(self, **argv):
@@ -22,7 +21,7 @@ class Job():
         :rtype:
         """
 
-        self.data = {} #dict(argv)
+        self.data = {}  # dict(argv)
         for key in argv:
             self.data[key] = argv[key]
 
@@ -34,7 +33,7 @@ class Job():
 
         variables = Variables()
         if "username" not in self.data:
-            self.username=variables["username"]
+            self.username = variables["username"]
         else:
             self.username = self.data["username"]
         if "name" not in self.data:
@@ -96,7 +95,6 @@ class Job():
         prog = readfile("progress=", last)
         return prog
 
-
     '''
     #!/bin/bash -x
     username="$1"
@@ -110,6 +108,7 @@ class Job():
 
     cat run.log
     '''
+
     def sync(self):
         # scp run.sh "$username"@rivanna.hpc.virginia.edu:.
         command = f"scp {self.name}.sh {self.username}@{self.host}:."

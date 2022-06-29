@@ -77,6 +77,11 @@ async def read_item(request: Request, id: str):
                                        "order": order})
 
 @app.get("/queues/", response_class=HTMLResponse)
+"""
+Renders and displays lists of queues onto an HTML table adaption from 
+datatables.net
+"""
+
 async def info(request: Request):
     global q
     return templates.TemplateResponse('templates/queue.html',

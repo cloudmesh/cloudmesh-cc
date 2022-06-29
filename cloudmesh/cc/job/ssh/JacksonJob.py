@@ -1,6 +1,3 @@
-
-
-
 import os
 
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
@@ -194,7 +191,7 @@ class Job():
             pass
         return None
 
-    def kill(self):
+    def kill(self, period=1):
         """
         kills the job
         """
@@ -216,5 +213,3 @@ class Job():
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
-
-

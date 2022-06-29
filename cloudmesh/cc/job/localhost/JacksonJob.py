@@ -7,7 +7,6 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import path_expand
 
 
 class Job():
@@ -216,5 +215,3 @@ class Job():
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
-
-

@@ -144,14 +144,12 @@ class Job():
         content = readfile(f"{self.name}.log", 'r')
         return content
 
-
     def sync(self, filepath):
         self.mkdir_remote()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
-
 
     def exists(self, filename):
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
@@ -161,7 +159,6 @@ class Job():
             return False
         return True
 
-
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
@@ -170,7 +167,6 @@ class Job():
             finished = progress == 100
             if not finished:
                 time.sleep(period)
-
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
@@ -185,7 +181,6 @@ class Job():
             return pid
         return None
 
-
     def kill(self):
         """
         kills the job
@@ -199,5 +194,3 @@ class Job():
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
-
-
