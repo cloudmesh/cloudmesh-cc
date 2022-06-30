@@ -6,6 +6,7 @@ import time
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 from pathlib import Path
 
@@ -77,17 +78,21 @@ class Job():
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
- #       bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
-
         # command = f'cd {self.directory} && bash {self.name}.sh > ' \
         #           f'{self.name}.log 2> {self.name}.err'
-
-
-        bashdirectory = str(f'{self.directory}')[2:]
-        command = f'cd {bashdirectory} && bash {self.name}.sh'
+        # dir = path_expand('~')
+        # resetdir = f'cd {dir} && pwd'
+        # Shell.run(resetdir)
+        # bashdirectory = str(f'{self.directory}')[2:]
+        dir = path_expand(f'{self.directory}')
+        command = f'cd {dir} && bash {self.name}.sh'
+        # Shell.run(resetdir)
+        # command = f'cd {bashdirectory}'
+        # print(command)
         state = os.system(command)
+        print(state)
         log = self.get_log()
-        return state, log
+        return state
 
     def get_status(self, refresh=False):
         if refresh:
@@ -123,13 +128,16 @@ class Job():
     #     return content
 
     def get_log(self):
-        bashdirectory = str(f'{self.directory}')[2:]
-        localpath = str(Path.home()) + '\\' + bashdirectory
+        dir = path_expand(f'{self.directory}')
+        print(dir)
+        # bashdirectory = str(f'{self.directory}')[2:]
+        # localpath = str(Path.home()) + '\\' + bashdirectory
         localpath1 = ''
         # command = f"cp {self.directory}{self.name}.log"
         # os.system(command)
         # print(f"{localpath}\\\\{self.name}.log")
-        content = readfile(f"C:\\Users\\abeck\\experiment\\run\\{self.name}.log", 'r')
+        print({self.directory})
+        content = readfile(f"{self.directory}/{self.name}.log", 'r')
         # print(f"{content}")
         return content
 
