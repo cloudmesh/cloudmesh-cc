@@ -4,6 +4,7 @@
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
 ###############################################################'
 import os.path
+import time
 from pprint import pprint
 import shelve
 import pytest
@@ -115,7 +116,8 @@ class Test_workflow:
                 print('HOST', host)
                 print(type(name))
                 name.mkdir_remote
-                command = f'ssh {user}@{host}.hpc.virginia.edu && cd {directory} && touch {word}.sh && echo "#! /bin/bash\nhostname\nls\npwd" >> {word}.sh'
+                time.sleep(1)
+                command = f'ssh -tt {user}@{host}.hpc.virginia.edu && touch {word}.sh && echo "#! /bin/bash\nhostname\nls\npwd" >> {word}.sh'
                 print(command)
                 os.system(f'{command} &')
 
