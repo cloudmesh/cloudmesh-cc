@@ -99,7 +99,6 @@ class Test_workflow:
         for name in jobs:
             print(name)
             word = name.name
-            print('AAAAAAAAAAAAAAA', word)
             if name.host == 'localhost':
                 directory = f'~/experiment/{word}'
                 command1 = f' cd {directory} && touch {word}.sh'
@@ -116,11 +115,7 @@ class Test_workflow:
                 print('HOST', host)
                 print(type(name))
                 name.mkdir_remote
-                command = f'ssh {user}@{host}.hpc.virginia.edu && ' \
-                          f'cd {directory} && ' \
-                          f'touch {word}.sh && ' \
-                          f'echo "#! /bin/bash\nhostname\nls\npwd" ' \
-                          f'>> {word}.sh'
+                command = f'ssh {user}@{host}.hpc.virginia.edu && cd {directory} && touch {word}.sh && echo "#! /bin/bash\nhostname\nls\npwd" >> {word}.sh'
                 print(command)
                 os.system(f'{command} &')
 
