@@ -7,6 +7,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
+from pathlib import Path
 
 
 class Job():
@@ -67,7 +68,8 @@ class Job():
         return self.get_status()
 
     def mkdir_local(self):
-        command = f"mkdir {self.directory}"
+        # command = f"mkdir {self.directory}"
+        # os.system(command)
         Shell.mkdir(f'{self.directory}')
 
     def run(self):
@@ -75,16 +77,17 @@ class Job():
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
-        bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
+ #       bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
 
-        command = f'cd {self.directory} && wsl {self.name}.sh >' \
-                  f' {self.name}.log 2> {self.name}.err'
-        # command = f'cd {self.directory}/{self.name}.sh > {self.name}.log 2>' \
-        #           f' {self.name}.err'
+        # command = f'cd {self.directory} && bash {self.name}.sh > ' \
+        #           f'{self.name}.log 2> {self.name}.err'
+
+
+        bashdirectory = str(f'{self.directory}')[2:]
+        command = f'cd {bashdirectory} && bash {self.name}.sh'
         state = os.system(command)
-        print(state)
-        # log = self.get_log()
-        return state
+        log = self.get_log()
+        return state, log
 
     def get_status(self, refresh=False):
         if refresh:
@@ -120,20 +123,21 @@ class Job():
     #     return content
 
     def get_log(self):
-        global status
-        # print(f"{self.directory}")
-        # print(f"{self.name}")
-        # command = f"cd {self.directory}{self.name}.log"
-        # #        print(command)
+        bashdirectory = str(f'{self.directory}')[2:]
+        localpath = str(Path.home()) + '\\' + bashdirectory
+        localpath1 = ''
+        # command = f"cp {self.directory}{self.name}.log"
         # os.system(command)
-        content = readfile(f"{self.name}.log", 'r')
+        # print(f"{localpath}\\\\{self.name}.log")
+        content = readfile(f"C:\\Users\\abeck\\experiment\\run\\{self.name}.log", 'r')
         # print(f"{content}")
-        # print(content)
         return content
 
-    def sync(self, filepath):
+    def sync(self, filename=None):
+        if filename is None:
+            filename = f"{self.name}.sh"
         self.mkdir_local()
-        command = f"scp ./{self.name}.sh {self.directory}/."
+        command = f"scp ./{filename} {self.directory}/."
         print(command)
         r = os.system(command)
         return r
@@ -185,7 +189,7 @@ class Kill:
 
 # test commands
 # directory = ('cm/cloudmesh-cc/tests/')
-# j = Job(name='run', directory=directory)
+# j = Job(name='run')
 # j.run()
 # j.get_log()
 

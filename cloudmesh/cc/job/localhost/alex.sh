@@ -1,2 +1,1 @@
-echo hello world
-echo $$
+sleep 10

@@ -51,10 +51,9 @@ class TestJobLocalWin:
     def test_run(self):
         HEADING()
         global job
-
         Benchmark.Start()
-        s = job.run()
-        print("State:", type(s))
+        s, l = job.run()
+        print("State:", s)
         # print(l)
         # print(e)
 
