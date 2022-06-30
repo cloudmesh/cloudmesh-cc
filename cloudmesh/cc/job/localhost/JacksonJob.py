@@ -39,7 +39,7 @@ class Job():
         self.username = username
         self.host = host
         self.name = name
-        self.status = 'white'
+        #self.status = 'white'
         if label is None:
             label = name
 

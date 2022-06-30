@@ -1,4 +1,5 @@
 import io
+import time
 
 import graphviz
 import matplotlib.image as mpimg
@@ -110,11 +111,20 @@ class Graph:
         return yaml.dump(data, indent=2)
 
     def load(self, filename=None):
-        pass
+
         #if filename is not None:
         #    raise NotImplementedError
             # shoudl read from file the graph, but as we do Queues yaml dic
             # we do not need filename read right now
+
+        return
+        if filename is None:
+            raise ValueError("No file associated with this graph")
+        else:
+            self.db = ydb(filename=filename)
+            data = self.db.load()
+
+        return data
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -304,7 +314,7 @@ class Workflow:
 
     @property
     def jobs(self):
-        return self.graph.nodes
+        return self.graph.nodes # [name]
 
     def __getitem__(self, name):
         return self.jobs[name]
@@ -345,7 +355,6 @@ class Workflow:
 
     def add_job(self,
                 name=None,
-                command=None,
                 user=None,
                 host=None,
                 label=None,
@@ -362,9 +371,6 @@ class Workflow:
         if name is None:
             defined = False
             Console.error("name is None")
-        if command is None:
-            defined = False
-            Console.error("comamnd is None")
         if user is None:
             defined = False
             Console.error("user is None")
@@ -383,7 +389,6 @@ class Workflow:
             host=host,
             status=status,
             progress=progress,
-            command=command,
             created=now,
             modified=now
         )
@@ -410,20 +415,31 @@ class Workflow:
         if order == None:
             order = self.sequential_order
 
-        for job in order():
-            command = job['command']
+
+        for name in order():
+            job = self.job(name=name)
             if not dryrun:
                 if job['kind'] in ["local"]:
-                    r = Shell.run(command)
+                    from cloudmesh.cc.job.localhost.JacksonJob import Job as local_Job
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+                    localhost_job = local_Job(name=name, host=host, username=username, label=label)
+                    localhost_job.run()
                 elif job['kind'] in ["ssh"]:
-                    raise NotImplementedError
-                elif job['kind'] in ["local-slurm"]:
-                    raise NotImplementedError
-                elif job['kind'] in ["remote-slurm"]:
-                    raise NotImplementedError
-                self.graph.nodes[job]['output'] = r
-            else:
-                self.graph.nodes[job]['output'] = command
+                    print(job)
+                    from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+                    remote_job = ssh_job(name=name, host=host, username=username, label=label)
+                    remote_job.run()
+                # elif job['kind'] in ["local-slurm"]:
+                #     raise NotImplementedError
+                # elif job['kind'] in ["remote-slurm"]:
+                #     raise NotImplementedError
 
     def sequential_order(self):
         tuples = []
@@ -432,6 +448,7 @@ class Workflow:
             tuples.append((edge["source"], edge["destination"]))
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))
+        print(order)
         return order
 
     @property
