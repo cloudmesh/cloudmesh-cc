@@ -1,4 +1,4 @@
-###############################################################
+#######################################
 # pytest -v -x --capture=no tests/test_workflow.py
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
@@ -17,6 +17,8 @@ from cloudmesh.common.Shell import Shell
 import networkx as nx
 
 global w
+global user
+user = input("Please enter your Rivanna(computing) ID here: ")
 """
     This is a python file to test to make sure the workflow class works.
     It will draw upon the the test_queues file, because there is a file that
@@ -25,6 +27,8 @@ global w
 
 class Test_workflow:
 
+
+
     def test_set_up(self):
         """
         establishing a queues object, saving 2 queues to it, each with 10 jobs
@@ -32,12 +36,13 @@ class Test_workflow:
         """
         HEADING()
         global w
+        global user
         Benchmark.Start()
         w = Workflow()
 
         login = {
             "localhost": {"user": "gregor", "host":"local"},
-            "rivanna": {"user": "ggg", "host":"rivanna.hpc.virginia.edu"},
+            "rivanna": {"user": f"{user}", "host":"rivanna.hpc.virginia.edu"},
             "pi": {"user": "gregor", "host":"red"},
         }
 
@@ -118,22 +123,10 @@ class Test_workflow:
         s2 = w.job('start')
         after = s2['status']
         print(s2)
-        assert w.counter == 6
-
-
-    def test_create_sorted_graph(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w.create_sorted_graph()
-        Benchmark.Stop()
-        print(w.sorted_graph)
-        assert len(w.sorted_graph) == 6
-
 
 
 class todo:
 
     def test_benchmark(self):
         HEADING()
-        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+        #StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
