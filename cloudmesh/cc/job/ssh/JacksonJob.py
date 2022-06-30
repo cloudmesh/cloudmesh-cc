@@ -89,8 +89,10 @@ class Job():
     def mkdir_remote(self):
         enter = f'ssh {self.username}@{self.host}.hpc.virginia.edu && mkdir -p {self.directory}'
         print(enter)
-        os.system(command=f'{enter}, &')
-        print("DONE")
+        os.system(f'{enter}, &')
+        # command = f'mkdir -p {self.directory}'
+        # print(command)
+        # os.system(command)
 
 
     def run(self):
