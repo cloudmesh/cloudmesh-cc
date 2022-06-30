@@ -77,8 +77,8 @@ class Job():
 
         bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
 
-        command = f'cd {self.directory} && start /min "{bash}" && nohup' \
-                  f' {self.name}.sh > {self.name}.log 2> {self.name}.err'
+        command = f'cd {self.directory} && wsl {self.name}.sh >' \
+                  f' {self.name}.log 2> {self.name}.err'
         # command = f'cd {self.directory}/{self.name}.sh > {self.name}.log 2>' \
         #           f' {self.name}.err'
         state = os.system(command)
@@ -184,9 +184,9 @@ class Kill:
 
 
 # test commands
-directory = ('cm/cloudmesh-cc/tests/')
-j = Job(name='run', directory=directory)
-j.run()
+# directory = ('cm/cloudmesh-cc/tests/')
+# j = Job(name='run', directory=directory)
+# j.run()
 # j.get_log()
 
 
