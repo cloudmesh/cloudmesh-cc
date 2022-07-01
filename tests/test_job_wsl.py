@@ -8,7 +8,7 @@ import os
 
 import pytest
 
-from cloudmesh.cc.job.localhost.AlexJob import Job
+from cloudmesh.cc.job.wsl.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables

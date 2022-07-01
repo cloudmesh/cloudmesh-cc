@@ -85,9 +85,13 @@ class Job():
         os.system(resetdir)
         bashdir = str(f'{self.directory}')[2:]
         # command = f'cd {bashdir} && wsl -e {self.name}.sh'
-        command = f'wsl cd /mnt/c/Users/abeck/experiment/run && pwd'
+        username = os.environ["USERNAME"]
+        command = f'wsl "cd /mnt/c/Users/{username}/experiment/run && pwd"'
+        # command = f'wsl "cd /mnt/c/Users/{username}/experiment/run/run.sh &"'
         print(command)
         state = os.system(command)
+        # r = Shell.run(command)
+        # print (r)
         print(state)
         log = self.get_log()
         return state
@@ -178,27 +182,18 @@ class Job():
             return pid
         return None
 
-class Kill:
     def kill(self):
         """
         kills the job
         """
         pid = self.get_pid()
-        command = f"kill -9 {pid}"
+        command = f"wsl kill -9 {pid}"
         #        print(command)
+        # the kill command needs to be run in WSL
         r = Shell.run(command)
         #        print(r)
         if "No such process" in r:
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
-
-
-# test commands
-# directory = ('cm/cloudmesh-cc/tests/')
-j = Job(name='run')
-j.run()
-# j.get_log()
-
-
 
 
