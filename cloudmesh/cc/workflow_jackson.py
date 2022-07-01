@@ -221,61 +221,60 @@ class Graph:
                 pass
             # and so on
 
-    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
-             engine="networkx"):
-        dot = graphviz.Digraph(comment='Dot Graph')
-        graph = nx.DiGraph()
-        color_map = []
-        for name, e in self.nodes.items():
-            if colors is None:
-                graph.add_node(name)
-                dot.node(name, color='white')
-                color_map.append('white')
-            else:
-                value = e[colors]
-                color_map.append(self.colors[colors][value])
-                dot.node(name, color=self.colors[colors][value])
-
-        for name, e in self.edges.items():
-            graph.add_edge(e["source"], e["destination"])
-            dot.edge(e["source"], e["destination"])
-
-        if engine == "dot":
-
-            prefix, ending = filename.split(".")
-            dot_filename = prefix + ".dot"
-            writefile(dot_filename, str(dot.source))
-            if ".dot" not in filename:
-                Shell.run(f"dot -T{ending} {dot_filename} -o {filename}")
-
-        elif engine == "graphviz":
-            pos = layout(graph)
-            nx.draw(graph, with_labels=True, node_color=color_map, pos=pos)
-            plt.axis('off')
-            plt.savefig(filename)
-
-        elif engine == 'pyplot':
-
-            # generate dot graph
-            P = nx.nx_pydot.to_pydot(graph)
-            print(P)
-
-            # convert from `networkx` to a `pydot` graph
-            pydot_graph = nx.drawing.nx_pydot.to_pydot(graph)
-
-            # render the `pydot` by calling `dot`, no file saved to disk
-            png_str = pydot_graph.create_png(prog='dot')
-
-            # treat the DOT output as an image file
-            sio = io.BytesIO()
-            sio.write(png_str)
-            sio.seek(0)
-            img = mpimg.imread(sio)
-
-            # plot the image
-            imgplot = plt.imshow(img, aspect='equal')
-            plt.axis('off')
-            plt.savefig(filename)
+    # def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
+    #          engine="networkx"):
+    #     dot = graphviz.Digraph(comment='Dot Graph')
+    #     graph = nx.DiGraph()
+    #     color_map = []
+    #     for job in self.nodes:
+    #         if colors is None:
+    #             graph.add_node(job)
+    #             color_map.append('white')
+    #         else:
+    #             value = e[colors]
+    #             color_map.append(self.colors[colors][value])
+    #             dot.node(name, color=self.colors[colors][value])
+    #
+    #     for name in self.edges:
+    #         graph.add_edge(e["source"], e["destination"])
+    #         dot.edge(e["source"], e["destination"])
+    #
+    #     if engine == "dot":
+    #
+    #         prefix, ending = filename.split(".")
+    #         dot_filename = prefix + ".dot"
+    #         writefile(dot_filename, str(dot.source))
+    #         if ".dot" not in filename:
+    #             Shell.run(f"dot -T{ending} {dot_filename} -o {filename}")
+    #
+    #     elif engine == "graphviz":
+    #         pos = layout(graph)
+    #         nx.draw(graph, with_labels=True, node_color=color_map, pos=pos)
+    #         plt.axis('off')
+    #         plt.savefig(filename)
+    #
+    #     elif engine == 'pyplot':
+    #
+    #         # generate dot graph
+    #         P = nx.nx_pydot.to_pydot(graph)
+    #         print(P)
+    #
+    #         # convert from `networkx` to a `pydot` graph
+    #         pydot_graph = nx.drawing.nx_pydot.to_pydot(graph)
+    #
+    #         # render the `pydot` by calling `dot`, no file saved to disk
+    #         png_str = pydot_graph.create_png(prog='dot')
+    #
+    #         # treat the DOT output as an image file
+    #         sio = io.BytesIO()
+    #         sio.write(png_str)
+    #         sio.seek(0)
+    #         img = mpimg.imread(sio)
+    #
+    #         # plot the image
+    #         imgplot = plt.imshow(img, aspect='equal')
+    #         plt.axis('off')
+    #         plt.savefig(filename)
 
 
 class Workflow:
@@ -483,7 +482,8 @@ class Workflow:
 
     @property
     def table(self):
-        return Printer.write(self.graph.nodes)
+        for job in self.jobs:
+             Printer.write(job)
         pass
 
 
