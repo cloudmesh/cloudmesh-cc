@@ -39,6 +39,7 @@ class Job():
         self.username = username
         self.host = host
         self.name = name
+        #self.status = 'white'
         if label is None:
             label = name
 
@@ -82,8 +83,8 @@ class Job():
         return "\n".join(msg)
 
     @property
-    def status(self):
-        return self.get_status()
+    # def status(self):
+    #     return self.get_status()
 
     def mkdir_local(self):
         command = f'mkdir -p {self.directory}'

@@ -1,1 +1,1 @@
-sleep 3600
+sleep 10

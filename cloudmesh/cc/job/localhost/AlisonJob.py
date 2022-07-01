@@ -74,6 +74,7 @@ class Job():
             # self.directory = path_expand(f"~/experiment/{self.name}")
             self.directory = f"\\\\wsl$\\Ubuntu\\home\\{self.username}"
 
+
         print(self)
 
     def __str__(self):

@@ -1,5 +1,5 @@
-###############################################################
-# pytest -v --capture=no tests/test_workflow.py
+#######################################
+# pytest -v -x --capture=no tests/test_workflow.py
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
 ###############################################################'
@@ -17,6 +17,8 @@ from cloudmesh.common.Shell import Shell
 import networkx as nx
 
 global w
+global user
+user = input("Please enter your Rivanna(computing) ID here: ")
 """
     This is a python file to test to make sure the workflow class works.
     It will draw upon the the test_queues file, because there is a file that
@@ -25,6 +27,8 @@ global w
 
 class Test_workflow:
 
+
+
     def test_set_up(self):
         """
         establishing a queues object, saving 2 queues to it, each with 10 jobs
@@ -32,12 +36,13 @@ class Test_workflow:
         """
         HEADING()
         global w
+        global user
         Benchmark.Start()
         w = Workflow()
 
         login = {
             "localhost": {"user": "gregor", "host":"local"},
-            "rivanna": {"user": "ggg", "host":"rivanna"},
+            "rivanna": {"user": f"{user}", "host":"rivanna.hpc.virginia.edu"},
             "pi": {"user": "gregor", "host":"red"},
         }
 
@@ -46,24 +51,24 @@ class Test_workflow:
         user = login["localhost"]["user"]
         host = login["localhost"]["host"]
 
-        w.add_job(name=f"start", kind="local", command='pwd', user=user, host=host)
-        w.add_job(name=f"end", kind="local", command='pwd', user=user, host=host)
+        w.add_job(name="start", kind="local", user=user, host=host)
+        w.add_job(name="end", kind="local", user=user, host=host)
 
         for host, kind in [("localhost", "local"),
                            ("rivanna", "remote-slurm"),
-                           ("pi", "ssh")]:
+                           ("rivanna", "ssh")]:
             print ("HOST:", host)
             user = login[host]["user"]
             host = login[host]["host"]
-            w.add_job(name=f"job-{host}-{n}", kind=kind, command='pwd', user=user, host=host)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, command='ls', user=user, host=host)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, command='hostname', user=user, host=host)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
 
             first = n - 3
-            second = n -2
+            second = n - 2
             third = n -1
             w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
             w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
@@ -77,7 +82,8 @@ class Test_workflow:
         HEADING()
         global w
         w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
-        Shell.browser("/tmp/test-dot.svg")
+        #Shell.browser("/tmp/test-dot.svg")
+        #assert os.path.exists("~/tmp/test-dot.svg") == True
 
     def test_get_node(self):
         HEADING()
@@ -106,33 +112,21 @@ class Test_workflow:
         print (order)
         assert len(order) == len(w.jobs)
 
-class rest:
-
     def test_run(self):
         HEADING()
-        before = w.update_status()
-        w.display_status()
+        s1 = w.job("start")
+        before = s1['status']
+        print(before)
         Benchmark.Start()
-        w.run
+        w.run()
         Benchmark.Stop()
-        after = w.update_status()
-        w.display_status()
-        assert w.counter == 6
-
-
-    def test_create_sorted_graph(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w.create_sorted_graph()
-        Benchmark.Stop()
-        print(w.sorted_graph)
-        assert len(w.sorted_graph) == 6
-
+        s2 = w.job('start')
+        after = s2['status']
+        print(s2)
 
 
 class todo:
 
     def test_benchmark(self):
         HEADING()
-        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+        #StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

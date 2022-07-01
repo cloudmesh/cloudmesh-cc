@@ -5,9 +5,10 @@ import time
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
+from pathlib import Path
 
 
 class Job():
@@ -28,7 +29,6 @@ class Job():
         self.data = argv
 
         # print(self.data)
-        variables = Variables()
         # try:
         #    a,b,c, = self.name, self.host
         # except:
@@ -69,40 +69,28 @@ class Job():
         return self.get_status()
 
     def mkdir_local(self):
-        command = f"mkdir -p {self.directory}"
-        try:
-            Shell.run(command)
-        except Exception as e:
-            if "already exists" in str(e.output):
-                Console.warning('Folder already exists!')
+        # command = f"mkdir {self.directory}"
+        # os.system(command)
+        Shell.mkdir(f'{self.directory}')
 
     def run(self):
         self.mkdir_local()
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
-        # command = f'cd {self.directory} && nohup bash {self.name}.sh >' \
-        #           f' {self.name}.log ' \
-        #           f'2> {self.name}.err && echo $$'
-
-        # from pathlib import Path
-        # path = Path(self.directory)
-        # print(f'cd {self.directory}')
-        # Shell.run(f'cd {self.directory}')
-
-        bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
-
-        command = f'cd {self.directory} && start /min "{bash}" {self.name}.sh > {self.name}.log 2>' \
-                  f' {self.name}.err'
-        # command = 'ls'
-        # state = None
-        # try:
+        # command = f'cd {self.directory} && bash {self.name}.sh > ' \
+        #           f'{self.name}.log 2> {self.name}.err'
+        dir = path_expand('~')
+        resetdir = f'cd {dir}'
+        os.system(resetdir)
+        bashdir = str(f'{self.directory}')[2:]
+        # command = f'cd {bashdir} && wsl -e {self.name}.sh'
+        command = f'wsl cd /mnt/c/Users/abeck/experiment/run && pwd'
+        print(command)
         state = os.system(command)
-        # except Exception as e:
-        #     print(e.output)
-        #        error = self.get_error()
+        print(state)
         log = self.get_log()
-        return state, log
+        return state
 
     def get_status(self, refresh=False):
         if refresh:
@@ -138,31 +126,35 @@ class Job():
     #     return content
 
     def get_log(self):
-        global status
-        # print(f"{self.directory}")
-        # print(f"{self.name}")
-        command = f"cd {self.directory}{self.name}.log"
-        #        print(command)
-        Shell.run(command)
-        content = readfile(f"{self.name}.log", 'r')
+        dir = path_expand(f'{self.directory}')
+        # print(dir)
+        # bashdirectory = str(f'{self.directory}')[2:]
+        # localpath = str(Path.home()) + '\\' + bashdirectory
+        localpath1 = ''
+        # command = f"cp {self.directory}{self.name}.log"
+        # os.system(command)
+        # print(f"{localpath}\\\\{self.name}.log")
+        # print({self.directory})
+        content = readfile(f"{self.directory}/{self.name}.log", 'r')
         # print(f"{content}")
-        # print(content)
         return content
 
-    # def sync(self, filepath):
-    #     self.mkdir_local()
-    #     command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-    #     print(command)
-    #     r = os.system(command)
-    #     return r
+    def sync(self, filename=None):
+        if filename is None:
+            filename = f"{self.name}.sh"
+        self.mkdir_local()
+        command = f"scp ./{filename} {self.directory}/."
+        print(command)
+        r = os.system(command)
+        return r
 
     def exists(self, filename):
-        command = f"ls {self.directory}/{filename}"
+        command = f"{self.directory}/{filename}"
         #        print(command)
-        r = Shell.run(command)
-        if "cannot access" in r:
-            return False
-        return True
+        r = Shell.ls(command)
+        if len(r) > 0:
+            return True
+        return False
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
@@ -186,6 +178,7 @@ class Job():
             return pid
         return None
 
+class Kill:
     def kill(self):
         """
         kills the job
@@ -201,7 +194,11 @@ class Job():
 
 
 # test commands
-directory = path_expand('~/cm/cloudmesh-cc/cloudmesh/cc/job/localhost/')
-j = Job(name='alex', directory=directory)
+# directory = ('cm/cloudmesh-cc/tests/')
+j = Job(name='run')
 j.run()
 # j.get_log()
+
+
+
+

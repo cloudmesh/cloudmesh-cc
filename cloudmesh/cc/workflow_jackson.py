@@ -59,10 +59,10 @@ g.set_color("status",
              "done": "white"}
              "other": "grey"
             )
-            
+
 as you can see you can also define colors for otehr values that could be set in this case 
 for the node status. To display the graph you can say:
-            
+
 g.show()
 
 """
@@ -73,8 +73,10 @@ class Graph:
 
     def __init__(self, name="graph", filename=None):
         self.sep = "-"
-        self.edges = dotdict()
-        self.nodes = dotdict()
+        # self.edges = dotdict()
+        # self.nodes = dotdict()
+        self.edges = []
+        self.nodes = []
         self.load(filename=filename)
         self.colors = {}
         self.set_status_colors()
@@ -84,7 +86,6 @@ class Graph:
         # config:
         #    name:
         #    colors:
-
 
     def set_status_colors(self):
         self.add_color("status",
@@ -112,26 +113,43 @@ class Graph:
 
     def load(self, filename=None):
 
-        #if filename is not None:
+        # if filename is not None:
         #    raise NotImplementedError
-            # shoudl read from file the graph, but as we do Queues yaml dic
-            # we do not need filename read right now
+        # shoudl read from file the graph, but as we do Queues yaml dic
+        # we do not need filename read right now
 
         return
-        if filename is None:
-            raise ValueError("No file associated with this graph")
-        else:
-            self.db = ydb(filename=filename)
-            data = self.db.load()
+        # if filename is None:
+        #     raise ValueError("No file associated with this graph")
+        # else:
+        #     self.db = ydb(filename=filename)
+        #     data = self.db.load()
+        #
+        # return data
 
-        return data
+    def add_node(self, name, username, host, label, **data):
 
-    def add_node(self, name, **data):
-        if name not in self.nodes:
-            self.nodes[name] = data
-        else:
-            self.nodes[name].update(**data)
-        self.nodes[name]["name"] = name
+        if host == 'local':
+            from cloudmesh.cc.job.localhost.JacksonJob import Job as local_job
+
+            job = local_job(name=name, username=username, host=host,
+                            label=label, **data)
+
+
+
+        elif host == 'rivanna':
+            print('host')
+            from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
+
+            job = ssh_job(name=name, username=username, host=host, label=label,
+                          **data)
+
+        self.nodes.append(job)
+        # if name not in self.nodes:
+        #     self.nodes.append(job)
+        # else:
+        #     self.nodes[name].update(**data)
+        # self.nodes[name]["name"] = name
 
     def add_edge(self, source, destination, **data):
         #
@@ -139,14 +157,18 @@ class Graph:
         #   dependency_out, we could use a set for that. so multiple
         #   dependencies are ignored
         #
-        name = f"{source}{self.sep}{destination}"
-        if name not in self.edges:
-            self.edges[name] = {
-                "source": source,
-                "destination": destination,
-                "name": name
-            }
-        self.edges[name].update(**data)
+        # name = f"{source}{self.sep}{destination}"
+        # if name not in self.edges:
+        #     self.edges[name] = {
+        #         "source": source,
+        #         "destination": destination,
+        #         "name": name
+        #     }
+        # self.edges[name].update(**data)
+
+        tuple = (source, destination)
+        self.edges.append(tuple)
+
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -163,12 +185,7 @@ class Graph:
         # check if all nodes exists if not create the missing once
         # loop through all node pairs and create adges, as name for adges
         # you use {source}-{destination}
-        for node in nodes:
-            print(node)
-            if nodedata is None:
-                self.add_node(node)
-            else:
-                self.add_node(node, **nodedata)
+
         for i in range(len(nodes) - 1):
             source = nodes[i]
             destination = nodes[i + 1]
@@ -261,7 +278,6 @@ class Graph:
             plt.savefig(filename)
 
 
-
 class Workflow:
     """
     Workflow doocumentation
@@ -293,7 +309,7 @@ class Workflow:
         # if filename exists, load filename
         # if graph is not None overwrite the graph potentially read from filename
         if filename is None:
-            filename = f"~/.cloudmesh/workflow/workflow-{name}"
+            filename = f"~.cloudmesh/workflow/workflow-{name}"
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user
@@ -314,13 +330,15 @@ class Workflow:
 
     @property
     def jobs(self):
-        return self.graph.nodes # [name]
+        return self.graph.nodes  # [name]
 
     def __getitem__(self, name):
         return self.jobs[name]
 
     def job(self, name):
-        return self.jobs[name]
+        for job in range(0, len(self.jobs)):
+            if self.jobs[job].name == name:
+                return self.jobs[job]
 
     def load(self, filename):
         """
@@ -368,6 +386,7 @@ class Workflow:
         user = user or self.user
         host = host or self.host
         defined = True
+        status = status
         if name is None:
             defined = False
             Console.error("name is None")
@@ -385,7 +404,7 @@ class Workflow:
             name=name,
             label=label,
             kind=kind,
-            user=user,
+            username=user,
             host=host,
             status=status,
             progress=progress,
@@ -415,17 +434,18 @@ class Workflow:
         if order == None:
             order = self.sequential_order
 
-
         for name in order():
             job = self.job(name=name)
             if not dryrun:
                 if job['kind'] in ["local"]:
-                    from cloudmesh.cc.job.localhost.JacksonJob import Job as local_Job
+                    from cloudmesh.cc.job.localhost.JacksonJob import \
+                        Job as local_Job
                     name = job['name']
                     host = job['host']
                     username = job['user']
                     label = name
-                    localhost_job = local_Job(name=name, host=host, username=username, label=label)
+                    localhost_job = local_Job(name=name, host=host,
+                                              username=username, label=label)
                     localhost_job.run()
                 elif job['kind'] in ["ssh"]:
                     print(job)
@@ -434,7 +454,8 @@ class Workflow:
                     host = job['host']
                     username = job['user']
                     label = name
-                    remote_job = ssh_job(name=name, host=host, username=username, label=label)
+                    remote_job = ssh_job(name=name, host=host,
+                                         username=username, label=label)
                     remote_job.run()
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
@@ -444,7 +465,7 @@ class Workflow:
     def sequential_order(self):
         tuples = []
         for name, edge in self.graph.edges.items():
-            print (edge["source"], edge["destination"])
+            print(edge["source"], edge["destination"])
             tuples.append((edge["source"], edge["destination"]))
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))
