@@ -335,9 +335,14 @@ class Workflow:
         return self.jobs[name]
 
     def job(self, name):
-        for job in range(0, len(self.jobs)):
-            if self.jobs[job].name == name:
-                return self.jobs[job]
+        nodes = self.jobs
+
+        for x in range(0, len(nodes)):
+            j = nodes[x]
+            if j.name == name:
+                return j
+
+
 
     def load(self, filename):
         """
@@ -430,32 +435,39 @@ class Workflow:
 
     def run(self, order=None, parallel=False, dryrun=False):
 
-        if order == None:
-            order = self.sequential_order
+        # if order == None:
+        #     order = self.sequential_order
 
-        for name in order():
-            job = self.job(name=name)
-            if not dryrun:
-                if job['kind'] in ["local"]:
-                    from cloudmesh.cc.job.localhost.JacksonJob import \
-                        Job as local_Job
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    localhost_job = local_Job(name=name, host=host,
-                                              username=username, label=label)
-                    localhost_job.run()
-                elif job['kind'] in ["ssh"]:
-                    print(job)
-                    from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    remote_job = ssh_job(name=name, host=host,
-                                         username=username, label=label)
-                    remote_job.run()
+        # for name in order():
+        #     print(name)
+
+        nodes = self.jobs
+        for name in range(0, len(nodes)):
+            job = nodes[name]
+            # print('THIS IS IT BOYS, LETS GO IN LETS GO IN', job, type(job))
+            job.run()
+            #job = self.job(name=name)
+            # if not dryrun:
+            #     if job['kind'] in ["local"]:
+            #         from cloudmesh.cc.job.localhost.JacksonJob import \
+            #             Job as local_Job
+            #         name = job['name']
+            #         host = job['host']
+            #         username = job['user']
+            #         label = name
+            #         localhost_job = local_Job(name=name, host=host,
+            #                                   username=username, label=label)
+            #         localhost_job.run()
+            #     elif job['kind'] in ["ssh"]:
+            #         print(job)
+            #         from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
+            #         name = job['name']
+            #         host = job['host']
+            #         username = job['user']
+            #         label = name
+            #         remote_job = ssh_job(name=name, host=host,
+            #                              username=username, label=label)
+            #         remote_job.run()
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:
@@ -463,12 +475,14 @@ class Workflow:
 
     def sequential_order(self):
         tuples = []
-        for name, edge in self.graph.edges.items():
-            print(edge["source"], edge["destination"])
-            tuples.append((edge["source"], edge["destination"]))
+        nodes = self.jobs
+        for name in range(0, len(nodes) -1):
+            #print(edge["source"], edge["destination"])
+            first = nodes[name]
+            second = nodes[name + 1]
+            tuples.append((first, second))
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))
-        print(order)
         return order
 
     @property

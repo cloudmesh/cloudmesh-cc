@@ -108,23 +108,12 @@ class Test_workflow:
     def test_get_node(self):
         HEADING()
         global w
-        job = input('Enter a job that has been created that you want to see exists: ')
+        j = input('Enter a job that has been created that you want to see exists: ')
         Benchmark.Start()
-        start = w.job(job)
-        s2 = start.name
+        ob = w.job(name=j)
+        name = ob.name
         Benchmark.Stop()
-        print(s2)
-        assert s2 == job
-
-    def test_table(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        print(w.table)
-        Benchmark.Stop()
-        assert True
-
-class rest:
+        assert name == j
 
     def test_order(self):
         HEADING()
@@ -137,18 +126,20 @@ class rest:
 
     def test_run(self):
         HEADING()
-        s1 = w.job("start")
-        before = s1['status']
-        print(before)
         Benchmark.Start()
         w.run()
         Benchmark.Stop()
-        s2 = w.job('start')
-        after = s2['status']
-        print(after)
 
 
 class todo:
+
+    def test_table(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        print(w.table)
+        Benchmark.Stop()
+        assert True
 
     def test_show(self):
         HEADING()
