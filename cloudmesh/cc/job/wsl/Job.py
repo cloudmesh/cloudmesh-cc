@@ -80,16 +80,23 @@ class Job():
 
         # command = f'cd {self.directory} && bash {self.name}.sh > ' \
         #           f'{self.name}.log 2> {self.name}.err'
-        dir = path_expand('~')
-        resetdir = f'cd {dir}'
-        os.system(resetdir)
-        bashdir = str(f'{self.directory}')[2:]
-        # command = f'cd {bashdir} && wsl -e {self.name}.sh'
         username = os.environ["USERNAME"]
-        command = f'wsl "cd //mnt//c//Users//{username}//experiment//run && pwd"'
+        print(username)
+        directory = f'/mnt/c/Users/{username}/cm/cloudmesh-cc/tests/'
+        # Shell.run(f'start /max wsl sh -c ". ~/.profile && cd {directory} && '
+        #           f'./run.sh"')
+        Shell.run(f'wsl nohup sh -c ". ~/.profile && cd {directory} && '
+                  f'./run.sh &"')
+        # dir = path_expand('~')
+        # resetdir = f'cd {dir}'
+        # os.system(resetdir)
+        # bashdir = str(f'{self.directory}')[2:]
+        # command = f'cd {bashdir} && wsl -e {self.name}.sh'
+        # username = os.environ["USERNAME"]
+        # command = f'wsl "cd //mnt//c//Users//{username}//experiment//run && pwd"'
         # command = f'wsl "cd /mnt/c/Users/{username}/experiment/run/run.sh &"'
-        print(command)
-        state = os.system(command)
+        # print(command)
+        # state = os.system(command)
         # r = Shell.run(command)
         # print (r)
         print(state)
