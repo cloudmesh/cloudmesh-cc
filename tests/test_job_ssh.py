@@ -55,7 +55,7 @@ class TestJobssh:
         global job
 
         Benchmark.Start()
-        r = job.sync("./tests/run.sh")
+        r = job.sync()
 
         Benchmark.Stop()
         # successful exit status
@@ -113,7 +113,7 @@ class TestJobssh:
     #     os.remove("run.log")
     #     os.remove("run.error")
     #     job = Job(name=name, host=host, username=username)
-    #     r = job.sync("./tests/run.sh")
+    #     r = job.sync()
     #     job.run()
     #     job.watch(period=1)
     #     status = job.get_status()
@@ -132,7 +132,7 @@ class rest:
         os.remove("run.log") if os.path.exists("run.log") else None
         os.remove("run.error") if os.path.exists("run.error") else None
         job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
+        r = job.sync()
         job.run()
         pid = job.get_pid()
         job.kill()

@@ -25,6 +25,7 @@ else:
     username = os.environ["USER"]
 
 job = None
+prefix="-wsl"
 
 
 @pytest.mark.incremental
@@ -32,18 +33,19 @@ class TestJoblocalhost:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
-        os.system("cp ./tests/run.sh .")
-        os.system("cp ./tests/wait.sh .")
-        assert os.path.isfile("./run.sh")
-        assert os.path.isfile("./wait.sh")
+        os.system(f"cp ./tests/run{prefix}.sh .")
+        os.system(f"cp ./tests/wait{prefix}.sh .")
+        assert os.path.isfile(f"./run{prefix}.sh")
+        assert os.path.isfile(f"./wait{prefix}.sh")
 
     def test_create(self):
         HEADING()
         global job
         global username
         global host
+        global prefix
         Benchmark.Start()
-        name = "run"
+        name = f"run{prefix}"
         job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
         assert job.name == name
@@ -56,22 +58,24 @@ class TestJoblocalhost:
 
         Benchmark.Start()
         print(type(job))
-        r = job.sync("./tests/run.sh")
+        r = job.sync()
 
         Benchmark.Stop()
         # successful exit status
         assert r == 0
 
+    # potentially wrong
     def test_run_fast(self):
         HEADING()
-        os.system("rm -r ~/experiment")
-        os.system("cp ./tests/run.sh .")
-        os.system("cp ./tests/wait.sh .")
+        global prefix
 
-        global job
+        os.system("rm -r ~/experiment")
+        os.system(f"cp ./tests/run{prefix}.sh .")
+        # os.system(f"cp ./tests/wait{prefix}.sh .")
 
         Benchmark.Start()
-        # job = Job(name="run", host=host, username=username)
+        global job
+        job = Job(name=f"run{prefix}", host=host, username=username)
         r = job.sync()
 
         s, l, e = job.run()
@@ -96,14 +100,30 @@ class TestJoblocalhost:
 
         Benchmark.Stop()
 
+    # will fail if previous test fails
+    def test_exists_run(self):
+        HEADING()
+        global job
+
+        name = f"run{prefix}"
+        Benchmark.Start()
+        wrong = job.exists(name)
+        correct = job.exists(f"{name}.sh")
+        Benchmark.Stop()
+
+        assert not wrong
+        assert correct
+
     def test_run_wait(self):
         HEADING()
+        global prefix
+
         os.system("rm -r ~/experiment")
-        os.system("cp ./tests/run.sh .")
-        os.system("cp ./tests/wait.sh .")
+        # os.system(f"cp ./tests/run{prefix}.sh .")
+        os.system(f"cp ./tests/wait{prefix}.sh .")
 
         Benchmark.Start()
-        jobWait = Job(name="wait", host=host, username=username)
+        jobWait = Job(name=f"wait{prefix}", host=host, username=username)
         r = jobWait.sync()
 
         s, l, e = jobWait.run()
@@ -121,11 +141,12 @@ class TestJoblocalhost:
 
         Benchmark.Stop()
 
-    def test_exists(self):
+    # will fail if previous test fails
+    def test_exists_wait(self):
         HEADING()
         global job
 
-        name = "run"
+        name = f"wait{prefix}"
         Benchmark.Start()
         wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
@@ -142,21 +163,19 @@ class TestJoblocalhost:
         is found in the ps
         """
         HEADING()
-        global job
         global username
         global host
+        global prefix
 
         os.system("rm -r ~/experiment")
-        os.system("cp ./tests/run.sh .")
-        os.system("cp ./tests/wait.sh .")
+        # os.system(f"cp ./tests/run{prefix}.sh .")
+        os.system(f"cp ./tests/wait{prefix}.sh .")
 
-        name = "wait"
-
-        os.system("rm -f ./wait.log")
-        os.system("rm -f ./wait.error")
+        os.system(f"rm -f ./wait{prefix}.log")
+        os.system(f"rm -f ./wait{prefix}.error")
 
         Benchmark.Start()
-        # job = Job(name="run", host=host, username=username)
+        job = Job(name=f"wait{prefix}", host=host, username=username)
         print(job)
         r = job.sync()
         job.run()
