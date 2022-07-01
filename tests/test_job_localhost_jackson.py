@@ -52,7 +52,7 @@ class TestJoblocalhost:
         global job
 
         Benchmark.Start()
-        r = job.sync("./tests/run.sh")
+        r = job.sync()
 
         Benchmark.Stop()
         # successful exit status
