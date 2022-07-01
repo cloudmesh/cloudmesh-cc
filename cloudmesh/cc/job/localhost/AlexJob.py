@@ -80,15 +80,13 @@ class Job():
 
         # command = f'cd {self.directory} && bash {self.name}.sh > ' \
         #           f'{self.name}.log 2> {self.name}.err'
-        # dir = path_expand('~')
-        # resetdir = f'cd {dir} && pwd'
-        # Shell.run(resetdir)
-        # bashdirectory = str(f'{self.directory}')[2:]
-        dir = path_expand(f'{self.directory}')
-        command = f'cd {dir} && bash {self.name}.sh'
-        # Shell.run(resetdir)
-        # command = f'cd {bashdirectory}'
-        # print(command)
+        dir = path_expand('~')
+        resetdir = f'cd {dir}'
+        os.system(resetdir)
+        bashdir = str(f'{self.directory}')[2:]
+        # command = f'cd {bashdir} && wsl -e {self.name}.sh'
+        command = f'wsl cd /mnt/c/Users/abeck/experiment/run && pwd'
+        print(command)
         state = os.system(command)
         print(state)
         log = self.get_log()
@@ -129,14 +127,14 @@ class Job():
 
     def get_log(self):
         dir = path_expand(f'{self.directory}')
-        print(dir)
+        # print(dir)
         # bashdirectory = str(f'{self.directory}')[2:]
         # localpath = str(Path.home()) + '\\' + bashdirectory
         localpath1 = ''
         # command = f"cp {self.directory}{self.name}.log"
         # os.system(command)
         # print(f"{localpath}\\\\{self.name}.log")
-        print({self.directory})
+        # print({self.directory})
         content = readfile(f"{self.directory}/{self.name}.log", 'r')
         # print(f"{content}")
         return content
@@ -197,8 +195,8 @@ class Kill:
 
 # test commands
 # directory = ('cm/cloudmesh-cc/tests/')
-# j = Job(name='run')
-# j.run()
+j = Job(name='run')
+j.run()
 # j.get_log()
 
 
