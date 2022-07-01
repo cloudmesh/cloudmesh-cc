@@ -86,8 +86,13 @@ class Job():
         bashdir = str(f'{self.directory}')[2:]
         # command = f'cd {bashdir} && wsl -e {self.name}.sh'
         username = os.environ["USERNAME"]
+<<<<<<< HEAD:cloudmesh/cc/job/localhost/AlexJob.py
+        print(username)
+        command = f'wsl cd //mnt//c//Users///{username}//experiment//run && pwd'
+=======
         command = f'wsl "cd /mnt/c/Users/{username}/experiment/run && pwd"'
         # command = f'wsl "cd /mnt/c/Users/{username}/experiment/run/run.sh &"'
+>>>>>>> e6804b12bf8beadfd92b80670dc25756e3cbd372:cloudmesh/cc/job/start/Job.py
         print(command)
         state = os.system(command)
         # r = Shell.run(command)

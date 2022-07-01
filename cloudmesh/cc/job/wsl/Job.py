@@ -13,7 +13,7 @@ from pathlib import Path
 
 class Job():
 
-    def __init__(self, name=None, label=None, **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, **argv):
         """
         cms set username=abc123
 
@@ -30,13 +30,15 @@ class Job():
 
         # print(self.data)
         # try:
-        #    a,b,c, = self.name, self.host
+        #    a,b,c, = self.name, self.username, self.host
         # except:
-        #    Console.error("name, or host not set")
+        #    Console.error("name, username, or host not set")
         #    raise ValueError
 
         variables = Variables()
 
+        self.username = username
+        self.host = host
         self.name = name
         if label is None:
             label = name
@@ -49,15 +51,34 @@ class Job():
             Console.error("Name is not defined")
             raise ValueError
 
+        if self.username is None:
+            try:
+                self.username = variables["username"]
+            except:
+                Console.error("Username is not defined")
+                raise ValueError
+
+        if self.host is None:
+            try:
+                self.host = variables["host"]
+            except:
+                Console.error("Host is not defined")
+                raise ValueError
+
+
         if "directory" in self.data:
             self.directory = self.data["directory"]
         else:
-            self.directory = f"~/experiment/{self.name}"
+            user = os.environ["USERNAME"]
+            print(user)
+            self.directory = f'experiment//{self.name}'
 
         # print(self)
 
     def __str__(self):
         msg = []
+        msg.append(f"host: {self.host}")
+        msg.append(f"username: {self.username}")
         msg.append(f"name: {self.name}")
         msg.append(f"directory: {self.directory}")
         msg.append(f"data: {self.data}")
@@ -69,9 +90,10 @@ class Job():
         return self.get_status()
 
     def mkdir_local(self):
-        # command = f"mkdir {self.directory}"
-        # os.system(command)
-        Shell.mkdir(f'{self.directory}')
+        command = f'wsl mkdir -p {self.directory}'
+        print(command)
+        # Shell.run(f'wsl sh -c ". ~/.profile && cd')
+        # Shell.mkdir(f'{self.directory}')
 
     def run(self):
         self.mkdir_local()
@@ -80,21 +102,25 @@ class Job():
 
         # command = f'cd {self.directory} && bash {self.name}.sh > ' \
         #           f'{self.name}.log 2> {self.name}.err'
-        dir = path_expand('~')
-        resetdir = f'cd {dir}'
-        os.system(resetdir)
-        bashdir = str(f'{self.directory}')[2:]
+        # Shell.run(f'start /max wsl sh -c ". ~/.profile && cd {directory} && '
+        #           f'./run.sh"')
+        # state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
+        #                   f' {self.directory} && ./run.sh &"')
+        # dir = path_expand('~')
+        # resetdir = f'cd {dir}'
+        # os.system(resetdir)
+        # bashdir = str(f'{self.directory}')[2:]
         # command = f'cd {bashdir} && wsl -e {self.name}.sh'
-        username = os.environ["USERNAME"]
-        command = f'wsl "cd /mnt/c/Users/{username}/experiment/run && pwd"'
+        # username = os.environ["USERNAME"]
+        # command = f'wsl "cd //mnt//c//Users//{username}//experiment//run && pwd"'
         # command = f'wsl "cd /mnt/c/Users/{username}/experiment/run/run.sh &"'
-        print(command)
-        state = os.system(command)
+        # print(command)
+        # state = os.system(command)
         # r = Shell.run(command)
         # print (r)
-        print(state)
-        log = self.get_log()
-        return state
+        # print(state)
+        # log = self.get_log()
+        # return state
 
     def get_status(self, refresh=False):
         if refresh:
@@ -130,7 +156,6 @@ class Job():
     #     return content
 
     def get_log(self):
-        dir = path_expand(f'{self.directory}')
         # print(dir)
         # bashdirectory = str(f'{self.directory}')[2:]
         # localpath = str(Path.home()) + '\\' + bashdirectory
@@ -139,6 +164,8 @@ class Job():
         # os.system(command)
         # print(f"{localpath}\\\\{self.name}.log")
         # print({self.directory})
+        state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
+                          f'{self.directory}')
         content = readfile(f"{self.directory}/{self.name}.log", 'r')
         # print(f"{content}")
         return content
@@ -195,5 +222,10 @@ class Job():
         if "No such process" in r:
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
+
+
+j = Job(name='beige')
+j.run()
+
 
 
