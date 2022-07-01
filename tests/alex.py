@@ -9,8 +9,9 @@ try:
     # print(change)
     username = os.environ["USERNAME"]
     directory = f'/mnt/c/Users/{username}/cm/cloudmesh-cc/tests/'
-    Shell.run(f'start /i wsl sh -c ". ~/.profile && cd {directory} && '
-              f'./run.sh"')
+    Shell.run(f'start /b wsl sh -c ". ~/.profile && cd {directory} && ./run.sh"')
+
+    # start /max wsl sh -c ". ~/.profile && cd /mnt/c/Users/alibo/cm/cloudmesh-cc/tests/ && ./run.sh"
     # reset = f'wsl cd //mnt//c//'
     # pwd = f'wsl "pwd"'
     # r = Shell.run(reset)
