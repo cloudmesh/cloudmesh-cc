@@ -28,13 +28,6 @@ class Job():
 
         self.data = argv
 
-        # print(self.data)
-        # try:
-        #    a,b,c, = self.name, self.username, self.host
-        # except:
-        #    Console.error("name, username, or host not set")
-        #    raise ValueError
-
         variables = Variables()
 
         self.username = username
@@ -87,7 +80,13 @@ class Job():
     def status(self):
         return self.get_status()
 
+    def reset_local_dir(self):
+        user = os.environ["USERNAME"]
+        homedir = f'/mnt/c/Users/{user}'
+        Shell.run(f'wsl sh -c ". ~/.profile && cd {homedir}"')
+
     def mkdir_local(self):
+        self.reset_local_dir()
         user = os.environ["USERNAME"]
         bashdir = str(f'{self.directory}')[2:]
         dir = Shell.run(f'wsl sh -c "cd /mnt/c/Users/{user}/{bashdir} '
@@ -100,20 +99,21 @@ class Job():
         # Shell.run(f'wsl sh -c ". ~/.profile && cd')
         # Shell.mkdir(f'{self.directory}')
 
+
     def run(self):
         self.mkdir_local()
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
 
-        # state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
-        #                   f' {self.directory} && ./run.sh &"')
+        state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
+                          f' /mnt/c/Users/{self.username}/{self.directory} && ./run.sh &"')
         # state = os.system(command)
         # r = Shell.run(command)
         # print (r)
         # print(state)
         # log = self.get_log()
-        # return state
+        return state
 
     def get_status(self, refresh=False):
         if refresh:
@@ -152,7 +152,7 @@ class Job():
         # print(dir)
         # bashdirectory = str(f'{self.directory}')[2:]
         # localpath = str(Path.home()) + '\\' + bashdirectory
-        localpath1 = ''
+        # localpath1 = ''
         # command = f"cp {self.directory}{self.name}.log"
         # os.system(command)
         # print(f"{localpath}\\\\{self.name}.log")
@@ -163,13 +163,18 @@ class Job():
         # print(f"{content}")
         return content
 
-    def sync(self, filename=None):
-        if filename is None:
-            filename = f"{self.name}.sh"
+    def sync(self):
         self.mkdir_local()
-        command = f"scp ./{filename} {self.directory}/."
-        print(command)
-        r = os.system(command)
+        log = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
+                f'{self.username}/{self.directory}/{self.name}.log ' \
+                f'{self.directory}/{self.name}.log'
+        print(log)
+        r = os.system(log)
+        error = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
+                f'{self.username}/{self.directory}/{self.name}.err ' \
+                f'{self.directory}/{self.name}.err'
+        print(error)
+        e = os.system(error)
         return r
 
     def exists(self, filename):
@@ -217,8 +222,8 @@ class Job():
                 f"Process {pid} not found. It is likely it already completed.")
 
 
-j = Job(name='beige')
-j.run()
+# j = Job(name='beige')
+# j.reset_local_dir()
 
 
 

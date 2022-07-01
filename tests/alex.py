@@ -4,13 +4,13 @@ from cloudmesh.common.Shell import Shell
 
 try:
     # sed -i -e 's/\r$//'
-    user = os.environ["USERNAME"]
+
     # directory = f"~/experiment/run"
     # bashdir = str(directory)[2:]
 
-
+    user = os.environ["USERNAME"]
     dir = f'/mnt/c/Users/{user}'
-    status = Shell.run(f'wsl sh -c ". ~/.profile && pwd"')
+    status = Shell.run(f'wsl sh -c ". ~/.profile && cd {dir} && pwd"')
     print(status)
     # Shell.run(f'wsl nohup sh -c ". ~/.profile && cd {dir} && '
     #           f'./run.sh &"')
