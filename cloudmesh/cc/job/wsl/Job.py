@@ -86,18 +86,8 @@ class Job():
         Shell.run(f'wsl sh -c ". ~/.profile && cd {homedir}"')
 
     def mkdir_local(self):
-        self.reset_local_dir()
-        user = os.environ["USERNAME"]
-        bashdir = str(f'{self.directory}')[2:]
-        dir = Shell.run(f'wsl sh -c "cd /mnt/c/Users/{user}/{bashdir} '
-                        f'&& pwd"')
-        print(dir)
-        command = f'wsl mkdir -p {self.directory}'
-        print(command)
-        state = os.system(command)
+        state = Shell.mkdir(f'{self.directory}')
         print(state)
-        # Shell.run(f'wsl sh -c ". ~/.profile && cd')
-        # Shell.mkdir(f'{self.directory}')
 
 
     def run(self):
@@ -106,14 +96,13 @@ class Job():
         # os.system(command)
 
 
-        state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
-                          f' /mnt/c/Users/{self.username}/{self.directory} && ./run.sh &"')
+        state = os.system(f'wsl nohup sh -c ". ~/.profile && cd /mnt/c/Users/{self.username}/{self.directory} && ./run.sh &"')
         # state = os.system(command)
         # r = Shell.run(command)
         # print (r)
-        # print(state)
-        # log = self.get_log()
-        return state
+        print("state:",state)
+        log = self.get_log()
+        return state, log
 
     def get_status(self, refresh=False):
         if refresh:
@@ -141,41 +130,52 @@ class Job():
                 return 0
         return 0
 
-    # def get_error(self):
-    #     command = f"scp{self.directory}/{self.name}.error {self.name}.error"
-    #     print(command)
-    #     os.system(command)
-    #     content = readfile(f"{self.name}.error", 'r')
-    #     return content
+    def get_error(self):
+        bashdir = str(f'{self.directory}')[2:]
 
-    def get_log(self):
-        # print(dir)
-        # bashdirectory = str(f'{self.directory}')[2:]
-        # localpath = str(Path.home()) + '\\' + bashdirectory
-        # localpath1 = ''
-        # command = f"cp {self.directory}{self.name}.log"
-        # os.system(command)
-        # print(f"{localpath}\\\\{self.name}.log")
-        # print({self.directory})
-        state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
-                          f'{self.directory}')
-        content = readfile(f"{self.directory}/{self.name}.log", 'r')
-        # print(f"{content}")
+        command = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
+                  f'{self.username}/{bashdir}/{self.name}.err ' \
+                  f'tests/run-wsl.err"'
+        os.system(command)
+        content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        print(content)
         return content
 
+    def get_log(self):
+        bashdir = str(f'{self.directory}')[2:]
+
+        command = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
+                  f'{self.username}/{bashdir}/{self.name}.log ' \
+                  f'tests/run-wsl.log"'
+        os.system(command)
+        content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        print(content)
+        return content
+
+    # def get_log(self):
+    #     try:
+    #         command = f"cp {self.directory}/{self.name}.log ."
+    #         print(command)
+    #         os.system(command)
+    #         content = readfile(f"{self.directory}/{self.name}.log", 'r')
+    #     except:
+    #         content = None
+    #     return content
+
+    # test if pwd works
     def sync(self):
         self.mkdir_local()
-        log = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
-                f'{self.username}/{self.directory}/{self.name}.log ' \
-                f'{self.directory}/{self.name}.log'
+        b = str(self.directory)[2:]
+        bashdir = str(f'/mnt/c/Users/{self.username}/{b}')
+        log = f'wsl sh -c ". ~/.profile && cp tests/{self.name}.log ' \
+              f'{bashdir}/{self.name}.log"'
         print(log)
-        r = os.system(log)
-        error = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
-                f'{self.username}/{self.directory}/{self.name}.err ' \
-                f'{self.directory}/{self.name}.err'
+        l = os.system(log)
+        error = f'wsl sh -c ". ~/.profile && cp tests/{self.name}.err ' \
+              f'{bashdir}/{self.name}.err"'
         print(error)
         e = os.system(error)
-        return r
+        return l
 
     def exists(self, filename):
         command = f"{self.directory}/{filename}"
@@ -222,8 +222,11 @@ class Job():
                 f"Process {pid} not found. It is likely it already completed.")
 
 
-# j = Job(name='beige')
-# j.reset_local_dir()
+# j = Job(name='run-wsl')
+# try:
+#     j.get_log()
+# except Exception as e:
+#     print(e.output)
 
 
 

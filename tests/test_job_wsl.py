@@ -76,13 +76,14 @@ class TestJoblocalhost:
         Benchmark.Start()
         global job
         job = Job(name=f"run{prefix}", host=host, username=username)
-        r = job.sync()
+        # r = job.sync()
 
-        s, l, e = job.run()
+        s, l = job.run()
+        # s, l, e = job.run()
         time.sleep(1)
         print("State:", s)
         print(l)
-        print(e)
+        # print(e)
 
         log = job.get_log()
         if log is None:
