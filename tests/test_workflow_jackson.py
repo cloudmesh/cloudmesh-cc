@@ -3,7 +3,8 @@
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
 ###############################################################'
-import os.path
+import os
+from os.path import exists as file_exists
 import time
 from pprint import pprint
 import shelve
@@ -15,6 +16,7 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.util import path_expand
 import networkx as nx
 
 
@@ -42,9 +44,9 @@ class Test_workflow:
         w = Workflow()
 
         login = {
-            "localhost": {"user": "gregor", "host": "local"},
+            "localhost": {"user": f"{user}", "host": "local"},
             "rivanna": {"user": f"{user}", "host": "rivanna"},
-            "pi": {"user": "gregor", "host": "red"},
+            "pi": {"user": f"{user}", "host": "red"},
         }
 
         n = 0
@@ -79,68 +81,40 @@ class Test_workflow:
         print(w.jobs)
         print(len(w.jobs) == n)
 
-    def test_add_sh_files(self):
+    def test_sync(self):
         HEADING()
         global w
         nodes = w.jobs
-        node = w.job(name='start')
-        print(node)
-        print(type(node))
-        print(type(nodes))
         print(nodes)
-        jobs = []
-        for name in range(0, len(nodes)):
-            job = nodes[name]
-            jobs.append(job)
-
-        # now we have the names of all of the jobs
-        # we will create a method to cd into the correct directory and create
-        # a .sh file with a bunch of stuff in it
-
-        for name in jobs:
-            print(name)
-            word = name.name
-            if name.host == 'localhost':
-                directory = f'~/experiment/{word}'
-                command1 = f' cd {directory} && touch {word}.sh'
-                command2 = f'echo "#! /bin/bash\nhostname\nls\npwd" >> {word}.sh'
-
-                os.system(command1)
-                os.system(command2)
-
-            elif name.host == 'rivanna':
-                directory = f'experiment/{word}'
-                host = name.host
-                user = name.username
-                print('USER', user)
-                print('HOST', host)
-                print(type(name))
-                name.mkdir_remote
-                time.sleep(1)
-                command = f'ssh -tt {user}@{host}.hpc.virginia.edu && touch {word}.sh && echo "#! /bin/bash\nhostname\nls\npwd" >> {word}.sh'
-                print(command)
-                os.system(f'{command} &')
-
-
-class rest:
-
-    def test_show(self):
-        HEADING()
-        global w
-        w.graph.save(filename="/tmp/test-dot.svg", colors="status",
-                     layout=nx.circular_layout, engine="dot")
-        # Shell.browser("/tmp/test-dot.svg")
-        # assert os.path.exists("~/tmp/test-dot.svg") == True
+        Benchmark.Start()
+        for job in nodes:
+            print(job.name)
+            print(job.host)
+            print(job.username)
+            print(job.directory)
+            job.sync(f"~/cm/cloudmesh-cc/job-tests/tests/{job.name}.sh")
+        Benchmark.Stop()
+        for job in nodes:
+            # all this checks is if the file exists in the cloudmesh directory
+            command = f'cp /Users/jacksonmiskill/cm/cloudmesh-cc/job-tests/tests/{job.name}.sh .'
+            print(command)
+            os.system(command)
+            file = f"./{job.name}.sh"
+            print(file)
+            r = os.path.isfile(file)
+            print(r)
+            assert r == True
 
     def test_get_node(self):
         HEADING()
         global w
+        job = input('Enter a job that has been created that you want to see exists: ')
         Benchmark.Start()
-        s1 = w["start"]
-        s2 = w.job("start")
+        start = w.job(job)
+        s2 = start.name
         Benchmark.Stop()
-        print(s1)
-        assert s1 == s2
+        print(s2)
+        assert s2 == job
 
     def test_table(self):
         HEADING()
@@ -149,6 +123,8 @@ class rest:
         print(w.table)
         Benchmark.Stop()
         assert True
+
+class rest:
 
     def test_order(self):
         HEADING()
@@ -173,6 +149,14 @@ class rest:
 
 
 class todo:
+
+    def test_show(self):
+        HEADING()
+        global w
+        w.graph.save(filename="/tmp/test-dot.svg", colors="status",
+                     layout=nx.circular_layout, engine="dot")
+        Shell.browser("/tmp/test-dot.svg")
+        assert os.path.exists("~/tmp/test-dot.svg") == True
 
     def test_benchmark(self):
         HEADING()
