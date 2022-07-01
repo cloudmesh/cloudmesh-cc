@@ -193,4 +193,21 @@ class Job():
         print(r)
         if "No such process" in r:
             Console.warning(
-                "Process {pid} not found. It is likely it already completed.")
+                f"Process {pid} not found. It is likely it already completed.")
+
+    def create(self, command, ntasks=1):
+        """
+        creates a template
+        for the slurm sbatch
+        """
+        template = \
+        f"""
+        #!/bin/bash
+        #
+        #SBATCH --job-name=test
+        #SBATCH --output=result.out
+        #
+        #SBATCH --ntasks={ntasks}
+        #
+        """
+        template += f"\n{command}"
