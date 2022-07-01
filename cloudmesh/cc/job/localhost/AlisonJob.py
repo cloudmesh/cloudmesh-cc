@@ -1,6 +1,5 @@
 import os
 
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 import time
 
 from cloudmesh.common.Shell import Shell
@@ -72,7 +71,8 @@ class Job():
             #     self.directory = f"~/experiment/{self.name}"
 
             from cloudmesh.common.util import path_expand
-            self.directory = path_expand(f"~/experiment/{self.name}")
+            # self.directory = path_expand(f"~/experiment/{self.name}")
+            self.directory = f"\\\\wsl$\\Ubuntu\\home\\{self.username}"
 
         print(self)
 
@@ -91,29 +91,29 @@ class Job():
         return self.get_status()
 
     def mkdir(self):
-        command = f'mkdir {self.directory}'
+        command = f'wsl mkdir -p {self.directory}'
         print(command)
         Shell.mkdir(self.directory)
 
     def run(self):
-        self.mkdir()
+        # self.mkdir()
 
-        command = f'chmod ug+x ./{self.name}.sh'
+        command = f'wsl chmod ug+x ./{self.name}.sh'
         os.system(command)
         # command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
         # command = f'cd {self.directory} && start /min {self.name} > {self.name}.log'
 
-        from pathlib import Path
-        path = Path(self.directory)
-        print(f'cd {self.directory}')
+        # from pathlib import Path
+        # path = Path(self.directory)
+        # print(f'cd {self.directory}')
 
-        os.chdir(str(path))
+        # os.chdir(str(path))
         print(Shell.run("pwd"))
         # os.chdir(self.directory)
 
         # command = f'nohup bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
         bash = "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
-        command = f'start /min "{bash}" {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
+        command = f'wsl bash {self.name}.sh > {self.name}-log.txt 2>{self.name}-error.txt'
         print(command)
         state = os.system(command)
 
@@ -163,17 +163,33 @@ class Job():
         content = readfile(f"{self.name}-log.txt", 'r')
         return content
 
-    def sync(self, filepath):
+
+    # def sync(self, filepath):
+    #     self.mkdir()
+    #     command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+    #     print(command)
+    #     r = os.system(command)
+    #     return r
+
+
+    def sync(self, filename=None):
+        if filename is None:
+            filename = f"{self.name}.sh"
         self.mkdir()
-        command = f"scp ./{self.name}.sh {self.directory}/."
+        # command = f'cp {filename} {self.directory}/.'
+        print(self.name)
+        command = f'cp {filename} {self.directory}\\{filename}'
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
-        command = f'{self.directory}/{filename}'
-        print(command)
+        # command = f'wsl ls {self.directory}/{filename}'
+        command = f'{self.directory}\\{filename}'
+        # print(command)
         r = Shell.ls(command)
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", r)
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAbbbbbbbbb", len(r))
         if len(r) > 0:
             return True
         return False

@@ -3,7 +3,6 @@ import os
 from cloudmesh.common.console import Console
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import readfile
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 from cloudmesh.common.variables import Variables
 
 
