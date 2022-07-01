@@ -31,51 +31,6 @@ job = None
 @pytest.mark.incremental
 class TestJobssh:
 
-    def test_kill(self):
-        """
-        Creates a job from wait.sh, which includes wait of 1 hour
-        Deletes this job AND it's children
-        This way, it tests if the job or any of it's children
-        is found in the ps
-        """
-        HEADING()
-        global job
-        global username
-        global host
-        global name
-
-        os.system("rm -r ~/experiment")
-        os.system("cp ./tests/run.sh .")
-        os.system("cp ./tests/wait.sh .")
-
-        name = "wait"
-
-        os.system("rm -f ./wait.log")
-        os.system("rm -f ./wait.error")
-
-        Benchmark.Start()
-        job = Job(name=name, host=host, username=username)
-        print(job)
-        r = job.sync('./tests/run.sh')
-        job.run()
-        time.sleep(2)
-        parent = job.get_pid()
-        job.kill()
-        child = job.get_pid()
-        status = job.get_status()
-        print("Status", status)
-        Benchmark.Stop()
-        ps = Shell.run('ps')
-        print('PIDs', parent, child)
-        print(job.get_log())
-        assert 'sleep 3600' not in ps
-        assert str(parent) not in ps
-        assert str(child) not in ps
-        # assert status == "done"
-        # check with ps if pid is running
-
-class r:
-
     def test_create_run(self):
         os.system("rm -r ~/experiment")
         os.system("cp ./tests/run.sh .")
@@ -179,4 +134,47 @@ class r:
 
         assert not wrong
         assert correct
+
+    def test_kill(self):
+        """
+        Creates a job from wait.sh, which includes wait of 1 hour
+        Deletes this job AND it's children
+        This way, it tests if the job or any of it's children
+        is found in the ps
+        """
+        HEADING()
+        global job
+        global username
+        global host
+        global name
+
+        os.system("rm -r ~/experiment")
+        os.system("cp ./tests/run.sh .")
+        os.system("cp ./tests/wait.sh .")
+
+        name = "wait"
+
+        os.system("rm -f ./wait.log")
+        os.system("rm -f ./wait.error")
+
+        Benchmark.Start()
+        job = Job(name=name, host=host, username=username)
+        print(job)
+        r = job.sync('./tests/run.sh')
+        job.run()
+        time.sleep(2)
+        parent = job.get_pid()
+        job.kill()
+        child = job.get_pid()
+        status = job.get_status()
+        print("Status", status)
+        Benchmark.Stop()
+        ps = Shell.run('ps')
+        print('PIDs', parent, child)
+        print(job.get_log())
+        assert 'sleep 3600' not in ps
+        assert str(parent) not in ps
+        assert str(child) not in ps
+        # assert status == "done"
+        # check with ps if pid is running
 

@@ -87,8 +87,7 @@ class Job():
     #     return self.get_status()
 
     def mkdir_remote(self):
-        print('JACKSON LOOK HERE RIGHT NOW THIS IS THE DIRECTORY THAT IS BEING CREATED IN RIVANNA', self.directory)
-        enter = f'ssh -tt {self.username}@{self.host}.hpc.virginia.edu mkdir -p {self.directory}'
+        enter = f'ssh -tt {self.username}@{self.host} mkdir -p {self.directory}'
         print(enter)
         os.system(f'{enter} &')
         # command = f'mkdir -p {self.directory}'
@@ -152,7 +151,7 @@ class Job():
 
     def sync(self, filepath):
         self.mkdir_remote
-        do_sync = f"scp ~/cm/cloudmesh-cc/job-tests/tests/{self.name}.sh {self.username}@{self.host}.hpc.virginia.edu:{self.directory}/."
+        do_sync = f"scp ~/cm/cloudmesh-cc/job-tests/tests/{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print('AAAAAAAAAAAAAA', do_sync)
         r = os.system(do_sync)
         do_copy = f'cp {filepath} {self.directory}'
