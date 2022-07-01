@@ -88,37 +88,37 @@ class TestJobLocalWin:
         assert not wrong
         assert correct
 
-    def test_watch(self):
-        HEADING()
-        global job
-        global name
-        Benchmark.Start()
-#        os.remove(log)
- #       os.remove("run.error")
-        job = Job(name=name)
-#        r = job.sync("./tests/run.sh")
-        job.run
-        job.watch(period=1)
-        status = job.get_status()
-        Benchmark.Stop()
-        assert status == "done"
-
-    def test_kill(self):
-        HEADING()
-        global job
-        global name
-        Benchmark.Start()
-#        os.remove(log) if os.path.exists(log) else None
-#        os.remove("run.error") if os.path.exists("run.error") else None
-        job = Job(name=name)
-#        r = job.sync("./tests/run.sh")
-        job.run
-        pid = job.get_pid()
-        job.kill()
-        status = job.get_status()
-        print ("Status", status)
-        Benchmark.Stop()
-        # assert status == "done"
-        # check with ps if pid is running
-
-
+#     def test_watch(self):
+#         HEADING()
+#         global job
+#         global name
+#         Benchmark.Start()
+# #        os.remove(log)
+#  #       os.remove("run.error")
+#         job = Job(name=name)
+# #        r = job.sync("./tests/run.sh")
+#         job.run
+#         job.watch(period=1)
+#         status = job.get_status()
+#         Benchmark.Stop()
+#         assert status == "done"
+#
+#     def test_kill(self):
+#         HEADING()
+#         global job
+#         global name
+#         Benchmark.Start()
+# #        os.remove(log) if os.path.exists(log) else None
+# #        os.remove("run.error") if os.path.exists("run.error") else None
+#         job = Job(name=name)
+# #        r = job.sync("./tests/run.sh")
+#         job.run
+#         pid = job.get_pid()
+#         job.kill()
+#         status = job.get_status()
+#         print ("Status", status)
+#         Benchmark.Stop()
+#         # assert status == "done"
+#         # check with ps if pid is running
+#
+#
