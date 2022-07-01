@@ -91,7 +91,7 @@ class Job():
         os.system(command)
 
     def run(self):
-        self.mkdir_local()
+        self.mkdir_local
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
 
