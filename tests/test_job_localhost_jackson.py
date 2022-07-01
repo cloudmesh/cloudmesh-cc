@@ -71,7 +71,7 @@ class TestJoblocalhost:
         r = job.sync()
 
         s, l, e = job.run()
-        time.sleep(1)
+        time.sleep(2)
         print("State:", s)
         print(l)
         print(e)
