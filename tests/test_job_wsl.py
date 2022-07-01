@@ -71,7 +71,7 @@ class TestJoblocalhost:
 
         os.system("rm -r ~/experiment")
         os.system(f"cp ./tests/run{prefix}.sh .")
-        os.system(f"cp ./tests/wait{prefix}.sh .")
+        # os.system(f"cp ./tests/wait{prefix}.sh .")
 
         Benchmark.Start()
         global job
@@ -101,7 +101,7 @@ class TestJoblocalhost:
         Benchmark.Stop()
 
     # will fail if previous test fails
-    def test_exists(self):
+    def test_exists_run(self):
         HEADING()
         global job
 
@@ -119,7 +119,7 @@ class TestJoblocalhost:
         global prefix
 
         os.system("rm -r ~/experiment")
-        os.system(f"cp ./tests/run{prefix}.sh .")
+        # os.system(f"cp ./tests/run{prefix}.sh .")
         os.system(f"cp ./tests/wait{prefix}.sh .")
 
         Benchmark.Start()
@@ -141,6 +141,19 @@ class TestJoblocalhost:
 
         Benchmark.Stop()
 
+    # will fail if previous test fails
+    def test_exists_wait(self):
+        HEADING()
+        global job
+
+        name = f"wait{prefix}"
+        Benchmark.Start()
+        wrong = job.exists(name)
+        correct = job.exists(f"{name}.sh")
+        Benchmark.Stop()
+
+        assert not wrong
+        assert correct
 
     def test_kill(self):
         """
@@ -155,14 +168,14 @@ class TestJoblocalhost:
         global prefix
 
         os.system("rm -r ~/experiment")
-        os.system(f"cp ./tests/run{prefix}.sh .")
+        # os.system(f"cp ./tests/run{prefix}.sh .")
         os.system(f"cp ./tests/wait{prefix}.sh .")
 
         os.system(f"rm -f ./wait{prefix}.log")
         os.system(f"rm -f ./wait{prefix}.error")
 
         Benchmark.Start()
-        job = Job(name=f"run{prefix}", host=host, username=username)
+        job = Job(name=f"wait{prefix}", host=host, username=username)
         print(job)
         r = job.sync()
         job.run()
