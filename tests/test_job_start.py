@@ -175,7 +175,7 @@ class TestJoblocalhost:
         # check with ps if pid is running
 
 class complete:
-    
+
     def test_cleanup(self):
         os.system("rm -f ./run.sh")
         os.system("rm -f ./wait.sh")
