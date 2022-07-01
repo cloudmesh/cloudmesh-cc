@@ -96,7 +96,7 @@ class Job():
 
 
     def run(self):
-        self.mkdir_remote()
+        self.mkdir_remote
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
