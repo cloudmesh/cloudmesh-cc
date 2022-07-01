@@ -91,14 +91,14 @@ class Job():
         os.system(command)
 
     def run(self):
-        self.mkdir_local()
+        self.mkdir_local
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
 
         # stdbuf -oL
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.err && echo $pid'
+        command = f'cd {self.directory} && chmod a+x ./{self.name}.sh && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error && echo $pid'
+        time.sleep(1)
         # command = f'cd {self.directory} && ./{self.name}.sh > {self.name}.log 2>&1 &'
-
         state = os.system(f'{command} &')
         error = self.get_error()
         log = self.get_log()

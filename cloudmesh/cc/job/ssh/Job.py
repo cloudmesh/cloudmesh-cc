@@ -144,7 +144,7 @@ class Job():
         content = readfile(f"{self.name}.log", 'r')
         return content
 
-    def sync(self, filepath):
+    def sync(self):
         self.mkdir_remote()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
