@@ -10,4 +10,4 @@ sleep 1
 echo "# cloudmesh status=running progress=20 pid=$$"
 hostname
 echo "# cloudmesh status=done progress=100 pid=$$"
-} 2>&1 | tee -- "$LOG_FILE"
+} 2>"run-wsl.err" | tee -- "$LOG_FILE"

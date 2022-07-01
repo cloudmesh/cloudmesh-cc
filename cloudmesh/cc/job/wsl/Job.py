@@ -89,12 +89,12 @@ class Job():
         self.reset_local_dir()
         user = os.environ["USERNAME"]
         bashdir = str(f'{self.directory}')[2:]
-        dir = Shell.run(f'wsl sh -c "cd /mnt/c/Users/{user}/{bashdir} '
+        dir = os.system(f'wsl sh -c "cd /mnt/c/Users/{user}/{bashdir} '
                         f'&& pwd"')
         print(dir)
-        command = f'wsl mkdir -p {self.directory}'
-        print(command)
-        state = os.system(command)
+        # command = f'wsl mkdir -p {self.directory}'
+        # print(command)
+        state = Shell.mkdir(self.directory)
         print(state)
         # Shell.run(f'wsl sh -c ". ~/.profile && cd')
         # Shell.mkdir(f'{self.directory}')
