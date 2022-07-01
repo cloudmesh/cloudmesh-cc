@@ -131,7 +131,6 @@ class Job():
         return 0
 
     def get_error(self):
-        return
         try:
             command = f"cp {self.directory}/{self.name}.err ."
             print(command)

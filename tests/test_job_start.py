@@ -1,40 +1,31 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_localhost_alison.py
+# pytest -v -x --capture=no tests/test_job_localhost_jackson.py
 # pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_localhost_alison.py::TestJobssh::<METHODNAME>
+# pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
 ###############################################################
 import os
 import time
 
 import pytest
 
-from cloudmesh.cc.job.localhost.AlisonJob import Job
+from cloudmesh.cc.job.start.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
-
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Shell
 variables = Variables()
 
-# name = "run"
-#
-# if "host" not in variables:
-#     # host = "rivanna.hpc.virginia.edu"
-#     host = "localhost"
-# else:
-#     host = variables["host"]
-#
-# username = variables["username"]
+name = "run"
 
-
-username = "alibob"
-host = "wsl"
-name = "wait"
+host = "localhost"
+username = os.environ["USERNAME"]
 
 job = None
 
 
 @pytest.mark.incremental
-class TestJobssh:
+class TestJoblocalhost:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
@@ -61,15 +52,15 @@ class TestJobssh:
         global job
 
         Benchmark.Start()
-        r = job.sync("run.sh")
+        r = job.sync("./tests/run.sh")
 
         Benchmark.Stop()
         # successful exit status
         assert r == 0
-        assert os.path.isfile("run.sh")
 
     def test_run_fast(self):
         HEADING()
+        os.system("rm -r ~/experiment")
         os.system("cp ./tests/run.sh .")
         os.system("cp ./tests/wait.sh .")
 
@@ -82,8 +73,8 @@ class TestJobssh:
         s, l, e = job.run()
         time.sleep(1)
         print("State:", s)
-        print("Log:",l)
-        print("Error:",e)
+        print(l)
+        print(e)
 
         log = job.get_log()
         if log is None:
@@ -113,21 +104,12 @@ class TestJobssh:
         job = Job(name=name, host=host, username=username)
         r = job.sync()
 
-        print("BEFORE RUN")
         s, l, e = job.run()
-        print("AFTER RUN")
 
-
-        # job.watch(period=1)
-        # print("after watch")
-
+        job.watch(period=1)
         log = job.get_log()
-        print("after log")
-
         progress = job.get_progress()
         print("Progress:", progress)
-
-
         status = job.get_status(refresh=True)
         print("Status:", status)
         assert log is not None
@@ -137,52 +119,6 @@ class TestJobssh:
 
         Benchmark.Stop()
 
-    def test_progress_status(self):
-        HEADING()
-        global job
-
-        Benchmark.Start()
-        job.get_log()
-        progress = job.get_progress()
-        print("Progress:", progress)
-        status = job.get_status()
-        print("Status:", status)
-        Benchmark.Stop()
-
-        assert progress == 100
-        assert status == "done"
-
-    def test_exists(self):
-        HEADING()
-        global job
-
-        Benchmark.Start()
-        wrong = job.exists(name)
-        correct = job.exists(f"{name}.sh")
-        Benchmark.Stop()
-
-        assert not wrong
-        assert correct
-
-    def test_watch(self):
-        HEADING()
-        global job
-        global username
-        global host
-        global name
-        Benchmark.Start()
-        # os.remove("run-log.txt")
-        # os.remove("run-error.txt")
-        job = Job(name=name, host=host, username=username)
-        r = job.sync("./tests/run.sh")
-        job.run()
-        job.watch(period=1)
-        print("hello")
-        status = job.get_status()
-        Benchmark.Stop()
-        assert status == "done"
-
-class ret:
     def test_exists(self):
         HEADING()
         global job
@@ -238,3 +174,8 @@ class ret:
         # assert status == "done"
         # check with ps if pid is running
 
+class complete:
+    
+    def test_cleanup(self):
+        os.system("rm -f ./run.sh")
+        os.system("rm -f ./wait.sh")
