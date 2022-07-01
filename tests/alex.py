@@ -11,6 +11,7 @@ try:
     username = os.environ["USERNAME"]
     print(username)
     directory = f'/mnt/c/Users/{username}/cm/cloudmesh-cc/tests/'
+
     # Shell.run(f'start /max wsl sh -c ". ~/.profile && cd {directory} && '
     #           f'./run.sh"')
     Shell.run(f'wsl nohup sh -c ". ~/.profile && cd {directory} && '
