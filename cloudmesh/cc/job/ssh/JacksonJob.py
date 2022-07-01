@@ -87,7 +87,7 @@ class Job():
     #     return self.get_status()
 
     def mkdir_remote(self):
-        enter = f'ssh -tt {self.username}@{self.host} mkdir -p {self.directory}'
+        enter = f'ssh {self.username}@{self.host} mkdir -p {self.directory}'
         print(enter)
         os.system(f'{enter} &')
         # command = f'mkdir -p {self.directory}'
@@ -97,10 +97,10 @@ class Job():
 
     def run(self):
         self.mkdir_remote
-
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error && echo $pid"'
+        command = f'ssh {self.username}@{self.host} cd {self.directory} && chmod a+x ./{self.name}.sh && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error && echo $pid'
+        time.sleep(1)
         print(command)
         state = os.system(f'{command} &')
         error = self.get_error()
