@@ -222,8 +222,8 @@ class Job():
                 f"Process {pid} not found. It is likely it already completed.")
 
 
-j = Job(name='beige')
-j.reset_local_dir()
+# j = Job(name='beige')
+# j.reset_local_dir()
 
 
 
