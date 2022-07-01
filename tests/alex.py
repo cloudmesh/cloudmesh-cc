@@ -7,7 +7,8 @@ try:
     # print(reset)
     # change = os.system('cd tests')
     # print(change)
-    directory = f'/mnt/c/Users/abeck/experiment/run'
+    username = os.environ["USERNAME"]
+    directory = f'/mnt/c/Users/{username}/cm/cloudmesh-cc/tests/'
     Shell.run(f'start /i wsl sh -c ". ~/.profile && cd {directory} && '
               f'./run.sh"')
     # reset = f'wsl cd //mnt//c//'
