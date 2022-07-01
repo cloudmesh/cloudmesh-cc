@@ -153,9 +153,9 @@ class Job():
     def sync(self, filename=None):
         if filename is None:
             filename = f"{self.name}.sh"
-        self.mkdir_local()
-        command = f'cp {filename} {self.directory}/.'
-        print(command)
+        self.mkdir_local
+        command = f'cp {filename} {self.directory}/{self.name}.sh'
+        print('BBBBBBBBBBBBB', command)
         r = os.system(command)
         return r
 
