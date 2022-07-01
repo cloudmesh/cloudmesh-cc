@@ -83,16 +83,17 @@ class Job():
         return "\n".join(msg)
 
     @property
-    def status(self):
-        return self.get_status()
+    # def status(self):
+    #     return self.get_status()
 
     def mkdir_remote(self):
-        enter = f'ssh {self.username}@{self.host} mkdir -p {self.directory}'
+        enter = f'ssh -tt {self.username}@{self.host}.hpc.virginia.edu && mkdir -p {self.directory}'
         print(enter)
-        os.system(enter)
-        command = f'mkdir -p {self.directory}'
-        print(command)
-        os.system(command)
+        os.system(f'{enter}, &')
+        # command = f'mkdir -p {self.directory}'
+        # print(command)
+        # os.system(command)
+
 
     def run(self):
         self.mkdir_remote()
