@@ -6,6 +6,7 @@ rm -f run.error
 
 
 ssh "$username"@rivanna.hpc.virginia.edu rm -f run.sh run.log run.error
+ssh "$username"@rivanna.hpc.virginia.edu "ls run.*"
 
 scp run.sh "$username"@rivanna.hpc.virginia.edu:.
 ssh "$username"@rivanna.hpc.virginia.edu cat run.sh
