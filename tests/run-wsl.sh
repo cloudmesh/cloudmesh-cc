@@ -1,5 +1,5 @@
-#!/bin/sh -
-LOG_FILE="abc.log"
+#!/bin/sh -x
+LOG_FILE="run-wsl.log"
 {
 echo "# cloudmesh status=running progress=0 pid=$$"
 date
