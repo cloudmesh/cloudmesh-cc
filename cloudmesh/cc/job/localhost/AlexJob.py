@@ -85,7 +85,9 @@ class Job():
         os.system(resetdir)
         bashdir = str(f'{self.directory}')[2:]
         # command = f'cd {bashdir} && wsl -e {self.name}.sh'
-        command = f'wsl cd /mnt/c/Users/abeck/experiment/run && pwd'
+        username = os.environ["USERNAME"]
+        print(username)
+        command = f'wsl cd //mnt//c//Users///{username}//experiment//run && pwd'
         print(command)
         state = os.system(command)
         print(state)

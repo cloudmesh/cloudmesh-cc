@@ -1,30 +1,30 @@
 import os
-from pathlib import Path
-
-import cloudmesh
-from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
-
-# path = path_expand(f'/c/Users/abeck/experiment/run')
-# try:
-#     command = Shell.run(f'wsl cd \mnt{path}')
-# except Exception as e:
-#     print(e.output)
+from cloudmesh.common.Shell import Shell
 
 try:
-    command = Shell.run(f'wsl -e cd /home/abeck && pwd')
-    print(command)
+    # reset = os.chdir(path_expand(f'~/experiment/run'))
+    # print(reset)
+    # change = os.system('cd tests')
+    # print(change)
+    directory = f'/mnt/c/Users/abeck/experiment/run'
+    Shell.run(f'start /min wsl sh -c ". ~/.profile && cd {directory} && '
+              f'./run.sh"')
+    # reset = f'wsl cd //mnt//c//'
+    # pwd = f'wsl "pwd"'
+    # r = Shell.run(reset)
+    # p = Shell.run(pwd)
+    # print(r)
+    # print(p)
 except Exception as e:
-    print('c')
+    print(e.output)
 
-command = Shell.run(f'wsl -e cd /home/abeck && pwd')
-print(command)
-
-# name = 'run'
-# dir = path_expand('~')
-# command = f'cd {dir} && pwd'
-# directory = Shell.run(command)
+# try:
+#     command = f'start /b wsl -e bash //mnt//c//Users//abeck//experiment//run//run.sh'
+#     r = Shell.run(command)
+#     print(r)
 # except Exception as e:
 #     print(e.output)
-#
-# print(directory)
+
+
+
