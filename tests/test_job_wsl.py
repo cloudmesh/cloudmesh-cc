@@ -1,25 +1,28 @@
 ###############################################################
-# pytest -v -x --capture=no tests/test_job_localhost_jackson.py
-# pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
+# pytest -v -x --capture=no tests/test_job_wsl.py
+# pytest -v  tests/test_job_wsl.py
+# pytest -v --capture=no  tests/test_job_wsl.py::TestJobssh::<METHODNAME>
 ###############################################################
 import os
 import time
 
 import pytest
 
-from cloudmesh.cc.job.localhost.JacksonJob import Job
+from cloudmesh.cc.job.wsl.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
+
+from cloudmesh.common.systeminfo import os_is_windows
 variables = Variables()
 
-name = "run"
-
 host = "localhost"
-username = os.environ["USER"]
+if os_is_windows():
+    username = os.environ["USERNAME"]
+else:
+    username = os.environ["USER"]
 
 job = None
 
@@ -39,8 +42,8 @@ class TestJoblocalhost:
         global job
         global username
         global host
-        global name
         Benchmark.Start()
+        name = "run"
         job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
         assert job.name == name
@@ -52,6 +55,7 @@ class TestJoblocalhost:
         global job
 
         Benchmark.Start()
+        print(type(job))
         r = job.sync("./tests/run.sh")
 
         Benchmark.Stop()
@@ -67,7 +71,7 @@ class TestJoblocalhost:
         global job
 
         Benchmark.Start()
-        job = Job(name=name, host=host, username=username)
+        # job = Job(name="run", host=host, username=username)
         r = job.sync()
 
         s, l, e = job.run()
@@ -98,19 +102,17 @@ class TestJoblocalhost:
         os.system("cp ./tests/run.sh .")
         os.system("cp ./tests/wait.sh .")
 
-        global job
-
         Benchmark.Start()
-        job = Job(name=name, host=host, username=username)
-        r = job.sync()
+        jobWait = Job(name="wait", host=host, username=username)
+        r = jobWait.sync()
 
-        s, l, e = job.run()
+        s, l, e = jobWait.run()
 
-        job.watch(period=1)
-        log = job.get_log()
-        progress = job.get_progress()
+        jobWait.watch(period=1)
+        log = jobWait.get_log()
+        progress = jobWait.get_progress()
         print("Progress:", progress)
-        status = job.get_status(refresh=True)
+        status = jobWait.get_status(refresh=True)
         print("Status:", status)
         assert log is not None
         assert s == 0
@@ -123,6 +125,7 @@ class TestJoblocalhost:
         HEADING()
         global job
 
+        name = "run"
         Benchmark.Start()
         wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
@@ -142,7 +145,6 @@ class TestJoblocalhost:
         global job
         global username
         global host
-        global name
 
         os.system("rm -r ~/experiment")
         os.system("cp ./tests/run.sh .")
@@ -154,7 +156,7 @@ class TestJoblocalhost:
         os.system("rm -f ./wait.error")
 
         Benchmark.Start()
-        job = Job(name=name, host=host, username=username)
+        # job = Job(name="run", host=host, username=username)
         print(job)
         r = job.sync()
         job.run()
