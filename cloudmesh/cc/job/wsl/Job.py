@@ -69,9 +69,7 @@ class Job():
         if "directory" in self.data:
             self.directory = self.data["directory"]
         else:
-            user = os.environ["USERNAME"]
-            print(user)
-            self.directory = f'experiment//{self.name}'
+            self.directory = f'~/experiment/{self.name}'
 
         # print(self)
 
@@ -90,8 +88,15 @@ class Job():
         return self.get_status()
 
     def mkdir_local(self):
+        user = os.environ["USERNAME"]
+        bashdir = str(f'{self.directory}')[2:]
+        dir = Shell.run(f'wsl sh -c "cd /mnt/c/Users/{user}/{bashdir} '
+                        f'&& pwd"')
+        print(dir)
         command = f'wsl mkdir -p {self.directory}'
         print(command)
+        state = os.system(command)
+        print(state)
         # Shell.run(f'wsl sh -c ". ~/.profile && cd')
         # Shell.mkdir(f'{self.directory}')
 
@@ -100,21 +105,9 @@ class Job():
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
-        # command = f'cd {self.directory} && bash {self.name}.sh > ' \
-        #           f'{self.name}.log 2> {self.name}.err'
-        # Shell.run(f'start /max wsl sh -c ". ~/.profile && cd {directory} && '
-        #           f'./run.sh"')
+
         # state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd'
         #                   f' {self.directory} && ./run.sh &"')
-        # dir = path_expand('~')
-        # resetdir = f'cd {dir}'
-        # os.system(resetdir)
-        # bashdir = str(f'{self.directory}')[2:]
-        # command = f'cd {bashdir} && wsl -e {self.name}.sh'
-        # username = os.environ["USERNAME"]
-        # command = f'wsl "cd //mnt//c//Users//{username}//experiment//run && pwd"'
-        # command = f'wsl "cd /mnt/c/Users/{username}/experiment/run/run.sh &"'
-        # print(command)
         # state = os.system(command)
         # r = Shell.run(command)
         # print (r)
