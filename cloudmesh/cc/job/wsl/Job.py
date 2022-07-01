@@ -104,14 +104,23 @@ class Job():
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
+        b = str(self.directory)[2:]
+        bashdir = str(f'/mnt/c/Users/{self.username}/{b}')
+        print("changind dir")
 
-        state = os.system(f'wsl nohup sh -c ". ~/.profile && cd /mnt/c/Users/{self.username}/{self.directory} && ./run.sh &"')
-        # state = os.system(command)
+        os.system(f'wsl sh -c ". ~/.profile && cd /mnt/c/Users/{self.username}/{bashdir}"')
+        state = Shell.run(f'wsl nohup sh -c ". ~/.profile && cd /mnt/c/Users/{self.username}/{bashdir} && ./run.sh &"')
+        print("afterwards")
+
         # r = Shell.run(command)
         # print (r)
-        print("state:",state)
+        # print("state:",state)
+
+        state = 0
+
         log = self.get_log()
-        return state, log
+        error = self.get_error()
+        return state, log, error
 
     def get_status(self, refresh=False):
         if refresh:
@@ -140,7 +149,8 @@ class Job():
         return 0
 
     def get_error(self):
-        bashdir = str(f'{self.directory}')[2:]
+        b = str(self.directory)[2:]
+        bashdir = str(f'/mnt/c/Users/{self.username}/{b}')
 
         command = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
                   f'{self.username}/{bashdir}/{self.name}.err ' \
@@ -151,7 +161,8 @@ class Job():
         return content
 
     def get_log(self):
-        bashdir = str(f'{self.directory}')[2:]
+        b = str(self.directory)[2:]
+        bashdir = str(f'/mnt/c/Users/{self.username}/{b}')
 
         command = f'wsl sh -c ". ~/.profile && cp /mnt/c/Users/' \
                   f'{self.username}/{bashdir}/{self.name}.log ' \
@@ -171,24 +182,24 @@ class Job():
     #         content = None
     #     return content
 
-    # test if pwd works
+    # move from current directory to remote
     def sync(self):
         self.mkdir_local()
         b = str(self.directory)[2:]
         bashdir = str(f'/mnt/c/Users/{self.username}/{b}')
-        log = f'wsl sh -c ". ~/.profile && cp tests/{self.name}.log ' \
-              f'{bashdir}/{self.name}.log"'
-        print(log)
-        l = os.system(log)
-        error = f'wsl sh -c ". ~/.profile && cp tests/{self.name}.err ' \
-              f'{bashdir}/{self.name}.err"'
-        print(error)
-        e = os.system(error)
+        command = f'wsl sh -c ". ~/.profile && cp {self.name}.sh {bashdir}/{self.name}.sh"'
+        print(command)
+        l = os.system(command)
+        # error = f'wsl sh -c ". ~/.profile && cp tests/{self.name}.err ' \
+        #       f'{bashdir}/{self.name}.err"'
+        # print(error)
+        # e = os.system(error)
         return l
 
     def exists(self, filename):
         command = f"{self.directory}/{filename}"
         #        print(command)
+        # print("EXISTS COMMAND:", command)
         r = Shell.ls(command)
         if len(r) > 0:
             return True

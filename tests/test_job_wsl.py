@@ -63,23 +63,22 @@ class TestJoblocalhost:
         Benchmark.Stop()
         # successful exit status
         assert r == 0
+        # assert job.exists("run-wsl.sh")
 
     # potentially wrong
     def test_run_fast(self):
         HEADING()
         global prefix
 
-        os.system("rm -r ~/experiment")
-        os.system(f"cp ./tests/run{prefix}.sh .")
-        # os.system(f"cp ./tests/wait{prefix}.sh .")
+        # os.system("rm -r ~/experiment")
+        # os.system(f"cp ./tests/run{prefix}.sh .")
 
         Benchmark.Start()
         global job
         job = Job(name=f"run{prefix}", host=host, username=username)
-        # r = job.sync()
+        r = job.sync()
 
-        s, l = job.run()
-        # s, l, e = job.run()
+        s, l, e = job.run()
         time.sleep(1)
         print("State:", s)
         print(l)
