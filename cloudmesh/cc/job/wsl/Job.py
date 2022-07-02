@@ -222,9 +222,3 @@ class Job:
         if "No such process" in r:
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
-
-# j = Job(name='run-wsl')
-# try:
-#     j.get_log()
-# except Exception as e:
-#     print(e.output)
