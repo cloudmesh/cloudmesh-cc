@@ -7,7 +7,7 @@ from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 
 
-class Job():
+class Job:
 
     def __init__(self, name=None, username=None, host=None, label=None, **argv):
         """
@@ -30,7 +30,7 @@ class Job():
         self.host = host
         self.name = name
         if label is None:
-            label = name
+            self.label = name
 
         # print("self.data", self.data)
         for key, value in self.data.items():
@@ -43,14 +43,14 @@ class Job():
         if self.username is None:
             try:
                 self.username = variables["username"]
-            except:
+            except:  # noqa: E722
                 Console.error("Username is not defined")
                 raise ValueError
 
         if self.host is None:
             try:
                 self.host = variables["host"]
-            except:
+            except:  # noqa: E722
                 Console.error("Host is not defined")
                 raise ValueError
 
@@ -59,16 +59,16 @@ class Job():
         else:
             self.directory = f'~/experiment/{self.name}'
 
-        # print(self)
-
     def __str__(self):
-        msg = []
-        msg.append(f"host: {self.host}")
-        msg.append(f"username: {self.username}")
-        msg.append(f"name: {self.name}")
-        msg.append(f"directory: {self.directory}")
-        msg.append(f"data: {self.data}")
-        msg.append(f"locals  {locals()}")
+        msg = [
+            f"host:      {self.host}",
+            f"username:  {self.username}",
+            f"name:      {self.name}",
+            f"label:     {self.label}",
+            f"directory: {self.directory}",
+            f"data:      {self.data}",
+            f"locals     {locals()}"
+        ]
         return "\n".join(msg)
 
     @property
@@ -98,8 +98,8 @@ class Job():
         # os.system(command)
 
         experimentdir = f'experiment/{self.name}'
-        command = f'wsl nohup sh -c'\
-                  f' ". ~/.profile && cd /mnt/c/Users/{self.username}/{experimentdir}'\
+        command = f'wsl nohup sh -c' \
+                  f' ". ~/.profile && cd /mnt/c/Users/{self.username}/{experimentdir}' \
                   f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
         print(command)
         r = os.system(command)
@@ -135,7 +135,7 @@ class Job():
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:
+            except:  # noqa: E722
                 return 0
         return 0
 
@@ -182,8 +182,7 @@ class Job():
         try:
             r = Shell.run(f'ls {experimentdir}')
         except Exception as e:
-            print(e.output)
-        # r = Shell.ls(experimentdir)
+            print(e)
         if r:
             return True
         return False
