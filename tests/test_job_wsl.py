@@ -3,6 +3,11 @@
 # pytest -v  tests/test_job_wsl.py
 # pytest -v --capture=no  tests/test_job_wsl.py::TestJobssh::<METHODNAME>
 ###############################################################
+
+#
+# program needs pip install pywin32 -U in requirements if on windows
+#
+
 import os
 import time
 from time import sleep
@@ -14,6 +19,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
+import shutil
 
 from cloudmesh.common.systeminfo import os_is_windows
 variables = Variables()
@@ -28,15 +34,18 @@ job = None
 prefix="-wsl"
 
 
+
 @pytest.mark.incremental
 class TestJoblocalhost:
 
     def test_create_run(self):
-        os.system("rm -r ~/experiment")
+        exp = path_expand("~/experiment")
+        shutil.rmtree(exp, ignore_errors=True)
         os.system(f"cp ./tests/run{prefix}.sh .")
         os.system(f"cp ./tests/wait{prefix}.sh .")
         assert os.path.isfile(f"./run{prefix}.sh")
         assert os.path.isfile(f"./wait{prefix}.sh")
+        assert not os.path.isfile(exp)
 
     def test_create(self):
         HEADING()
@@ -48,6 +57,7 @@ class TestJoblocalhost:
         name = f"run{prefix}"
         job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
+        print(job)
         assert job.name == name
         assert job.host == host
         assert job.username == username
@@ -57,14 +67,12 @@ class TestJoblocalhost:
         global job
 
         Benchmark.Start()
-        print(type(job))
         r = job.sync()
-
         Benchmark.Stop()
-        # successful exit status
         assert r == 0
-        # assert job.exists("run-wsl.sh")
+        assert job.exists("run-wsl.sh")
 
+class ff:
     # potentially wrong
     def test_run_fast(self):
         HEADING()

@@ -5,11 +5,12 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
-
+from cloudmesh.common.util import path_expand
+from pathlib import Path
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
         cms set username=abc123
 
@@ -24,11 +25,10 @@ class Job:
 
         self.data = argv
 
-        variables = Variables()
-
         self.username = username
         self.host = host
         self.name = name
+        self.directory = directory
         if label is None:
             self.label = name
 
@@ -41,23 +41,13 @@ class Job:
             raise ValueError
 
         if self.username is None:
-            try:
-                self.username = variables["username"]
-            except:  # noqa: E722
-                Console.error("Username is not defined")
-                raise ValueError
+            self.username = os.environ["USERNAME"]
 
         if self.host is None:
-            try:
-                self.host = variables["host"]
-            except:  # noqa: E722
-                Console.error("Host is not defined")
-                raise ValueError
+            self.host = "localhost"
 
-        if "directory" in self.data:
-            self.directory = self.data["directory"]
-        else:
-            self.directory = f'~/experiment/{self.name}'
+        if self.directory is None:
+            self.directory = f'/c/Users/{self.username}/experiment/{self.name}'
 
     def __str__(self):
         msg = [
@@ -75,31 +65,55 @@ class Job:
     def status(self):
         return self.get_status()
 
-    def reset_local_dir(self):
-        user = os.environ["USERNAME"]
-        homedir = f'/mnt/c/Users/{user}'
-        Shell.run(f'wsl sh -c ". ~/.profile && cd {homedir}"')
+    def mkdir_experimentdir(self):
+        try:
+            experimentdir = f"/c/Users/{self.username}/experiment/{self.name}".replace("/", "\\")
 
-    def mkdir_local(self):
-        self.reset_local_dir()
-        user = os.environ["USERNAME"]
-        experimentdir = f'experiment/{self.name}'
-        dir = os.system(f'wsl sh -c "mkdir -p /mnt/c/Users/{user}/{experimentdir}"')
-        print(dir)
-        # command = f'wsl mkdir -p {self.directory}'
-        # print(command)
-        state = Shell.mkdir(self.directory)
+            Path(experimentdir).mkdir(parents=True, exist_ok=True)
 
-        print(state)
+            r = Path(experimentdir).is_dir()
+            input()
+            print("GGGG", r, experimentdir)
+
+            os.system(f"ls {experimentdir}")
+        except Exception as e:
+            Console.error(str(e))
+            print ("UUUU")
+
+    # move from current directory to remote
+    def sync(self):
+
+        print (self)
+        self.mkdir_experimentdir()
+
+        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}'
+        command = f'cp {self.name}.sh {experimentdir}/{self.name}.sh'
+        print(command)
+        r = os.system(command)
+        return r
+
+    def exists(self, filename):
+        path = f'/c/Users/{self.username}/experiment/{self.name}/{filename}'
+        r = False
+        try:
+            r = Path.exists(path)
+        except Exception as e:
+            print(e)
+        return r
+
 
     def run(self):
-        self.mkdir_local()
-        # command = f'chmod ug+x ./{self.name}.sh'
-        # os.system(command)
+        self.mkdir_experimentdir()
+        # make sure executable is set
+        command = f'chmod a+x ./{self.name}.sh'
+        os.system(command)
 
-        experimentdir = f'experiment/{self.name}'
+        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}'
+        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
+        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
+
         command = f'wsl nohup sh -c' \
-                  f' ". ~/.profile && cd /mnt/c/Users/{self.username}/{experimentdir}' \
+                  f' ". ~/.profile && cd /mnt{experimentdir}' \
                   f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
         print(command)
         r = os.system(command)
@@ -143,49 +157,24 @@ class Job:
 
         experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
 
-        command = f'wsl sh -c ". ~/.profile && cp {experimentdir}/{self.name}.err ' \
-                  f'./{self.name}.err"'
+        command = f'cp {experimentdir}/{self.name}.err ./{self.name}.err'
         print(command)
         os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.err", 'r')
+        content = readfile(f"{self.name}.err", 'r')
         print(content)
         return content
 
     def get_log(self):
 
-        experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
+        experimentdir = f'c/Users/{self.username}/experiment/{self.name}'
 
-        command = f'wsl sh -c ". ~/.profile && cp {experimentdir}/{self.name}.log ' \
-                  f'.{self.name}.log"'
+        command = f'cp {experimentdir}/{self.name}.log ./{self.name}.log'
         print(command)
         os.system(command)
-        content = readfile(f"{self.directory}/{self.name}.log", 'r')
+        content = readfile(f"{self.name}.log", 'r')
         print(content)
         return content
 
-    # move from current directory to remote
-    def sync(self):
-        self.mkdir_local()
-
-        experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
-        command = f'wsl sh -c ". ~/.profile && cp {self.name}.sh {experimentdir}/{self.name}.sh"'
-        print(command)
-        r = os.system(command)
-        return r
-
-    def exists(self, filename):
-        # command = f"{self.directory}/{filename}"
-        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}/{filename}'
-        # print(command)
-        # print("EXISTS COMMAND:", command)
-        r = None
-        try:
-            r = Shell.run(f'ls {experimentdir}')
-        except Exception as e:
-            print(e)
-        if r:
-            return True
-        return False
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
