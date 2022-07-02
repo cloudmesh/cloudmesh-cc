@@ -1,14 +1,10 @@
 import os
 
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 import time
-from time import sleep
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
-from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
-from pathlib import Path
 
 
 class Job():
@@ -58,7 +54,6 @@ class Job():
                 Console.error("Host is not defined")
                 raise ValueError
 
-
         if "directory" in self.data:
             self.directory = self.data["directory"]
         else:
@@ -97,21 +92,22 @@ class Job():
 
         print(state)
 
-
     def run(self):
         self.mkdir_local()
         # command = f'chmod ug+x ./{self.name}.sh'
         # os.system(command)
 
         experimentdir = f'experiment/{self.name}'
-        command = f'wsl nohup sh -c ". ~/.profile && cd /mnt/c/Users/{self.username}/{experimentdir} && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
-        os.system(command)
+        command = f'wsl nohup sh -c'\
+                  f' ". ~/.profile && cd /mnt/c/Users/{self.username}/{experimentdir}'\
+                  f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
+        print(command)
+        r = os.system(command)
 
         # r = Shell.run(command)
         # print (r)
-        # print("state:",state)
 
-        state = 0
+        state = r
         log = self.get_log()
         # error = self.get_error()
         error = 0
@@ -174,8 +170,8 @@ class Job():
         experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
         command = f'wsl sh -c ". ~/.profile && cp {self.name}.sh {experimentdir}/{self.name}.sh"'
         print(command)
-        l = os.system(command)
-        return l
+        r = os.system(command)
+        return r
 
     def exists(self, filename):
         # command = f"{self.directory}/{filename}"
@@ -228,12 +224,8 @@ class Job():
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
 
-
 # j = Job(name='run-wsl')
 # try:
 #     j.get_log()
 # except Exception as e:
 #     print(e.output)
-
-
-
