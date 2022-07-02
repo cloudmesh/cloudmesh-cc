@@ -116,7 +116,7 @@ class TestJoblocalhost:
     def test_run_wait(self):
         HEADING()
         global prefix
-
+        print(f'prefix {prefix}')
         os.system("rm -r ~/experiment")
         # os.system(f"cp ./tests/run{prefix}.sh .")
         os.system(f"cp ./tests/wait{prefix}.sh .")
@@ -124,9 +124,8 @@ class TestJoblocalhost:
         Benchmark.Start()
         jobWait = Job(name=f"wait{prefix}", host=host, username=username)
         r = jobWait.sync()
-
+        #problem
         s, l, e = jobWait.run()
-
         jobWait.watch(period=1)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
