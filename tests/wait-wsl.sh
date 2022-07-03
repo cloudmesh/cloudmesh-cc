@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/sh -x
 echo "# cloudmesh status=running progress=0 pid=$$"
 date
 echo "# cloudmesh status=running progress=0 pid=$$"

@@ -33,18 +33,23 @@ else:
 job = None
 prefix="-wsl"
 
+run_job = f"run{prefix}"
+wait_job = f"wait{prefix}"
+
+
 
 
 @pytest.mark.incremental
 class TestJoblocalhost:
 
+
     def test_create_run(self):
+        os.system("rm -r ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
-        os.system(f"cp ./tests/run{prefix}.sh .")
-        os.system(f"cp ./tests/wait{prefix}.sh .")
-        assert os.path.isfile(f"./run{prefix}.sh")
-        assert os.path.isfile(f"./wait{prefix}.sh")
+        for script in [run_job, wait_job]:
+            os.system(f"cp ./tests/{script}.sh .")
+            assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
     def test_create(self):
@@ -106,8 +111,6 @@ class TestJoblocalhost:
 
         Benchmark.Stop()
 
-class ff:
-
     # will fail if previous test fails
     def test_exists_run(self):
         HEADING()
@@ -123,14 +126,11 @@ class ff:
 
     def test_run_wait(self):
         HEADING()
-        global prefix
-        print(f'prefix {prefix}')
-        os.system("rm -r ~/experiment")
-        # os.system(f"cp ./tests/run{prefix}.sh .")
-        os.system(f"cp ./tests/wait{prefix}.sh .")
+        global run_job
 
         Benchmark.Start()
-        jobWait = Job(name=f"wait{prefix}", host=host, username=username)
+        jobWait = Job(name=f"{run_job}", host=host, username=username)
+        jobWait.clear()
         r = jobWait.sync()
         #problem
         s, l, e = jobWait.run()
@@ -139,7 +139,7 @@ class ff:
         progress = jobWait.get_progress()
         print("Progress:", progress)
         status = jobWait.get_status(refresh=True)
-        print("Status:", status)
+        print("Status:", status, s, progress)
         assert log is not None
         assert s == 0
         assert progress == 100
@@ -152,7 +152,7 @@ class ff:
         HEADING()
         global job
 
-        name = f"wait{prefix}"
+        name = f"run{prefix}"
         Benchmark.Start()
         wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
@@ -174,11 +174,10 @@ class ff:
         global prefix
 
         os.system("rm -r ~/experiment")
-        # os.system(f"cp ./tests/run{prefix}.sh .")
         os.system(f"cp ./tests/wait{prefix}.sh .")
 
         os.system(f"rm -f ./wait{prefix}.log")
-        os.system(f"rm -f ./wait{prefix}.error")
+        # os.system(f"rm -f ./wait{prefix}.error")
 
         Benchmark.Start()
         job = Job(name=f"wait{prefix}", host=host, username=username)

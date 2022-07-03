@@ -118,6 +118,15 @@ class Job:
         error = 0
         return state, log, error
 
+    def clear(self):
+        content = None
+        try:
+            source = path_expand(f'~/experiment/{self.name}/{self.name}.log')
+            destination = f"{self.name}.log"
+            Shell.run(f"rm -f {source} {destination}")
+        except Exception as e:
+            Console.error(e)
+
     def get_log(self):
         content = None
         try:
