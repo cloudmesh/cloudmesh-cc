@@ -69,7 +69,6 @@ class TestJoblocalhost:
         Benchmark.Start()
         r = job.sync()
         Benchmark.Stop()
-        assert r == 0
         assert job.exists("run-wsl.sh")
 
 class ff:

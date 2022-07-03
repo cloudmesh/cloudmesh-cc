@@ -67,40 +67,31 @@ class Job:
 
     def mkdir_experimentdir(self):
         try:
-            experimentdir = f"/c/Users/{self.username}/experiment/{self.name}".replace("/", "\\")
-
-            Path(experimentdir).mkdir(parents=True, exist_ok=True)
-
-            r = Path(experimentdir).is_dir()
-            input()
-            print("GGGG", r, experimentdir)
-
-            os.system(f"ls {experimentdir}")
+            experimentdir = f"~/experiment/{self.name}"
+            Shell.mkdir(experimentdir)
         except Exception as e:
             Console.error(str(e))
-            print ("UUUU")
 
     # move from current directory to remote
     def sync(self):
-
         print (self)
         self.mkdir_experimentdir()
+        home = Path.home()
+        cwd = Path.cwd()
 
-        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}'
-        command = f'cp {self.name}.sh {experimentdir}/{self.name}.sh'
-        print(command)
-        r = os.system(command)
-        return r
+        print (home, cwd)
+
+        experimentdir = f"{home}/experiment/{self.name}"
+        destination = Path(f"{experimentdir}/{self.name}.sh")
+        source = Path(f"{cwd}/{self.name}.sh")
+        Shell.copy(source,  destination)
+        print ("JJJJ", destination)
+        return self.exists(f"{self.name}.sh")
 
     def exists(self, filename):
-        path = f'/c/Users/{self.username}/experiment/{self.name}/{filename}'
-        r = False
-        try:
-            r = Path.exists(path)
-        except Exception as e:
-            print(e)
-        return r
-
+        home = Path.home()
+        path = f'{home}/experiment/{self.name}/{filename}'
+        return Path.exists(Path(path))
 
     def run(self):
         self.mkdir_experimentdir()
