@@ -98,35 +98,20 @@ class Job:
         home = Path.home()
         cwd = Path.cwd()
 
-        experimentdir = Path(f'{home}/experiment/{self.name}')
+        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}'
         wsl_experimentdir = f"/mnt/c/Users/{self.username}/experiment/{self.name}"
-
-        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
-        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
-        #command = f'wsl --cd  /c/Users/green/experiment/run-wsl nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
-        #command = f'bash -c "{command}"'
-        import textwrap
-        from cloudmesh.common.util import writefile
-        script = textwrap.dedent(f"""
-        #!/bin/sh
-        {command}
-        """).strip() + "\n"
-        writefile(f"{self.name}-script.sh", script)
-        print (script)
-        input()
-        #import subprocess
-        #r = subprocess.run(f"{self.name}-script.sh", shell=True)
 
-        r = os.system(f"{self.name}-script.sh")
+        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
+        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
+        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
 
-        # r = Shell.run(command)
-        # print (r)
+        print (command)
+        state = os.system(command)
 
-        state = r
         log = self.get_log()
         log = 1
         # error = self.get_error()
