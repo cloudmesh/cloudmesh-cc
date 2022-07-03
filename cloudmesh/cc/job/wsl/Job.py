@@ -6,6 +6,7 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import banner
 from pathlib import Path
 
 class Job:
@@ -70,7 +71,7 @@ class Job:
             experimentdir = f"~/experiment/{self.name}"
             Shell.mkdir(experimentdir)
         except Exception as e:
-            Console.error(str(e))
+            Console.error(str(e), traceflag=True)
 
     # move from current directory to remote
     def sync(self):
@@ -105,6 +106,11 @@ class Job:
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
 
+        os.system(f'mkdir -p "{experimentdir}"')
+        command = f'wsl nohup sh -c' \
+                  f' ". ~/.profile && cd {wsl_experimentdir}' \
+                  f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
+
         #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
         #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
         #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
@@ -125,18 +131,22 @@ class Job:
             destination = f"{self.name}.log"
             Shell.run(f"rm -f {source} {destination}")
         except Exception as e:
-            Console.error(e)
+            Console.error(e, traceflag=True)
 
-    def get_log(self):
+    def get_log(self, verbose=False):
         content = None
         try:
-            source = path_expand(f'~/experiment/{self.name}/{self.name}.log')
+            logfile = f'~/experiment/{self.name}/{self.name}.log'
+            source = path_expand(logfile)
             destination = f"{self.name}.log"
-            Shell.run(f"cp {source} {destination}")
-            content = readfile(f"{self.name}.log", 'r')
-            print(content)
+            if verbose:
+                print("COPY", source, destination)
+            Shell.copy(source, destination)
+            content = readfile(destination)
+            if verbose:
+                print(content)
         except Exception as e:
-            Console.error(e)
+            Console.error(e, traceflag=True)
         return content
 
     def get_status(self, refresh=False):
@@ -166,9 +176,7 @@ class Job:
         return 0
 
     def get_error(self):
-
         experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
-
         command = f'cp {experimentdir}/{self.name}.err ./{self.name}.err'
         print(command)
         os.system(command)
@@ -176,14 +184,17 @@ class Job:
         print(content)
         return content
 
-
-
-    def watch(self, period=10):
+    def watch(self, period=2):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
+        banner("watch progress")
         while not finished:
-            progress = int(self.get_progress(refresh=True))
-            finished = progress == 100
+            try:
+                progress = int(self.get_progress(refresh=True))
+                print ("Progress", progress)
+                finished = progress == 100
+            except:
+                print("Progress", "not found")
             if not finished:
                 time.sleep(period)
 
@@ -204,12 +215,13 @@ class Job:
         """
         kills the job
         """
+
         pid = self.get_pid()
-        command = f"wsl kill -9 {pid}"
-        #        print(command)
-        # the kill command needs to be run in WSL
+        command = f'wsl pgrep -P {pid}'
+        child = Shell.run(command).strip()
+        command = f'kill -9 {pid} {child}'
         r = Shell.run(command)
-        #        print(r)
+        print(r)
         if "No such process" in r:
             Console.warning(
-                f"Process {pid} not found. It is likely it already completed.")
+                "Process {pid} not found. It is likely it already completed.")

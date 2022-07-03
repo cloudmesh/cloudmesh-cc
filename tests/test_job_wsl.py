@@ -90,7 +90,8 @@ class TestJoblocalhost:
         r = job.sync()
 
         s, l, e = job.run()
-        time.sleep(1)
+        # give it time to complete
+        time.sleep(5)
         print("State:", s)
         print(l)
         # print(e)
@@ -134,7 +135,7 @@ class TestJoblocalhost:
         r = jobWait.sync()
         #problem
         s, l, e = jobWait.run()
-        jobWait.watch(period=1)
+        jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
         print("Progress:", progress)
@@ -184,8 +185,15 @@ class TestJoblocalhost:
         print(job)
         r = job.sync()
         job.run()
-        time.sleep(2)
+        input()
+
+
+        job.get_log()
         parent = job.get_pid()
+        print (parent)
+
+        input()
+
         job.kill()
         child = job.get_pid()
         status = job.get_status()
