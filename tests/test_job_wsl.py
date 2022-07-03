@@ -71,7 +71,6 @@ class TestJoblocalhost:
         Benchmark.Stop()
         assert job.exists("run-wsl.sh")
 
-class ff:
     # potentially wrong
     def test_run_fast(self):
         HEADING()
@@ -106,6 +105,8 @@ class ff:
             assert status == "done"
 
         Benchmark.Stop()
+
+class ff:
 
     # will fail if previous test fails
     def test_exists_run(self):
