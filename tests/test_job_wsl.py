@@ -13,11 +13,13 @@ import time
 from time import sleep
 import pytest
 
+import subprocess
 from cloudmesh.cc.job.wsl.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import banner
 from cloudmesh.common.Shell import Shell
 import shutil
 
@@ -51,6 +53,9 @@ class TestJoblocalhost:
             os.system(f"cp ./tests/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
+
+
+
 
     def test_create(self):
         HEADING()
@@ -173,37 +178,33 @@ class TestJoblocalhost:
         global username
         global host
         global prefix
-
-        os.system("rm -r ~/experiment")
-        os.system(f"cp ./tests/wait{prefix}.sh .")
-
-        os.system(f"rm -f ./wait{prefix}.log")
-        # os.system(f"rm -f ./wait{prefix}.error")
+        global wait_job
 
         Benchmark.Start()
-        job = Job(name=f"wait{prefix}", host=host, username=username)
-        print(job)
-        r = job.sync()
-        job.run()
-        input()
+        job_kill = Job(name=f"{wait_job}", host=host, username=username)
+        banner("Cear the job log")
+        job_kill.clear()
+        banner("Sync the job to the experiment directory")
+        r = job_kill.sync()
 
+        banner("Run the job")
+        s, l, e = job_kill.run()
+        time.sleep(3)
 
-        job.get_log()
-        parent = job.get_pid()
-        print (parent)
+        banner("Kill the Job")
+        parent, child = job_kill.kill(period=2)
+        banner(f"Job kill is done: {parent} {child}")
 
-        input()
+        Benchmark.Stop()
 
-        job.kill()
-        child = job.get_pid()
-        status = job.get_status()
+        child = job_kill.get_pid()
+        status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = Shell.run('ps')
-        print('PIDs', parent, child)
-        print(job.get_log())
+        ps = subprocess.check_output(f'wsl ps -aux', shell=True, text=True).strip()
+        banner(f"{ps}")
         assert 'sleep 3600' not in ps
-        assert str(parent) not in ps
-        assert str(child) not in ps
-        # assert status == "done"
-        # check with ps if pid is running
+        assert f" {parent} " not in ps
+        assert f" {child} " not in ps
+        assert status == "running"
+

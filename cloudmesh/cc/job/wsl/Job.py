@@ -200,28 +200,58 @@ class Job:
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.name}.log", 'r')
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            pid = lines[0].split("pid=")[1]
-            pid = pid.split()[0]
-            return pid
-        return None
+        pid = None
+        try:
+            if refresh:
+                log = self.get_log()
+            else:
+                log = readfile(f"{self.name}.log", 'r')
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                pid = lines[0].split("pid=")[1]
+                pid = pid.split()[0]
+                return pid
+        except:
+            pid = None
+        return pid
 
-    def kill(self):
+    def kill(self, period=1):
         """
         kills the job
         """
+        #
+        # find logfile
+        #
+        logfile = f'~/experiment/{self.name}/{self.name}.log'
 
-        pid = self.get_pid()
+        log = None
+        while log is None:
+            try:
+                log = readfile(logfile)
+                lines = log.splitlines()
+                found = False
+                for line in lines:
+                    if line.startswith("# cloudmesh") and "pid=" in line:
+                        found = True
+                        break
+                if not found:
+                    log = None
+            except Exception as e:
+                Console.error("no log file yet",traceflag=True)
+                log = None
+            time.sleep(2)
+        pid = None
+        while pid is None:
+            time.sleep(1)
+
+            pid = self.get_pid(refresh=True)
+
         command = f'wsl pgrep -P {pid}'
         child = Shell.run(command).strip()
-        command = f'kill -9 {pid} {child}'
+        command = f'wsl kill -9 {pid} {child}'
         r = Shell.run(command)
-        print(r)
+        Console.msg(f"Killing {pid} {child}")
         if "No such process" in r:
             Console.warning(
                 "Process {pid} not found. It is likely it already completed.")
+        return pid, child

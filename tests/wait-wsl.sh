@@ -6,7 +6,7 @@ ls
 echo "# cloudmesh status=running progress=20 pid=$$"
 pwd
 echo "# cloudmesh status=running progress=30 pid=$$"
-sleep 10
+sleep 3600
 echo "# cloudmesh status=running progress=50 pid=$$"
 hostname
 echo "# cloudmesh status=done progress=100 pid=$$"
