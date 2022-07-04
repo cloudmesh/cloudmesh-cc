@@ -8,14 +8,25 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 
+class Slurm:
+
+    def __init__(self, host):
+        if host.startswith("rivanna"):
+            self.slurm = "/opt/slurm/current/bin"
+            self.squeue = f"{self.slurm}/squeue"
+            self.sbatch = f"{self.slurm}/sbatch"
+            self.srun = f"{self.slurm}/srun"
+        else:
+            Console.error("Slurm not yet set up for this host")
+
 
 class Job():
 
-    def __init__(self, name=None, username=None, host=None, label=None, **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
         cms set username=abc123
 
-        craetes a job by passing either a dict with **dict or named arguments
+        creates a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
 
         :param data:
@@ -26,23 +37,14 @@ class Job():
 
         self.data = argv
 
-        print(self.data)
-        variables = Variables()
-        # try:
-        #    a,b,c, = self.name, self.username, self.host
-        # except:
-        #    Console.error("name, username, or host not set")
-        #    raise ValueError
-
-        variables = Variables()
-
         self.username = username
         self.host = host
         self.name = name
+        self.directory = directory
         if label is None:
-            label = name
+            self.label = name
 
-        print("self.data", self.data)
+        # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
 
@@ -51,63 +53,69 @@ class Job():
             raise ValueError
 
         if self.username is None:
-            try:
-                self.username = variables["username"]
-            except:  # noqa: E722
-                Console.error("Username is not defined")
-                raise ValueError
+            self.username = os.environ["USERNAME"]
 
         if self.host is None:
-            try:
-                self.host = variables["host"]
-            except:  # noqa: E722
-                Console.error("Username is not defined")
-                raise ValueError
+            self.host = "localhost"
 
-        if "directory" in self.data:
-            self.directory = self.data["directry"]
-        else:
-            self.directory = f"~/experiment/{self.name}"
+        if self.directory is None:
+            self.directory = f'~/experiment/{self.name}'
 
-        print(self)
+        self.slurm = Slurm(self.host)
+
 
     def __str__(self):
-        msg = []
-        msg.append(f"host: {self.host}")
-        msg.append(f"username: {self.username}")
-        msg.append(f"name: {self.name}")
-        msg.append(f"directory: {self.directory}")
-        msg.append(f"data: {self.data}")
-        msg.append(f"locals  {locals()}")
+        msg = [
+            f"host:      {self.host}",
+            f"username:  {self.username}",
+            f"name:      {self.name}",
+            f"label:     {self.label}",
+            f"directory: {self.directory}",
+            f"data:      {self.data}",
+            f"locals     {locals()}"
+        ]
         return "\n".join(msg)
+
 
     @property
     def status(self):
         return self.get_status()
 
-    def mkdir_remote(self):
+    def mkdir_experimentdir(self):
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
         os.system(command)
 
     def run(self):
-        self.mkdir_remote()
+        self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} '\
-                  '"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+                  '"{self.slurm.sbatch} --chdir={self.directory} --output={self.name}.log ./{self.name}.sh"'
+        # time.sleep(1)
         print(command)
-        state = os.system(command)
+        #state = os.system(f'{command} &')
+        state = os.system(f'{command}')
         error = self.get_error()
         log = self.get_log()
         return state, log, error
+
+    def clear(self):
+        content = None
+        try:
+            source = f'~/experiment/{self.name}/{self.name}.log'
+            destination = f"{self.name}.log"
+            Shell.run(f"rm -f {destination}")
+            Shell.run(f'ssh {self.username}@{self.host} "rm -f {source}"')
+        except Exception as e:
+            Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
@@ -118,35 +126,33 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             try:
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:  # noqa: E722
+            except:   # noqa: E722
                 return 0
         return 0
 
     def get_error(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
-        content = readfile(f"{self.name}.error", 'r')
+        content = readfile(f"{self.name}.error")
         return content
 
     def get_log(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
-        content = readfile(f"{self.name}.log", 'r')
+        content = readfile(f"{self.name}.log")
         return content
 
-    def sync(self, filepath):
-        self.mkdir_remote()
+    def sync(self):
+        self.mkdir_experimentdir()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
@@ -174,7 +180,7 @@ class Job():
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
@@ -182,16 +188,62 @@ class Job():
             return pid
         return None
 
-    def kill(self):
+    def kill(self, period=1):
         """
         kills the job
         """
-        pid = self.get_pid()
-        command = ""
-        command = f'ssh {self.username}@{self.host} "kill -9 {pid}"'
+        #
+        # find logfile
+        #
+
+        logfile = f'{self.name}.log'
+        log = None
+        while log is None:
+            try:
+                self.get_log()
+                log = readfile(logfile)
+                lines = log.splitlines()
+                found = False
+                for line in lines:
+                    if line.startswith("# cloudmesh") and "pid=" in line:
+                        found = True
+                        break
+                if not found:
+                    log = None
+            except Exception as e:
+                Console.error("no log file yet", traceflag=True)
+                log = None
+            time.sleep(2)
+        pid = None
+        while pid is None:
+            time.sleep(1)
+            pid = self.get_pid(refresh=True)
+
+        command = f'ssh {self.username}@{self.host} ssh "pgrep -P {pid}"'
+        child = Shell.run(command).strip()
+        command = f'ssh {self.username}@{self.host} "kill -9 {pid} {child}"'
         print(command)
         r = Shell.run(command)
+        Console.msg(f"Killing {pid} {child}")
         print(r)
         if "No such process" in r:
             Console.warning(
-                "Process {pid} not found. It is likely it already completed.")
+                f"Process {pid} not found. It is likely it already completed.")
+        return pid, child
+
+    def create(self, command, ntasks=1):
+        """
+        creates a template
+        for the slurm sbatch
+        """
+        template = \
+            f"""
+        #!/bin/bash
+        #
+        #SBATCH --job-name=test
+        #SBATCH --output=result.out
+        #
+        #SBATCH --ntasks={ntasks}
+        #
+        """
+        template += f"\n{command}"
