@@ -9,6 +9,7 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import banner
 from pathlib import Path
 
+
 class Job:
 
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
@@ -75,14 +76,14 @@ class Job:
 
     # move from current directory to remote
     def sync(self):
-        print (self)
+        print(self)
         self.mkdir_experimentdir()
         home = Path.home()
         cwd = Path.cwd()
         experimentdir = f"{home}/experiment/{self.name}"
         destination = Path(f"{experimentdir}/{self.name}.sh")
         source = Path(f"{cwd}/{self.name}.sh")
-        Shell.copy(source,  destination)
+        Shell.copy(source, destination)
         return self.exists(f"{self.name}.sh")
 
     def exists(self, filename):
@@ -111,11 +112,11 @@ class Job:
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
 
-        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
-        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
-        #command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
+        # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
+        # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
+        # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
 
-        print (command)
+        print(command)
         state = os.system(command)
 
         log = self.get_log()
@@ -191,9 +192,9 @@ class Job:
         while not finished:
             try:
                 progress = int(self.get_progress(refresh=True))
-                print ("Progress", progress)
+                print("Progress", progress)
                 finished = progress == 100
-            except:
+            except:  # noqa: E722
                 print("Progress", "not found")
             if not finished:
                 time.sleep(period)
@@ -211,7 +212,7 @@ class Job:
                 pid = lines[0].split("pid=")[1]
                 pid = pid.split()[0]
                 return pid
-        except:
+        except:  # noqa: E722
             pid = None
         return pid
 
@@ -237,7 +238,7 @@ class Job:
                 if not found:
                     log = None
             except Exception as e:
-                Console.error("no log file yet",traceflag=True)
+                Console.error("no log file yet", traceflag=True)
                 log = None
             time.sleep(2)
         pid = None

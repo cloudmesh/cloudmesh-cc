@@ -10,7 +10,6 @@ from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
 
-
 app = FastAPI()
 
 q = Queues(database='yamldb')
@@ -40,24 +39,22 @@ async def info(request: Request, id: str):
     global q
     return templates.TemplateResponse('templates/queue.html',
                                       {"request": request,
-                                       "id" : id,
+                                       "id": id,
                                        "name": q.name,
                                        "queues": q.queues,
                                        "file": q.db})
-
-
 
 
 @app.get("/queue/")
 async def get_queue(name: str):
     return {"queue": q[name]}
 
-@app.get("/job/")
 
+@app.get("/job/")
 async def get_queue(name: str):
     return {"job": "todo"}
 
-@app.post("/add/")
-async def create_item(queuename: str, jobname: str, command:str):
-    q.add(name=jobname, command=command)
 
+@app.post("/add/")
+async def create_item(queuename: str, jobname: str, command: str):
+    q.add(name=jobname, command=command)

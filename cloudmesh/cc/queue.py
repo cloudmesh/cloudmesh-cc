@@ -292,8 +292,8 @@ class Queues:
         return self.queues[q]
 
     def __str__(self):
-        d = {"config":self.db.data["config"],
-             "queue":self.queues}
+        d = {"config": self.db.data["config"],
+             "queue": self.queues}
         return pyyaml.dump(d, indent=2)
 
         # result = str(self.queues)

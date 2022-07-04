@@ -53,14 +53,14 @@ class Job():
         if self.username is None:
             try:
                 self.username = variables["username"]
-            except:
+            except:  # noqa: E722
                 Console.error("Username is not defined")
                 raise ValueError
 
         if self.host is None:
             try:
                 self.host = variables["host"]
-            except:
+            except:  # noqa: E722
                 Console.error("Username is not defined")
                 raise ValueError
 
@@ -95,7 +95,8 @@ class Job():
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
+        command = f'ssh {self.username}@{self.host} '\
+                  '"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error; echo $pid"'
         print(command)
         state = os.system(command)
         error = self.get_error()
@@ -124,7 +125,7 @@ class Job():
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:
+            except:  # noqa: E722
                 return 0
         return 0
 

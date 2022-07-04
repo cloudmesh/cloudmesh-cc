@@ -135,8 +135,6 @@ class Graph:
             job = local_job(name=name, username=username, host=host,
                             label=label, **data)
 
-
-
         elif host == 'rivanna':
             print('host')
             from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
@@ -168,7 +166,6 @@ class Graph:
 
         tuple = (source, destination)
         self.edges.append(tuple)
-
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -342,8 +339,6 @@ class Workflow:
             if j.name == name:
                 return j
 
-
-
     def load(self, filename):
         """
         Loads a workflow graph from file. However the file is still stored in
@@ -446,7 +441,7 @@ class Workflow:
             job = nodes[name]
             # print('THIS IS IT BOYS, LETS GO IN LETS GO IN', job, type(job))
             job.run()
-            #job = self.job(name=name)
+            # job = self.job(name=name)
             # if not dryrun:
             #     if job['kind'] in ["local"]:
             #         from cloudmesh.cc.job.localhost.JacksonJob import \
@@ -468,16 +463,16 @@ class Workflow:
             #         remote_job = ssh_job(name=name, host=host,
             #                              username=username, label=label)
             #         remote_job.run()
-                # elif job['kind'] in ["local-slurm"]:
-                #     raise NotImplementedError
-                # elif job['kind'] in ["remote-slurm"]:
-                #     raise NotImplementedError
+            # elif job['kind'] in ["local-slurm"]:
+            #     raise NotImplementedError
+            # elif job['kind'] in ["remote-slurm"]:
+            #     raise NotImplementedError
 
     def sequential_order(self):
         tuples = []
         nodes = self.jobs
-        for name in range(0, len(nodes) -1):
-            #print(edge["source"], edge["destination"])
+        for name in range(0, len(nodes) - 1):
+            # print(edge["source"], edge["destination"])
             first = nodes[name]
             second = nodes[name + 1]
             tuples.append((first, second))
@@ -497,7 +492,7 @@ class Workflow:
     @property
     def table(self):
         for job in self.jobs:
-             Printer.write(job)
+            Printer.write(job)
         pass
 
 

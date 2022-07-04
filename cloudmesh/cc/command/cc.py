@@ -127,21 +127,21 @@ class CcCommand(PluginCommand):
             > prints the parameter as dict
             >   {'a': 'b', 'c': 'd'}
 
-        """
+        """    # noqa: W605
 
         # arguments.FILE = arguments['--file'] or None
-        #arguments.COMMAND = arguments['--command']
+        # arguments.COMMAND = arguments['--command']
 
         # switch debug on
 
         variables = Variables()
         variables["debug"] = True
 
-        #banner("original arguments", color="RED")
+        # banner("original arguments", color="RED")
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-       # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
 
         map_parameters(arguments,
                        "filename",
@@ -153,9 +153,9 @@ class CcCommand(PluginCommand):
                        "reload"
                        )
 
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
 
-        #banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
+        # banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
@@ -178,7 +178,7 @@ class CcCommand(PluginCommand):
             if arguments.reload:
                 reload = True
             else:
-                reload=False
+                reload = False
             import uvicorn
             from cloudmesh.cc.service.service import app
             r = uvicorn.run(app, host="127.0.0.1", port=8000, reload=reload)
@@ -198,8 +198,8 @@ class CcCommand(PluginCommand):
         elif arguments.stop:
             print("Stop the service")
             commands = Shell.ps()
-            #pprint(commands)
-            #print(type(commands))
+            # pprint(commands)
+            # print(type(commands))
             for command in commands:
                 # print(command)
                 if command["name"].startswith('python'):
@@ -254,15 +254,13 @@ class CcCommand(PluginCommand):
 
         elif arguments.run and arguments.command:
 
-                print('Here')
-                print('woah nelly')
-                print(arguments.command)
-
+            print('Here')
+            print('woah nelly')
+            print(arguments.command)
 
         elif arguments.list and arguments.queue:
             q = Queues()
             q.list(self)
-
 
         elif arguments.workflow and arguments.NAME and arguments.DEPENDENCIES:
 
@@ -272,6 +270,5 @@ class CcCommand(PluginCommand):
             print(workflow)
 
             # cc workflow NAME DEPENDENCIES
-
 
         return ""

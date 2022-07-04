@@ -85,7 +85,6 @@ class Graph:
         #    name:
         #    colors:
 
-
     def set_status_colors(self):
         self.add_color("status",
                        ready="white",
@@ -112,10 +111,10 @@ class Graph:
 
     def load(self, filename=None):
 
-        #if filename is not None:
+        # if filename is not None:
         #    raise NotImplementedError
-            # shoudl read from file the graph, but as we do Queues yaml dic
-            # we do not need filename read right now
+        # shoudl read from file the graph, but as we do Queues yaml dic
+        # we do not need filename read right now
 
         return
         if filename is None:
@@ -261,7 +260,6 @@ class Graph:
             plt.savefig(filename)
 
 
-
 class Workflow:
     """
     Workflow doocumentation
@@ -314,7 +312,7 @@ class Workflow:
 
     @property
     def jobs(self):
-        return self.graph.nodes # [name]
+        return self.graph.nodes  # [name]
 
     def __getitem__(self, name):
         return self.jobs[name]
@@ -412,9 +410,8 @@ class Workflow:
 
     def run(self, order=None, parallel=False, dryrun=False):
 
-        if order == None:
+        if order is None:
             order = self.sequential_order
-
 
         for name in order():
             job = self.job(name=name)
@@ -444,7 +441,7 @@ class Workflow:
     def sequential_order(self):
         tuples = []
         for name, edge in self.graph.edges.items():
-            print (edge["source"], edge["destination"])
+            print(edge["source"], edge["destination"])
             tuples.append((edge["source"], edge["destination"]))
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))

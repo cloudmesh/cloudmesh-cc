@@ -88,8 +88,6 @@ class Database:
         else:
             return self.filename
 
-
-
     def info(self):
         return str(self)
 
@@ -101,7 +99,7 @@ class Database:
 
         """
         name = self.shelvename
-        print ("Loading:", name)
+        print("Loading:", name)
         self.data = shelve.open(name, writeback=True)
 
     def save(self):
@@ -128,7 +126,6 @@ class Database:
 
     def get(self, name):
         return self.data["queue"][name]
-
 
     def __getitem__(self, name):
         return self.get(name)

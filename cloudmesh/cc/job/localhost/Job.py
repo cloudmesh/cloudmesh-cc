@@ -8,6 +8,7 @@ from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
 
+
 class Job():
 
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
@@ -65,17 +66,14 @@ class Job():
         command = f'mkdir -p {self.directory}'
         os.system(command)
 
-
     @property
     def status(self):
         return self.get_status()
-
 
     def mkdir_experimentdir(self):
         command = f'mkdir -p {self.directory}'
         print(command)
         os.system(command)
-
 
     def run(self):
         self.mkdir_experimentdir()
@@ -85,7 +83,7 @@ class Job():
         command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error'
         print(command)
         state = os.system(f'{command} &')
-        logfile =  path_expand(f"{self.directory}/{self.name}.sh")
+        logfile = path_expand(f"{self.directory}/{self.name}.sh")
         errorfile = path_expand(f"{self.directory}/{self.name}.sh")
 
         started = False
@@ -98,7 +96,6 @@ class Job():
         error = self.get_error()
         log = self.get_log()
         return state, log, error
-
 
     def clear(self):
         content = None
@@ -132,7 +129,7 @@ class Job():
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:
+            except:  # noqa: E722
                 return 0
         return 0
 
@@ -187,8 +184,6 @@ class Job():
             return pid
         return None
 
-
-
     def kill(self, period=1):
         """
         kills the job
@@ -212,7 +207,7 @@ class Job():
                 if not found:
                     log = None
             except Exception as e:
-                Console.error("no log file yet",traceflag=True)
+                Console.error("no log file yet", traceflag=True)
                 log = None
             time.sleep(2)
         pid = None
@@ -232,14 +227,13 @@ class Job():
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
 
-
     def create(self, command, ntasks=1):
         """
         creates a template
         for the slurm sbatch
         """
         template = \
-        f"""
+            f"""
         #!/bin/bash
         #
         #SBATCH --job-name=test
@@ -249,4 +243,3 @@ class Job():
         #
         """
         template += f"\n{command}"
-

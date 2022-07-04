@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
 
+
 def test_run():
     kind = 'yamldb'
     q = Queues(filename='~/.cloudmesh/queue/queuetest1')
@@ -23,6 +24,7 @@ def test_run():
     q.add(name='rivanna', job='job06', command='hostname')
     q.add(name='rivanna', job='job07', command='git status')
     return q
+
 
 q = test_run()
 
@@ -39,9 +41,9 @@ app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
 
+
 #
 # ROUTES
-
 
 
 #
@@ -76,11 +78,15 @@ async def read_item(request: Request, id: str):
                                        "jobs": jobs,
                                        "order": order})
 
+
 @app.get("/queues/", response_class=HTMLResponse)
+
+
 """
 Renders and displays lists of queues onto an HTML table adaption from 
 datatables.net
 """
+
 
 async def info(request: Request):
     global q
@@ -89,18 +95,19 @@ async def info(request: Request):
                                        "queues": q.queues})
 
 
-
 @app.get("/table", response_class=HTMLResponse)
 async def read_item(request: Request):
     return templates.TemplateResponse("templates/table.html",
                                       {"request": request})
 
+
 @app.get("/")
 async def read_home():
     return {"msg": "Hello World"}
 
+
 @app.post("/postQueue")
-async def add_queue(name:str):
+async def add_queue(name: str):
     global q
     q.create(name=name)
     return {
@@ -109,23 +116,25 @@ async def add_queue(name:str):
 
 
 @app.post("/postJob")
-async def add_job(name:str, job:str, command:str):
+async def add_job(name: str, job: str, command: str):
     global q
     q.add(name=name, job=job, command=command)
     return {
         "Queue_Jobs": q.queues[name]
     }
 
+
 @app.delete("/deleteJob/{job_name}")
-async def delete_job(job_name:str):
+async def delete_job(job_name: str):
     global q
     # not implemented yet
     return {
         "Queue_Jobs": q.queues[name]
     }
 
+
 @app.delete("/deleteQueue/{job_name}")
-async def delete_job(queue_name:str):
+async def delete_job(queue_name: str):
     global q
     q.remove(queue_name)
     return {
@@ -156,8 +165,9 @@ async def read_items():
         """
     return page
 
+
 @app.get("/job/{queue}/{job}", response_class=HTMLResponse)
-async def read_job(queue:str, job:str):
+async def read_job(queue: str, job: str):
     global q
     result = Printer.attribute(q.queues[queue][job], output='html')
     name = q.queues[queue][job]["name"]
@@ -186,4 +196,3 @@ async def read_job(queue:str, job:str):
     </html>
     """
     return page
-
