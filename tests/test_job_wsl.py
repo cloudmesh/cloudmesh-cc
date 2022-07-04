@@ -85,9 +85,6 @@ class TestJobWsl:
         HEADING()
         global prefix
 
-        # os.system("rm -r ~/experiment")
-        # os.system(f"cp ./tests/run{prefix}.sh .")
-
         Benchmark.Start()
         global job
         job = Job(name=f"run{prefix}", host=host, username=username)
