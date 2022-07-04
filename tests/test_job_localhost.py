@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v -x --capture=no tests/test_job_wsl.py
-# pytest -v  tests/test_job_wsl.py
-# pytest -v --capture=no  tests/test_job_wsl.py::TestJobWsl::<METHODNAME>
+# pytest -v -x --capture=no tests/test_job_localhost.py
+# pytest -v  tests/test_job_localhost.py
+# pytest -v --capture=no  tests/test_job_localhost.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
 #
@@ -15,7 +15,7 @@ import subprocess
 import time
 
 import pytest
-from cloudmesh.cc.job.wsl.Job import Job
+from cloudmesh.cc.job.localhost.Job import Job
 
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.console import Console
@@ -25,8 +25,8 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 
-if not os_is_windows():
-    Console.error("This test can only be run on windows")
+if os_is_windows():
+    Console.error("This test can not be run on windows")
 
 variables = Variables()
 
@@ -42,9 +42,9 @@ run_job = f"run"
 wait_job = f"wait"
 
 
-@pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")
+@pytest.mark.skipif(os_is_windows(), reason="Test can not be run on Windows")
 @pytest.mark.incremental
-class TestJobWsl:
+class TestJobLocalhost:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
@@ -196,7 +196,7 @@ class TestJobWsl:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'wsl ps -aux', shell=True, text=True).strip()
+        ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
         banner(f"{ps}")
         assert 'sleep 3600' not in ps
         assert f" {parent} " not in ps
