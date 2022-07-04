@@ -123,7 +123,6 @@ class Job():
         return 0
 
     def get_error(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
@@ -131,7 +130,6 @@ class Job():
         return content
 
     def get_log(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)

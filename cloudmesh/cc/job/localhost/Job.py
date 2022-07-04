@@ -1,17 +1,20 @@
 import os
 
+import time
+
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
-from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
-
+from cloudmesh.common.util import path_expand
 
 class Job():
-    def __init__(self, **argv):
+
+    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
         cms set username=abc123
 
-        craetes a job by passing either a dict with **dict or named arguments
+        creates a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
 
         :param data:
@@ -20,121 +23,230 @@ class Job():
         :rtype:
         """
 
-        self.data = {}  # dict(argv)
-        for key in argv:
-            self.data[key] = argv[key]
+        self.data = argv
 
-        self.username = None
-        self.host = None
-        self.name = None
-
-        print("self.data", self.data)
-
-        variables = Variables()
-        if "username" not in self.data:
-            self.username = variables["username"]
-        else:
-            self.username = self.data["username"]
-        if "name" not in self.data:
-            Console.error("Name not defined")
-            raise ValueError
-        else:
-            self.name = self.data["name"]
-        if "host" not in self.data:
-            Console.error("Host not defined")
-            raise ValueError
-        if "directory" in self.data:
-            self.directory = self.data["directory"]
-        else:
-            self.directory = f"~/experiment/{self.name}"
-
-    def set_name(self, name):
+        self.username = username
+        self.host = host
         self.name = name
+        self.directory = directory
+        if label is None:
+            self.label = name
 
-    def probe(self):
-        self.get_status()
+        # print("self.data", self.data)
+        for key, value in self.data.items():
+            setattr(self, key, value)
 
-    def run(self):
-        if os_is_windows():
-            #
-            # TODO: sus start to submit in background after you try this waiting call first
-            #
-            command = f'./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid'
-        else:
-            command = f'nohup ./{self.name}.sh > {self.name}.log 2>{self.name}.error; echo $pid'
-        state = os.system(command)
-        error = self.get_error()
-        log = self.get_log()
-        return state, log, error
+        if self.name is None:
+            Console.error("Name is not defined")
+            raise ValueError
 
-    def get_status(self):
-        pass
+        if self.username is None:
+            self.username = os.environ["USERNAME"]
 
-    def get_error(self):
-        return readfile('{self.name}.error', 'r')
+        if self.host is None:
+            self.host = "localhost"
 
-    def get_log(self):
-        return readfile('{self.name}.log', 'r')
+        if self.directory is None:
+            self.directory = f'~/experiment/{self.name}'
 
-        # scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-        command = f"scp {self.username}@{self.host}:{self.name}.error {self.name}.error"
+    def __str__(self):
+        msg = [
+            f"host:      {self.host}",
+            f"username:  {self.username}",
+            f"name:      {self.name}",
+            f"label:     {self.label}",
+            f"directory: {self.directory}",
+            f"data:      {self.data}",
+            f"locals     {locals()}"
+        ]
+        return "\n".join(msg)
+
+    def mkdir_local(self):
+        command = f'mkdir -p {self.directory}'
         os.system(command)
-        return readfile(f"{self.name}.error", 'r')
 
-    def get_log(self):
-        # scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-        command = f"scp {self.username}@{self.host}:{self.name}.log {self.name}.log"
-        os.system(command)
-        content = readfile(f"{self.name}.log", 'r')
-        return content
-
-    def get_progress(self):
-        search = readfile('run.log', 'r')
-        last = search.rfind(self.get_log())
-        prog = readfile("progress=", last)
-        return prog
-
-    '''
-    #!/bin/bash -x
-    username="$1"
-
-    scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-    ssh "$username"@rivanna.hpc.virginia.edu cat run.sh
-    ssh "$username"@rivanna.hpc.virginia.edu "nohup ./run.sh > run.log 2>run.error; echo $pid"
-    #ssh "$username"@rivanna.hpc.virginia.edu "nohup ./run.sh > run.error; echo $pid"
-    scp "$username"@rivanna.hpc.virginia.edu:run.log run.log
-    scp "$username"@rivanna.hpc.virginia.edu:run.error run.error
-
-    cat run.log
-    '''
-
-    def sync(self):
-        # scp run.sh "$username"@rivanna.hpc.virginia.edu:.
-        command = f"scp {self.name}.sh {self.username}@{self.host}:."
-        os.system(command)
 
     @property
     def status(self):
         return self.get_status()
 
-    def watch(self, period=10):
-        """waits and wathes every seconds in period, till the job has completed"""
-        raise NotImplementedError
-        pass
+
+    def mkdir_experimentdir(self):
+        command = f'mkdir -p {self.directory}'
+        print(command)
+        os.system(command)
+
+
+    def run(self):
+        self.mkdir_experimentdir()
+
+        command = f'chmod ug+x ./{self.name}.sh'
+        os.system(command)
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error'
+        print(command)
+        state = os.system(f'{command} &')
+        logfile =  path_expand(f"{self.directory}/{self.name}.sh")
+        errorfile = path_expand(f"{self.directory}/{self.name}.sh")
+
+        started = False
+        while started:
+            os.system("sync")
+            started = os.path.exists(logfile) and os.path.exists(errorfile)
+            print("STARTED")
+            if not started:
+                time.sleep(0.1)
+        error = self.get_error()
+        log = self.get_log()
+        return state, log, error
+
+
+    def clear(self):
+        content = None
+        try:
+            source = f'~/experiment/{self.name}/{self.name}.log'
+            destination = f"{self.name}.log"
+            Shell.run(f"rm -f {destination}")
+            Shell.run(f"rm -f {source}")
+        except Exception as e:
+            Console.error(e, traceflag=True)
+
+    def get_status(self, refresh=False):
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log")
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            status = lines[-1].split("status=")[1]
+            status = status.split()[0]
+            return status
+
+    def get_progress(self, refresh=False):
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log")
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            try:
+                progress = lines[-1].split("progress=")[1]
+                progress = progress.split()[0]
+                return int(progress)
+            except:
+                return 0
+        return 0
+
+    def get_error(self):
+        command = f"cp {self.directory}/{self.name}.error {self.name}.error"
+        print(command)
+        os.system(command)
+        content = readfile(f"{self.name}.error")
+        return content
+
+    def get_log(self):
+        command = f"cp {self.directory}/{self.name}.log {self.name}.log"
+        print(command)
+        os.system(command)
+        content = readfile(f"{self.name}.log")
+        return content
+
+    def sync(self):
+        self.mkdir_experimentdir()
+        command = f"cp {self.name}.sh {self.directory}/."
+        print(command)
+        r = os.system(command)
+        return r
 
     def exists(self, filename):
+        command = f'ls {self.directory}/{filename}'
+        print(command)
+        r = Shell.run(command)
+        if "cannot acces" in r:
+            return False
         return True
-        # shell run ls check if file exists
-        raise NotImplementedError
 
-    def get_pid(self):
+    def watch(self, period=10):
+        """waits and wathes every seconds in period, till the job has completed"""
+        finished = False
+        while not finished:
+            progress = int(self.get_progress(refresh=True))
+            finished = progress == 100
+            if not finished:
+                time.sleep(period)
+
+    def get_pid(self, refresh=False):
         """get the pid from the job"""
-        raise NotImplementedError
-        pid = 0
-        return pid
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"{self.name}.log")
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            pid = lines[0].split("pid=")[1]
+            pid = pid.split()[0]
+            return pid
+        return None
 
-    def kill(self):
+
+
+    def kill(self, period=1):
         """
         kills the job
         """
-        raise NotImplementedError
+        #
+        # find logfile
+        #
+
+        logfile = f'{self.name}.log'
+        log = None
+        while log is None:
+            try:
+                self.get_log()
+                log = readfile(logfile)
+                lines = log.splitlines()
+                found = False
+                for line in lines:
+                    if line.startswith("# cloudmesh") and "pid=" in line:
+                        found = True
+                        break
+                if not found:
+                    log = None
+            except Exception as e:
+                Console.error("no log file yet",traceflag=True)
+                log = None
+            time.sleep(2)
+        pid = None
+        while pid is None:
+            time.sleep(1)
+            pid = self.get_pid(refresh=True)
+
+        command = f'pgrep -P {pid}'
+        child = Shell.run(command).strip()
+        command = f'kill -9 {pid} {child}'
+        print(command)
+        r = Shell.run(command)
+        Console.msg(f"Killing {pid} {child}")
+        print(r)
+        if "No such process" in r:
+            Console.warning(
+                f"Process {pid} not found. It is likely it already completed.")
+        return pid, child
+
+
+    def create(self, command, ntasks=1):
+        """
+        creates a template
+        for the slurm sbatch
+        """
+        template = \
+        f"""
+        #!/bin/bash
+        #
+        #SBATCH --job-name=test
+        #SBATCH --output=result.out
+        #
+        #SBATCH --ntasks={ntasks}
+        #
+        """
+        template += f"\n{command}"
+
