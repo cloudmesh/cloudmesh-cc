@@ -153,7 +153,7 @@ class Job:
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
@@ -164,7 +164,7 @@ class Job:
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log", 'r')
+            log = readfile(f"{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             try:
@@ -180,7 +180,7 @@ class Job:
         command = f'cp {experimentdir}/{self.name}.err ./{self.name}.err'
         print(command)
         os.system(command)
-        content = readfile(f"{self.name}.err", 'r')
+        content = readfile(f"{self.name}.err")
         print(content)
         return content
 
@@ -205,7 +205,7 @@ class Job:
             if refresh:
                 log = self.get_log()
             else:
-                log = readfile(f"{self.name}.log", 'r')
+                log = readfile(f"{self.name}.log")
             lines = Shell.find_lines_with(log, "# cloudmesh")
             if len(lines) > 0:
                 pid = lines[0].split("pid=")[1]
