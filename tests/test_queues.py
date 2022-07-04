@@ -18,6 +18,7 @@ kind = "yamldb"
 # kind = "shelve"
 q = None
 
+
 @pytest.mark.incremental
 class Test_queues:
     def test_shelve_open_and_close(self):
@@ -90,22 +91,21 @@ class Test_queues:
         q.add(name='rivanna', job='job-3', command='hostname')
         Benchmark.Stop()
         print(q)
-        #pprint(q.queues)
+        # pprint(q.queues)
         n = []
         for queue in q.queues:
             for job in q.queues[queue]:
                 n.append(q.queues[queue][job])
 
-        #print(Printer.list(n))
+        # print(Printer.list(n))
 
-        #for f in ['yaml', 'json', 'csv', 'html', 'table']:
+        # for f in ['yaml', 'json', 'csv', 'html', 'table']:
 
-            #print(Printer.write(n, output=f))
+        # print(Printer.write(n, output=f))
 
-        #print(q.config)
-        #print(Printer.attribute(q.config))
-        #print(Printer.attribute(q.config, output='json'))
-
+        # print(q.config)
+        # print(Printer.attribute(q.config))
+        # print(Printer.attribute(q.config, output='json'))
 
         # pprint(n)
         assert len(q.get("local")) == 3
@@ -125,7 +125,6 @@ class Test_queues:
         assert len(q.queues) == 1  # this is because there were 2 queues and now there is only one.
         print()
 
-
     def test_list(self):
         HEADING()
         global q
@@ -134,10 +133,9 @@ class Test_queues:
         q.add(name='local', job='job-2', command='ls')
         q.add(name='local', job='job-3', command='hostname')
         Benchmark.Start()
-        q.list()  #appears to list only the higher level queues, not everything within the queues
+        q.list()  # appears to list only the higher level queues, not everything within the queues
         Benchmark.Stop()
         assert len(q.queues) == 2
-
 
     def test_run(self):
         HEADING()

@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_job_ssh.py
 # pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
+# pytest -v --capture=no  tests/test_job_ssh.py::TestJobSsh::<METHODNAME>
 ###############################################################
 import os
 
@@ -27,7 +27,7 @@ job = None
 
 
 @pytest.mark.incremental
-class TestJobssh:
+class TestJobSsh:
 
     def test_create_run(self):
         os.system("cp ./tests/run.sh .")

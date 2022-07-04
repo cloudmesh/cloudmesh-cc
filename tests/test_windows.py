@@ -32,7 +32,6 @@ class TestConfig:
         VERBOSE(result)
 
 
-
 class rest:
     def test_benchmark(self):
         HEADING()

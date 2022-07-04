@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_job_ssh.py
 # pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_ssh.py::TestJobssh::<METHODNAME>
+# pytest -v --capture=no  tests/test_job_ssh.py::TestJobSsh::<METHODNAME>
 ###############################################################
 import os
 import shutil
@@ -34,7 +34,7 @@ job = None
 try:
     r = Shell.run(f"ssh {username}@{host} hostname")
     login_success = "Could not resolve hostname" not in r
-except:
+except:  # noqa: E722
     login_success = False
 
 run_job = f"run"
@@ -43,7 +43,7 @@ wait_job = f"wait"
 
 @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
-class TestJobssh:
+class TestJobsSsh:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
