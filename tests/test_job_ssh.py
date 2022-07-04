@@ -40,6 +40,7 @@ except:
 run_job = f"run"
 wait_job = f"wait"
 
+
 @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
 class TestJobssh:
@@ -122,7 +123,6 @@ class TestJobssh:
         assert not wrong
         assert correct
 
-
     def test_run_wait(self):
         HEADING()
         global run_job
@@ -201,8 +201,3 @@ class TestJobssh:
         assert f" {parent} " not in ps
         assert f" {child} " not in ps
         assert status == "running"
-
-
-
-
-

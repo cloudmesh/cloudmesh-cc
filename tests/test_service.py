@@ -10,12 +10,11 @@ from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
 from fastapi.testclient import TestClient
 
-
 import cloudmesh.cc.service
 from cloudmesh.cc.service.service import app
 
-
 client = TestClient(app)
+
 
 @pytest.mark.incremental
 class TestService:

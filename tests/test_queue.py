@@ -66,7 +66,7 @@ class Test_Queue:
         print(q)
 
         Benchmark.Start()
-        #q.run(scheduler="FIFO")
+        # q.run(scheduler="FIFO")
         Benchmark.Stop()
         print("job object:", q.jobs['job1'])
         assert q.jobs.get('job1').command == 'pwd'

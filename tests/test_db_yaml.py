@@ -14,7 +14,6 @@ from cloudmesh.common.util import HEADING
 
 @pytest.mark.incremental
 class Test_db_yaml:
-
     """
     def yaml_open_and_close():
     def yaml_read()
@@ -60,7 +59,6 @@ class Test_db_yaml:
         Benchmark.Stop()
         assert len(db.data["queues"]) == 0
 
-
     def test_yaml_remove(self):
         HEADING()
         Benchmark.Start()
@@ -82,8 +80,6 @@ class Test_db_yaml:
         assert n["queue.a.name"] == "gregor"
         assert n["queue.b.name"] == "gregor"
         print(n)
-
-
 
     def test_benchmark(self):
         HEADING()

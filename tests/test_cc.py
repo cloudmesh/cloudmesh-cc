@@ -24,11 +24,10 @@ class TestConfig:
         assert "upload" in result
         assert "start" in result
 
-
     def test_queue_create(self):
         HEADING()
         queues = 'testqueue'
-        database= 'yamldb'
+        database = 'yamldb'
         Benchmark.Start()
         result = Shell.execute("cms cc create --queue=a,b,c --database=yamldb", shell=True)
         Benchmark.Stop()

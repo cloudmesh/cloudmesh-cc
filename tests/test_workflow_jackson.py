@@ -19,9 +19,6 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import path_expand
 import networkx as nx
 
-
-global w
-global user
 user = input("Please enter your Rivanna(computing) ID here: ")
 """
     This is a python file to test to make sure the workflow class works.
@@ -103,7 +100,7 @@ class Test_workflow:
             print(file)
             r = os.path.isfile(file)
             print(r)
-            assert r == True
+            assert r
 
     def test_get_node(self):
         HEADING()
@@ -147,7 +144,7 @@ class todo:
         w.graph.save(filename="/tmp/test-dot.svg", colors="status",
                      layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-dot.svg")
-        assert os.path.exists("~/tmp/test-dot.svg") == True
+        assert os.path.exists("~/tmp/test-dot.svg")
 
     def test_benchmark(self):
         HEADING()

@@ -16,8 +16,6 @@ from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
 import networkx as nx
 
-global w
-global user
 user = input("Please enter your Rivanna(computing) ID here: ")
 """
     This is a python file to test to make sure the workflow class works.
@@ -25,9 +23,8 @@ user = input("Please enter your Rivanna(computing) ID here: ")
     was created with a bunch of jobs. 
 """
 
+
 class Test_workflow:
-
-
 
     def test_set_up(self):
         """
@@ -41,9 +38,9 @@ class Test_workflow:
         w = Workflow()
 
         login = {
-            "localhost": {"user": "gregor", "host":"local"},
-            "rivanna": {"user": f"{user}", "host":"rivanna.hpc.virginia.edu"},
-            "pi": {"user": "gregor", "host":"red"},
+            "localhost": {"user": "gregor", "host": "local"},
+            "rivanna": {"user": f"{user}", "host": "rivanna.hpc.virginia.edu"},
+            "pi": {"user": "gregor", "host": "red"},
         }
 
         n = 0
@@ -57,7 +54,7 @@ class Test_workflow:
         for host, kind in [("localhost", "local"),
                            ("rivanna", "remote-slurm"),
                            ("rivanna", "ssh")]:
-            print ("HOST:", host)
+            print("HOST:", host)
             user = login[host]["user"]
             host = login[host]["host"]
             w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
@@ -69,7 +66,7 @@ class Test_workflow:
 
             first = n - 3
             second = n - 2
-            third = n -1
+            third = n - 1
             w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
             w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
             w.add_dependencies(f"job-{host}-{third},end")
@@ -82,8 +79,8 @@ class Test_workflow:
         HEADING()
         global w
         w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
-        #Shell.browser("/tmp/test-dot.svg")
-        #assert os.path.exists("~/tmp/test-dot.svg") == True
+        # Shell.browser("/tmp/test-dot.svg")
+        # assert os.path.exists("~/tmp/test-dot.svg") == True
 
     def test_get_node(self):
         HEADING()
@@ -109,7 +106,7 @@ class Test_workflow:
         Benchmark.Start()
         order = w.sequential_order()
         Benchmark.Stop()
-        print (order)
+        print(order)
         assert len(order) == len(w.jobs)
 
     def test_run(self):
@@ -129,4 +126,4 @@ class todo:
 
     def test_benchmark(self):
         HEADING()
-        #StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+        # StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

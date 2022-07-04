@@ -130,7 +130,7 @@ class TestJobssh:
         pid = job.get_pid()
         job.kill()
         status = job.get_status()
-        print ("Status", status)
+        print("Status", status)
         Benchmark.Stop()
         # assert status == "done"
         # check with ps if pid is running

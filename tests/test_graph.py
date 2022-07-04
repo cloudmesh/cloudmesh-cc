@@ -16,9 +16,9 @@ from cloudmesh.common.Shell import Shell
 g = Graph()
 g.sep = "_"
 
+
 @pytest.mark.incremental
 class Test_graph:
-
 
     def test_create(self):
         HEADING()
@@ -57,9 +57,9 @@ class Test_graph:
         HEADING()
         global g
         Benchmark.Start()
-        print (g)
+        print(g)
         output = str(g)
-        print (g.nodes.a["status"])
+        print(g.nodes.a["status"])
         print(g.nodes["a"]["status"])
         print(g.edges["a_b"]["status"])
         Benchmark.Stop()
@@ -74,11 +74,11 @@ class Test_graph:
         HEADING()
         global g
         dependency = "c,d,e,f"
-        print (dependency)
+        print(dependency)
         Benchmark.Start()
         for n in dependency.split(","):
             g.add_node(n, status="ready")
-        g.add_dependencies(dependency, edgedata={"status":"ready", "speed":"300"}, nodedata={"test": "one"})
+        g.add_dependencies(dependency, edgedata={"status": "ready", "speed": "300"}, nodedata={"test": "one"})
         Benchmark.Stop()
         for n in dependency.split(","):
             assert g.nodes[n]["status"] == "ready"
@@ -87,7 +87,6 @@ class Test_graph:
             assert e["status"] == "ready"
         assert "f" in g.nodes.keys()
         print(g)
-
 
     def test_show(self):
         HEADING()
@@ -104,17 +103,18 @@ class Test_graph:
         Benchmark.Start()
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
-        g.save(filename="/tmp/test-graphviz.svg",colors="status", layout=nx.circular_layout, engine="graphviz")
-        #g.save(filename="/tmp/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
+        g.save(filename="/tmp/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+        # g.save(filename="/tmp/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
         g.save(filename="/tmp/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-graphviz.svg")
-        #Shell.browser("/tmp/test-pyplot.svg")
+        # Shell.browser("/tmp/test-pyplot.svg")
         r = Shell.cat("/tmp/test-dot.dot")
-        print (r)
+        print(r)
         g.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-dot.svg")
 
         Benchmark.Stop()
+
 
 class todo:
 
