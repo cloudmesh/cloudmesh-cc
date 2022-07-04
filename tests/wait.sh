@@ -1,10 +1,12 @@
-#!/bin/bash -x
-echo "# cloudmesh status=running progress=0 pid=$$"
+#!/bin/sh -x
+echo "# cloudmesh status=running progress=1 pid=$$"
 date
-echo "# cloudmesh status=running progress=0 pid=$$"
-ls
 echo "# cloudmesh status=running progress=10 pid=$$"
-sleep 3600
+ls
 echo "# cloudmesh status=running progress=20 pid=$$"
+pwd
+echo "# cloudmesh status=running progress=30 pid=$$"
+sleep 3600
+echo "# cloudmesh status=running progress=50 pid=$$"
 hostname
 echo "# cloudmesh status=done progress=100 pid=$$"
