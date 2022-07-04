@@ -20,6 +20,8 @@ from cloudmesh.cc.job.localhost.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.console import Console
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_linux
+from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
@@ -84,33 +86,40 @@ class TestJobLocalhost:
         HEADING()
         global prefix
 
+        banner("create job")
         Benchmark.Start()
         global job
         job = Job(name=f"run", host=host, username=username)
+
+        banner("create experiment")
         job.sync()
 
+        banner("run job")
         s, l, e = job.run()
-        # give it some time to complete
-        time.sleep(5)
         print("State:", s)
-        print(l)
-        # print(e)
 
-        log = job.get_log()
-        if log is None:
-            print('super fast')
-            assert True
-        else:
-            progress = job.get_progress()
-            print("Progress:", progress)
-            status = job.get_status(refresh=True)
-            print("Status:", status)
-            assert log is not None
-            assert s == 0
-            assert progress == 100
-            assert status == "done"
+        banner("check")
+
+        finished = False
+        while not finished:
+            log = job.get_log()
+            if log is not None:
+                progress = job.get_progress()
+                finished = progress == 100
+                print("Progress:", progress)
+            if not finished:
+                time.sleep(0.5)
+        progress = job.get_progress()
 
         Benchmark.Stop()
+
+        print("Progress:", progress)
+        status = job.get_status(refresh=True)
+        print("Status:", status)
+        assert log is not None
+        assert s == 0
+        assert progress == 100
+        assert status == "done"
 
     # will fail if previous test fails
     def test_exists_run(self):
@@ -196,9 +205,10 @@ class TestJobLocalhost:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
-        banner(f"{ps}")
+        ps = subprocess.check_output(f'ps -ax -o pid=', shell=True, text=True).strip()
         assert 'sleep 3600' not in ps
-        assert f" {parent} " not in ps
-        assert f" {child} " not in ps
+
+        banner(f"{ps}")
+        assert f"{parent}" not in ps
+        assert f"{child}" not in ps
         assert status == "running"

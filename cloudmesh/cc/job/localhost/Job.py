@@ -108,6 +108,7 @@ class Job():
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
+        status = "undefined"
         if refresh:
             log = self.get_log()
         else:
@@ -116,7 +117,7 @@ class Job():
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
             status = status.split()[0]
-            return status
+        return status
 
     def get_progress(self, refresh=False):
         if refresh:
@@ -137,30 +138,32 @@ class Job():
         command = f"cp {self.directory}/{self.name}.error {self.name}.error"
         print(command)
         os.system(command)
+        os.system("sync")
         content = readfile(f"{self.name}.error")
         return content
 
     def get_log(self):
-        command = f"cp {self.directory}/{self.name}.log {self.name}.log"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.log")
+        content = None
+        try:
+            command = f"cp {self.directory}/{self.name}.log {self.name}.log"
+            print(command)
+            os.system(command)
+            os.system("sync")
+            content = readfile(f"{self.name}.log")
+        except:
+            pass
         return content
 
     def sync(self):
         self.mkdir_experimentdir()
         command = f"cp {self.name}.sh {self.directory}/."
         print(command)
+        os.system("sync")
         r = os.system(command)
         return r
 
     def exists(self, filename):
-        command = f'ls {self.directory}/{filename}'
-        print(command)
-        r = Shell.run(command)
-        if "cannot acces" in r:
-            return False
-        return True
+        return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
