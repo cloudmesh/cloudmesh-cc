@@ -1,32 +1,29 @@
 ###############################################################
 # pytest -v -x --capture=no tests/test_job_wsl.py
 # pytest -v  tests/test_job_wsl.py
-# pytest -v --capture=no  tests/test_job_wsl.py::TestJobssh::<METHODNAME>
+# pytest -v --capture=no  tests/test_job_wsl.py::TestJobWsl::<METHODNAME>
 ###############################################################
 
 #
-# program needs pip install pywin32 -U in requirements if on windows
+# program needs pip install pywin32 -U in requirements if on the OS is Windows
+# TODO: check if pywin32 is the correct version
 #
 
 import os
-import time
-from time import sleep
-import pytest
-
-import subprocess
-from cloudmesh.cc.job.wsl.Job import Job
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.util import HEADING
-from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.util import banner
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.console import Console
-
 import shutil
-import sys
-from cloudmesh.common.systeminfo import os_is_windows
+import subprocess
+import time
 
+import pytest
+from cloudmesh.cc.job.wsl.Job import Job
+
+from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.console import Console
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import HEADING
+from cloudmesh.common.util import banner
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.variables import Variables
 
 if not os_is_windows():
     Console.error("This test can only be run on windows")
@@ -40,17 +37,15 @@ else:
     username = os.environ["USER"]
 
 job = None
-prefix="-wsl"
+prefix = "-wsl"
 
 run_job = f"run{prefix}"
 wait_job = f"wait{prefix}"
 
 
-
 @pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")
 @pytest.mark.incremental
-class TestJoblocalhost:
-
+class TestJobWsl:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
@@ -60,9 +55,6 @@ class TestJoblocalhost:
             os.system(f"cp ./tests/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
-
-
-
 
     def test_create(self):
         HEADING()
@@ -84,7 +76,7 @@ class TestJoblocalhost:
         global job
 
         Benchmark.Start()
-        r = job.sync()
+        job.sync()
         Benchmark.Stop()
         assert job.exists("run-wsl.sh")
 
@@ -99,10 +91,10 @@ class TestJoblocalhost:
         Benchmark.Start()
         global job
         job = Job(name=f"run{prefix}", host=host, username=username)
-        r = job.sync()
+        job.sync()
 
         s, l, e = job.run()
-        # give it time to complete
+        # give it some time to complete
         time.sleep(5)
         print("State:", s)
         print(l)
@@ -144,8 +136,8 @@ class TestJoblocalhost:
         Benchmark.Start()
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
-        r = jobWait.sync()
-        #problem
+        jobWait.sync()
+        # problem
         s, l, e = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
@@ -178,7 +170,7 @@ class TestJoblocalhost:
         """
         Creates a job from wait.sh, which includes wait of 1 hour
         Deletes this job AND it's children
-        This way, it tests if the job or any of it's children
+        This way, it tests if the job or any of its children
         is found in the ps
         """
         HEADING()
@@ -189,13 +181,13 @@ class TestJoblocalhost:
 
         Benchmark.Start()
         job_kill = Job(name=f"{wait_job}", host=host, username=username)
-        banner("Cear the job log")
+        banner("Clear the job log")
         job_kill.clear()
         banner("Sync the job to the experiment directory")
-        r = job_kill.sync()
+        job_kill.sync()
 
         banner("Run the job")
-        s, l, e = job_kill.run()
+        job_kill.run()
         time.sleep(3)
 
         banner("Kill the Job")
@@ -214,4 +206,3 @@ class TestJoblocalhost:
         assert f" {parent} " not in ps
         assert f" {child} " not in ps
         assert status == "running"
-
