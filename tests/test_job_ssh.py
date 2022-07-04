@@ -12,6 +12,8 @@ from cloudmesh.cc.job.ssh.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.Shell import Shell
+
 
 variables = Variables()
 
@@ -26,9 +28,17 @@ username = variables["username"]
 
 job = None
 
+try:
+    r = Shell.run(f"ssh {username}@{host} hostname")
+    login_success = "Could not resolve hostname" not in r
+except:
+    login_success = False
 
+
+@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
 class TestJobssh:
+
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
@@ -103,24 +113,22 @@ class TestJobssh:
         assert not wrong
         assert correct
 
-    # def test_watch(self):
-    #     HEADING()
-    #     global job
-    #     global username
-    #     global host
-    #     global name
-    #     Benchmark.Start()
-    #     os.remove("run.log")
-    #     os.remove("run.error")
-    #     job = Job(name=name, host=host, username=username)
-    #     r = job.sync()
-    #     job.run()
-    #     job.watch(period=1)
-    #     status = job.get_status()
-    #     Benchmark.Stop()
-    #     assert status == "done"
-
-class rest:
+    def test_watch(self):
+        HEADING()
+        global job
+        global username
+        global host
+        global name
+        Benchmark.Start()
+        os.remove("run.log")
+        os.remove("run.error")
+        job = Job(name=name, host=host, username=username)
+        r = job.sync()
+        job.run()
+        job.watch(period=1)
+        status = job.get_status()
+        Benchmark.Stop()
+        assert status == "done"
 
     def test_kill(self):
         HEADING()
