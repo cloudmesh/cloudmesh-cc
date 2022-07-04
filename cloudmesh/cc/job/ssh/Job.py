@@ -7,7 +7,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
-
+from cloudmesh.common.util import path_expand
 
 class Job():
 
@@ -49,7 +49,7 @@ class Job():
             self.host = "localhost"
 
         if self.directory is None:
-            self.directory = f'/c/Users/{self.username}/experiment/{self.name}'
+            self.directory = f'~/experiment/{self.name}'
 
 
     def __str__(self):
@@ -85,6 +85,16 @@ class Job():
         error = self.get_error()
         log = self.get_log()
         return state, log, error
+
+    def clear(self):
+        content = None
+        try:
+            source = f'~/experiment/{self.name}/{self.name}.log'
+            destination = f"{self.name}.log"
+            Shell.run(f"rm -f {destination}")
+            Shell.run(f'ssh {self.username}@{self.host} "rm -f {source}"')
+        except Exception as e:
+            Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
         if refresh:
