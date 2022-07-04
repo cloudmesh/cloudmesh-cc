@@ -21,9 +21,16 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import banner
 from cloudmesh.common.Shell import Shell
-import shutil
+from cloudmesh.common.console import Console
 
+import shutil
+import sys
 from cloudmesh.common.systeminfo import os_is_windows
+
+
+if not os_is_windows():
+    Console.error("This test can only be run on windows")
+
 variables = Variables()
 
 host = "localhost"
@@ -40,7 +47,7 @@ wait_job = f"wait{prefix}"
 
 
 
-
+@pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")
 @pytest.mark.incremental
 class TestJoblocalhost:
 
