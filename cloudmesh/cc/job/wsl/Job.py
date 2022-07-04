@@ -151,6 +151,7 @@ class Job:
         return content
 
     def get_status(self, refresh=False):
+        status = "undefined"
         if refresh:
             log = self.get_log()
         else:
@@ -159,7 +160,7 @@ class Job:
         if len(lines) > 0:
             status = lines[-1].split("status=")[1]
             status = status.split()[0]
-            return status
+        return status
 
     def get_progress(self, refresh=False):
         if refresh:

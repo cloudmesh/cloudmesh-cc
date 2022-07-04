@@ -84,33 +84,40 @@ class TestJobWsl:
         HEADING()
         global prefix
 
+        banner("create job")
         Benchmark.Start()
         global job
         job = Job(name=f"run", host=host, username=username)
+
+        banner("create experiment")
         job.sync()
 
+        banner("run job")
         s, l, e = job.run()
-        # give it some time to complete
-        time.sleep(5)
         print("State:", s)
-        print(l)
-        # print(e)
 
-        log = job.get_log()
-        if log is None:
-            print('super fast')
-            assert True
-        else:
-            progress = job.get_progress()
-            print("Progress:", progress)
-            status = job.get_status(refresh=True)
-            print("Status:", status)
-            assert log is not None
-            assert s == 0
-            assert progress == 100
-            assert status == "done"
+        banner("check")
+
+        finished = False
+        while not finished:
+            log = job.get_log()
+            if log is not None:
+                progress = job.get_progress(refresh=True)
+                finished = progress == 100
+                print("Progress:", progress)
+            if not finished:
+                time.sleep(0.5)
+        progress = job.get_progress()
 
         Benchmark.Stop()
+
+        print("Progress:", progress)
+        status = job.get_status(refresh=True)
+        print("Status:", status)
+        assert log is not None
+        assert s == 0
+        assert progress == 100
+        assert status == "done"
 
     # will fail if previous test fails
     def test_exists_run(self):
