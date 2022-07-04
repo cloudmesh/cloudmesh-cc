@@ -81,7 +81,7 @@ class Job():
         command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
         # time.sleep(1)
         print(command)
-        state = os.system(command)
+        state = os.system(f'{command} &')
         error = self.get_error()
         log = self.get_log()
         return state, log, error
@@ -175,12 +175,6 @@ class Job():
             return pid
         return None
 
-    def kill(self):
-        """
-        kills the job
-        """
-        pid = self.get_pid()
-        command = ""
 
     def kill(self, period=1):
         """
@@ -189,7 +183,6 @@ class Job():
         #
         # find logfile
         #
-        source = f'~/experiment/{self.name}/{self.name}.log'
 
         logfile = f'{self.name}.log'
         log = None
@@ -216,7 +209,6 @@ class Job():
 
         command = f'ssh {self.username}@{self.host} ssh "pgrep -P {pid}"'
         child = Shell.run(command).strip()
-        print ("CHILD:", child)
         command = f'ssh {self.username}@{self.host} "kill -9 {pid} {child}"'
         print(command)
         r = Shell.run(command)
