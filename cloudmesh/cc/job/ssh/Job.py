@@ -210,6 +210,10 @@ class Job():
         print(command)
         r = Shell.run(command)
         Console.msg(f"Killing {pid} {child}")
+        # log back into rivanna and repeatedly issue the ps -aux command applied to the pid and child
+        # to see if these processes still exist. If they exist, they need to be killed
+        # ssh rivanna ps -q 372
+        #
         print(r)
         if "No such process" in r:
             Console.warning(
