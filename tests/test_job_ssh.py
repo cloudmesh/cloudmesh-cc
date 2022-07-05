@@ -196,9 +196,8 @@ class TestJobsSsh:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = Shell.run(f'ssh {username}@{host} ps -q {parent} {child} -o pid=').strip()
+        ps = Shell.run(f'ssh {username}@{host} ps -eo pid').strip().replace(" ", "").splitlines()
         banner(f"{ps}")
-        assert ps == ''
         assert f"{parent}" not in ps
         assert f"{child}" not in ps
         assert status == "running"
