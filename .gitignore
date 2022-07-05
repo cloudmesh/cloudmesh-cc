@@ -1,3 +1,7 @@
+run.error
+run.log
+wait.error
+wait.log
 .DS_Store
 Makefilee
 *.pye
