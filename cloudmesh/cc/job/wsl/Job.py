@@ -234,19 +234,24 @@ class Job:
         # find logfile
         #
         logfile = f'~/experiment/{self.name}/{self.name}.log'
-
+        print(f'here is logfile {logfile}')
         log = None
         while log is None:
             try:
                 log = readfile(logfile)
+                print(f'here is my log {log}')
                 lines = log.splitlines()
+                print(f'here is my lines {lines}')
                 found = False
+                print(f' here is my found {found}')
                 for line in lines:
                     if line.startswith("# cloudmesh") and "pid=" in line:
                         found = True
+                        print(f'i found it {found}')
                         break
                 if not found:
                     log = None
+                    print('not found...')
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None
