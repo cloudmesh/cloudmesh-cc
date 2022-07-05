@@ -116,11 +116,9 @@ class TestJobsSsh:
         global job
         name = f"run"
         Benchmark.Start()
-        wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
-        assert not wrong
         assert correct
 
     def test_run_wait(self):
@@ -151,14 +149,11 @@ class TestJobsSsh:
     def test_exists_wait(self):
         HEADING()
         global job
-
         name = f"run"
         Benchmark.Start()
-        wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
-        assert not wrong
         assert correct
 
     def test_kill(self):
