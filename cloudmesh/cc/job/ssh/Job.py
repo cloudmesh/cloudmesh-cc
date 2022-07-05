@@ -78,7 +78,7 @@ class Job():
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} '\
-                  '"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
+                  f'"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
         # time.sleep(1)
         print(command)
         state = os.system(f'{command} &')
