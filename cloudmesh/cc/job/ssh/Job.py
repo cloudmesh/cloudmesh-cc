@@ -83,7 +83,7 @@ class Job():
 
             command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
             print(command)
-            state = subprocess.check_output(['bash', '-c', f'{command} &'])
+            state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
 
         else:
             command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
