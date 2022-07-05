@@ -92,7 +92,7 @@ class Job():
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} '\
-                  '"{self.slurm.sbatch} --chdir={self.directory} --output={self.name}.log ./{self.name}.sh"'
+                  f'"{self.slurm.sbatch} --chdir={self.directory} --output={self.name}.log ./{self.name}.sh"'
         # time.sleep(1)
         print(command)
         #state = os.system(f'{command} &')

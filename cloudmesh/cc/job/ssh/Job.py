@@ -204,7 +204,7 @@ class Job():
             time.sleep(1)
             pid = self.get_pid(refresh=True)
 
-        command = f'ssh {self.username}@{self.host} ssh "pgrep -P {pid}"'
+        command = f'ssh {self.username}@{self.host} "pgrep -P {pid}"'
         child = Shell.run(command).strip()
         command = f'ssh {self.username}@{self.host} "kill -9 {pid} {child}"'
         print(command)
