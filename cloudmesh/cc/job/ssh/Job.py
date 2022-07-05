@@ -2,12 +2,14 @@ import os
 
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 import time
+import subprocess
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job():
@@ -77,11 +79,19 @@ class Job():
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} '\
-                  f'"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
-        # time.sleep(1)
-        print(command)
-        state = os.system(f'{command} &')
+        if os_is_windows():
+
+            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
+            print(command)
+            state = subprocess.check_output(['bash', '-c', f'{command} &'])
+
+        else:
+            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
+            # time.sleep(1)
+            print(command)
+            state = os.system(f'{command} &')
+
+        sate = 0
         error = self.get_error()
         log = self.get_log()
         return state, log, error
