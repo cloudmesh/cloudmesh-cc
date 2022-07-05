@@ -97,11 +97,12 @@ class Job:
         command = f'chmod a+x ./{self.name}.sh'
         os.system(command)
 
-        home = Path.home()
-        cwd = Path.cwd()
+        home = Path.as_posix(Path.home())
+        cwd = Path.as_posix(Path.cwd())
+        userdir_name = os.path.split(home)[1]
 
-        experimentdir = f'/c/Users/{self.username}/experiment/{self.name}'
-        wsl_experimentdir = f"/mnt/c/Users/{self.username}/experiment/{self.name}"
+        experimentdir = f'/c/Users/{userdir_name}/experiment/{self.name}'
+        wsl_experimentdir = f"/mnt/c/Users/{userdir_name}/experiment/{self.name}"
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
