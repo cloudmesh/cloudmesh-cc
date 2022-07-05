@@ -94,12 +94,16 @@ class Job:
     def run(self):
         self.mkdir_experimentdir()
         # make sure executable is set
+        print ("A")
         command = f'chmod a+x ./{self.name}.sh'
         os.system(command)
+        print("B")
 
         home = Path.as_posix(Path.home())
         cwd = Path.as_posix(Path.cwd())
         userdir_name = os.path.split(home)[1]
+
+        print ("C")
 
         experimentdir = f'/c/Users/{userdir_name}/experiment/{self.name}'
         wsl_experimentdir = f"/mnt/c/Users/{userdir_name}/experiment/{self.name}"
@@ -108,7 +112,11 @@ class Job:
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
 
-        os.system(f'mkdir -p "{experimentdir}"')
+        print ("D")
+        Shell.mkdir(experimentdir)
+
+        print("E")
+
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
