@@ -187,6 +187,7 @@ class TestJobsSsh:
 
         banner("Kill the Job")
         parent, child = job_kill.kill(period=2)
+        time.sleep(2)
         banner(f"Job kill is done: {parent} {child}")
 
         Benchmark.Stop()
@@ -195,9 +196,9 @@ class TestJobsSsh:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
+        ps = Shell.run(f'ssh {username}@{host} ps -q {parent} {child} -o pid=').strip()
         banner(f"{ps}")
-        assert 'sleep 3600' not in ps
-        assert f" {parent} " not in ps
-        assert f" {child} " not in ps
+        assert ps == ''
+        assert f"{parent}" not in ps
+        assert f"{child}" not in ps
         assert status == "running"
