@@ -45,6 +45,8 @@ job = None
 try:
     r = Shell.run(f"ssh {username}@{host} hostname")
     login_success = "Could not resolve hostname" not in r
+    if "'s password:" in r:
+        print('if statement worked')
 except:  # noqa: E722
     login_success = False
 
