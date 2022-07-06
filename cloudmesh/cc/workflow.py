@@ -417,7 +417,7 @@ class Workflow:
             job = self.job(name=name)
             if not dryrun:
                 if job['kind'] in ["local"]:
-                    from cloudmesh.cc.job.localhost.JacksonJob import Job as local_Job
+                    from cloudmesh.cc.job.localhost.Job import Job as local_Job
                     name = job['name']
                     host = job['host']
                     username = job['user']
@@ -426,7 +426,7 @@ class Workflow:
                     localhost_job.run()
                 elif job['kind'] in ["ssh"]:
                     print(job)
-                    from cloudmesh.cc.job.ssh.JacksonJob import Job as ssh_job
+                    from cloudmesh.cc.job.ssh.Job import Job as ssh_job
                     name = job['name']
                     host = job['host']
                     username = job['user']
@@ -437,6 +437,9 @@ class Workflow:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:
                 #     raise NotImplementedError
+            else:
+                # banner(f"Job: {name}")
+                Console.msg(f"running {name}")
 
     def sequential_order(self):
         tuples = []
