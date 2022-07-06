@@ -72,7 +72,7 @@ shell:
 	docker run --rm -it slurm-manager:latest  /bin/bash
 
 red:
-	docker exec -it slurm_red_1  /bin/bash
+	docker exec -it slurm-red-1  /bin/bash
 
 cleanall:
 	-docker kill $$(docker ps -q)

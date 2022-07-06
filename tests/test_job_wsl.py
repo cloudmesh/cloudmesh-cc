@@ -64,6 +64,7 @@ class TestJobWsl:
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)
+        job.clear()
         Benchmark.Stop()
         print(job)
         assert job.name == name
@@ -88,7 +89,7 @@ class TestJobWsl:
         Benchmark.Start()
         global job
         job = Job(name=f"run", host=host, username=username)
-
+        job.clear()
         banner("create experiment")
         job.sync()
 
