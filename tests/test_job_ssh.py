@@ -15,6 +15,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 import subprocess
 
@@ -28,6 +29,16 @@ else:
     host = variables["host"]
 
 username = variables["username"]
+
+if username is None:
+    Console.warning("Username not entered. Please enter a username,\n"
+                    "or no input to quit.\n")
+    username = input()
+    if username is None:
+        print("quitting")
+        quit()
+    variables["username"] = username
+
 
 job = None
 
