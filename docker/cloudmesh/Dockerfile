@@ -44,6 +44,7 @@ RUN wget https://www.python.org/ftp/python/3.10.5/Python-3.10.5.tar.xz
 RUN tar -xf Python-3.10.5.tar.xz
 RUN mv Python-3.10.5 /opt/
 RUN rm -f Python-3.10.5.tar.xz
+RUN mkdir -p ~/.ssh/
 RUN touch ~/.ssh/config
 RUN echo "Host *" >> ~/.ssh/config
 RUN echo "	SetEnv LC_CTYPE=" >> ~/.ssh/config
