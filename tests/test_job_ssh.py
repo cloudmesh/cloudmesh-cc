@@ -34,7 +34,7 @@ if username is None:
     Console.warning("Username not entered. Please enter a username,\n"
                     "or no input to quit.\n")
     username = input()
-    if username is None:
+    if username == '':
         print("quitting")
         quit()
     variables["username"] = username
