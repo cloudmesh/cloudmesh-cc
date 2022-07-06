@@ -32,7 +32,9 @@ RUN apt install -y build-essential \
     libbz2-dev \
     pkg-config \
     make \
-    git
+    git \
+    sudo \
+    nano
 
 RUN mkdir -p /opt
 
@@ -42,6 +44,8 @@ RUN wget https://www.python.org/ftp/python/3.10.5/Python-3.10.5.tar.xz
 RUN tar -xf Python-3.10.5.tar.xz
 RUN mv Python-3.10.5 /opt/
 RUN rm -f Python-3.10.5.tar.xz
+RUN echo "Host *" >> ~/.ssh/config
+RUN echo "	SetEnv LC_CTYPE=" >> ~/.ssh/config
 
 WORKDIR /opt/Python-3.10.5
 
