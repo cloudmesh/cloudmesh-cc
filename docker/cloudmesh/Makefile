@@ -18,14 +18,16 @@ image:
 shell:
 	@echo ${USER_ID}
 	@echo ${GROUP_ID}
-	docker run --rm  -it \
+	@echo ${HOME}
+	docker run --rm  \
 	  --volume "${HOME}:${HOME}" \
-	  -it cloudmesh/python:${VERSION} \
+	  -it \
 	  --user ${USER_ID}:${GROUP_ID} \
       --workdir="${HOME}" \
       --volume="/etc/group:/etc/group:ro" \
       --volume="/etc/passwd:/etc/passwd:ro" \
       --volume="/etc/shadow:/etc/shadow:ro" \
+	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
 
