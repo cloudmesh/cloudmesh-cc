@@ -15,6 +15,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 import subprocess
 
@@ -29,11 +30,23 @@ else:
 
 username = variables["username"]
 
+if username is None:
+    Console.warning("Username not entered. Please enter a username,\n"
+                    "or no input to quit.\n")
+    username = input()
+    if username == '':
+        print("quitting")
+        quit()
+    variables["username"] = username
+
+
 job = None
 
 try:
     r = Shell.run(f"ssh {username}@{host} hostname")
     login_success = "Could not resolve hostname" not in r
+    if "'s password:" in r:
+        print('if statement worked')
 except:  # noqa: E722
     login_success = False
 

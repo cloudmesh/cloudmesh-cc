@@ -32,7 +32,9 @@ RUN apt install -y build-essential \
     libbz2-dev \
     pkg-config \
     make \
-    git
+    git \
+    sudo \
+    nano
 
 RUN mkdir -p /opt
 
@@ -42,6 +44,10 @@ RUN wget https://www.python.org/ftp/python/3.10.5/Python-3.10.5.tar.xz
 RUN tar -xf Python-3.10.5.tar.xz
 RUN mv Python-3.10.5 /opt/
 RUN rm -f Python-3.10.5.tar.xz
+RUN mkdir -p ~/.ssh/
+RUN touch ~/.ssh/config
+RUN echo "Host *" >> ~/.ssh/config
+RUN echo "	SetEnv LC_CTYPE=" >> ~/.ssh/config
 
 WORKDIR /opt/Python-3.10.5
 
@@ -66,7 +72,11 @@ RUN apt install libopenmpi-dev -y && \
 WORKDIR /root/cm
 
 RUN pip install cloudmesh-installer
-RUN /usr/local/bin/cloudmesh-installer get cmd5
+RUN /usr/local/bin/cloudmesh-installer get cms
+RUN cd ~/cm && \
+    git clone https://github.com/cloudmesh/cloudmesh-cc.git && \
+    cd cloudmesh-cc && \
+    pip install -e .
 RUN cms help
 
 WORKDIR /root

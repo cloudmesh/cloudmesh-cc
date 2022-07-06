@@ -95,7 +95,7 @@ class Job:
         self.mkdir_experimentdir()
         # make sure executable is set
         print ("A")
-        command = f'chmod a+x ./{self.name}.sh'
+        command = f'chmod a+x {self.name}.sh'
         os.system(command)
         print("B")
 
@@ -108,18 +108,23 @@ class Job:
         experimentdir = f'/c/Users/{userdir_name}/experiment/{self.name}'
         wsl_experimentdir = f"/mnt/c/Users/{userdir_name}/experiment/{self.name}"
 
-        command = f'wsl nohup sh -c' \
-                  f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && ./{self.name}.sh > ./{self.name}.log 2>&1 &"'
+        # command = f'wsl nohup sh -c' \
+        #           f' ". ~/.profile && cd {wsl_experimentdir}' \
+        #           f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
 
         print ("D")
         Shell.mkdir(experimentdir)
+
 
         print("E")
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
                   f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
+
+        command = f'wsl nohup sh -c' \
+                  f' ". ~/.profile && cd {wsl_experimentdir}' \
+                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2>&1 &"'
 
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
@@ -188,7 +193,7 @@ class Job:
 
     def get_error(self):
         experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
-        command = f'cp {experimentdir}/{self.name}.err ./{self.name}.err'
+        command = f'cp {experimentdir}/{self.name}.err {self.name}.err'
         print(command)
         os.system(command)
         content = readfile(f"{self.name}.err")
@@ -234,19 +239,24 @@ class Job:
         # find logfile
         #
         logfile = f'~/experiment/{self.name}/{self.name}.log'
-
+        print(f'here is logfile {logfile}')
         log = None
         while log is None:
             try:
                 log = readfile(logfile)
+                print(f'here is my log {log}')
                 lines = log.splitlines()
+                print(f'here is my lines {lines}')
                 found = False
+                print(f' here is my found {found}')
                 for line in lines:
                     if line.startswith("# cloudmesh") and "pid=" in line:
                         found = True
+                        print(f'i found it {found}')
                         break
                 if not found:
                     log = None
+                    print('not found...')
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None

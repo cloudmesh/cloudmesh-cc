@@ -35,6 +35,8 @@ variables = Variables()
 host = "localhost"
 if os_is_windows():
     username = os.environ["USERNAME"]
+elif os_is_linux():
+    username = os.system('whoami')
 else:
     username = os.environ["USER"]
 
