@@ -30,8 +30,8 @@ class Job():
         self.host = host
         self.name = name
         self.directory = directory
-        if label is None:
-            self.label = name
+        self.label = label
+
 
         # print("self.data", self.data)
         for key, value in self.data.items():
