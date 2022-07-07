@@ -28,6 +28,7 @@ shell:
 	  -it \
 	  --user ${UID}:${GID} \
       --workdir="${HOME}/cm" \
+      --volume "${HOME}/.ssh:${HOME}/.ssh:ro" \
       --volume="/etc/group:/etc/group:ro" \
       --volume="/etc/passwd:/etc/passwd:ro" \
       --volume="/etc/shadow:/etc/shadow:ro" \
