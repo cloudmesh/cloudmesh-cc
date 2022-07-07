@@ -363,10 +363,10 @@ class Workflow:
 
         for name, node in graph["cloudmesh"]["nodes"].items():
             print ("Adding:", name)
-            self.add_job(name=name, **node)
+            self.add_job(**node)
 
-        for name, edge in graph["cloudmesh"]["dependencies"].items():
-            print("Dependency:", name, edge)
+        for edge in graph["cloudmesh"]["dependencies"]:
+            print("Dependency:", edge)
             self.add_dependencies(edge)
 
     def predecessor(self, name):
@@ -419,6 +419,7 @@ class Workflow:
                 kind="local",
                 status="ready",
                 progress=0,
+                script=None,
                 pid=None
                 ):
 
@@ -448,7 +449,8 @@ class Workflow:
             status=status,
             progress=progress,
             created=now,
-            modified=now
+            modified=now,
+            script=script,
         )
 
     def add_dependency(self, source, destination):
