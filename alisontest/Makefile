@@ -42,7 +42,7 @@ a:
 	  --name cms \
 	  --workdir="//home//${USERNAME}//cm//cloudmesh-cc" \
 	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
-	  -p 80:80 cloudmesh/python:latest
+	  -p 8000:8000 cloudmesh/python:latest
 
 dshell:
 	docker-compose run cms /bin/bash

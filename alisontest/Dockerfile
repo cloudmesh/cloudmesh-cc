@@ -84,7 +84,8 @@ RUN /usr/local/bin/cloudmesh-installer get cc
 #    pip install -e .
 
 RUN pip install pip -U
+RUN cms help
 
 WORKDIR /home/alibo/cm/cloudmesh-cc
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "alisontest.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -22,8 +22,8 @@ class Database:
         directory = os.path.dirname(self.fileprefix)
         if not os.path.isdir(directory):
             Shell.mkdir(directory)
-            self.data = {}
-            self.save()
+            # self.data = {}
+            # self.save()
 
         self.data = YamlDB(filename=self.filename)
         self.data["config"] = {}
