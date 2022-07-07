@@ -88,11 +88,11 @@ class Test_workflow:
             user = login[host]["user"]
             host = login[host]["host"]
             label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host, label=label)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host, label=label)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host, label=label)
+            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
 
             first = n - 3
