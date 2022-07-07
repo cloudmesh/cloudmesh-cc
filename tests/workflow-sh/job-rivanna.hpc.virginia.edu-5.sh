@@ -1,8 +1,12 @@
-#!/bin/bash
-echo "last test, best test"
-sleep 1
-echo "this is rivanna test 3 and job 5"
-hostname
-pwd
+#!/bin/sh
+echo "# cloudmesh status=running progress=1 pid=$$"
+date
+echo "# cloudmesh status=running progress=10 pid=$$"
 ls
-echo "done"
+echo "# cloudmesh status=running progress=20 pid=$$"
+pwd
+echo "# cloudmesh status=running progress=30 pid=$$"
+sleep 1
+echo "# cloudmesh status=running progress=50 pid=$$"
+hostname
+echo "# cloudmesh status=done progress=100 pid=$$"

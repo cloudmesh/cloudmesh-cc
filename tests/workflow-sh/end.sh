@@ -1,6 +1,3 @@
-#!/bin/bash
-echo "This is the end test!"
-hostname
-pwd
-ls
-echo "You made it!"
+#!/bin/sh
+echo "done"
+echo "# cloudmesh status=done progress=100 pid=$$"

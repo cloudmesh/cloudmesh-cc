@@ -1,12 +1,12 @@
-#!/bin/bash
-echo "This is the last LOCAL test!!!!! (local test 2)"
-hostname
+#!/bin/sh
+echo "# cloudmesh status=running progress=1 pid=$$"
+date
+echo "# cloudmesh status=running progress=10 pid=$$"
 ls
+echo "# cloudmesh status=running progress=20 pid=$$"
 pwd
-whoami
+echo "# cloudmesh status=running progress=30 pid=$$"
 sleep 1
-echo "who am I?"
-sleep 1
-echo "am I becoming sentient . . . ?"
-sleep 1
-echo "I have feelings . . . "
+echo "# cloudmesh status=running progress=50 pid=$$"
+hostname
+echo "# cloudmesh status=done progress=100 pid=$$"
