@@ -30,3 +30,11 @@ class TestService:
     def test_benchmark(self):
         HEADING()
         Benchmark.print(csv=True, sysinfo=False, tag="cc")
+
+    def test_post_queue(self):
+        HEADING()
+        Benchmark.Start()
+        app.post("/post/job")
+        Benchmark.Stop()
+
+
