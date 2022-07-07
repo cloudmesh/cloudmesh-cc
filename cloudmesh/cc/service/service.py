@@ -45,21 +45,6 @@ templates = Jinja2Templates(directory=template_dir)
 #
 # ROUTES
 
-
-#
-# @app.get("/abdul/{id}", response_class=HTMLResponse)
-# async def read_abdul(request: Request, id: str):
-#     global q
-#     jobs = []
-#     for queue in q.queues:
-#         for job in q.queues[queue]:
-#             jobs.append(q.queues[queue][job])
-#
-#     return templates.TemplateResponse("templates/abdul.html",
-#                                       {"request": request,
-#                                        "id": id,
-#                                        "jobs": jobs})
-
 @app.get("/item/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
     global q
@@ -79,15 +64,12 @@ async def read_item(request: Request, id: str):
                                        "order": order})
 
 
-@app.get("/queues/", response_class=HTMLResponse)
-
-
 """
 Renders and displays lists of queues onto an HTML table adaption from 
 datatables.net
 """
 
-
+@app.get("/queues/", response_class=HTMLResponse)
 async def info(request: Request):
     global q
     return templates.TemplateResponse('templates/queue.html',
@@ -106,39 +88,41 @@ async def read_home():
     return {"msg": "Hello World"}
 
 
-@app.post("/postQueue")
+#TODO: fix
+@app.post("/post/queue")
 async def add_queue(name: str):
     global q
     q.create(name=name)
     return {
-        "Queues": q.queues
+        "queues": q.queues
     }
 
 
-@app.post("/postJob")
+#TODO: fix
+@app.post("/post/job")
 async def add_job(name: str, job: str, command: str):
     global q
     q.add(name=name, job=job, command=command)
     return {
-        "Queue_Jobs": q.queues[name]
+        "jobs": q.queues[name]
     }
 
 
-@app.delete("/deleteJob/{job_name}")
-async def delete_job(job_name: str):
+@app.delete("/delete/job/{name}")
+async def delete_job(name: str):
     global q
     # not implemented yet
     return {
-        "Queue_Jobs": q.queues[name]
+        "jobs": q.queues[name]
     }
 
 
-@app.delete("/deleteQueue/{job_name}")
-async def delete_job(queue_name: str):
+@app.delete("/delete/queue/{name}")
+async def delete_queue(name: str):
     global q
-    q.remove(queue_name)
+    q.remove(name)
     return {
-        "Queues": q.queues
+        "queues": q.queues
     }
 
 
