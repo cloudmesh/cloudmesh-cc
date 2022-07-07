@@ -8,7 +8,6 @@ include ../makefile.sys
 CWD=$(shell pwd)
 CWD2=${HOME}
 
-
 image:
 	docker build ${PROGRESS} -t cloudmesh/python:${VERSION} .
 
@@ -30,23 +29,6 @@ shell:
       --volume="/etc/passwd:/etc/passwd:ro" \
       --volume="/etc/shadow:/etc/shadow:ro" \
 	  cloudmesh/python:${VERSION} \
-	  /bin/bash
-
-x:
-	@echo ${UID}
-	@echo ${GID}
-	docker run --rm -it \
-	  --user ${UID}:${GID} \
-	  --volume "//etc//passwd:/etc/passwd:ro" \
-	  --volume "//etc//group:/etc/group:ro" \
-	  -it cloudmesh/python:${VERSION} \
-	  /bin/bash
-
-y:
-	@echo ${UID}
-	@echo ${GID}
-	docker run --rm  -it \
-	  -it cloudmesh/python:${VERSION} \
 	  /bin/bash
 
 dshell:
