@@ -29,6 +29,21 @@ shell:
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
+gregor:
+	@echo ${UID}
+	@echo ${GID}
+	@echo ${HOME}
+	docker run --rm  \
+	  --volume "${HOME}/Desktop/cm:/cm" \
+	  -it \
+	  --user ${UID}:${GID} \
+      --workdir="${HOME}" \
+      --volume="/etc/group:/etc/group:ro" \
+      --volume="/etc/passwd:/etc/passwd:ro" \
+      --volume="/etc/shadow:/etc/shadow:ro" \
+	  cloudmesh/python:${VERSION} \
+	  /bin/bash
+
 
 wshell:
 	docker run --rm  -it \
