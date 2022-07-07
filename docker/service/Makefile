@@ -5,6 +5,8 @@
 include ../makefile.sys
 
 
+CWD=$(shell pwd)
+CWD2=${HOME}
 
 image:
 	docker build ${PROGRESS} -t cloudmesh/python:${VERSION} .
@@ -29,17 +31,12 @@ shell:
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
-
-wshell:
-	docker run --rm  -it \
-	  --workdir="//home//${USERNAME}" \
-	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
-	  cloudmesh/python:latest \
-	  "//bin//bash"
-
 dshell:
 	docker-compose run cms /bin/bash
 
+a:
+	echo ${CWD2}
+	docker run --rm -v ${CWD2}:/data -it cloudmesh/python:${VERSION}  /bin/bash
 
 cms:
 	docker run --rm -it cloudmesh/python:${VERSION}
