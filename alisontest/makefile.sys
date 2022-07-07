@@ -1,0 +1,12 @@
+VERSION=latest
+
+PROGRESS=--progress plain
+
+#PROGRESS=--progress auto
+
+UID=$(shell id -u)
+GID=$(shell id -g)
+PWD=$(shell pwd)
+
+export UID
+export GID
