@@ -149,6 +149,9 @@ class Graph:
                 "name": name
             }
         self.edges[name].update(**data)
+        if "parent" not in self.nodes[destination]:
+            self.nodes[destination]["parent"] = []
+        self.nodes[destination]["parent"].append(source)
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -368,6 +371,7 @@ class Workflow:
         for edge in graph["cloudmesh"]["dependencies"]:
             print("Dependency:", edge)
             self.add_dependencies(edge)
+
 
     def predecessor(self, name):
         
