@@ -52,7 +52,6 @@ async def read_item(request: Request, id: str):
     for queue in q.queues:
         for job in q.queues[queue]:
             jobs.append(q.queues[queue][job])
-
     order = q.queues[queue][job].keys()
     order = [word.capitalize() for word in order]
     Console.error(str(order))
@@ -82,7 +81,6 @@ async def read_item(request: Request):
     return templates.TemplateResponse("templates/table.html",
                                       {"request": request})
 
-
 @app.get("/")
 async def read_home():
     return {"msg": "Hello World"}
@@ -97,7 +95,6 @@ async def add_queue(name: str):
         "queues": q.queues
     }
 
-
 #TODO: fix
 @app.post("/post/job")
 async def add_job(name: str, job: str, command: str):
@@ -111,7 +108,7 @@ async def add_job(name: str, job: str, command: str):
 @app.delete("/delete/job/{name}")
 async def delete_job(name: str):
     global q
-    # not implemented yet
+    q.remove(name)
     return {
         "jobs": q.queues[name]
     }
