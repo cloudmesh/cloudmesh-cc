@@ -86,9 +86,5 @@ RUN /usr/local/bin/cloudmesh-installer get cc
 RUN pip install pip -U
 
 WORKDIR /home/alibo/cm/cloudmesh-cc
-##RUN pip install -r /home/alibo/cm/cloudmesh-cc/requirements.txt
-# RUN python setup.py install
-# RUN pip install -e .
-# C:/Users/alibo/cm/cloudmesh-cc/cloudmesh/cc/service/app
 
-CMD ["uvicorn", "cloudmesh/cc/service/app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
