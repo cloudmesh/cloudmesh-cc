@@ -56,8 +56,6 @@ class Test_workflow:
         Benchmark.Stop()
         print(w.graph)
 
-class d:
-
     def test_set_up(self):
         """
         establishing a queues object, saving 2 queues to it, each with 10 jobs
