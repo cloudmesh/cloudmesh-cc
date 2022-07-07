@@ -43,6 +43,8 @@ wshell:
 	  --rm  -it \
 	  --workdir="//home//${USERNAME}" \
 	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
+	  -p 80:80 \
+	  -p 8000:8000 \
 	  cloudmesh/python:latest \
 	  "//bin//bash"
 
