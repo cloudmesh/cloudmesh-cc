@@ -16,11 +16,14 @@ image:
 
 CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
 
+
 shell:
 	@echo ${UID}
 	@echo ${GID}
 	@echo ${HOME}
-	docker run --rm  \
+	docker run \
+	  --name cms \
+	  --rm  \
 	  --volume "${CM}:${HOME}/cm" \
 	  -it \
 	  --user ${UID}:${GID} \
@@ -31,8 +34,13 @@ shell:
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
+login:
+	docker exec -it cms /bin/bash
+
 wshell:
-	docker run --rm  -it \
+	docker run \
+	  --name cms \
+	  --rm  -it \
 	  --workdir="//home//${USERNAME}" \
 	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
 	  cloudmesh/python:latest \

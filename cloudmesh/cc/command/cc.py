@@ -44,7 +44,7 @@ class CcCommand(PluginCommand):
                 cc remove --queue=QUEUE --job=JOB
                 cc remove --queue=QUEUE
                 cc list --queue=QUEUE
-                cc start [--reload]
+                cc start [--reload] [--host=HOST] [--port=PORT]
                 cc stop
                 cc doc
                 cc test
@@ -76,7 +76,9 @@ class CcCommand(PluginCommand):
               --command=COMMAND      specify the command to be added to a job
               --scheduler=SCHEDULER  specify the scheduling technique that is to be used
               --queues=QUEUES        specify the queues object that is to be used
-
+              --host=HOST            the host ip [default: 127.0.0.1]
+              --port=PORT            the port [default: 8000]
+              
           Description:
 
             cc start
@@ -173,6 +175,8 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
+        host = arguments["--host"] or "127.0.0.1"
+        port = int(arguments["--port"]) or 8000
         if arguments.start:
             print("Start the service")
             if arguments.reload:
@@ -181,19 +185,19 @@ class CcCommand(PluginCommand):
                 reload = False
             import uvicorn
             from cloudmesh.cc.service.service import app
-            r = uvicorn.run(app, host="127.0.0.1", port=8000, reload=reload)
+            r = uvicorn.run(app, host=host, port=port, reload=reload)
             print(r)
         elif arguments.doc:
-            url = "http://127.0.0.1:8000/docs"
+            url = "http://{host}:{port}}/docs"
             Shell.browser(url)
         elif arguments.test:
             import requests
-            url = "http://127.0.0.1:8000/docs"
+            url = "http://{host}:{port}}/docs"
             r = requests.get(url)
             pprint(r)
             print(r.text)
         elif arguments.temperature:
-            url = "http://127.0.0.1:8000/temperature"
+            url = "http://{host}:{port}}/temperature"
             Shell.browser(url)
         elif arguments.stop:
             print("Stop the service")
