@@ -153,6 +153,33 @@ class Graph:
             self.nodes[destination]["parent"] = []
         self.nodes[destination]["parent"].append(source)
 
+    def done(self, parent):
+        """
+        removes from all nodes the names parent
+
+        Args:
+            parent ():
+
+        Returns:
+
+        """
+        for name, node in self.nodes:
+            if parent in self.nodes[name]["parent"]:
+                del self.nodes[name]["parent"][parent]
+
+    def todo(self):
+        """
+        finds all nodes with no parents and progress != 100
+
+        Returns: list of node names with no parents
+
+        """
+        result = []
+        for name in self.nodes:
+            if self.nodes[name]["progress"] != 100 and len(self.nodes[name]["parent"]) == 0:
+                result.append(name)
+        return result
+
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
 
