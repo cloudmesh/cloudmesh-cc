@@ -4,6 +4,7 @@
 
 include ../makefile.sys
 
+
 CWD=$(shell pwd)
 CWD2=${HOME}
 
@@ -12,17 +13,17 @@ image:
 
 # --volume "${HOME}/.ssh:.ssh"
 # --volume "${HOME}/.ssh:/root/.ssh"
-# --user ${USER_ID}:${GROUP_ID}
+# --user ${UID}:${GID}
 # --volume "${PWD}/..:/data"
 
 shell:
-	@echo ${USER_ID}
-	@echo ${GROUP_ID}
+	@echo ${UID}
+	@echo ${GID}
 	@echo ${HOME}
 	docker run --rm  \
 	  --volume "${HOME}:${HOME}" \
 	  -it \
-	  --user ${USER_ID}:${GROUP_ID} \
+	  --user ${UID}:${GID} \
       --workdir="${HOME}" \
       --volume="/etc/group:/etc/group:ro" \
       --volume="/etc/passwd:/etc/passwd:ro" \
@@ -30,6 +31,8 @@ shell:
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
+dshell:
+	docker-compose run cms /bin/bash
 
 a:
 	echo ${CWD2}

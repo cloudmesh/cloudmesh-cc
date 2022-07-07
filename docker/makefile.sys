@@ -4,6 +4,9 @@ PROGRESS=--progress plain
 
 #PROGRESS=--progress auto
 
-USER_ID=$(shell id -u)
-GROUP_ID=$(shell id -g)
+UID=$(shell id -u)
+GID=$(shell id -g)
 PWD=$(shell pwd)
+
+export UID
+export GID
