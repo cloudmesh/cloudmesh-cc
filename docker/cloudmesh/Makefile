@@ -16,23 +16,32 @@ image:
 
 CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
 
+
 shell:
 	@echo ${UID}
 	@echo ${GID}
 	@echo ${HOME}
-	docker run --rm  \
+	docker run \
+	  --name cms \
+	  --rm  \
 	  --volume "${CM}:${HOME}/cm" \
 	  -it \
 	  --user ${UID}:${GID} \
       --workdir="${HOME}/cm" \
+      --volume "${HOME}/.ssh:${HOME}/.ssh:ro" \
       --volume="/etc/group:/etc/group:ro" \
       --volume="/etc/passwd:/etc/passwd:ro" \
       --volume="/etc/shadow:/etc/shadow:ro" \
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
 
+login:
+	docker exec -it cms /bin/bash
+
 wshell:
-	docker run --rm  -it \
+	docker run \
+	  --name cms \
+	  --rm  -it \
 	  --workdir="//home//${USERNAME}" \
 	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
 	  -p 80:80 \
