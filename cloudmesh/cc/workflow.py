@@ -336,7 +336,38 @@ class Workflow:
         :rtype:
         """
         # self.graph.load(...)
-        pass
+        """ 
+        cloudmesh:
+          nodes:
+            a:
+               name: a
+               user: gregor
+               host: localhost
+               kind: local
+               status: ready
+               label: job-1-label
+               script: test-a.sh
+            b:
+               name: b
+               user: gregor
+               host: localhost
+               kind: local
+               status: ready
+               label: job-2-label
+               script: test-a.sh
+          dependencies:
+            - a,b
+        """
+        with open(filename, 'r') as stream:
+            graph = yaml.safe_load(stream)
+
+        for name, node in graph["cloudmesh"]["nodes"].items():
+            print ("Adding:", name)
+            self.add_job(name=name, **node)
+
+        for name, edge in graph["cloudmesh"]["dependencies"].items():
+            print("Dependency:", name, edge)
+            self.add_dependencies(edge)
 
     def predecessor(self, name):
         
