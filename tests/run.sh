@@ -9,4 +9,7 @@ echo "# cloudmesh status=running progress=30 pid=$$"
 sleep 5
 echo "# cloudmesh status=running progress=50 pid=$$"
 hostname
+echo "# cloudmesh status=running progress=70 pid=$$"
+whoami
 echo "# cloudmesh status=done progress=100 pid=$$"
+
