@@ -23,8 +23,11 @@ shell:
 	@echo ${HOME}
 	docker run \
 	  --name cms \
+	  -p 8000:8000 \
 	  --rm  \
 	  --volume "${CM}:${HOME}/cm" \
+	  --volume "${HOME}/.cloudmesh:${HOME}/.cloudmesh" \
+	  --volume "${HOME}/.local:${HOME}/.local" \
 	  -it \
 	  --user ${UID}:${GID} \
       --workdir="${HOME}/cm" \

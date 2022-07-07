@@ -176,6 +176,9 @@ class CcCommand(PluginCommand):
         #
 
         host = arguments["--host"] or "127.0.0.1"
+        if host == "0":
+            host = "0.0.0.0"
+
         port = int(arguments["--port"]) or 8000
         if arguments.start:
             print("Start the service")
