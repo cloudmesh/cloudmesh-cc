@@ -1,8 +1,8 @@
 VERSION=latest
 
-PROGRESS=--progress plain
+#PROGRESS=--progress plain
 
-#PROGRESS=--progress auto
+PROGRESS=--progress auto
 
 UID=$(shell id -u)
 GID=$(shell id -g)

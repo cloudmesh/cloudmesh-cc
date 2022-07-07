@@ -69,7 +69,7 @@ RUN apt install libopenmpi-dev -y && \
 # install cloudmesh from source
 #
 
-WORKDIR /root/cm
+WORKDIR /cm
 
 RUN pip install cloudmesh-installer
 RUN /usr/local/bin/cloudmesh-installer get cc
@@ -80,6 +80,10 @@ RUN /usr/local/bin/cloudmesh-installer get cc
 #    cd cloudmesh-cc && \
 #    pip install -e .
 
+WORKDIR /cm/cloudmesh-cc
+
+RUN pip install .
+
 RUN cms help
 
-WORKDIR /root
+WORKDIR /cm
