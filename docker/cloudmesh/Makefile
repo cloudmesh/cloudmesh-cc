@@ -14,36 +14,22 @@ image:
 # --user ${UID}:${GID}
 # --volume "${PWD}/..:/data"
 
+CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
+
 shell:
 	@echo ${UID}
 	@echo ${GID}
 	@echo ${HOME}
 	docker run --rm  \
-	  --volume "${HOME}:${HOME}" \
+	  --volume "${CM}:${HOME}/cm" \
 	  -it \
 	  --user ${UID}:${GID} \
-      --workdir="${HOME}" \
+      --workdir="${HOME}/cm" \
       --volume="/etc/group:/etc/group:ro" \
       --volume="/etc/passwd:/etc/passwd:ro" \
       --volume="/etc/shadow:/etc/shadow:ro" \
 	  cloudmesh/python:${VERSION} \
 	  /bin/bash
-
-gregor:
-	@echo ${UID}
-	@echo ${GID}
-	@echo ${HOME}
-	docker run --rm  \
-	  --volume "${HOME}/Desktop/cm:/cm" \
-	  -it \
-	  --user ${UID}:${GID} \
-      --workdir="${HOME}" \
-      --volume="/etc/group:/etc/group:ro" \
-      --volume="/etc/passwd:/etc/passwd:ro" \
-      --volume="/etc/shadow:/etc/shadow:ro" \
-	  cloudmesh/python:${VERSION} \
-	  /bin/bash
-
 
 wshell:
 	docker run --rm  -it \
