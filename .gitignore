@@ -1,7 +1,5 @@
-run.error
-run.log
-wait.error
-wait.log
+*.error
+*.log
 .DS_Store
 Makefilee
 *.pye
