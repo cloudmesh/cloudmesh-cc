@@ -15,14 +15,34 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
 import networkx as nx
+from cloudmesh.common.variables import Variables
+from cloudmesh.common.console import Console
 
-user = input("Please enter your Rivanna(computing) ID here: ")
 """
     This is a python file to test to make sure the workflow class works.
     It will draw upon the the test_queues file, because there is a file that
     was created with a bunch of jobs. 
 """
 
+variables = Variables()
+
+name = "run"
+
+if "host" not in variables:
+    host = "rivanna.hpc.virginia.edu"
+else:
+    host = variables["host"]
+
+username = variables["username"]
+
+if username is None:
+    Console.warning("Username not entered. Please enter a username,\n"
+                    "or no input to quit.\n")
+    username = input()
+    if username == '':
+        print("quitting")
+        quit()
+    variables["username"] = username
 
 class Test_workflow:
 
