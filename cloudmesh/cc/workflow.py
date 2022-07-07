@@ -20,6 +20,7 @@ from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import banner
 import os
+from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
 
 """
 This class enables to manage dependencies between jobs.
@@ -483,11 +484,16 @@ class Workflow:
                 Console.msg(f"running {name}")
 
             if show:
-                self.graph.save(filename="/tmp/a.svg", colors="status",
+                filename = "/tmp/a.svg"
+                self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
-                # Shell.browser(filename='/tmp/a.pdf')
-                os.system('open /tmp/a.svg')
-                # time.sleep(3)
+                if os_is_mac():
+                    os.system(f'open {filename}')
+                elif os_is_linux():
+                    os.system(f'gopen {filename}')
+                else:
+                    Shell.browser(filename='a.png')
+
 
     def sequential_order(self):
         tuples = []
