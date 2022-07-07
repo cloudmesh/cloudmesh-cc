@@ -337,6 +337,32 @@ class Workflow:
         # self.graph.load(...)
         pass
 
+    def predecessor(self, name):
+        
+        raise NotImplementedError
+
+
+    def get_parents(self, name):
+        """
+        figure out all of the dependencies of the name node
+        then test if each node in front (parent) has progress of 100
+        if the parent has progress 100, remove those nodes
+        :return:
+        """
+        parents = []
+        candidates = self.predecessors(name)
+        print(candidates)
+        for candidate in candidates:
+            if candidate['progress'] != 100:
+                parents.append(candidate)
+
+        if parents == []:
+            return None
+        else:
+            return parents
+
+
+
     def add(self, filename):
         """
         This method adds another workflow to the existing one. If nodes with the
