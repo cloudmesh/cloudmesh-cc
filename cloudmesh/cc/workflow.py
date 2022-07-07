@@ -18,6 +18,8 @@ from cloudmesh.cc.queue import Job
 from cloudmesh.common.console import Console
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Printer import Printer
+from cloudmesh.common.util import banner
+import os
 
 """
 This class enables to manage dependencies between jobs.
@@ -408,7 +410,7 @@ class Workflow:
         # once progress is fetched set it for the named job
         pass
 
-    def run(self, order=None, parallel=False, dryrun=False):
+    def run(self, order=None, parallel=False, dryrun=False, show=True):
 
         if order is None:
             order = self.sequential_order
@@ -422,8 +424,19 @@ class Workflow:
                     host = job['host']
                     username = job['user']
                     label = name
-                    localhost_job = local_Job(name=name, host=host, username=username, label=label)
+                    localhost_job = local_Job(name=name, host=host,
+                                              username=username, label=label)
+                    localhost_job.sync()
                     localhost_job.run()
+                    localhost_job.watch(period=0.5)
+                    status = localhost_job.get_status()
+                    progress = localhost_job.get_progress()
+                    banner(name)
+                    print(str(localhost_job))
+                    print('Status: ', status)
+                    print('Progress: ', progress)
+                    self.jobs[name]['status'] = status
+                    self.jobs[name]['progress'] = progress
                 elif job['kind'] in ["ssh"]:
                     print(job)
                     from cloudmesh.cc.job.ssh.Job import Job as ssh_job
@@ -431,7 +444,9 @@ class Workflow:
                     host = job['host']
                     username = job['user']
                     label = name
-                    remote_job = ssh_job(name=name, host=host, username=username, label=label)
+                    remote_job = ssh_job(name=name, host=host,
+                                         username=username, label=label)
+                    remote_job.sync()
                     remote_job.run()
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
@@ -440,6 +455,13 @@ class Workflow:
             else:
                 # banner(f"Job: {name}")
                 Console.msg(f"running {name}")
+
+            if show:
+                self.graph.save(filename="/tmp/a.svg", colors="status",
+                                layout=nx.circular_layout, engine="dot")
+                # Shell.browser(filename='/tmp/a.pdf')
+                os.system('open /tmp/a.svg')
+                # time.sleep(3)
 
     def sequential_order(self):
         tuples = []
