@@ -64,7 +64,7 @@ async def itme_read(id: str):
 
 @app.get("/")
 async def home():
-    return {"msg": "Cloudmesh cc"}
+    return {"msg": "Cloudmesh hello universe cc"}
 
 @app.get("/items", response_class=HTMLResponse)
 async def item_table(request: Request):
