@@ -88,11 +88,11 @@ class WorkflowServiceManager:
         r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
 
 
-    def delete(self, name=None, str, job=None: str):
+    def delete(self, name:str=None, job:str=None):
         pass
 
 
-    def list(self, name=None: str, job = None:str):
+    def list(self, name:str=None, job:str=None):
         pass
 
 
