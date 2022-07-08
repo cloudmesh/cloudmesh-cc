@@ -54,7 +54,7 @@ class CcCommand(PluginCommand):
                 cc workflow graph --name=NAME
                 cc workflow service add [--name=NAME] FILENAME
                 cc workflow service list [--name=NAME] [--job=JOB]
-                cc workflow service job add [--name=NAME] [--job=JOB] ARGS...
+                cc workflow service add [--name=NAME] [--job=JOB] ARGS...
                 cc workflow service run --name=NAME
 
           This command does some useful things.
@@ -152,7 +152,7 @@ class CcCommand(PluginCommand):
                 If we only specif the job name, all jobs with that name from all 
                 workflows will be returned.
                             
-            cc workflow service job add [--name=NAME] --job=JOB ARGS...
+            cc workflow service add [--name=NAME] --job=JOB ARGS...
                 This command ads a job. with the specified arguments. A check 
                 is returned and the user is allerted if arguments are missing
                 arguments are passe in ATTRIBUT=VALUE fashion.
@@ -160,7 +160,7 @@ class CcCommand(PluginCommand):
                 If no cob name is specified an automated number that is kept in the 
                 config.yaml file will be used and the name will be job-n
             
-            cc workflow service job delete [--name=NAME] --job=JOB
+            cc workflow service delete [--name=NAME] --job=JOB
                 deletes the job in the specified workflow
                             
             cc workflow service run [--name=NAME]

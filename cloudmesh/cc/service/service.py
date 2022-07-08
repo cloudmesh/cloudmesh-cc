@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
 import os
+from cloudmesh.common.util import  path_expand
 
 
 def test_run():
@@ -77,17 +78,21 @@ async def item_table(request: Request):
 # WORKFLOW
 #
 
+def setup_workflow(name:str):
+    if os.path.exists(f"{name}.yaml"):
+        directory=path_expand(f".")
+    else:
+        directory = path_expand(f"~./cloudmesh/workflow/{name}")
+    w = Workflow(name=name, filename=f"{directory}/{name}.yaml")
+    return w
+
 @app.get("/workflows/")
 def list_workflows():
     return{"name": "implementme get multiple"}
 
 @app.get("/workflow/{name}")
 def get_workflow(name:str):
-    if os.path.exists(f"{name}.yaml"):
-        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
-    else:
-        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-
+    w = setup_workflow(name)
     return templates.TemplateResponse('templates/workflow.html',
                                       {"workflow": w.table})
 
@@ -101,12 +106,64 @@ def delete_workflow(name:str):
 
     return{"name": "implementme delete"}
 
-@app.post("/workflow/{name}")
-async def add_job(name: str, workflow: str):
-    if os.path.exists(f"{name}.yaml"):
-        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
-    else:
-        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+
+wfdescription =\
+"""adds a workflow with the given name from data included in the filename.
+the underlaying database will use that name and if not explicitly
+specified the location of the data base will be
+`~/.cloudmesh/workflow/NAME/NAME.yaml`
+To identify the location a special configuratiion file will be placed in
+`~/.cloudmesh/workflow/config.yaml` that contains the loaction of
+the directories for the named workflows.
+
+* markdown??
+* h
+"""
+
+import textwrap
+@app.post("/workflow/{name}",
+          summary="Add a workflow from a file",
+          description=wfdescription
+          )
+async def add_job(name: str, workflow: str, **argv) -> bool:
+    """
+    adds a workflow with the given name from data included in the filename.
+            the underlaying database will use that name and if not explicitly
+            specified the location of the data base will be
+            `~/.cloudmesh/workflow/NAME/NAME.yaml`
+            To identify the location a special configuratiion file will be placed in
+            `~/.cloudmesh/workflow/config.yaml` that contains the loaction of
+            the directories for the named workflows.
+
+    :param name:
+    :param workflow:
+    :param argv:
+    :return: boolean
+    """
+
+    """
+    cc workflow service add [--name=NAME] [--directory=DIR] FILENAME
+                adds a workflow with the given name from data included in the filename.
+                the underlaying database will use that name and if not explicitly
+                specified the location of the data base will be
+                ~/.cloudmesh/workflow/NAME/NAME.yaml
+                To identify the location a special configuratiion file will be placed in
+                ~/.cloudmesh/workflow/config.yaml that contains the loaction of
+                the directories for the named workflows.
+    """
+
+    """
+    def get_data(endpoint:str='my_endpoint', *args, **kwargs):
+    q = dict(
+        args = list(args) if args else [], 
+        kwargs = kwargs if kwargs else {}
+    )
+    return True     # success status
+    """
+
+
+    # TODO: **argv in fastapi
+    w = setup_workflow(name)
     # w.add()
     return {
         "name": "implement me"
