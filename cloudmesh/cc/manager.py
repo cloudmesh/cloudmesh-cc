@@ -11,7 +11,6 @@ class WorkflowCLIManager:
     def __init__(self, name:str=None):
         self.name = name
 
-
     def add_from_filename(self, filename:str=None):
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         if self.name is None:
@@ -21,12 +20,12 @@ class WorkflowCLIManager:
         filename = path_expand(filename)
         w.load(filename)
 
-    def add_from_arguments(self, str, job:str=None, **argv):
+    def add_from_arguments(self, job:str=None, **argv):
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        data = argv
         w = Workflow()
-        w.load("tests/workflow.yaml")
-
-        pass
+        w.add_node(name=self.name, job=job, **data)
+        w.load()
 
     def  delete (self, str, job:str=None):
         # cc workflow delete [--name=NAME] --job=JOB
@@ -84,15 +83,15 @@ class WorkflowServiceManager:
         pass
 
 
-    def run(self, name=None: str, job = None:str, filename = None: str):
+    def run(self, name:str=None, job:str=None, filename:str=None):
         pass
 
 
-    def dependencies(self, name: str, dependencies=None: str):
+    def dependencies(self, name: str, dependencies:str=None):
         pass
 
 
-    def status(self, name: str, output=None: str):
+    def status(self, name: str, output:str=None):
         pass
 
 
