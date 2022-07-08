@@ -289,3 +289,7 @@ class CcCommand(PluginCommand):
         # TODO: cc workflow graph NAME
 
         # TODO: cc status
+
+        # TODO: cc workflow service add NAME FILENAME
+
+        # TODO: cc workflow service list[NAME]
