@@ -166,27 +166,22 @@ async def delete_job(name: str, queue:str):
     }
 
 @app.get("/jobs/{queue}", response_class=HTMLResponse)
-async def list_jobs(queue: str):
+async def list_jobs(request: Request, queue: str):
     global q
     jobs = []
-    for queue in q.queues:
-        for job in q.queues[queue]:
-            jobs.append(q.queues[queue][job])
+    for q in q.queues:
+        if q == queue:
+            for job in q.queues[queue]:
+                jobs.append(q.queues[queue][job])
+    order = q.queues[queue][job][0:1]
+    order = [word.capitalize() for word in order]
+    Console.error(str(order))
 
-    result = Printer.write(jobs, output='html')
-    result = result.replace('\n', '')
-
-    page = f"""
-        <html>
-            <head>
-                <title>Some HTML in here</title>
-            </head>
-            <body>
-                {result}
-            </body>
-        </html>
-        """
-    return page
+    return templates.TemplateResponse("templates/jobs.html",
+                                      {"request": request,
+                                       "id": id,
+                                       "jobs": jobs,
+                                       "order": order})
 
 
 @app.get("/job/{queue}/{job}", response_class=HTMLResponse)
