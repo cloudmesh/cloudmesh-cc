@@ -46,7 +46,7 @@ class CcCommand(PluginCommand):
                 cc doc
                 cc test
                 cc workflow add [--name=NAME] [--job=JOB] ARGS...
-                cc workflow delete [--name=NAME] --job=JOB
+                cc workflow delete [--name=NAME] [--job=JOB]
                 cc workflow list [--name=NAME] [--job=JOB]
                 cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
                 cc workflow [--name=NAME] --dependencies=DEPENDENCIES
@@ -54,9 +54,7 @@ class CcCommand(PluginCommand):
                 cc workflow graph --name=NAME
                 cc workflow service add [--name=NAME] FILENAME
                 cc workflow service list [--name=NAME] [--job=JOB]
-                cc workflow service job add [--name=NAME] --job=JOB ARGS...
-                cc workflow service job delete NAME
-                cc workflow service job list NAME
+                cc workflow service job add [--name=NAME] [--job=JOB] ARGS...
                 cc workflow service run --name=NAME
 
           This command does some useful things.
@@ -158,7 +156,9 @@ class CcCommand(PluginCommand):
                 This command ads a job. with the specified arguments. A check 
                 is returned and the user is allerted if arguments are missing
                 arguments are passe in ATTRIBUT=VALUE fashion.
-                if the name of the workflow is ommitted the default workflw is used
+                if the name of the workflow is ommitted the default workflw is used.
+                If no cob name is specified an automated number that is kept in the 
+                config.yaml file will be used and the name will be job-n
             
             cc workflow service job delete [--name=NAME] --job=JOB
                 deletes the job in the specified workflow
@@ -316,7 +316,7 @@ class CcCommand(PluginCommand):
         #
 
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
-        # cc workflow delete [--name=NAME] --job=JOB
+        # cc workflow delete [--name=NAME] [--job=JOB]
         # cc workflow list [--name=NAME] [--job=JOB]
         # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
         # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
@@ -325,8 +325,6 @@ class CcCommand(PluginCommand):
         # cc workflow service add [--name=NAME] FILENAME
         # cc workflow service list [--name=NAME] [--job=JOB]
         # cc workflow service job add [--name=NAME] --job=JOB ARGS...
-        # cc workflow service job delete NAME
-        # cc workflow service job list NAME
         # cc workflow service run --name=NAME
 
 
