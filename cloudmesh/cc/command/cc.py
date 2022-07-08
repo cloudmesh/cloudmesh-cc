@@ -45,20 +45,19 @@ class CcCommand(PluginCommand):
                 cc status
                 cc doc
                 cc test
-                cc workflow job add [--name=NAME] ARGS...
-                cc workflow job delete NAME
-                cc workflow job list NAME
-                cc workflow run NAME FILENAME
-                cc workflow NAME DEPENDENCIES
-                cc workflow status NAME --output=OUTPUT
-                cc workflow run NAME
-                cc workflow graph NAME
+                cc workflow add [--name=NAME] [--job=JOB] ARGS...
+                cc workflow delete [--name=NAME] --job=JOB
+                cc workflow list [--name=NAME] [--job=JOB]
+                cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+                cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+                cc workflow status --name=NAME [--output=OUTPUT]
+                cc workflow graph --name=NAME
                 cc workflow service add [--name=NAME] FILENAME
                 cc workflow service list [--name=NAME] [--job=JOB]
-                cc workflow service job add [--name=NAME] ARGS...
+                cc workflow service job add [--name=NAME] --job=JOB ARGS...
                 cc workflow service job delete NAME
                 cc workflow service job list NAME
-                cc workflow service run NAME FILENAME
+                cc workflow service run --name=NAME
                 cc donotdofromhereon
                 cc deprecated upload --data=FILENAME
                 cc deprecated update --data=FILENAME
