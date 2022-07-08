@@ -142,7 +142,7 @@ class TestJobsSlurm:
         jobWait.clear()
         jobWait.sync()
         # problem
-        s, l, e = jobWait.run()
+        s, l, e, j = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
@@ -161,14 +161,11 @@ class TestJobsSlurm:
     def test_exists_wait(self):
         HEADING()
         global job
-
         name = f"run-slurm"
         Benchmark.Start()
-        wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
-        assert not wrong
         assert correct
 
     def test_kill(self):
