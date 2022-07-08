@@ -58,19 +58,6 @@ class CcCommand(PluginCommand):
                 cc workflow service job delete NAME
                 cc workflow service job list NAME
                 cc workflow service run --name=NAME
-                cc donotdofromhereon
-                cc deprecated upload --data=FILENAME
-                cc deprecated update --data=FILENAME
-                cc deprecated delete --data=FILENAME
-                cc future queue create --name=QUEUES --database=DATABASE
-                cc future queue add --name=QUEUE --job=JOB --command=COMMAND
-                cc future queue run --command=COMMAND
-                cc future remove queue --name=QUEUE --job=JOB
-                cc future remove queue --name=QUEUE
-                cc future list queue --name=QUEUE
-                
-                
-
 
           This command does some useful things.
 
@@ -272,10 +259,14 @@ class CcCommand(PluginCommand):
         #
 
         host = arguments["--host"] or "127.0.0.1"
+        port = int(arguments["--port"]) or 8000
+
         if host == "0":
             host = "0.0.0.0"
+        if arguments["-c"]:
+            host = "0.0.0.0"
+            port = 8000
 
-        port = int(arguments["--port"]) or 8000
         if arguments.start:
             print("Start the service")
             if arguments.reload:
@@ -311,17 +302,6 @@ class CcCommand(PluginCommand):
                         # print(command)
                         Shell.kill_pid(command["pid"])
 
-        elif arguments.upload and arguments.data:
-            # TODO: implement
-            filename = arguments.data
-            raise NotImplementedError
-
-        elif arguments.update and arguments.data:
-            filename = arguments.data
-
-        elif arguments.delete and arguments.data:
-            filename = arguments.data
-
         elif arguments.create and \
                 arguments.queues and \
                 arguments.database:
@@ -331,6 +311,38 @@ class CcCommand(PluginCommand):
             for name in names:
                 queues.create(name)
 
+        #
+        # IMPLEMENT THESE
+        #
+
+        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        # cc workflow delete [--name=NAME] --job=JOB
+        # cc workflow list [--name=NAME] [--job=JOB]
+        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+        # cc workflow status --name=NAME [--output=OUTPUT]
+        # cc workflow graph --name=NAME
+        # cc workflow service add [--name=NAME] FILENAME
+        # cc workflow service list [--name=NAME] [--job=JOB]
+        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
+        # cc workflow service job delete NAME
+        # cc workflow service job list NAME
+        # cc workflow service run --name=NAME
+
+
+
+        """
+        #
+        # DO NOT IMPLEMENT THESE
+        #
+        cc donotdofromhereon
+        cc future queue create --name=QUEUES --database=DATABASE
+        cc future queue add --name=QUEUE --job=JOB --command=COMMAND
+        cc future queue run --command=COMMAND
+        cc future remove queue --name=QUEUE --job=JOB
+        cc future remove queue --name=QUEUE
+        cc future list queue --name=QUEUE
+                
         elif arguments.add and \
                 arguments.queue and \
                 arguments.job and \
@@ -372,27 +384,6 @@ class CcCommand(PluginCommand):
             print(workflow)
 
             # cc workflow NAME DEPENDENCIES
+        """
 
         return ""
-
-        # TODO:
-        # cc status
-        # cc doc
-        # cc test
-        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
-        # cc workflow delete [--name=NAME] --job=JOB
-        # cc workflow list [--name=NAME] [--job=JOB]
-        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
-        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
-        # cc workflow status --name=NAME [--output=OUTPUT]
-        # cc workflow graph --name=NAME
-        # cc workflow service add [--name=NAME] FILENAME
-        # cc workflow service list [--name=NAME] [--job=JOB]
-        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
-        # cc workflow service job delete NAME
-        # cc workflow service job list NAME
-        # cc workflow service run --name=NAME
-
-        #
-
-

@@ -718,3 +718,8 @@ class Workflow:
                                     'user',
                                     'parent',
                                     'kind'])
+
+
+    # TODO: remove self
+    def remove(self):
+        raise NotImplementedError
