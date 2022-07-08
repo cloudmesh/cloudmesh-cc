@@ -127,14 +127,7 @@ class Graph:
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
 
-        return
-        if filename is None:
-            raise ValueError("No file associated with this graph")
-        else:
-            self.db = ydb(filename=filename)
-            data = self.db.load()
-
-        return data
+        pass
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -730,5 +723,12 @@ class Workflow:
 
 
     # TODO: remove self
-    def remove(self):
-        raise NotImplementedError
+    def remove_workflow(self):
+        del self
+
+    def remove_job(self, name):
+        nodes = self.jobs
+        for n in nodes:
+            node = nodes[n]
+            if node['name'] == name:
+                del node
