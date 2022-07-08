@@ -52,17 +52,25 @@ class WorkflowCLIManager:
 
 class WorkflowServiceManager:
 
-    def __init__(self, name=None: str):
-        pass
+    def __init__(self, name=None, port=8000, host="127.0.0.1"):
+        self.host = host
+        self.port=port
 
-    def add(self, name:str=None, job:str=None, **argv):
+    def add_job(self, name=None, job=None, **argv):
         if name is None:
             name = "workflow"
         if job is None:
             n=0 # read from config file
             job = f"job-{n}"
-        r = requests.get('https://127.0.0.1:8000/workflow?name=name&status=smth')
+        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
         pass
+
+    def add_from_filename(self, filename=None):
+        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        if self.name is None:
+            self.name = os.path.basename(filename).replace(".yaml", "")
+
+        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
 
 
     def delete(self, name=None, str, job=None: str):

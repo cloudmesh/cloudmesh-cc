@@ -43,7 +43,37 @@ app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
-
+#
+# import uvicorn
+# from fastapi import File, UploadFile, FastAPI
+#
+# app = FastAPI()
+#
+#
+# @app.post("/upload")
+# async def upload(file: UploadFile = File(...)):
+#     try:
+#         contents = await file.read()
+#         with open(file.filename, 'wb') as f:
+#             f.write(contents)
+#     except Exception:
+#         return {"message": "There was an error uploading the file"}
+#     finally:
+#         await file.close()
+#
+#     return {"message": f"Successfuly uploaded {file.filename}"}
+#
+#
+# if __name__ == '__main__':
+#     uvicorn.run(app, host='0.0.0.0', port=8000)
+# test.py
+#
+# import requests
+#
+# url = 'http://127.0.0.1:8000/upload'
+# file = {'file': open('images/1.png', 'rb')}
+# resp = requests.post(url=url, files=file)
+# print(resp.json())
 
 #
 # ROUTES
