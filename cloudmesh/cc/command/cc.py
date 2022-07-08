@@ -320,7 +320,7 @@ class CcCommand(PluginCommand):
         elif arguments.workflow and arguments.add and arguments.filenme:
             # cc workflow add [--name=NAME] --filename=FILENAME
             name = arguments.name
-            if arguments.name is None
+            if arguments.name is None:
                 name = os.path.basename(arguments.filename).replace(".yaml", "")
 
             from cloudmesh.cc.manager import WorkflowCLIManager
