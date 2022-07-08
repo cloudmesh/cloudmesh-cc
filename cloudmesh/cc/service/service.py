@@ -43,6 +43,42 @@ app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
+
+#
+# ROUTES
+#
+
+@app.get("/item/{id}", response_class=HTMLResponse)
+async def read_item(request: Request, id: str):
+    global q
+    jobs = []
+    for queue in q.queues:
+        for job in q.queues[queue]:
+            jobs.append(q.queues[queue][job])
+    order = q.queues[queue][job].keys()
+    order = [word.capitalize() for word in order]
+    Console.error(str(order))
+
+    return templates.TemplateResponse("templates/item.html",
+                                      {"request": request,
+                                       "id": id,
+                                       "jobs": jobs,
+                                       "order": order})
+
+@app.get("/")
+async def home():
+    return {"msg": "Cloudmesh hello universe cc"}
+
+@app.get("/items", response_class=HTMLResponse)
+async def item_table(request: Request):
+    return templates.TemplateResponse("templates/table.html",
+                                      {"request": request})
+
+#
+# WORKFLOW
+#
+
+
 #
 # import uvicorn
 # from fastapi import File, UploadFile, FastAPI
@@ -75,39 +111,6 @@ templates = Jinja2Templates(directory=template_dir)
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-#
-# ROUTES
-
-@app.get("/item/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
-    global q
-    jobs = []
-    for queue in q.queues:
-        for job in q.queues[queue]:
-            jobs.append(q.queues[queue][job])
-    order = q.queues[queue][job].keys()
-    order = [word.capitalize() for word in order]
-    Console.error(str(order))
-
-    return templates.TemplateResponse("templates/item.html",
-                                      {"request": request,
-                                       "id": id,
-                                       "jobs": jobs,
-                                       "order": order})
-
-@app.get("/")
-async def home():
-    return {"msg": "Cloudmesh hello universe cc"}
-
-@app.get("/items", response_class=HTMLResponse)
-async def item_table(request: Request):
-    return templates.TemplateResponse("templates/table.html",
-                                      {"request": request})
-
-#
-# WORKFLOW
-#
-
 def setup_workflow(name:str):
     if os.path.exists(f"{name}.yaml"):
         directory=path_expand(f".")
@@ -123,8 +126,7 @@ def list_workflows():
 @app.get("/workflow/{name}")
 def get_workflow(name:str):
     w = setup_workflow(name)
-    return templates.TemplateResponse('templates/workflow.html',
-                                      {"workflow": w.table})
+    return {"name": "implementme delete"}
 
 @app.delete("/workflow/{name}")
 def delete_workflow(name:str):
@@ -142,66 +144,89 @@ def delete_workflow(name:str, job:str):
 
 
 wfdescription =\
-"""adds a workflow with the given name from data included in the filename.
-the underlaying database will use that name and if not explicitly
-specified the location of the data base will be
+"""
+adds a workflow with the given name from data included in the filename.
+the underlying database will use that name and if not explicitly
+specified the location of the database will be
 `~/.cloudmesh/workflow/NAME/NAME.yaml`
-To identify the location a special configuratiion file will be placed in
-`~/.cloudmesh/workflow/config.yaml` that contains the loaction of
+To identify the location a special configuration file will be placed in
+`~/.cloudmesh/workflow/config.yaml` that contains the location of
 the directories for the named workflows.
 
-* markdown??
-* h
+* **name**: name of the workflow to be added
+* *return* boolean
 """
-
-import textwrap
 @app.post("/workflow/{name}",
           summary="Add a workflow from a file",
           description=wfdescription
           )
-async def add_job(name: str, workflow: str, **argv) -> bool:
+async def add_workflow(name: str, **kwargs) -> bool:
     """
-    adds a workflow with the given name from data included in the filename.
-            the underlaying database will use that name and if not explicitly
-            specified the location of the data base will be
-            `~/.cloudmesh/workflow/NAME/NAME.yaml`
-            To identify the location a special configuratiion file will be placed in
-            `~/.cloudmesh/workflow/config.yaml` that contains the loaction of
-            the directories for the named workflows.
+        adds a workflow with the given name from data included in the filename.
+                the underlying database will use that name and if not explicitly
+                specified the location of the database will be
+                `~/.cloudmesh/workflow/NAME/NAME.yaml`
+                To identify the location a special configuration file will be placed in
+                `~/.cloudmesh/workflow/config.yaml` that contains the location of
+                the directories for the named workflows.
 
     :param name:
-    :param workflow:
-    :param argv:
-    :return: boolean
+    :param kwargs:
+    :return: bool=True if add was successful
     """
+    params = dict(kwargs if kwargs else {})
+    dir = params["directory"] if params["directory"] else f"~./cloudmesh/workflow/{name}"
+    if os.path.exists(path_expand(f"{dir}/{name}.yaml")):
+        Console.warning("Workflow already exists. Exiting.")
+        return False
 
-    """
-    cc workflow service add [--name=NAME] [--directory=DIR] FILENAME
-                adds a workflow with the given name from data included in the filename.
-                the underlaying database will use that name and if not explicitly
-                specified the location of the data base will be
-                ~/.cloudmesh/workflow/NAME/NAME.yaml
-                To identify the location a special configuratiion file will be placed in
-                ~/.cloudmesh/workflow/config.yaml that contains the loaction of
-                the directories for the named workflows.
-    """
-
-    """
-    def get_data(endpoint:str='my_endpoint', *args, **kwargs):
-    q = dict(
-        args = list(args) if args else [], 
-        kwargs = kwargs if kwargs else {}
-    )
-    return True     # success status
-    """
+    if not kwargs:
+        w = setup_workflow(name)
+    else:
+        us = None if "user" not in params else params["user"]
+        ho = None if "host" not in params else params["host"]
+        w = Workflow(name=name, filename=f"{dir}/{name}.yaml",user=us,host=ho)
+    # w.save()
+    return True
 
 
-    # TODO: **argv in fastapi
-    w = setup_workflow(name)
-    # w.add()
-    return {
-        "name": "implement me"
-    }
+
+@app.post("/workflow/{name}/{job}")
+async def add_job(workflow: str, **kwargs) -> bool:
+    """
+    This command ads a job. with the specified arguments. A check
+                is returned and the user is alerted if arguments are missing
+                arguments are passed in ATTRIBUTE=VALUE fashion.
+                if the name of the workflow is omitted the default workflow is used.
+                If no cob name is specified an automated number that is kept in the
+                config.yaml file will be used and the name will be job-n
+
+    :param workflow: the name of the workflow
+    :param kwargs: the arguments to pass into the job
+    :return:
+    """
+
+
+    # params = dict(kwargs = kwargs if kwargs else {})
+    # na = None if "name" not in params else params["name"]
+    # us = None if "user" not in params else params["user"]
+    # ho = None if "host" not in params else params["host"]
+    # la = None if "label" not in params else params["label"]
+    # ki = "local" if "kind" not in params else params["kind"]
+    # st = "ready" if "status" not in params else params["status"]
+    # pr = 0 if "progress" not in params else params["progress"]
+    # sc = None if "script" not in params else params["script"]
+    # pi = None if "pid" not in params else params["pid"]
+
+    w = setup_workflow(workflow)
+
+    try:
+        w.add_job(kwargs)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
 
 
 #
