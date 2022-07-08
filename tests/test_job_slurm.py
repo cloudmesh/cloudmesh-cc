@@ -15,6 +15,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 import subprocess
 
@@ -29,7 +30,17 @@ else:
 
 username = variables["username"]
 
+if username is None:
+    Console.warning("Username not entered. Please enter a username,\n"
+                    "or no input to quit.\n")
+    username = input()
+    if username == '':
+        print("quitting")
+        quit()
+    variables["username"] = username
+
 job = None
+job_id = None
 
 try:
     r = Shell.run(f"ssh {username}@{host} hostname")
@@ -84,10 +95,11 @@ class TestJobsSlurm:
 
         Benchmark.Start()
         global job
+        global job_id
         job = Job(name=f"run-slurm", host=host, username=username)
         job.sync()
 
-        s, l, e = job.run()
+        s, l, e, job_id = job.run()
         # give it some time to complete
         time.sleep(5)
         print("State:", s)
@@ -116,11 +128,9 @@ class TestJobsSlurm:
         global job
         name = f"run-slurm"
         Benchmark.Start()
-        wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
-        assert not wrong
         assert correct
 
     def test_run_wait(self):
@@ -173,6 +183,7 @@ class TestJobsSlurm:
         global host
         global prefix
         global wait_job
+        global job_id
 
         Benchmark.Start()
         job_kill = Job(name=f"{wait_job}", host=host, username=username)
@@ -186,18 +197,20 @@ class TestJobsSlurm:
         time.sleep(3)
 
         banner("Kill the Job")
-        parent, child = job_kill.kill(period=2)
-        banner(f"Job kill is done: {parent} {child}")
+        r = job_kill.kill(period=2, job_id=job_id)
+        assert r.count('\n') == 1
+        assert job_id not in r
+        banner(f"Job kill is done")
 
         Benchmark.Stop()
 
-        child = job_kill.get_pid()
-        status = job_kill.get_status()
-        print("Status", status)
+        # child = job_kill.get_pid()
+        # status = job_kill.get_status()
+        # print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
-        banner(f"{ps}")
-        assert 'sleep 3600' not in ps
-        assert f" {parent} " not in ps
-        assert f" {child} " not in ps
-        assert status == "running"
+        # ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
+        # banner(f"{ps}")
+        # assert 'sleep 3600' not in ps
+        # assert f" {parent} " not in ps
+        # assert f" {child} " not in ps
+        # assert status == "running"

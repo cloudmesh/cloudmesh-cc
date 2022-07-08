@@ -92,14 +92,20 @@ class Job():
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} '\
-                  f'"{self.slurm.sbatch} --chdir={self.directory} --output={self.name}.log ./{self.name}.sh"'
-        # time.sleep(1)
+                  f'"cd {self.directory} && {self.slurm.sbatch} ' \
+                  f'{self.name}.sh"'
         print(command)
+        state = None
         #state = os.system(f'{command} &')
-        state = os.system(f'{command}')
+        try:
+            r = Shell.run(f'{command}')
+            state = 0
+        except:  # noqa: E722
+            state = 1
+        job_id = str(r).split()[-1]
         error = self.get_error()
         log = self.get_log()
-        return state, log, error
+        return state, log, error, job_id
 
     def clear(self):
         content = None
@@ -188,10 +194,13 @@ class Job():
             return pid
         return None
 
-    def kill(self, period=1):
+    def kill(self, period=1, job_id=None):
         """
         kills the job
         """
+        if job_id is None:
+            Console.error("No job_id supplied")
+            return
         #
         # find logfile
         #
@@ -219,17 +228,16 @@ class Job():
             time.sleep(1)
             pid = self.get_pid(refresh=True)
 
-        command = f'ssh {self.username}@{self.host} ssh "pgrep -P {pid}"'
-        child = Shell.run(command).strip()
-        command = f'ssh {self.username}@{self.host} "kill -9 {pid} {child}"'
+        command = f'ssh {self.username}@{self.host} "scancel {job_id}"'
         print(command)
         r = Shell.run(command)
-        Console.msg(f"Killing {pid} {child}")
-        print(r)
-        if "No such process" in r:
-            Console.warning(
-                f"Process {pid} not found. It is likely it already completed.")
-        return pid, child
+        command = f'ssh {self.username}@{self.host} "squeue -j {job_id}"'
+        print(command)
+        r = Shell.run(command)
+        # if "No such process" in r:
+        #     Console.warning(
+        #         f"Process {pid} not found. It is likely it already completed.")
+        return r
 
     def create(self, command, ntasks=1):
         """
