@@ -2,10 +2,7 @@ import os
 from pprint import pprint
 
 # from cloudmesh.cc.hostdata import Data
-from cloudmesh.cc.queue import Queue
 from cloudmesh.cc.queue import Queues
-from cloudmesh.cc.workflow import Workflow
-from cloudmesh.common import banner, VERBOSE
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
@@ -16,8 +13,6 @@ from cloudmesh.shell.command import map_parameters
 
 # TODO: these imports needs to be put in where it is needed.
 #  It is not supposed to be a global import
-
-from cloudmesh.cc.job.ssh.Job import Job
 
 
 # if kind == "remote":
@@ -106,7 +101,7 @@ class CcCommand(PluginCommand):
             NEW WORKFLOW SERVICE COMMANDS
             
             Note that for all service commands to function you need to have a running 
-            server. In future, we need a mechnism how to set the hostname and port also 
+            server. In future, we need a mechanism how to set the hostname and port also 
             for the service commands. For the time being they are issues to 
             127.0.0.1:8000
             
@@ -133,17 +128,17 @@ class CcCommand(PluginCommand):
             
             WORKFLOW MANAGEMENT COMMANDS
             
-            Each workflow can be identified by its name. Note that thorugh 
+            Each workflow can be identified by its name. Note that through 
             cms set workflow=NAME the default name of the workflow can be set. 
-            If it is not set the defualt is `workflow`
+            If it is not set the default is `workflow`
             
             cc workflow service add [--name=NAME] [--directory=DIR] FILENAME
                 adds a workflow with the given name from data included in the filename.
-                the underlaying database will use that name and if not explicitly 
+                the underlying database will use that name and if not explicitly 
                 specified the location of the data base will be  
                 ~/.cloudmesh/workflow/NAME/NAME.yaml
-                To identify the location a special configuratiion file will be placed in 
-                ~/.cloudmesh/workflow/config.yaml that contains the loaction of 
+                To identify the location a special configuration file will be placed in 
+                ~/.cloudmesh/workflow/config.yaml that contains the location of 
                 the directories for the named workflows.
                             
             cc workflow service list [--name=NAME] [--job=JOB]
@@ -156,9 +151,9 @@ class CcCommand(PluginCommand):
                             
             cc workflow service add [--name=NAME] --job=JOB ARGS...
                 This command ads a job. with the specified arguments. A check 
-                is returned and the user is allerted if arguments are missing
+                is returned and the user is alerted if arguments are missing
                 arguments are passe in ATTRIBUT=VALUE fashion.
-                if the name of the workflow is ommitted the default workflw is used.
+                if the name of the workflow is ommitted the default workflow is used.
                 If no cob name is specified an automated number that is kept in the 
                 config.yaml file will be used and the name will be job-n
             
@@ -166,7 +161,7 @@ class CcCommand(PluginCommand):
                 deletes the job in the specified workflow
                             
             cc workflow service run [--name=NAME]
-                runs the names workflow. If no nmae is provided the default 
+                runs the names workflow. If no name is provided the default 
                 workflow is used.
 
             THIS MAY BE OUTDATED
@@ -214,7 +209,7 @@ class CcCommand(PluginCommand):
             >   {'a': 'b', 'c': 'd'}
 
 
-        """    # noqa: W605
+        """  # noqa: W605
 
         # arguments.FILE = arguments['--file'] or None
         # arguments.COMMAND = arguments['--command']
@@ -242,7 +237,7 @@ class CcCommand(PluginCommand):
 
         # VERBOSE(arguments)
 
-        # banner("rewriting arguments, so we convert to appropriate types for easier handeling", color="RED")
+        # banner("rewriting arguments, so we convert to appropriate types for easier handling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
@@ -327,7 +322,7 @@ class CcCommand(PluginCommand):
 
             from cloudmesh.cc.manager import WorkflowCLIManager
 
-            manager = WorkflowCLIManager(name, filename=arguments.filename)
+            manager = WorkflowCLIManager(name)
             manager.add_from_filename(name, arguments.filename)
 
         # add a job (with specifications as specified by the user) to a workflow. Can be a file that already exists
@@ -341,7 +336,8 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.add_from_arguments(name, job=arguments.job, filename=arguments.filename)
+            manager.add_from_arguments(name, job=arguments.job,
+                                       filename=arguments.filename)
 
         # delete a job from a workflow
         # DONE
@@ -367,7 +363,7 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.delete_workflow(workflow=arguments.workflow)
+            manager.delete_workflow(filename=arguments.filename)
 
         # list a job and it's characteristics
         # DONE
@@ -393,10 +389,10 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name, )
-            manager.list_workflow(workflow=arguments.job)
+            manager.list_workflow(filename=arguments.filename)
 
         # run a workflow!!!!!!
-        elif arguments.workflow and arguments.list and arguments.filename:
+        elif arguments.workflow and arguments.run and arguments.filename:
             # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
             name = arguments.name
             if arguments.name is None:
@@ -405,7 +401,7 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.run()
+            manager.run(job=arguments.job, filename=arguments.filename)
 
         # add dependencies to a workflow
         elif arguments.workflow and arguments.dependencies:
@@ -443,16 +439,10 @@ class CcCommand(PluginCommand):
             manager = WorkflowCLIManager(name)
             manager.graph()
 
-
-
-
-
         # cc workflow service add [--name=NAME] FILENAME
         # cc workflow service list [--name=NAME] [--job=JOB]
         # cc workflow service job add [--name=NAME] --job=JOB ARGS...
         # cc workflow service run --name=NAME
-
-
 
         """
         #
