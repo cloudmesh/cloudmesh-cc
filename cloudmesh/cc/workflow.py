@@ -97,6 +97,7 @@ class Graph:
         #                running="blue")
         self.add_color("status",
                        ready="white",
+                       undefined="white",
                        done="#CCFFCC",
                        failed="#FFCCCC",
                        running='#CCE5FF')

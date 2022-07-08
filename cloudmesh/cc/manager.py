@@ -11,7 +11,7 @@ class WorkflowCLIManager:
 
     def add_from_filename(self, filename=None):
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
-        if self.name is None
+        if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
 
         w = Workflow()
@@ -47,6 +47,7 @@ class WorkflowCLIManager:
 
     def  graph (self):
         # cc workflow graph --name=NAME
+        pass
 
 
 class WorkflowServiceManager:
