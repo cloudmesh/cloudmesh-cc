@@ -526,13 +526,16 @@ class Workflow:
 
         def update(name):
             banner(f"update {name}")
+            log = self.jobs[name]["instance"].get_log()
             status = self.jobs[name]["instance"].get_status()
             progress = self.jobs[name]["instance"].get_progress()
             self.jobs[name]['status'] = status
             self.jobs[name]['progress'] = progress
+            print (status, progress)
             if progress == 100:
                 running.remove(name)
                 completed.append(name)
+                self.graph.done(name)
 
         def start(name):
             banner(name)
@@ -554,7 +557,8 @@ class Workflow:
                     job["instance"].sync()
                     job["instance"].run()
                     print(str(job["instance"]))
-
+                    running.append(name)
+                    outstanding.remove(name)
 
                 elif job['kind'] in ["ssh"]:
                     print(job)
@@ -601,8 +605,9 @@ class Workflow:
                 else:
                     Shell.browser(filename='a.png')
             time.sleep(period)
+            finished = len(completed) == len(self.jobs)
 
-            input("ENTER")
+            # input("ENTER")
 
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
 
@@ -685,7 +690,16 @@ class Workflow:
 
     @property
     def table(self):
-        return Printer.write(self.graph.nodes)
-        pass
+        return Printer.write(self.graph.nodes,
+                             order=['host',
+                                    'status',
+                                    'label',
+                                    'name',
+                                    'progress',
+                                    'script',
+                                    'user',
+                                    'parent',
+                                    'kind'])
+
 
 
