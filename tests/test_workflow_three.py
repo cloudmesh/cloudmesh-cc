@@ -19,6 +19,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import banner
 import json
+from cloudmesh.common.util import path_expand
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -118,17 +119,21 @@ class Test_workflow:
         assert "end" in data
         assert "user" in data
 
-    # def test_json_dump(self):
-    #     HEADING()
-    #     global w
-    #     Benchmark.Start()
-    #     w.json(filepath='~/experiment/out-file.JSON')
-    #     Benchmark.Stop()
-    #     assert os.path.exists('~/experiment/out-file.JSON')
-    #     data = json.load('~/experiment/out-file.JSON')
-    #     assert 'start' in data
-    #     assert 'end' in data
-    #     assert 'user' in data
+    def test_json_dump(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        w.json(filepath='~/experiment/out-file.JSON')
+        Benchmark.Stop()
+        assert os.path.exists(path_expand('~/experiment/out-file.JSON')) == True
+        f = open(path_expand('~/experiment/out-file.JSON'))
+        data = json.load(f)
+        print(type(data))
+        print('AAAAAAA', data)
+        # assert 'created:' in data
+        # assert 'end' in data
+        # assert 'user' in data
+        f.close()
 
     # the issue with the json method is that the json built in method does
     # not allow for datetime values. Not sure how to get around this.
