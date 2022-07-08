@@ -48,33 +48,47 @@ class WorkflowCLIManager:
         j = w.job(name=job)
         print(j)
 
-    # noinspection PyMethodMayBeStatic
     def list_workflow(self, filename: str = None):
         # cc workflow list [--name=NAME] [--filename=FILENAME]
         w = Workflow(filename=filename)
         nodes = w.jobs
         print(nodes)
 
-    # noinspection PyMethodMayBeStatic
     def run(self, job: str = None, filename: str = None):
         # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
         w = Workflow(filename=filename)
         w.run_parallel()
 
-    def dependencies(self,  dependencies:str=None):
-        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
-        pass
+    def dependencies(self, name: str = None, dependency: str = None,
+                     filename: str = None):
+        # cc workflow NAME DEPENDENCIES
+        if self.name is None:
+            self.name = os.path.basename(filename).replace(".yaml", "")
 
-    def  status (self, output:str=None):
-        # cc workflow status --name=NAME [--output=OUTPUT]
-        pass
+        w = Workflow(filename=filename)
+        # I think that the dependencies are separated by commas and will call this function a few times
+        w.add_dependencies(dependency=dependency)
 
-    def graph(self):
+    def status_workflow(self, name: str, filename: str = None,
+                        output: str = None):
+        # cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]
+        if self.name is None:
+            self.name = os.path.basename(filename).replace(".yaml", "")
+
+        w = Workflow(filename=filename)
+        status = w.status()
+        print(status)
+
+    def graph(self, filename:str=None):
         # cc workflow graph --name=NAME
-        pass
+        if self.name is None:
+            self.name = os.path.basename(filename).replace(".yaml", "")
+
+        w = Workflow(filename=filename)
+        graph = w.graph
+        print(graph)
 
 
-# noinspection PyAttributeOutsideInit
 class WorkflowServiceManager:
 
     def __init__(self, name=None, port=8000, host="127.0.0.1"):
@@ -110,12 +124,10 @@ class WorkflowServiceManager:
         r = requests.post(url=url,files=file)
         print(r.json())
 
-
     def delete(self):
         # cc workflow service delete [--name=NAME] --job=JOB
         r = requests.delete('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
         pass
-
 
     def list(self, job:str=None):
         # cc workflow service list [--name=NAME] [--job=JOB]
@@ -124,28 +136,6 @@ class WorkflowServiceManager:
         if job is None:
             n=0
             job = f"job-{n}"
-
-
-        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
-        pass
-
-        r = requests.get(
-            'https://{self.host}:{self.port}/workflow?name={name}&job={job}')
-
-    def run(self, filename:str= None):
-        # cc workflow service run [--name=NAME]
-        if self.name is None:
-            self.name = os.path.basename(filename).replace(".yaml", "")
-        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
-        pass
-
-
-    def dependencies(self, name:str=None, dependencies=None):
-        # cc workflow NAME DEPENDENCIES
-        pass
-
-    def status_workflow(self, name: str, output:str=None):
-        pass
 
     def status_job(self, name:str=None, job:str=None, output:str=None):
         pass
@@ -160,9 +150,6 @@ class WorkflowServiceManager:
         pass
 
     def dependencies(self, name: str, dependencies: str = None):
-        pass
-
-    def status_job(self, name:str=None, job:str=None, output:str=None):
         pass
 
     def graph(self, name: str):
