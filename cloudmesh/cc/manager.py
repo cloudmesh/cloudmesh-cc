@@ -53,19 +53,11 @@ class WorkflowCLIManager:
         # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
         pass
 
-<<<<<<< HEAD
-    def dependencies(self,  dependencies=None:str):
-        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
-        pass
-
-    def  status (self, output=None:str):
-=======
-    def dependencies(self, dependencies:str=None):
+    def dependencies(self,  dependencies:str=None):
         # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
         pass
 
     def  status (self, output:str=None):
->>>>>>> af7e0201a49c78322f577f2f6220e3146cf08eb6
         # cc workflow status --name=NAME [--output=OUTPUT]
         pass
 
@@ -138,11 +130,11 @@ class WorkflowServiceManager:
         # cc workflow NAME DEPENDENCIES
         pass
 
-    def status_workflow(self, name: str, output=None: str):
+    def status_workflow(self, name: str, output:str=None):
         pass
 
 
-    def status_job(self, name:str=None, job:str=None, output=None: str):
+    def status_job(self, name:str=None, job:str=None, output:str=None):
         pass
 
 
