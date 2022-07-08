@@ -86,6 +86,29 @@ async def read_item(request: Request):
 async def read_home():
     return {"msg": "Hello World"}
 
+#
+# WORKFLOW
+#
+
+@app.get("/workflows/")
+def list_workflows():
+    return{"name": "implementme get multiple"}
+
+@app.get("/workflow/{name}")
+def get_workflow(name:str):
+    return{"name": "implementme get one"}
+
+@app.delete("/workflow/{name}")
+def delete_workflow(name:str):
+    return{"name": "implementme delete"}
+
+@app.post("/workflow/{name}")
+async def add_job(name: str, workflow: str):
+    return {
+        "name": "implement me"
+    }
+
+
 
 #TODO: fix
 @app.post("/post/queue")
@@ -125,28 +148,23 @@ async def delete_queue(name: str):
     }
 
 
-@app.get("/jobs/", response_class=HTMLResponse)
-async def read_items():
+@app.get("/jobs/{queue}", response_class=HTMLResponse)
+async def list_jobs(request: Request, queue: str):
     global q
     jobs = []
-    for queue in q.queues:
-        for job in q.queues[queue]:
-            jobs.append(q.queues[queue][job])
+    for q in q.queues:
+        if q == queue:
+            for job in q.queues[queue]:
+                jobs.append(q.queues[queue][job])
+    order = q.queues[queue][job][0:1]
+    order = [word.capitalize() for word in order]
+    Console.error(str(order))
 
-    result = Printer.write(jobs, output='html')
-    result = result.replace('\n', '')
-
-    page = f"""
-        <html>
-            <head>
-                <title>Some HTML in here</title>
-            </head>
-            <body>
-                {result}
-            </body>
-        </html>
-        """
-    return page
+    return templates.TemplateResponse("templates/jobs.html",
+                                      {"request": request,
+                                       "id": id,
+                                       "jobs": jobs,
+                                       "order": order})
 
 
 @app.get("/job/{queue}/{job}", response_class=HTMLResponse)

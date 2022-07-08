@@ -32,7 +32,7 @@ $(document).ready(function() {
             </tr>
         </thead>
         <tbody>
-            {% for dict_item in jobs %}
+            {% for dict_item in jobs[0:1] %}
             <tr>
             {% for key, value in dict_item.items() %}
               <td>{{value}}</td>
