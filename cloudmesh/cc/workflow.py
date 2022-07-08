@@ -127,14 +127,7 @@ class Graph:
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
 
-        return
-        if filename is None:
-            raise ValueError("No file associated with this graph")
-        else:
-            self.db = ydb(filename=filename)
-            data = self.db.load()
-
-        return data
+        pass
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -518,12 +511,14 @@ class Workflow:
     def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
         finished = False
 
+        undefined = []
         completed = [] # list of completed nodes
         running = [] # list of runiing nodes
         outstanding = list(self.jobs)  # list of outstanding nodes
         failed = [] # list of failed nodes
 
         def info():
+            print ("Undefined:  ", undefined)
             print ("Completed:  ", completed)
             print ("Running:    ", running)
             print ("Outstanding:", outstanding)
@@ -542,6 +537,11 @@ class Workflow:
                 running.remove(name)
                 completed.append(name)
                 self.graph.done(name)
+                if name in undefined:
+                    undefined.remove(name)
+            elif status == "undefined":
+                running.remove(name)
+                undefined.append(name)
 
         def start(name):
             banner(name)
@@ -730,5 +730,12 @@ class Workflow:
 
 
     # TODO: remove self
-    def remove(self):
-        raise NotImplementedError
+    def remove_workflow(self):
+        del self
+
+    def remove_job(self, name):
+        nodes = self.jobs
+        for n in nodes:
+            node = nodes[n]
+            if node['name'] == name:
+                del node

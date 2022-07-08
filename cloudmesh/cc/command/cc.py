@@ -317,25 +317,136 @@ class CcCommand(PluginCommand):
         # IMPLEMENT THESE
         #
 
-        elif arguments.workflow and arguments.add and arguments.filenme:
+        # add a workflow from an inputted file
+        # DONE
+        elif arguments.workflow and arguments.add and arguments.filename:
             # cc workflow add [--name=NAME] --filename=FILENAME
             name = arguments.name
-            if arguments.name is None
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name, filename=arguments.filename)
+            manager.add_from_filename(name, arguments.filename)
+
+        # add a job (with specifications as specified by the user) to a workflow. Can be a file that already exists
+        # DONE
+        elif arguments.workflow and arguments.add and arguments.job:
+            # cc workflow add [--name=NAME] [--job=JOB] ARGS... these are the arguments we need for the add job
+            name = arguments.name
+            if arguments.name is None:
                 name = os.path.basename(arguments.filename).replace(".yaml", "")
 
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.add_from_filename(name, arguments.filename)
+            manager.add_from_arguments(name, job=arguments.job, filename=arguments.filename)
+
+        # delete a job from a workflow
+        # DONE
+        elif arguments.workflow and arguments.delete and arguments.job:
+            # cc workflow list [--name=NAME] [--job=JOB]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.delete_job(job=arguments.job)
+
+        # delete an entire workflow (reset)
+        # DONE
+        elif arguments.workflow and arguments.delete and arguments.workflow:
+            # cc workflow list [--name=NAME] [--job=JOB]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.delete_workflow(workflow=arguments.workflow)
+
+        # list a job and it's characteristics
+        # DONE
+        elif arguments.workflow and arguments.list and arguments.job:
+            # cc workflow list [--name=NAME] [--job=JOB]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.list_job(job=arguments.job)
+
+        # list a workflow, all it's jobs and all their characteristics
+        # DONE
+        elif arguments.workflow and arguments.list and arguments.filename:
+            # cc workflow list [--name=NAME] [--job=JOB]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name, )
+            manager.list_workflow(workflow=arguments.job)
+
+        # run a workflow!!!!!!
+        elif arguments.workflow and arguments.list and arguments.filename:
+            # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.run()
+
+        # add dependencies to a workflow
+        elif arguments.workflow and arguments.dependencies:
+            # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.dependencies()
+
+        # status check on a workflow
+        elif arguments.workflow and arguments.status and arguments.output:
+            # cc workflow status --name=NAME [--output=OUTPUT]
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.status()
+
+        # produce a graph for the workflow
+        elif arguments.workflow and arguments.graph:
+            # cc workflow graph --name=NAME
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.graph()
 
 
-        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
-        # cc workflow delete [--name=NAME] [--job=JOB]
-        # cc workflow list [--name=NAME] [--job=JOB]
-        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
-        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
-        # cc workflow status --name=NAME [--output=OUTPUT]
-        # cc workflow graph --name=NAME
+
+
+
         # cc workflow service add [--name=NAME] FILENAME
         # cc workflow service list [--name=NAME] [--job=JOB]
         # cc workflow service job add [--name=NAME] --job=JOB ARGS...
