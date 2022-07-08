@@ -7,6 +7,9 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
+from fastapi import File
+from fastapi import UploadFile
+
 from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
@@ -44,7 +47,6 @@ app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
 
-<<<<<<< HEAD
 #
 # ROUTES
 #
@@ -80,6 +82,35 @@ async def item_table(request: Request):
 #
 
 
+def setup_workflow(name:str):
+    if os.path.exists(f"{name}.yaml"):
+        directory=path_expand(f".")
+    else:
+        directory = path_expand(f"~./cloudmesh/workflow/{name}")
+    w = Workflow(name=name, filename=f"{directory}/{name}.yaml")
+    return w
+
+@app.get("/workflows/")
+def list_workflows():
+    return{"name": "implementme get multiple"}
+
+
+@app.post("/workflow")
+def upload_workflow(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+        print(contents)
+        print(file.filename)
+        # w = Workflow()
+        # w.save(filename=file.filename)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        await file.close()
+
+    return {"message": f"Successfuly uploaded {file.filename}"}
 #
 # @app.post("/workflow")
 # async def upload(file: UploadFile = File(...)):
@@ -108,20 +139,21 @@ async def item_table(request: Request):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-def setup_workflow(name:str):
-    if os.path.exists(f"{name}.yaml"):
-        directory=path_expand(f".")
-    else:
-        directory = path_expand(f"~./cloudmesh/workflow/{name}")
-    w = Workflow(name=name, filename=f"{directory}/{name}.yaml")
-    return w
 
-@app.get("/workflows/")
-def list_workflows():
-    return{"name": "implementme get multiple"}
 
 @app.get("/workflow/{name}")
-def get_workflow(name:str):
+def get_workflow(name:str,job:str=None):
+    """
+    this command reacts dependent on which options we specify
+                If we do not specify anything the workflows will be listed.
+                If we specify a workflow name only that workflow will be listed
+                If we also specify a job the job will be listed.
+                If we only specif the job name, all jobs with that name from all
+                workflows will be returned.
+    :param name:
+    :param job:
+    :return:
+    """
     w = setup_workflow(name)
     return {"name": "implementme delete"}
 
@@ -189,7 +221,7 @@ async def add_workflow(name: str, **kwargs) -> bool:
 
 
 @app.post("/workflow/{name}/{job}")
-async def add_job(workflow: str, **kwargs) -> bool:
+async def add_job(name: str, **kwargs) -> bool:
     """
     This command ads a job. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
@@ -203,7 +235,10 @@ async def add_job(workflow: str, **kwargs) -> bool:
     :return:
     """
 
-
+    for attribute in ["job","user","host"]:
+        if attribute not in kwargs:
+            print("error")
+            # return the error object in fastapi
     # params = dict(kwargs = kwargs if kwargs else {})
     # na = None if "name" not in params else params["name"]
     # us = None if "user" not in params else params["user"]
@@ -215,7 +250,7 @@ async def add_job(workflow: str, **kwargs) -> bool:
     # sc = None if "script" not in params else params["script"]
     # pi = None if "pid" not in params else params["pid"]
 
-    w = setup_workflow(workflow)
+    w = setup_workflow(name)
 
     try:
         w.add_job(kwargs)

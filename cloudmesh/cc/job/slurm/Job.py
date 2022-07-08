@@ -95,6 +95,7 @@ class Job():
                   f'"cd {self.directory} && {self.slurm.sbatch} ' \
                   f'{self.name}.sh"'
         print(command)
+        time.sleep(10)
         state = None
         #state = os.system(f'{command} &')
         try:

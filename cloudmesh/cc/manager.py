@@ -61,7 +61,7 @@ class WorkflowCLIManager:
         w = Workflow(filename=filename)
         w.run_parallel()
 
-    def dependencies(self, dependencies:str=None):
+    def dependencies(self,  dependencies:str=None):
         # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
         pass
 
@@ -93,12 +93,22 @@ class WorkflowServiceManager:
         r = requests.post('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
         pass
 
-    def add_from_filename(self, filename:str=None):
-        # cc workflow service add [--name=NAME] [--directory=DIR] FILENAME
+    def add_from_filename(self, filename=None):
+
+        # resp = requests.post(url=url, files=file)
+        # print(resp.json())
+
+
+        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
-        r = requests.post('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
-        pass
+
+        # 'https://{self.host}:{self.port}/workflow?name={name}&job={job}'
+        url = f'https://{self.host}:{self.port}/workflow'
+        file = {'file': open(filename, 'rb')}
+
+        r = requests.post(url=url,files=file)
+        print(r.json())
 
 
     def delete(self):
@@ -114,7 +124,10 @@ class WorkflowServiceManager:
         if job is None:
             n=0
             job = f"job-{n}"
-        #r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
+
+
+        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
+        pass
 
         r = requests.get(
             'https://{self.host}:{self.port}/workflow?name={name}&job={job}')
@@ -149,7 +162,7 @@ class WorkflowServiceManager:
     def dependencies(self, name: str, dependencies: str = None):
         pass
 
-    def status(self, name: str, output:str=None):
+    def status_job(self, name:str=None, job:str=None, output:str=None):
         pass
 
     def graph(self, name: str):
