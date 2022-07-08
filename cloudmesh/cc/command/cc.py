@@ -314,5 +314,3 @@ class CcCommand(PluginCommand):
 
         # TODO: cc status
 
-
-
