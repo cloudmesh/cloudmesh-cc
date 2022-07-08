@@ -71,7 +71,7 @@ datatables.net
 @app.get("/queues/", response_class=HTMLResponse)
 async def info(request: Request):
     global q
-    return templates.TemplateResponse('templates/queue.html',
+    return templates.TemplateResponse('templates/queues.html',
                                       {"request": request,
                                        "queues": q.queues})
 
