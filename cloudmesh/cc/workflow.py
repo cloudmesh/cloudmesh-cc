@@ -89,11 +89,17 @@ class Graph:
         #    colors:
 
     def set_status_colors(self):
+        # self.add_color("status",
+        #                ready="white",
+        #                done="green",
+        #                failed="red",
+        #                running="blue")
         self.add_color("status",
                        ready="white",
-                       done="green",
-                       failed="red",
-                       running="blue")
+                       done="#CCFFCC",
+                       failed="#FFCCCC",
+                       running='#CCE5FF')
+
 
     def add_color(self, key, **colors):
         if self.colors is None:
@@ -243,10 +249,15 @@ class Graph:
                 pass
             # and so on
 
-    def save(self, filename="test.svg", colors=None, layout=nx.spring_layout,
+    def save(self,
+             filename="test.svg",
+             colors=None,
+             layout=nx.spring_layout,
              engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
+        dot.attr('node', shape="rounded")
         graph = nx.DiGraph()
+
         color_map = []
         for name, e in self.nodes.items():
             if colors is None:
@@ -256,7 +267,15 @@ class Graph:
             else:
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
-                dot.node(name, color=self.colors[colors][value])
+                if name in ["start","end"]:
+                    shape = "diamond"
+                else:
+                    shape = "rounded"
+                dot.node(name,
+                         # color=self.colors[colors][value],
+                         style=f'filled,rounded',
+                         shape=shape,
+                         fillcolor=self.colors[colors][value])
 
         for name, e in self.edges.items():
             graph.add_edge(e["source"], e["destination"])
