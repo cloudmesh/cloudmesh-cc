@@ -40,27 +40,36 @@ class CcCommand(PluginCommand):
         ::
 
           Usage:
-                cc upload --data=FILENAME
-                cc update --data=FILENAME
-                cc delete --data=FILENAME
-                cc create --queues=QUEUES --database=DATABASE
-                cc add --queue=QUEUE --job=JOB --command=COMMAND
-                cc run --command=COMMAND
-                cc remove --queue=QUEUE --job=JOB
-                cc remove --queue=QUEUE
-                cc list --queue=QUEUE
                 cc start [--reload] [--host=HOST] [--port=PORT]
                 cc stop
+                cc status
                 cc doc
                 cc test
-                cc workflow service add NAME FILENAME
-                cc workflow service list [NAME]
-                cc workflow NAME DEPENDENCIES
-                cc workflow status NAME --output=OUTPUT
-                cc workflow run NAME
-                cc workflow graph NAME
-                cc status
-
+                cc workflow add [--name=NAME] [--job=JOB] ARGS...
+                cc workflow delete [--name=NAME] --job=JOB
+                cc workflow list [--name=NAME] [--job=JOB]
+                cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+                cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+                cc workflow status --name=NAME [--output=OUTPUT]
+                cc workflow graph --name=NAME
+                cc workflow service add [--name=NAME] FILENAME
+                cc workflow service list [--name=NAME] [--job=JOB]
+                cc workflow service job add [--name=NAME] --job=JOB ARGS...
+                cc workflow service job delete NAME
+                cc workflow service job list NAME
+                cc workflow service run --name=NAME
+                cc donotdofromhereon
+                cc deprecated upload --data=FILENAME
+                cc deprecated update --data=FILENAME
+                cc deprecated delete --data=FILENAME
+                cc future queue create --name=QUEUES --database=DATABASE
+                cc future queue add --name=QUEUE --job=JOB --command=COMMAND
+                cc future queue run --command=COMMAND
+                cc future remove queue --name=QUEUE --job=JOB
+                cc future remove queue --name=QUEUE
+                cc future list queue --name=QUEUE
+                
+                
 
 
           This command does some useful things.
