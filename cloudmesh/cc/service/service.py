@@ -1,5 +1,6 @@
 import logging
 from cloudmesh.cc.queue import Queues
+from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.Printer import Printer
 from fastapi.responses import HTMLResponse
 import uvicorn
@@ -9,6 +10,7 @@ from fastapi import Request
 from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
+import os
 
 
 def test_run():
@@ -89,6 +91,12 @@ def delete_workflow(name:str):
 
 @app.post("/workflow/{name}")
 async def add_job(name: str, workflow: str):
+    if os.path.exists(f"{name}.yaml"):
+        w = Workflow.load(f"{name}.yaml")
+        # w.add()
+    else:
+        w = Workflow.load(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+        # w.add()
     return {
         "name": "implement me"
     }
@@ -100,7 +108,7 @@ async def add_job(name: str, workflow: str):
 @app.get("/queues/", response_class=HTMLResponse)
 async def list_queues(request: Request):
     global q
-    return templates.TemplateResponse('templates/queue.html',
+    return templates.TemplateResponse('templates/queues.html',
                                       {"request": request,
                                        "queues": q.queues})
 

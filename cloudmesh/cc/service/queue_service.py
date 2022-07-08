@@ -37,7 +37,7 @@ async def home():
 @app.get("/queues/{id}", response=HTMLResponse)
 async def info(request: Request, id: str):
     global q
-    return templates.TemplateResponse('templates/queue.html',
+    return templates.TemplateResponse('templates/queues.html',
                                       {"request": request,
                                        "id": id,
                                        "name": q.name,
