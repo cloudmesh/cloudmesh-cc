@@ -511,12 +511,14 @@ class Workflow:
     def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
         finished = False
 
+        undefined = []
         completed = [] # list of completed nodes
         running = [] # list of runiing nodes
         outstanding = list(self.jobs)  # list of outstanding nodes
         failed = [] # list of failed nodes
 
         def info():
+            print ("Undefined:  ", undefined)
             print ("Completed:  ", completed)
             print ("Running:    ", running)
             print ("Outstanding:", outstanding)
@@ -535,6 +537,11 @@ class Workflow:
                 running.remove(name)
                 completed.append(name)
                 self.graph.done(name)
+                if name in undefined:
+                    undefined.remove(name)
+            elif status == "undefined":
+                running.remove(name)
+                undefined.append(name)
 
         def start(name):
             banner(name)
