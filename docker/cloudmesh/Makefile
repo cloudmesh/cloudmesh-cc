@@ -13,7 +13,6 @@ image:
 # --volume "${HOME}/.ssh:/root/.ssh"
 # --user ${UID}:${GID}
 # --volume "${PWD}/..:/data"
-
 CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
 user_dir_name=$(shell basename $$HOME)
 
