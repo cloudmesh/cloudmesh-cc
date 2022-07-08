@@ -282,6 +282,8 @@ class CcCommand(PluginCommand):
 
         return ""
 
+        # the following todos are in order of what should be done first]
+        
         # TODO: cc workflow status NAME --output=OUTPUT
 
         # TODO: cc workflow run NAME
@@ -289,3 +291,10 @@ class CcCommand(PluginCommand):
         # TODO: cc workflow graph NAME
 
         # TODO: cc status
+
+        # TODO: cc workflow load
+
+        # TODO: cc workflow add_dependency
+
+        # TODO workflow add_job
+
