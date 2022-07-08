@@ -674,7 +674,6 @@ class Workflow:
                 else:
                     Shell.browser(filename='a.png')
 
-
     def sequential_order(self):
         tuples = []
         for name, edge in self.graph.edges.items():
@@ -739,3 +738,6 @@ class Workflow:
             node = nodes[n]
             if node['name'] == name:
                 del node
+
+    def status(self):
+        raise NotImplementedError
