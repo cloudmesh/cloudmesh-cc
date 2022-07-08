@@ -11,6 +11,11 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
+
+
+# TODO: these imports needs to be put in where it is needed.
+#  It is not supposed to be a global import
+
 from cloudmesh.cc.job.ssh.Job import Job
 
 
@@ -48,7 +53,8 @@ class CcCommand(PluginCommand):
                 cc stop
                 cc doc
                 cc test
-                cc temperature
+                cc workflow add NAME FILENAME
+                cc workflow list [NAME]
                 cc workflow NAME DEPENDENCIES
                 cc workflow status NAME --output=OUTPUT
                 cc workflow run NAME
@@ -199,9 +205,6 @@ class CcCommand(PluginCommand):
             r = requests.get(url)
             pprint(r)
             print(r.text)
-        elif arguments.temperature:
-            url = "http://{host}:{port}}/temperature"
-            Shell.browser(url)
         elif arguments.stop:
             print("Stop the service")
             commands = Shell.ps()
