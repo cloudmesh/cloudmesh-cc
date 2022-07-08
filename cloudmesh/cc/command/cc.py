@@ -11,6 +11,11 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
+
+
+# TODO: these imports needs to be put in where it is needed.
+#  It is not supposed to be a global import
+
 from cloudmesh.cc.job.ssh.Job import Job
 
 
@@ -48,7 +53,8 @@ class CcCommand(PluginCommand):
                 cc stop
                 cc doc
                 cc test
-                cc temperature
+                cc workflow service add NAME FILENAME
+                cc workflow service list [NAME]
                 cc workflow NAME DEPENDENCIES
                 cc workflow status NAME --output=OUTPUT
                 cc workflow run NAME
@@ -199,9 +205,6 @@ class CcCommand(PluginCommand):
             r = requests.get(url)
             pprint(r)
             print(r.text)
-        elif arguments.temperature:
-            url = "http://{host}:{port}}/temperature"
-            Shell.browser(url)
         elif arguments.stop:
             print("Stop the service")
             commands = Shell.ps()
@@ -282,14 +285,23 @@ class CcCommand(PluginCommand):
 
         return ""
 
-        # TODO: cc workflow status NAME --output=OUTPUT
+        # the following todos are in order of what should be done first]
 
-        # TODO: cc workflow run NAME
+        # TODO: cc workflow service add NAME FILENAME
+
+        # TODO: cc workflow service list [NAME]
+
+        # TODO: cc workflow service status NAME --output=OUTPUT
+
+        # TODO: cc workflow service run NAME
+
+        # TODO: cc workflow service add_dependency
+
+        # TODO  cc workflow service add_job
+
+        # TODO: cc workflow load
 
         # TODO: cc workflow graph NAME
 
         # TODO: cc status
 
-        # TODO: cc workflow service add NAME FILENAME
-
-        # TODO: cc workflow service list[NAME]

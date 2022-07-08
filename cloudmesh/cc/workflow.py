@@ -21,6 +21,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import banner
 import os
 from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
+import json
 
 """
 This class enables to manage dependencies between jobs.
@@ -528,7 +529,7 @@ class Workflow:
             progress = self.jobs[name]["instance"].get_progress()
             self.jobs[name]['status'] = status
             self.jobs[name]['progress'] = progress
-            print (status, progress)
+            print(status, progress)
             if progress == 100:
                 running.remove(name)
                 completed.append(name)
@@ -586,7 +587,7 @@ class Workflow:
             todo = self.graph.todo()
 
             for name in todo:
-                print ("TODO", name)
+                print("TODO", name)
                 start(name)
 
             print(self.table)
@@ -678,12 +679,32 @@ class Workflow:
 
     @property
     def yaml(self):
-        # print the workflow as text use yaml.dump
-        pass
+        data = {
+            'Jobs: ' : dict(self.jobs)
+        }
 
-    def json(self):
-        # print as json dump
-        pass
+        return yaml.dump(data)
+
+    def json(self, filepath=None):
+
+        # the json dump needs a filepath, because it saves it to a file
+        if filepath is None:
+            filepath = '~/experiment/out-file.JSON'
+
+        if not os.path.isfile(filepath):
+            os.system(f'touch {filepath}')
+            time.sleep(1)
+
+        data = {
+            'Jobs: ': dict(self.jobs)
+        }
+
+        out_file = open(path_expand(filepath), 'w')
+
+        json.dump(data, filepath)
+
+        out_file.close()
+
 
     @property
     def table(self):
@@ -697,6 +718,3 @@ class Workflow:
                                     'user',
                                     'parent',
                                     'kind'])
-
-
-
