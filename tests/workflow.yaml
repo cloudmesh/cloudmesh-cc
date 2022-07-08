@@ -1,0 +1,20 @@
+cloudmesh:
+  nodes:
+    a:
+       name: a
+       user: gregor
+       host: localhost
+       kind: local
+       status: ready
+       label: job-1-label
+       script: test-a.sh
+    b:
+       name: b
+       user: gregor
+       host: localhost
+       kind: local
+       status: ready
+       label: job-2-label
+       script: test-a.sh
+  dependencies:
+    - a,b

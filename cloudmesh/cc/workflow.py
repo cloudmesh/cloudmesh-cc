@@ -379,7 +379,7 @@ class Workflow:
     def job(self, name):
         return self.jobs[name]
 
-    def load(self, filename):
+    def load(self, filename, clear=False):
         """
         Loads a workflow graph from file. However the file is still stored in
         the filename that was used when the Workflow was created. This allows to
@@ -450,20 +450,6 @@ class Workflow:
         else:
             return parents
 
-
-
-    def add(self, filename):
-        """
-        This method adds another workflow to the existing one. If nodes with the
-        same name exists, they will be simply overwritten by the existing nodes
-
-        :param filename:
-        :type filename:
-        :return:
-        :rtype:
-        """
-        pass
-
     def save(self, filename):
         # implicitly done when using yamldb
         self.graph.save()
@@ -519,14 +505,6 @@ class Workflow:
 
     def update_status(self, name, status):
         self.graph[name]["status"] = status
-
-    def set_progress(self, name, percent):
-        pass
-
-    def update_progress(self, name):
-        # fetches log file and looks for progress event TBD
-        # once progress is fetched set it for the named job
-        pass
 
     def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
         finished = False
