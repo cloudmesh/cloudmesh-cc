@@ -40,7 +40,7 @@ class CcCommand(PluginCommand):
         ::
 
           Usage:
-                cc start [--reload] [--host=HOST] [--port=PORT]
+                cc start [-c] [--reload] [--host=HOST] [--port=PORT]
                 cc stop
                 cc status
                 cc doc
@@ -85,22 +85,102 @@ class CcCommand(PluginCommand):
 
           Options:
               --reload               reload for debugging
-              --queue=QUEUE          specify the queue that you want to access
-              --data=FILENAME        specify the data that you want to access
-              --job=JOB              specify the job name
-              --command=COMMAND      specify the command to be added to a job
-              --scheduler=SCHEDULER  specify the scheduling technique that is to be used
-              --queues=QUEUES        specify the queues object that is to be used
               --host=HOST            the host ip [default: 127.0.0.1]
               --port=PORT            the port [default: 8000]
+              -c                     flag to set host and port to 0.0.0.0:8000
+              --queue=QUEUE          queue that you want to access
+              --filename=FILENAME    file that contains a workflow specification
+              --name=NAME            the workflow name
+              --job=JOB              the job name
+              --command=COMMAND      a command to be added to a job
+              --scheduler=SCHEDULER  the scheduling technique that is to be used
+              --queues=QUEUES        the queues object that is to be used
               
           Description:
 
-            cc start
-                start the service
+            Please note that all arguments such as NAME and JOB can be comma 
+            separated parameter expansions, so a command can be applied to multiple
+            workflows or jobs at the same time
 
+            
+            NEW WORKFLOW CLI COMMANDS
+            
+            Note that none of the CLI commands use the Workflow service. All actions
+            are performed directly in the command shell.
+            
+            cc workflow add [--name=NAME] [--job=JOB] ARGS...
+            cc workflow delete [--name=NAME] --job=JOB
+            cc workflow list [--name=NAME] [--job=JOB]
+            cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+            cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+            cc workflow status --name=NAME [--output=OUTPUT]
+            cc workflow graph --name=NAME
+            
+            NEW WORKFLOW SERVICE COMMANDS
+            
+            Note that for all service commands to function you need to have a running 
+            server. In future, we need a mechnism how to set the hostname and port also 
+            for the service commands. For the time being they are issues to 
+            127.0.0.1:8000
+            
+            SERVICE MANAGEMENT COMMANDS
+            
+            cc start [--reload] [--host=HOST] [--port=PORT]
+                start the service.  one can add the host and port so the service is
+                started with http://host:port. The default is 127.0.0.1:8000.
+                If -c is specified 0.0.0.0:8000 is used. 
+                
             cc stop
                 stop the service
+                Currently this command is not supported.
+
+            cc status
+                returns the status of the service
+                
+            cc doc
+                opens a web browser and displays the OpenAPI specification
+
+            cc test
+                issues a simple test to see if the service is running. This command
+                may be in future eliminated as the status should encompass such a test.
+            
+            WORKFLOW MANAGEMENT COMMANDS
+            
+            Each workflow can be identified by its name. Note that thorugh 
+            cms set workflow=NAME the default name of the workflow can be set. 
+            If it is not set the defualt is `workflow`
+            
+            cc workflow service add [--name=NAME] [--directory=DIR] FILENAME
+                adds a workflow with the given name from data included in the filename.
+                the underlaying database will use that name and if not explicitly 
+                specified the location of the data base will be  
+                ~/.cloudmesh/workflow/NAME/NAME.yaml
+                To identify the location a special configuratiion file will be placed in 
+                ~/.cloudmesh/workflow/config.yaml that contains the loaction of 
+                the directories for the named workflows.
+                            
+            cc workflow service list [--name=NAME] [--job=JOB]
+                this command reacts dependent on which options we specify
+                If we do not specify anything the workflows will be listed.
+                If we specify a workflow name only that workflow will be listed
+                If we also specify a job the job will be listed.
+                If we only specif the job name, all jobs with that name from all 
+                workflows will be returned.
+                            
+            cc workflow service job add [--name=NAME] --job=JOB ARGS...
+                This command ads a job. with the specified arguments. A check 
+                is returned and the user is allerted if arguments are missing
+                arguments are passe in ATTRIBUT=VALUE fashion.
+                if the name of the workflow is ommitted the default workflw is used
+            
+            cc workflow service job delete [--name=NAME] --job=JOB
+                deletes the job in the specified workflow
+                            
+            cc workflow service run [--name=NAME]
+                runs the names workflow. If no nmae is provided the default 
+                workflow is used.
+
+            THIS MAY BE OUTDATED
 
             cc workflow NAME DEPENDENCIES
 
@@ -143,6 +223,7 @@ class CcCommand(PluginCommand):
             >      https://github.com/cloudmesh/cloudmesh-cc/blob/main/cloudmesh/cc/command/cc.py
             > prints the parameter as dict
             >   {'a': 'b', 'c': 'd'}
+
 
         """    # noqa: W605
 
@@ -294,25 +375,24 @@ class CcCommand(PluginCommand):
 
         return ""
 
-        # the following todos are in order of what should be done first]
+        # TODO:
+        # cc status
+        # cc doc
+        # cc test
+        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        # cc workflow delete [--name=NAME] --job=JOB
+        # cc workflow list [--name=NAME] [--job=JOB]
+        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+        # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
+        # cc workflow status --name=NAME [--output=OUTPUT]
+        # cc workflow graph --name=NAME
+        # cc workflow service add [--name=NAME] FILENAME
+        # cc workflow service list [--name=NAME] [--job=JOB]
+        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
+        # cc workflow service job delete NAME
+        # cc workflow service job list NAME
+        # cc workflow service run --name=NAME
 
-        # TODO: cc workflow service add NAME FILENAME
-
-        # TODO: cc workflow service list [NAME]
-
-        # TODO: cc workflow service status NAME --output=OUTPUT
-
-        # TODO: cc workflow service run NAME
-
-        # TODO: cc workflow service add_dependency
-
-        # TODO  cc workflow service add_job
-
-        # TODO: cc workflow load
-
-        # TODO: cc workflow graph NAME
-
-        # TODO: cc status
-
+        #
 
 
