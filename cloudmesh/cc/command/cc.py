@@ -408,6 +408,7 @@ class CcCommand(PluginCommand):
             manager.list_workflow(filename=arguments.filename)
 
         # run a workflow!!!!!!
+        # DONE
         elif arguments.workflow and arguments.run and arguments.filename:
             # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
             name = arguments.name
@@ -420,6 +421,7 @@ class CcCommand(PluginCommand):
             manager.run(job=arguments.job, filename=arguments.filename)
 
         # add dependencies to a workflow
+        # DONE
         elif arguments.workflow and arguments.dependencies:
             # cc workflow [--name=NAME] --dependencies=DEPENDENCIES
             name = arguments.name
@@ -429,9 +431,10 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.dependencies()
+            manager.dependencies(dependency=arguments.dependencies)
 
         # status check on a workflow
+        # DONE
         elif arguments.workflow and arguments.status and arguments.output:
             # cc workflow status --name=NAME [--output=OUTPUT]
             name = arguments.name
@@ -441,7 +444,7 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.status()
+            manager.status(filename= arguments.filename)
 
         # produce a graph for the workflow
         elif arguments.workflow and arguments.graph:
