@@ -20,20 +20,33 @@ class WorkflowCLIManager:
         filename = path_expand(filename)
         w.load(filename)
 
-    def add_from_arguments(self, job:str=None, **argv):
+    def add_from_arguments(self, job:str=None, filename:str=None, **argv):
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         data = argv
-        w = Workflow()
-        w.add_node(name=self.name, job=job, **data)
-        w.load()
+        w = Workflow(filename=self.filename)
+        w.add_job(name=self.name, job=job, **data)
 
-    def  delete (self, str, job:str=None):
+    def  delete_job(self, job:str=None):
         # cc workflow delete [--name=NAME] --job=JOB
-        pass
+        w = Workflow(filename=self.filename)
+        w.remove_job(name=job)
 
-    def  list (self, job:str=None):
+    def  delete_workflow(self, workflow:str=None):
+        # cc workflow delete [--name=NAME] --job=JOB
+        w = Workflow(filename=self.filename)
+        w.remove_workflow()
+
+    def  list_job(self, job:str=None):
         # cc workflow list [--name=NAME] [--job=JOB]
-        pass
+        w = Workflow(filename=self.filename)
+        j = w.job(name=job)
+        print(j)
+
+    def  list_workflow(self, job:str=None, filename:str=None):
+        # cc workflow list [--name=NAME] [--filename=FILENAME]
+        w = Workflow(filename=filename)
+        nodes = w.jobs
+        print(nodes)
 
     def  run (self, str, job:str=None, filename:str=None):
         # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
