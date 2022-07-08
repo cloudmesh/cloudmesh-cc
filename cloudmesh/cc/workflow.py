@@ -490,7 +490,7 @@ class Workflow:
         if not defined:
             raise ValueError("user or host not specified")
 
-        now = DateTime.now()
+        now = str(DateTime.now())
         self.graph.add_node(
             name=name,
             label=label,
@@ -705,7 +705,7 @@ class Workflow:
         data = {
             'Jobs: ': self.jobs
         }
-        print(data)
+        #print(data)
 
         out_file = open(path_expand(filepath), 'w')
 
