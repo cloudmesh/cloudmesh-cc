@@ -46,7 +46,7 @@ templates = Jinja2Templates(directory=template_dir)
 # ROUTES
 
 @app.get("/item/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
+async def itme_read(id: str):
     global q
     jobs = []
     for queue in q.queues:
@@ -62,32 +62,51 @@ async def read_item(request: Request, id: str):
                                        "jobs": jobs,
                                        "order": order})
 
+@app.get("/")
+async def home():
+    return {"msg": "Cloudmesh cc"}
 
-"""
-Renders and displays lists of queues onto an HTML table adaption from 
-datatables.net
-"""
+@app.get("/items", response_class=HTMLResponse)
+async def item_table(request: Request):
+    return templates.TemplateResponse("templates/table.html",
+                                      {"request": request})
 
+#
+# WORKFLOW
+#
+
+@app.get("/workflows/")
+def list_workflows():
+    return{"name": "implementme get multiple"}
+
+@app.get("/workflow/{name}")
+def get_workflow(name:str):
+    return{"name": "implementme get one"}
+
+@app.delete("/workflow/{name}")
+def delete_workflow(name:str):
+    return{"name": "implementme delete"}
+
+@app.post("/workflow/{name}")
+async def add_job(name: str, workflow: str):
+    return {
+        "name": "implement me"
+    }
+
+
+#
+# QUEUES
+#
 @app.get("/queues/", response_class=HTMLResponse)
-async def info(request: Request):
+async def list_queues(request: Request):
     global q
     return templates.TemplateResponse('templates/queue.html',
                                       {"request": request,
                                        "queues": q.queues})
 
 
-@app.get("/table", response_class=HTMLResponse)
-async def read_item(request: Request):
-    return templates.TemplateResponse("templates/table.html",
-                                      {"request": request})
-
-@app.get("/")
-async def read_home():
-    return {"msg": "Hello World"}
-
-
 #TODO: fix
-@app.post("/post/queue")
+@app.post("/queue")
 async def add_queue(name: str):
     global q
     q.create(name=name)
@@ -95,26 +114,8 @@ async def add_queue(name: str):
         "queues": q.queues
     }
 
-#TODO: fix
-@app.post("/post/job")
-async def add_job(name: str, job: str, command: str):
-    global q
-    q.add(name=name, job=job, command=command)
-    return {
-        "jobs": q.queues[name]
-    }
-
-
-@app.delete("/delete/job/{name}")
-async def delete_job(name: str):
-    global q
-    q.remove(name)
-    return {
-        "jobs": q.queues[name]
-    }
-
-
-@app.delete("/delete/queue/{name}")
+# TODO this may not be right
+@app.delete("/queue/{name}")
 async def delete_queue(name: str):
     global q
     q.remove(name)
@@ -123,8 +124,30 @@ async def delete_queue(name: str):
     }
 
 
-@app.get("/jobs/", response_class=HTMLResponse)
-async def read_items():
+#
+# JOBS
+#
+
+#TODO: fix
+@app.post("/job")
+async def add_job(name: str, job: str, command: str):
+    global q
+    q.add(name=name, job=job, command=command)
+    return {
+        "jobs": q.queues[name]
+    }
+
+# TODO this may not be right
+@app.delete("/job/{queue}/{name}")
+async def delete_job(name: str, queue:str):
+    global q
+    q.remove(name)
+    return {
+        "jobs": q.queues[name]
+    }
+
+@app.get("/jobs/{queue}", response_class=HTMLResponse)
+async def list_jobs(queue: str):
     global q
     jobs = []
     for queue in q.queues:

@@ -17,6 +17,7 @@ from cloudmesh.common.Shell import Shell
 import networkx as nx
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
+from cloudmesh.common.util import banner
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -41,10 +42,20 @@ if username is None:
     username = input()
     if username == '':
         print("quitting")
+        print("quitting")
         quit()
     variables["username"] = username
 
 class Test_workflow:
+
+    def test_load_workflow(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        w = Workflow()
+        w.load("tests/workflow.yaml")
+        Benchmark.Stop()
+        print(w.graph)
 
     def test_set_up(self):
         """
@@ -53,13 +64,13 @@ class Test_workflow:
         """
         HEADING()
         global w
-        global user
+        global username
         Benchmark.Start()
         w = Workflow()
 
         login = {
             "localhost": {"user": "gregor", "host": "local"},
-            "rivanna": {"user": f"{user}", "host": "rivanna.hpc.virginia.edu"},
+            "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
             "pi": {"user": "gregor", "host": "red"},
         }
 
@@ -131,15 +142,11 @@ class Test_workflow:
 
     def test_run(self):
         HEADING()
-        s1 = w.job("start")
-        before = s1['status']
-        print(before)
         Benchmark.Start()
         w.run()
         Benchmark.Stop()
-        s2 = w.job('start')
-        after = s2['status']
-        print(s2)
+        banner("Workflow")
+        print(w.graph)
 
 
 class todo:

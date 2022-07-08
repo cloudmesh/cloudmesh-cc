@@ -19,6 +19,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 import shutil
+from cloudmesh.common.util import banner
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -47,6 +48,15 @@ if username is None:
     variables["username"] = username
 
 class Test_workflow:
+
+    def test_load_workflow(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        w = Workflow()
+        w.load("tests/workflow.yaml")
+        Benchmark.Stop()
+        print(w.graph)
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
@@ -143,9 +153,18 @@ class Test_workflow:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        w.run(show=True)
+        w.run_parallel(show=True, period=1.0)
         Benchmark.Stop()
+        banner("Workflow")
+        print(w.graph)
 
+    # def test_run(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     w.run(show=True)
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
 
 
 class todo:

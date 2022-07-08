@@ -149,6 +149,43 @@ class Graph:
                 "name": name
             }
         self.edges[name].update(**data)
+        if "parent" not in self.nodes[destination]:
+            self.nodes[destination]["parent"] = []
+        if "parent" not in self.nodes[source]:
+            self.nodes[source]["parent"] = []
+        self.nodes[destination]["parent"].append(source)
+
+
+    def done(self, parent):
+        """
+        removes from all nodes the names parent
+
+        Args:
+            parent ():
+
+        Returns:
+
+        """
+        for name in self.nodes:
+            if "parent" in self.nodes[name]:
+                if parent in self.nodes[name]["parent"]:
+                    self.nodes[name]["parent"].remove(parent)
+
+    def todo(self):
+        """
+        finds all nodes with no parents and progress != 100
+
+        Returns: list of node names with no parents
+
+        """
+        result = []
+        for name in self.nodes:
+            try:
+                if self.nodes[name]["progress"] != 100 and len(self.nodes[name]["parent"]) == 0:
+                    result.append(name)
+            except:
+                pass
+        return result
 
     def set_status(self, name, status):
         self.nodes[name]["status"] = status
@@ -336,7 +373,39 @@ class Workflow:
         :rtype:
         """
         # self.graph.load(...)
-        pass
+        """ 
+        cloudmesh:
+          nodes:
+            a:
+               name: a
+               user: gregor
+               host: localhost
+               kind: local
+               status: ready
+               label: job-1-label
+               script: test-a.sh
+            b:
+               name: b
+               user: gregor
+               host: localhost
+               kind: local
+               status: ready
+               label: job-2-label
+               script: test-a.sh
+          dependencies:
+            - a,b
+        """
+        with open(filename, 'r') as stream:
+            graph = yaml.safe_load(stream)
+
+        for name, node in graph["cloudmesh"]["nodes"].items():
+            print ("Adding:", name)
+            self.add_job(**node)
+
+        for edge in graph["cloudmesh"]["dependencies"]:
+            print("Dependency:", edge)
+            self.add_dependencies(edge)
+
 
     def predecessor(self, name):
         
@@ -388,6 +457,7 @@ class Workflow:
                 kind="local",
                 status="ready",
                 progress=0,
+                script=None,
                 pid=None
                 ):
 
@@ -417,7 +487,9 @@ class Workflow:
             status=status,
             progress=progress,
             created=now,
-            modified=now
+            modified=now,
+            script=script,
+            instance=None
         )
 
     def add_dependency(self, source, destination):
@@ -437,7 +509,107 @@ class Workflow:
         # once progress is fetched set it for the named job
         pass
 
-    def run(self, order=None, parallel=False, dryrun=False, show=True):
+    def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
+        finished = False
+
+        completed = [] # list of completed nodes
+        running = [] # list of runiing nodes
+        outstanding = list(self.jobs)  # list of outstanding nodes
+        failed = [] # list of failed nodes
+
+        def info():
+            print ("Completed:  ", completed)
+            print ("Running:    ", running)
+            print ("Outstanding:", outstanding)
+            print ("Failed:     ", failed)
+            print ("Ready:      ", self.graph.todo())
+
+        def update(name):
+            banner(f"update {name}")
+            log = self.jobs[name]["instance"].get_log()
+            status = self.jobs[name]["instance"].get_status()
+            progress = self.jobs[name]["instance"].get_progress()
+            self.jobs[name]['status'] = status
+            self.jobs[name]['progress'] = progress
+            print (status, progress)
+            if progress == 100:
+                running.remove(name)
+                completed.append(name)
+                self.graph.done(name)
+
+        def start(name):
+            banner(name)
+
+            job = self.job(name=name)
+            if not dryrun and job["status"] in ["ready"]:
+                if job['kind'] in ["local"]:
+                    from cloudmesh.cc.job.localhost.Job import Job as local_Job
+                    job["status"] = "running"
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+
+                    job["instance"] = local_Job(name=name,
+                                                host=host,
+                                                username=username,
+                                                label=label)
+                    job["instance"].sync()
+                    job["instance"].run()
+                    print(str(job["instance"]))
+                    running.append(name)
+                    outstanding.remove(name)
+
+                elif job['kind'] in ["ssh"]:
+                    print(job)
+                    from cloudmesh.cc.job.ssh.Job import Job as ssh_job
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+                    remote_job = ssh_job(name=name, host=host,
+                                         username=username, label=label)
+                    remote_job.sync()
+                    remote_job.run()
+                # elif job['kind'] in ["local-slurm"]:
+                #     raise NotImplementedError
+                # elif job['kind'] in ["remote-slurm"]:
+                #     raise NotImplementedError
+            else:
+                # banner(f"Job: {name}")
+                Console.msg(f"running {name}")
+
+        while not finished:
+
+            info()
+
+            for name in running:
+                update(name)
+
+            todo = self.graph.todo()
+
+            for name in todo:
+                print ("TODO", name)
+                start(name)
+
+            print(self.table)
+
+            if show:
+                filename = "/tmp/a.svg"
+                self.graph.save(filename=filename, colors="status",
+                                layout=nx.circular_layout, engine="dot")
+                if os_is_mac():
+                    os.system(f'open {filename}')
+                elif os_is_linux():
+                    os.system(f'gopen {filename}')
+                else:
+                    Shell.browser(filename='a.png')
+            time.sleep(period)
+            finished = len(completed) == len(self.jobs)
+
+            # input("ENTER")
+
+    def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
 
         if order is None:
             order = self.sequential_order
@@ -456,6 +628,8 @@ class Workflow:
                     localhost_job.sync()
                     localhost_job.run()
                     localhost_job.watch(period=0.5)
+                    self.graph.done(name)
+                    print(self.table)
                     status = localhost_job.get_status()
                     progress = localhost_job.get_progress()
                     banner(name)
@@ -516,7 +690,16 @@ class Workflow:
 
     @property
     def table(self):
-        return Printer.write(self.graph.nodes)
-        pass
+        return Printer.write(self.graph.nodes,
+                             order=['host',
+                                    'status',
+                                    'label',
+                                    'name',
+                                    'progress',
+                                    'script',
+                                    'user',
+                                    'parent',
+                                    'kind'])
+
 
 
