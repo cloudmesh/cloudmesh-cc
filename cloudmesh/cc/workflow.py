@@ -429,20 +429,15 @@ class Workflow:
 
     def predecessor(self, name):
 
-        nodes = self.graph.nodes
-        parents = nodes[name]['parent']  # list of the parents that that node has
-        print('AAAAAAAA', parents)
-
         predecessors = []
+        nodes = self.graph.nodes
 
-        for each in parents:
-            node = nodes[each]
-            predecessors.append(node)
-
-        print(predecessors)
-
-        return parents
-
+        for value in nodes:
+            node = nodes[value]
+            if node['name'] == name:
+                return predecessors
+            else:
+                predecessors.append(node)
 
     def get_parents(self, name):
         """
