@@ -15,7 +15,7 @@ image:
 # --volume "${PWD}/..:/data"
 
 CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
-TMP_USERNAME=$(shell basename $$HOME)
+USERNAME=$(shell basename $$HOME)
 
 shell:
 	@echo ${UID}
@@ -45,9 +45,11 @@ wshell:
 	docker run \
 	  --name cms \
 	  --rm  -it \
-	  --workdir="//home//${USERNAME}" \
-	  --volume="//c//Users//${TMP_USERNAME}://home//${USERNAME}" \
-	  -p 80:80 \
+	  --workdir="//home//${USERNAME}//cm" \
+	  --volume="//c//Users//${USERNAME}//cm://home//${USERNAME}//cm" \
+	  --volume="//c//Users//${USERNAME}//.cloudmesh://home//${USERNAME}//.cloudmesh" \
+	  --volume="//c//Users//${USERNAME}//.ssh://home//${USERNAME}//.ssh:ro" \
+	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
 	  -p 8000:8000 \
 	  cloudmesh/python:latest \
 	  "//bin//bash"
