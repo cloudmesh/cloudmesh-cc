@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
+	<title>DataTables example - Default ordering (sorting)</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<style type="text/css" class="init">
+
+	</style>
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" language="javascript" class="init">
+
+$(document).ready(function() {
+	$('#example').DataTable( {
+		"order": [[ 3, "desc" ]]
+	} );
+} );
+
+	</script>
+</head>
+<body>
+    <h1>Workflow List</h1>
+
+    <table id="example" class = "display" style = "width:100%">
+        <thead>
+            <tr>
+            <th>Workflow</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in workflow %}
+            <tr>
+              <td>{{job}}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

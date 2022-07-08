@@ -83,20 +83,31 @@ def list_workflows():
 
 @app.get("/workflow/{name}")
 def get_workflow(name:str):
-    return{"name": "implementme get one"}
+    if os.path.exists(f"{name}.yaml"):
+        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
+    else:
+        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+
+    return templates.TemplateResponse('templates/workflow.html',
+                                      {"workflow": w.table})
 
 @app.delete("/workflow/{name}")
 def delete_workflow(name:str):
+    if os.path.exists(f"{name}.yaml"):
+        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
+    else:
+        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+    # w.remove()
+
     return{"name": "implementme delete"}
 
 @app.post("/workflow/{name}")
 async def add_job(name: str, workflow: str):
     if os.path.exists(f"{name}.yaml"):
-        w = Workflow.load(f"{name}.yaml")
-        # w.add()
+        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
     else:
-        w = Workflow.load(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-        # w.add()
+        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+    # w.add()
     return {
         "name": "implement me"
     }
