@@ -151,7 +151,10 @@ class Graph:
         self.edges[name].update(**data)
         if "parent" not in self.nodes[destination]:
             self.nodes[destination]["parent"] = []
+        if "parent" not in self.nodes[source]:
+            self.nodes[source]["parent"] = []
         self.nodes[destination]["parent"].append(source)
+
 
     def done(self, parent):
         """
@@ -164,12 +167,8 @@ class Graph:
 
         """
         for name in self.nodes:
-            print ("PPPP", self.nodes[name])
-
             if "parent" in self.nodes[name]:
                 if parent in self.nodes[name]["parent"]:
-                    print("PPPP", self.nodes[name]["parent"], parent)
-
                     self.nodes[name]["parent"].remove(parent)
 
     def todo(self):
@@ -181,8 +180,11 @@ class Graph:
         """
         result = []
         for name in self.nodes:
-            if self.nodes[name]["progress"] != 100 and len(self.nodes[name]["parent"]) == 0:
-                result.append(name)
+            try:
+                if self.nodes[name]["progress"] != 100 and len(self.nodes[name]["parent"]) == 0:
+                    result.append(name)
+            except:
+                pass
         return result
 
     def set_status(self, name, status):
@@ -487,6 +489,7 @@ class Workflow:
             created=now,
             modified=now,
             script=script,
+            instance=None
         )
 
     def add_dependency(self, source, destination):
@@ -506,7 +509,102 @@ class Workflow:
         # once progress is fetched set it for the named job
         pass
 
-    def run(self, order=None, parallel=False, dryrun=False, show=True):
+    def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
+        finished = False
+
+        completed = [] # list of completed nodes
+        running = [] # list of runiing nodes
+        outstanding = list(self.jobs)  # list of outstanding nodes
+        failed = [] # list of failed nodes
+
+        def info():
+            print ("Completed:  ", completed)
+            print ("Running:    ", running)
+            print ("Outstanding:", outstanding)
+            print ("Failed:     ", failed)
+            print ("Ready:      ", self.graph.todo())
+
+        def update(name):
+            banner(f"update {name}")
+            status = self.jobs[name]["instance"].get_status()
+            progress = self.jobs[name]["instance"].get_progress()
+            self.jobs[name]['status'] = status
+            self.jobs[name]['progress'] = progress
+            if progress == 100:
+                running.remove(name)
+                completed.append(name)
+
+        def start(name):
+            banner(name)
+
+            job = self.job(name=name)
+            if not dryrun and job["status"] in ["ready"]:
+                if job['kind'] in ["local"]:
+                    from cloudmesh.cc.job.localhost.Job import Job as local_Job
+                    job["status"] = "running"
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+
+                    job["instance"] = local_Job(name=name,
+                                                host=host,
+                                                username=username,
+                                                label=label)
+                    job["instance"].sync()
+                    job["instance"].run()
+                    print(str(job["instance"]))
+
+
+                elif job['kind'] in ["ssh"]:
+                    print(job)
+                    from cloudmesh.cc.job.ssh.Job import Job as ssh_job
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+                    remote_job = ssh_job(name=name, host=host,
+                                         username=username, label=label)
+                    remote_job.sync()
+                    remote_job.run()
+                # elif job['kind'] in ["local-slurm"]:
+                #     raise NotImplementedError
+                # elif job['kind'] in ["remote-slurm"]:
+                #     raise NotImplementedError
+            else:
+                # banner(f"Job: {name}")
+                Console.msg(f"running {name}")
+
+        while not finished:
+
+            info()
+
+            for name in running:
+                update(name)
+
+            todo = self.graph.todo()
+
+            for name in todo:
+                print ("TODO", name)
+                start(name)
+
+            print(self.table)
+
+            if show:
+                filename = "/tmp/a.svg"
+                self.graph.save(filename=filename, colors="status",
+                                layout=nx.circular_layout, engine="dot")
+                if os_is_mac():
+                    os.system(f'open {filename}')
+                elif os_is_linux():
+                    os.system(f'gopen {filename}')
+                else:
+                    Shell.browser(filename='a.png')
+            time.sleep(period)
+
+            input("ENTER")
+
+    def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
 
         if order is None:
             order = self.sequential_order

@@ -153,11 +153,18 @@ class Test_workflow:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        w.run(show=True)
+        w.run_parallel(show=True, period=1.0)
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
 
+    # def test_run(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     w.run(show=True)
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
 
 
 class todo:
