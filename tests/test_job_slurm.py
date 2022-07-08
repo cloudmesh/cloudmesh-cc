@@ -8,7 +8,7 @@ import shutil
 import time
 
 import pytest
-from cloudmesh.cc.job.ssh.Job import Job
+from cloudmesh.cc.job.slurm.Job import Job
 
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
@@ -20,7 +20,7 @@ import subprocess
 
 variables = Variables()
 
-name = "run"
+name = "run-slurm"
 
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
@@ -60,7 +60,7 @@ class TestJobsSlurm:
         global username
         global host
         Benchmark.Start()
-        name = f"run"
+        name = f"run-slurm"
         job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
         print(job)
@@ -75,7 +75,7 @@ class TestJobsSlurm:
         Benchmark.Start()
         job.sync()
         Benchmark.Stop()
-        assert job.exists("run.sh")
+        assert job.exists("run-slurm.sh")
 
         # potentially wrong
 
@@ -84,7 +84,7 @@ class TestJobsSlurm:
 
         Benchmark.Start()
         global job
-        job = Job(name=f"run", host=host, username=username)
+        job = Job(name=f"run-slurm", host=host, username=username)
         job.sync()
 
         s, l, e = job.run()
@@ -114,7 +114,7 @@ class TestJobsSlurm:
     def test_exists_run(self):
         HEADING()
         global job
-        name = f"run"
+        name = f"run-slurm"
         Benchmark.Start()
         wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
@@ -152,7 +152,7 @@ class TestJobsSlurm:
         HEADING()
         global job
 
-        name = f"run"
+        name = f"run-slurm"
         Benchmark.Start()
         wrong = job.exists(name)
         correct = job.exists(f"{name}.sh")
