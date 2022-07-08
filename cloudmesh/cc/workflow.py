@@ -428,8 +428,20 @@ class Workflow:
 
 
     def predecessor(self, name):
-        
-        raise NotImplementedError
+
+        nodes = self.graph.nodes
+        parents = nodes[name]['parent']  # list of the parents that that node has
+        print('AAAAAAAA', parents)
+
+        predecessors = []
+
+        for each in parents:
+            node = nodes[each]
+            predecessors.append(node)
+
+        print(predecessors)
+
+        return parents
 
 
     def get_parents(self, name):
@@ -696,12 +708,13 @@ class Workflow:
             time.sleep(1)
 
         data = {
-            'Jobs: ': dict(self.jobs)
+            'Jobs: ': self.jobs
         }
+        print(data)
 
         out_file = open(path_expand(filepath), 'w')
 
-        json.dump(data, filepath)
+        json.dump(data, out_file)
 
         out_file.close()
 
