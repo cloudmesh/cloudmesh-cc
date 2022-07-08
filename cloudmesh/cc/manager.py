@@ -81,11 +81,21 @@ class WorkflowServiceManager:
         pass
 
     def add_from_filename(self, filename=None):
+
+        # resp = requests.post(url=url, files=file)
+        # print(resp.json())
+
+
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
 
-        r = requests.get('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
+        # 'https://{self.host}:{self.port}/workflow?name={name}&job={job}'
+        url = f'https://{self.host}:{self.port}/workflow'
+        file = {'file': open(filename, 'rb')}
+
+        r = requests.post(url=url,files=file)
+        print(r.json())
 
 
     def delete(self, name=None, str, job=None: str):

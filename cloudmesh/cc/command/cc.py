@@ -260,6 +260,12 @@ class CcCommand(PluginCommand):
         # an example.
         #
 
+        def get_workflow_name():
+            name = arguments.name
+            if arguments.name is None:
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+            return name
+
         host = arguments["--host"] or "127.0.0.1"
         port = int(arguments["--port"]) or 8000
 
@@ -313,6 +319,20 @@ class CcCommand(PluginCommand):
             for name in names:
                 queues.create(name)
 
+        elif arguments.workflow and arguments.add and arguments.service:
+            # cc workflow service add [--name=NAME] FILENAME
+            name = get_workflow_name()
+
+            from cloudmesh.cc.manager import WorkflowServiceManager
+
+
+            manager = WorkflowServiceManager(name, filename=arguments.filename)
+            manager.add_from_filename(name, arguments.filename)
+
+        # cc workflow service list [--name=NAME] [--job=JOB]
+        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
+        # cc workflow service run --name=NAME
+
         #
         # IMPLEMENT THESE
         #
@@ -321,9 +341,7 @@ class CcCommand(PluginCommand):
         # DONE
         elif arguments.workflow and arguments.add and arguments.filename:
             # cc workflow add [--name=NAME] --filename=FILENAME
-            name = arguments.name
-            if arguments.name is None:
-                name = os.path.basename(arguments.filename).replace(".yaml", "")
+            name = get_workflow_name()
 
             from cloudmesh.cc.manager import WorkflowCLIManager
 
@@ -334,9 +352,7 @@ class CcCommand(PluginCommand):
         # DONE
         elif arguments.workflow and arguments.add and arguments.job:
             # cc workflow add [--name=NAME] [--job=JOB] ARGS... these are the arguments we need for the add job
-            name = arguments.name
-            if arguments.name is None:
-                name = os.path.basename(arguments.filename).replace(".yaml", "")
+            name = get_workflow_name()
 
             from cloudmesh.cc.manager import WorkflowCLIManager
 
@@ -447,10 +463,6 @@ class CcCommand(PluginCommand):
 
 
 
-        # cc workflow service add [--name=NAME] FILENAME
-        # cc workflow service list [--name=NAME] [--job=JOB]
-        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
-        # cc workflow service run --name=NAME
 
 
 
