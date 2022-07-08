@@ -163,9 +163,14 @@ class Graph:
         Returns:
 
         """
-        for name, node in self.nodes:
-            if parent in self.nodes[name]["parent"]:
-                del self.nodes[name]["parent"][parent]
+        for name in self.nodes:
+            print ("PPPP", self.nodes[name])
+
+            if "parent" in self.nodes[name]:
+                if parent in self.nodes[name]["parent"]:
+                    print("PPPP", self.nodes[name]["parent"], parent)
+
+                    self.nodes[name]["parent"].remove(parent)
 
     def todo(self):
         """
@@ -520,6 +525,8 @@ class Workflow:
                     localhost_job.sync()
                     localhost_job.run()
                     localhost_job.watch(period=0.5)
+                    self.graph.done(name)
+                    print(self.table)
                     status = localhost_job.get_status()
                     progress = localhost_job.get_progress()
                     banner(name)
