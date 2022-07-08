@@ -46,7 +46,7 @@ templates = Jinja2Templates(directory=template_dir)
 # ROUTES
 
 @app.get("/item/{id}", response_class=HTMLResponse)
-async def itme_read(id: str):
+async def read_item(request: Request, id: str):
     global q
     jobs = []
     for queue in q.queues:
