@@ -95,7 +95,6 @@ class Job():
                   f'"cd {self.directory} && {self.slurm.sbatch} ' \
                   f'{self.name}.sh"'
         print(command)
-        time.sleep(10)
         state = None
         #state = os.system(f'{command} &')
         try:
@@ -104,6 +103,7 @@ class Job():
         except:  # noqa: E722
             state = 1
         job_id = str(r).split()[-1]
+        time.sleep(10)
         error = self.get_error()
         log = self.get_log()
         return state, log, error, job_id
