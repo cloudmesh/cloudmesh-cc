@@ -1,3 +1,5 @@
+import requests
+
 class WorkflowCLIManager:
 
     def __init__(self, name=None:str):
@@ -36,8 +38,13 @@ class WorkflowServiceManager:
     def __init__(self, name=None: str):
         pass
 
-
-    def add(self, name=None, str, job=None: str, ** argv):
+    def add(self, name:str=None, job:str=None, **argv):
+        if name is None:
+            name = "workflow"
+        if job is None:
+            n=0 # read from config file
+            job = f"job-{n}"
+        r = requests.get('https://127.0.0.1:8000/workflow?name=name&status=smth')
         pass
 
 
