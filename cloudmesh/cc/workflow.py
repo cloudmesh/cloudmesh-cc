@@ -39,12 +39,12 @@ g.add_nodes("a", {"status"="ready"})
 g.add_nodes("b", "status"="ready")    # will use dict update not eliminate other fields
 
 g.add_nodes("a,b,d", "status"="ready")
-    # will add the nodes, but also update the interanal attributes for the nodes, 
+    # will add the nodes, but also update the internal attributes for the nodes, 
     eg sets state to ready
 
 g.export("a.pdf")
 
-A show function is available that alloew the plotting of nodes with a default layout 
+A show function is available that allow the plotting of nodes with a default layout 
 and color values defined by a color map. By default a colormap for status with
 
 ready = white
@@ -64,7 +64,7 @@ g.set_color("status",
              "other": "grey"
             )
             
-as you can see you can also define colors for otehr values that could be set in this case 
+as you can see you can also define colors for other values that could be set in this case 
 for the node status. To display the graph you can say:
             
 g.show()
@@ -123,7 +123,7 @@ class Graph:
 
         # if filename is not None:
         #    raise NotImplementedError
-        # shoudl read from file the graph, but as we do Queues yaml dic
+        # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
 
         return
@@ -322,11 +322,11 @@ class Graph:
 
 class Workflow:
     """
-    Workflow doocumentation
+    Workflow documentation
 
     w = Workflow(filename="workflow.yaml")
-    w.load(filename="abc.yaml") <- loads in teh graph, but will save it still to workflow.yaml
-    w.add(filename="add.yaml") <-adds a new worflow into the existing one.
+    w.load(filename="abc.yaml") <- loads in the graph, but will save it still to workflow.yaml
+    w.add(filename="add.yaml") <-adds a new workflow into the existing one.
     w.add_job(name="a",
                 command="hostname",
                 user=None, # bug if kind is local and user is None, we do not need user, but can take local user
@@ -349,7 +349,7 @@ class Workflow:
     def __init__(self, name="workflow", filename=None, user=None, host=None):
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
-        # if graph is not None overwrite the graph potentially read from filename
+        # if graph is not None, overwrite the graph potentially read from filename
         if filename is None:
             filename = f"~/.cloudmesh/workflow/workflow-{name}"
 

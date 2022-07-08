@@ -219,6 +219,7 @@ class CcCommand(PluginCommand):
                         Shell.kill_pid(command["pid"])
 
         elif arguments.upload and arguments.data:
+            # TODO: implement
             filename = arguments.data
             raise NotImplementedError
 
@@ -260,12 +261,13 @@ class CcCommand(PluginCommand):
             q[arguments.queue].remove(arguments.job)
 
         elif arguments.run and arguments.command:
-
+            # TODO
             print('Here')
             print('woah nelly')
             print(arguments.command)
 
         elif arguments.list and arguments.queue:
+            # TODO: implement with workflow
             q = Queues()
             q.list(self)
 
@@ -279,3 +281,11 @@ class CcCommand(PluginCommand):
             # cc workflow NAME DEPENDENCIES
 
         return ""
+
+        # TODO: cc workflow status NAME --output=OUTPUT
+
+        # TODO: cc workflow run NAME
+
+        # TODO: cc workflow graph NAME
+
+        # TODO: cc status
