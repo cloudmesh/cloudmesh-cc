@@ -15,7 +15,7 @@ image:
 # --volume "${PWD}/..:/data"
 
 CM=$(shell find  ~ -type d -name 'cm' | head -n 1)
-
+user_dir_name=$(shell basename $$HOME)
 
 shell:
 	@echo ${UID}
@@ -43,7 +43,7 @@ wshell:
 	  --name cms \
 	  --rm  -it \
 	  --workdir="//home//${USERNAME}" \
-	  --volume="//c//Users//${USERNAME}://home//${USERNAME}" \
+	  --volume="//c//Users//${user_dir_name}://home//${USERNAME}" \
 	  -p 80:80 \
 	  -p 8000:8000 \
 	  cloudmesh/python:latest \
