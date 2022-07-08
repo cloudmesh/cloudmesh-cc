@@ -177,7 +177,7 @@ async def list_jobs(request: Request, queue: str):
     order = [word.capitalize() for word in order]
     Console.error(str(order))
 
-    return templates.TemplateResponse("templates/jobs.html",
+    return templates.TemplateResponse("templates/item.html",
                                       {"request": request,
                                        "id": id,
                                        "jobs": jobs,
