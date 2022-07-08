@@ -98,12 +98,16 @@ def get_workflow(name:str):
 
 @app.delete("/workflow/{name}")
 def delete_workflow(name:str):
-    if os.path.exists(f"{name}.yaml"):
-        w = Workflow(name=name, filename=f"{name}.yaml", user=None, host=None)
-    else:
-        w = Workflow(name=name, filename=f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-    # w.remove()
+    w = setup_workflow(name)
+    # remove the entire workflow
 
+    return{"name": "implementme delete"}
+
+@app.delete("/workflow/{name}/{job}")
+def delete_workflow(name:str, job:str):
+    w = setup_workflow(name)
+    # how to remove an named job form the workflow
+    #w.remove(job)
     return{"name": "implementme delete"}
 
 

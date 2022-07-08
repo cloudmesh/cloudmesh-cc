@@ -1,3 +1,4 @@
+import os
 from pprint import pprint
 
 # from cloudmesh.cc.hostdata import Data
@@ -46,6 +47,7 @@ class CcCommand(PluginCommand):
                 cc doc
                 cc test
                 cc workflow add [--name=NAME] [--job=JOB] ARGS...
+                cc workflow add [--name=NAME] --filename=FILENAME
                 cc workflow delete [--name=NAME] [--job=JOB]
                 cc workflow list [--name=NAME] [--job=JOB]
                 cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
@@ -314,6 +316,18 @@ class CcCommand(PluginCommand):
         #
         # IMPLEMENT THESE
         #
+
+        elif arguments.workflow and arguments.add and arguments.filenme:
+            # cc workflow add [--name=NAME] --filename=FILENAME
+            name = arguments.name
+            if arguments.name is None
+                name = os.path.basename(arguments.filename).replace(".yaml", "")
+
+            from cloudmesh.cc.manager import WorkflowCLIManager
+
+            manager = WorkflowCLIManager(name)
+            manager.add_from_filename(name, arguments.filename)
+
 
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         # cc workflow delete [--name=NAME] [--job=JOB]
