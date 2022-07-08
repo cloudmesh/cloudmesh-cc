@@ -170,7 +170,7 @@ class TestJobsSlurm:
 
     def test_kill(self):
         """
-        Creates a job from wait.sh, which includes wait of 1 hour
+        Creates a job from run-killme.sh, which includes wait of 1 hour
         Deletes this job AND it's children
         This way, it tests if the job or any of its children
         is found in the ps
