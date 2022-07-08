@@ -53,8 +53,8 @@ class CcCommand(PluginCommand):
                 cc stop
                 cc doc
                 cc test
-                cc workflow add NAME FILENAME
-                cc workflow list [NAME]
+                cc workflow service add NAME FILENAME
+                cc workflow service list [NAME]
                 cc workflow NAME DEPENDENCIES
                 cc workflow status NAME --output=OUTPUT
                 cc workflow run NAME
