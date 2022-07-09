@@ -70,7 +70,7 @@ async def read_item(request: Request, id: str):
 
 @app.get("/")
 async def home():
-    return {"msg": "Cloudmesh hello universe cc"}
+    return {"msg": "Cloudmesh b cc"}
 
 @app.get("/items", response_class=HTMLResponse)
 async def item_table(request: Request):
@@ -96,15 +96,16 @@ def list_workflows():
 
 
 @app.post("/workflow")
-def upload_workflow(file: UploadFile = File(...)):
+async def upload_workflow(file: UploadFile = File(...)):
     try:
         contents = await file.read()
         with open(file.filename, 'wb') as f:
             f.write(contents)
         print(contents)
         print(file.filename)
-        # w = Workflow()
-        # w.save(filename=file.filename)
+        w = Workflow()
+        w.save(filename=file.filename)
+        print(w)
     except Exception:
         return {"message": "There was an error uploading the file"}
     finally:

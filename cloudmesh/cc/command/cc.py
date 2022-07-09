@@ -9,7 +9,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
-
+import pkg_resources
 
 # TODO: these imports needs to be put in where it is needed.
 #  It is not supposed to be a global import
@@ -107,7 +107,7 @@ class CcCommand(PluginCommand):
             
             SERVICE MANAGEMENT COMMANDS
             
-            cc start [--reload] [--host=HOST] [--port=PORT]
+            cc start [-reload] [--host=HOST] [--port=PORT]
                 start the service.  one can add the host and port so the service is
                 started with http://host:port. The default is 127.0.0.1:8000.
                 If -c is specified 0.0.0.0:8000 is used. 
@@ -232,7 +232,6 @@ class CcCommand(PluginCommand):
                        "command",
                        "scheduler",
                        "queues"
-                       "reload"
                        )
 
         # VERBOSE(arguments)
@@ -272,13 +271,22 @@ class CcCommand(PluginCommand):
 
         if arguments.start:
             print("Start the service")
-            if arguments.reload:
+            if arguments["--reload"]:
                 reload = True
             else:
                 reload = False
+            cloudmesh_cc = pkg_resources.resource_filename("cloudmesh.cc", "../..")
+
+            print ("Reload:", reload)
+            print("Dir:", cloudmesh_cc)
             import uvicorn
             from cloudmesh.cc.service.service import app
-            r = uvicorn.run(app, host=host, port=port, reload=reload)
+
+            r = uvicorn.run("cloudmesh.cc.service.service:app",
+                            host=host,
+                            port=port,
+                            workers=1,
+                            reload=reload, reload_dirs=[cloudmesh_cc, cloudmesh_cc + "/service"])
             print(r)
         elif arguments.doc:
             url = "http://{host}:{port}}/docs"
