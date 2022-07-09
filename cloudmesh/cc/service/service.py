@@ -16,6 +16,7 @@ from cloudmesh.common.console import Console
 import os
 from cloudmesh.common.util import  path_expand
 from cloudmesh.common.Shell import Shell
+import glob
 
 def test_run():
     kind = 'yamldb'
@@ -81,7 +82,6 @@ async def item_table(request: Request):
 # WORKFLOW
 #
 
-
 def load_workflow(name:str):
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
     w = Workflow(name=name, filename=filename)
@@ -90,7 +90,13 @@ def load_workflow(name:str):
 
 @app.get("/workflows/")
 def list_workflows():
-    return{"name": "implementme get multiple"}
+    try:
+        directory = path_expand(f"~/.cloudmesh/workflow/")
+        result = glob.glob(f"{directory}/*")
+        result = [os.path.basename(e) for e in result]
+        return{"workflows": result}
+    except Exception as e:
+        return {"message": f"No workflows found"}
 
 
 @app.post("/workflow")
@@ -124,7 +130,6 @@ async def upload_workflow(file: UploadFile = File(...)):
 # print(resp.json())
 
 
-
 @app.get("/workflow/{name}")
 def get_workflow(name:str, job:str=None):
     """
@@ -138,20 +143,21 @@ def get_workflow(name:str, job:str=None):
     :param job:
     :return:
     """
-    try:
-        w = load_workflow(name)
-        print (w.yaml)
-        result = w[job]
-        return {name: result}
-    except Exception as e:
-        return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
-
-@app.delete("/workflow/{name}")
-def delete_workflow(name:str):
-    w = load_workflow(name)
-    # remove the entire workflow
-
-    return{"name": "implementme delete"}
+    if job is not None:
+        try:
+            w = load_workflow(name)
+            print (w.yaml)
+            result = w[job]
+            return {name: result}
+        except Exception as e:
+            return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
+    else:
+        try:
+            w = load_workflow(name)
+            print(w.yaml)
+            return {name: w}
+        except Exception as e:
+            return {"message": f"There was an error locating the workflow '{name}'"}
 
 @app.delete("/workflow/{name}/{job}")
 def delete_workflow(name:str, job:str):
