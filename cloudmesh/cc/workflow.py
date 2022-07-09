@@ -340,12 +340,25 @@ class Workflow:
 
     """
 
-    def __init__(self, name="workflow", filename=None, user=None, host=None):
+    def __init__(self, name=None, filename=None, user=None, host=None):
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
-        if filename is None:
-            filename = f"~/.cloudmesh/workflow/workflow-{name}"
+
+        if filename:
+            base = os.path.basename(filename).replace(".yaml", "")
+            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            self.name = name
+
+        if filename is None and name is None:
+            base =  "workflow"
+            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            self.name = name
+
+
+        filename = path_expand(filename)
+
+        print("Filename:", filename)
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user

@@ -82,12 +82,10 @@ async def item_table(request: Request):
 #
 
 
-def setup_workflow(name:str):
-    if os.path.exists(f"{name}.yaml"):
-        directory=path_expand(f".")
-    else:
-        directory = path_expand(f"~./cloudmesh/workflow/{name}")
-    w = Workflow(name=name, filename=f"{directory}/{name}.yaml")
+def load_workflow(name:str):
+    filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+    w = Workflow(name=name, filename=filename)
+    w.load(filename)
     return w
 
 @app.get("/workflows/")
@@ -128,7 +126,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 
 
 @app.get("/workflow/{name}")
-def get_workflow(name:str,job:str=None):
+def get_workflow(name:str, job:str=None):
     """
     this command reacts dependent on which options we specify
                 If we do not specify anything the workflows will be listed.
@@ -140,25 +138,31 @@ def get_workflow(name:str,job:str=None):
     :param job:
     :return:
     """
-    w = setup_workflow(name)
-    return {"name": "implementme delete"}
+    try:
+        w = load_workflow(name)
+        print (w.yaml)
+        result = w[job]
+        return {name: result}
+    except Exception as e:
+        return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
 
 @app.delete("/workflow/{name}")
 def delete_workflow(name:str):
-    w = setup_workflow(name)
+    w = load_workflow(name)
     # remove the entire workflow
 
     return{"name": "implementme delete"}
 
 @app.delete("/workflow/{name}/{job}")
 def delete_workflow(name:str, job:str):
-    w = setup_workflow(name)
+    w = load_workflow(name)
+
     # how to remove an named job form the workflow
     #w.remove(job)
     return{"name": "implementme delete"}
 
 
-wfdescription =\
+wf_add_description =\
 """
 adds a workflow with the given name from data included in the filename.
 the underlying database will use that name and if not explicitly
@@ -173,7 +177,7 @@ the directories for the named workflows.
 """
 @app.post("/workflow/{name}",
           summary="Add a workflow from a file",
-          description=wfdescription
+          description=wf_add_description
           )
 async def add_workflow(name: str, **kwargs) -> bool:
     """
@@ -196,7 +200,7 @@ async def add_workflow(name: str, **kwargs) -> bool:
         return False
 
     if not kwargs:
-        w = setup_workflow(name)
+        w = load_workflow(name)
     else:
         us = None if "user" not in params else params["user"]
         ho = None if "host" not in params else params["host"]
@@ -236,7 +240,7 @@ async def add_job(name: str, **kwargs) -> bool:
     # sc = None if "script" not in params else params["script"]
     # pi = None if "pid" not in params else params["pid"]
 
-    w = setup_workflow(name)
+    w = load_workflow(name)
 
     try:
         w.add_job(kwargs)
