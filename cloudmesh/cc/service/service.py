@@ -145,6 +145,23 @@ def get_workflow(name:str, job:str=None):
     """
     if job is not None:
         try:
+            directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+            os.system(f" rm -r {directory}")
+            return {"message": f"The workflow {name} was deleted  and the directory {directory removed}"}
+        except Exception as e:
+            return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
+    else:
+        try:
+            w = load_workflow(name)
+            print(w[job)
+            return {name: w}
+        except Exception as e:
+            return {"message": f"There was an error locating the workflow '{name}'"}
+
+@app.delete("/workflow/{name}/{job}")
+def delete_workflow(name:str, job:str):
+    if job is not None:
+        try:
             w = load_workflow(name)
             print (w.yaml)
             result = w[job]
@@ -159,13 +176,6 @@ def get_workflow(name:str, job:str=None):
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
 
-@app.delete("/workflow/{name}/{job}")
-def delete_workflow(name:str, job:str):
-    w = load_workflow(name)
-
-    # how to remove an named job form the workflow
-    #w.remove(job)
-    return{"name": "implementme delete"}
 
 
 wf_add_description =\

@@ -217,6 +217,8 @@ class Graph:
             else:
                 self.add_edge(source, destination, **edgedata)
 
+    # could benefit from get_dependencies, gat_parents, get_children
+
     def rename(self, source, destination):
         """
         renames a name with the name source to destination. The destination
@@ -345,6 +347,7 @@ class Workflow:
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
 
+        # gvl reimplemented but did not test
         if filename:
             base = os.path.basename(filename).replace(".yaml", "")
             self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
@@ -356,13 +359,15 @@ class Workflow:
             self.name = name
 
 
-        filename = path_expand(filename)
+        self.filename = path_expand(self.filename)
 
         print("Filename:", filename)
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user
         self.host = host
+        # gvl addded load but not tested
+        self.load(filename)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -377,6 +382,7 @@ class Workflow:
 
         # self.label = None
 
+
     @property
     def jobs(self):
         return self.graph.nodes  # [name]
@@ -386,6 +392,42 @@ class Workflow:
 
     def job(self, name):
         return self.jobs[name]
+
+    @property
+    def dependencies(self):
+        # gvl implemented but not tested
+        return self.graph.edges  # [name]
+
+
+    def predecessor(self, name):
+        # GVL reimplemented but not tested
+        predecessors = []
+        edges = self.dependencies
+
+        for _name, edge in edges.items():
+            if edge["destination"] == name:
+                predecessors.append(edge["source"])
+        return predecessors
+
+    def get_predecessors(self, name):
+        """
+        figure out all of the dependencies of the name node
+        then test if each node in front (parent) has progress of 100
+        if the parent has progress 100, remove those nodes
+        :return:
+        """
+        parents = []
+        candidates = self.predecessors(name)
+        print(candidates)
+        for candidate in candidates:
+            if candidate['progress'] != 100:
+                parents.append(candidate)
+
+        if parents == []:
+            return None
+        else:
+            return parents
+
 
     def load(self, filename, clear=False):
         """
@@ -434,36 +476,6 @@ class Workflow:
             self.add_dependencies(edge)
 
 
-    def predecessor(self, name):
-
-        predecessors = []
-        nodes = self.graph.nodes
-
-        for value in nodes:
-            node = nodes[value]
-            if node['name'] == name:
-                return predecessors
-            else:
-                predecessors.append(node)
-
-    def get_parents(self, name):
-        """
-        figure out all of the dependencies of the name node
-        then test if each node in front (parent) has progress of 100
-        if the parent has progress 100, remove those nodes
-        :return:
-        """
-        parents = []
-        candidates = self.predecessors(name)
-        print(candidates)
-        for candidate in candidates:
-            if candidate['progress'] != 100:
-                parents.append(candidate)
-
-        if parents == []:
-            return None
-        else:
-            return parents
 
     def save(self, filename):
         # implicitly done when using yamldb
@@ -629,6 +641,7 @@ class Workflow:
             # input("ENTER")
 
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
+        # bug the tno file needs to be better handled
 
         if order is None:
             order = self.sequential_order
@@ -699,36 +712,25 @@ class Workflow:
 
     @property
     def yaml(self):
+        # gvl reimplemented not tested
         data = {
-            'Jobs: ' : dict(self.jobs)
+            'jobs: ' : dict(self.jobs)
+            'dependencies': dict(self.dependencies)
         }
-
         return yaml.dump(data)
 
     def json(self, filepath=None):
-
-        # the json dump needs a filepath, because it saves it to a file
-        if filepath is None:
-            filepath = '~/experiment/out-file.JSON'
-
-        if not os.path.isfile(filepath):
-            os.system(f'touch {filepath}')
-            time.sleep(1)
-
+        # gvl reimplemented not tested
         data = {
-            'Jobs: ': self.jobs
+            'jobs: ' : dict(self.jobs)
+            'dependencies': dict(self.dependencies)
         }
-        #print(data)
-
-        out_file = open(path_expand(filepath), 'w')
-
-        json.dump(data, out_file)
-
-        out_file.close()
+        return json.dumps(data, indent=2)
 
 
     @property
     def table(self):
+        # gvl rewritten
         return Printer.write(self.graph.nodes,
                              order=['host',
                                     'status',
@@ -741,16 +743,40 @@ class Workflow:
                                     'kind'])
 
 
-    # TODO: remove self
     def remove_workflow(self):
-        del self
+        # gvl rrewritten
+        d = os.path.dirname(self.filename)
+        os.system("rm -r {d}")
+        self.graph = None
+        self.jobs = None
 
     def remove_job(self, name):
-        nodes = self.jobs
-        for n in nodes:
-            node = nodes[n]
-            if node['name'] == name:
-                del node
+        # gvl rewritten by gregor not tested
+        # remove job
+        del self.jobs[name]
+
+        # remove dependencies to job
+        dependencies = self.graph.edges.items()
+        for edge, dependency in dependencies:
+            if dependency["source"] == name or dependency["destinatiom"] == name:
+                del self.graph.edges[edge]
 
     def status(self):
-        raise NotImplementedError
+        # gvl implemented but not tested
+        s = "done"
+        _status = {"workflow": s,
+                  "job": None}
+        for name in self.jobs:
+            state = self.jobs["status"]
+            progress = self.jobs["progress"]
+            _status["job"][name] = {
+                "status": state,
+                "progress": progress
+            }
+            if state in ["running"]:
+                s = "running"
+            elif state in ["undefined"]:
+                s = "undefined"
+            elif state in ["filed"]:
+                s = "failed"
+        _status["workflow"] = s
