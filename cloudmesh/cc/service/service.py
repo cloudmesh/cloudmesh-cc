@@ -15,7 +15,7 @@ import pkg_resources
 from cloudmesh.common.console import Console
 import os
 from cloudmesh.common.util import  path_expand
-
+from cloudmesh.common.Shell import Shell
 
 def test_run():
     kind = 'yamldb'
@@ -98,41 +98,26 @@ def list_workflows():
 @app.post("/workflow")
 async def upload_workflow(file: UploadFile = File(...)):
     try:
+
+        name = os.path.basename(file.filename).replace(".yaml", "")
+        directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+        location = f"{directory}/{name}.yaml"
+
+        os.system(f"mkdir -p {directory}")
+        print("LOG: Create Workflow at:", location)
         contents = await file.read()
-        with open(file.filename, 'wb') as f:
+        with open(location, 'wb') as f:
             f.write(contents)
-        print(contents)
-        print(file.filename)
         w = Workflow()
-        w.save(filename=file.filename)
-        print(w)
-    except Exception:
-        return {"message": "There was an error uploading the file"}
+        w.load(filename=location)
+        print(w.yaml)
+    except Exception as e:
+        return {"message": f"There was an error uploading the file {e}"}
     finally:
         await file.close()
 
     return {"message": f"Successfuly uploaded {file.filename}"}
-#
-# @app.post("/workflow")
-# async def upload(file: UploadFile = File(...)):
-#     try:
-#         contents = await file.read()
-#         with open(file.filename, 'wb') as f:
-#             f.write(contents)
-#         w = Workflow()
-#         w.save(filename=file.filename)
-#     except Exception:
-#         return {"message": "There was an error uploading the file"}
-#     finally:
-#         await file.close()
-#
-#     return {"message": f"Successfuly uploaded {file.filename}"}
 
-#
-# if __name__ == '__main__':
-#     uvicorn.run(app, host='0.0.0.0', port=8000)
-# test.py
-#
 # import requests
 #
 # url = 'http://127.0.0.1:8000/upload'
