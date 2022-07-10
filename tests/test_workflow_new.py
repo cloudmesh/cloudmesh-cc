@@ -143,6 +143,25 @@ class Test_workflow_new:
         Benchmark.Stop()
         print(len(m_workflow.jobs) == n)
 
+    def test_predecessor(self):
+        HEADING()
+        Benchmark.Start()
+        m_parent = m_workflow.predecessor(name='job-local-2')
+        print(m_parent)
+        #f_parent = f_workflow.predecessor(name='b')
+        #print(f_parent)
+        Benchmark.Stop()
+        assert 'job-local-1' in m_parent
+       # assert 'a' in f_parent
+
+    def test_get_predecessors(self):
+        HEADING()
+        Benchmark.Start()
+        m_predecessors = m_workflow.get_predecessors(name='job-local-2')
+        #f_predecessors = f_workflow.get_predecessors()
+        print(m_predecessors)
+        #print(f_predecessors)
+
     def test_yaml_dump(self):
         HEADING()
         global f_workflow
@@ -191,33 +210,26 @@ class Test_workflow_new:
         print(mstatus)
         assert True
 
-class rest:
+    def test_list_dependencies(self):
+        HEADING()
+        global f_workflow
+        global m_workflow
+        Benchmark.Start()
+        f_dependencies = f_workflow.list_dependencies()
+        m_dependencies = m_workflow.list_dependencies()
+        print(f_dependencies)
+        print(m_dependencies)
+        assert True
 
     def test_json_dump(self):
         HEADING()
         global f_workflow
         global m_workflow
         Benchmark.Start()
-        m_workflow.json(filepath='~/experiment/out-file.JSON')
-        f_workflow.json(filepath='~/experiment/out-file.JSON')
+        f_json = f_workflow.json()
+        m_json = m_workflow.json()
         Benchmark.Stop()
-        assert os.path.exists(path_expand('~/experiment/out-file.JSON')) is True
-        f = open(path_expand('~/experiment/out-file.JSON'))
-        data = json.load(f)
-        print(type(data))
-        print('AAAAAAA', data)
-        # assert 'created:' in data
-        # assert 'end' in data
-        # assert 'user' in data
-        f.close()
-
-    # the issue with the json method is that the json built in method does
-    # not allow for datetime values. Not sure how to get around this.
-
-    def test_predecessor(self):
-        HEADING()
-        Benchmark.Start()
-        parents = w.predecessor(name='job-local-2')
-        print(parents)
-        Benchmark.Stop()
-        assert 'start', 'job-local-1' in parents
+        print(f_json)
+        print(m_json)
+        assert '"dependencies": {' in m_json
+        assert ' "jobs: ": {' in f_json
