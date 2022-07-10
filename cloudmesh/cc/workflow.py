@@ -781,7 +781,7 @@ class Workflow:
     def remove_workflow(self):
         # gvl rrewritten
         d = os.path.dirname(self.filename)
-        os.system("rm -r {d}")
+        os.system(f"rm -r {d}")
         self.graph = None
         self.jobs = None
 
@@ -792,9 +792,11 @@ class Workflow:
 
         # remove dependencies to job
         dependencies = self.graph.edges.items()
-        for edge, dependency in dependencies:
-            if dependency["source"] == name or dependency["destinatiom"] == name:
+        for edge, dependency in list(dependencies):
+            if dependency["source"] == name or dependency["destination"] == name:
                 del self.graph.edges[edge]
+
+        self.save()
 
     def status(self):
         # gvl implemented but not tested
