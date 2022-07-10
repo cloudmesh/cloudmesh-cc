@@ -48,6 +48,9 @@ if username is None:
         quit()
     variables["username"] = username
 
+global f_workflow  # this workflow is the one that is created from a pre-loaded file
+global m_workflow  # this workflow is teh one that is created manually
+
 
 class Test_workflow_new:
 
@@ -79,19 +82,15 @@ class Test_workflow_new:
         assert len(m_workflow.graph.nodes) == 0   # this tests that the load function actually added the nodes. There are no nodes
         assert len(m_workflow.graph.edges) == 0  # this tests that the load function actually added the edges. There are no edges
 
-
-class rest:
-
     def test_set_up(self):
         """
-        establishing a queues object, saving 2 queues to it, each with 10 jobs
+        creates a manually done workflow. This workflow is saved under m_workflow
         :return: no return
         """
         HEADING()
-        global w
+        global m_workflow
         global username
         Benchmark.Start()
-        w = Workflow()
 
         login = {
             "localhost": {"user": "gregor", "host": "local"},
@@ -105,8 +104,8 @@ class rest:
         user = login["localhost"]["user"]
         host = login["localhost"]["host"]
 
-        w.add_job(name="start", kind="local", user=user, host=host)
-        w.add_job(name="end", kind="local", user=user, host=host)
+        m_workflow.add_job(name="start", kind="local", user=user, host=host)
+        m_workflow.add_job(name="end", kind="local", user=user, host=host)
 
         for host, kind in [("localhost", "local"),
                            ("rivanna", "remote-slurm"),
@@ -114,23 +113,25 @@ class rest:
             print("HOST:", host)
             user = login[host]["user"]
             host = login[host]["host"]
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            m_workflow.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            m_workflow.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            m_workflow.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
             n = n + 1
 
             first = n - 3
             second = n - 2
             third = n - 1
-            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
-            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
-            w.add_dependencies(f"job-{host}-{third},end")
-            w.add_dependencies(f"start,job-{host}-{first}")
+            m_workflow.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+            m_workflow.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+            m_workflow.add_dependencies(f"job-{host}-{third},end")
+            m_workflow.add_dependencies(f"start,job-{host}-{first}")
 
         Benchmark.Stop()
-        print(len(w.jobs) == n)
+        print(len(m_workflow.jobs) == n)
+
+class rest:
 
     def test_yaml_dump(self):
         HEADING()
