@@ -1,5 +1,6 @@
 import io
 import time
+from pprint import pprint
 
 import graphviz
 import matplotlib.image as mpimg
@@ -22,6 +23,8 @@ from cloudmesh.common.util import banner
 import os
 from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
 import json
+from cloudmesh.common.Printer import PrettyTable
+from cloudmesh.common.Printer import Printer
 
 """
 This class enables to manage dependencies between jobs.
@@ -822,4 +825,6 @@ class Workflow:
 
 
     def list_dependencies(self):
-        return self.graph.edges
+        edges = self.dependencies
+        return Printer.dict(edges)
+
