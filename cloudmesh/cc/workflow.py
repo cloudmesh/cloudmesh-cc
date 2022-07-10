@@ -480,13 +480,22 @@ class Workflow:
 
         if graph is not None:
 
-            for name, node in graph["cloudmesh"]["nodes"].items():
-                print ("Adding:", name)
+            # for name, node in graph["Jobs"]["a"].items():
+            #     print ("Adding:", name)
+            #     self.add_job(**node)
+
+            nodes = graph['Jobs']
+
+            for name in nodes:
+                print(name)
+                node = nodes[name]
+                print(node)
                 self.add_job(**node)
 
-            for edge in graph["cloudmesh"]["dependencies"]:
-                print("Dependency:", edge)
-                self.add_dependencies(edge)
+
+            # for edge in graph["cloudmesh"]["dependencies"]:
+            #     print("Dependency:", edge)
+            #     self.add_dependencies(edge)
 
 
 
@@ -505,9 +514,9 @@ class Workflow:
                 status="ready",
                 progress=0,
                 script=None,
-                pid=None
+                pid=None,
+                **argv
                 ):
-
         label = label or name
         user = user or self.user
         host = host or self.host
