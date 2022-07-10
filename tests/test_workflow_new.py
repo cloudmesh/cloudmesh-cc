@@ -4,6 +4,7 @@
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
 # ##############################################################
 import os.path
+import shutil
 from pprint import pprint
 import shelve
 import pytest
@@ -53,6 +54,17 @@ global m_workflow  # this workflow is teh one that is created manually
 
 
 class Test_workflow_new:
+
+    def test_create_run(self):
+        """
+        This is simply to remove the ~/.cloudmesh/workflow directory in order to
+        properly test the manually created workflow
+        :return:
+        """
+        os.system("rm -r ~/.cloudmesh/workflow")
+        exp = path_expand("~/.cloudmesh/workflow")
+        shutil.rmtree(exp, ignore_errors=True)
+        assert not os.path.isfile(exp)
 
     def test_load_workflow(self):
         """
