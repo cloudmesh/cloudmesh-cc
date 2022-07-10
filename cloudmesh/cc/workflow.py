@@ -402,7 +402,6 @@ class Workflow:
         # gvl implemented but not tested
         return self.graph.edges  # [name]
 
-
     def predecessor(self, name):
         # GVL reimplemented but not tested
         predecessors = []
@@ -421,10 +420,11 @@ class Workflow:
         :return:
         """
         parents = []
-        candidates = self.predecessors(name)
+        candidates = self.predecessor(name)
         print(candidates)
         for candidate in candidates:
-            if candidate['progress'] != 100:
+            node = self.graph.nodes[candidate]
+            if node['progress'] != 100:
                 parents.append(candidate)
 
         if parents == []:
@@ -561,9 +561,7 @@ class Workflow:
 
     def add_dependencies(self, dependency):
         self.graph.add_dependencies(dependency=dependency)
-        print('here')
         self.save()
-        print('there')
 
     def update_status(self, name, status):
         self.graph[name]["status"] = status
@@ -821,3 +819,7 @@ class Workflow:
         _status["workflow"] = s
 
         return _status
+
+
+    def list_dependencies(self):
+        return self.graph.edges
