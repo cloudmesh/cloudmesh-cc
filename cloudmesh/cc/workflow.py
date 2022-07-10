@@ -348,12 +348,14 @@ class Workflow:
         # if graph is not None, overwrite the graph potentially read from filename
 
         # gvl reimplemented but did not test
-        if filename:
-            base = os.path.basename(filename).replace(".yaml", "")
-            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
-            self.name = name
+        if filename is not None:
+            # the commented out code below is NOT necessary I think if the file is being inserted
+            # base = os.path.basename(filename).replace(".yaml", "")
+            # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            # self.name = name
+            self.filename = filename
 
-        if filename is None and name is None:
+        if filename is None:
             base =  "workflow"
             self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
             self.name = name
@@ -361,26 +363,13 @@ class Workflow:
 
         self.filename = path_expand(self.filename)
 
-        print("Filename:", filename)
+        print("Filename:", self.filename)
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        self.load(filename)
-
-        # should this go into graph?
-        # if Path.exists(filename):
-        #    self.workflow = self.load(filename)
-        # else:
-        #    directory = path_expand(filename)
-        #    Shell.mkdir(directory)
-        #    self.data = {}
-        #    self.save()
-
-        # self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
-
-        # self.label = None
+        self.load(self.filename)
 
 
     @property
@@ -464,16 +453,28 @@ class Workflow:
           dependencies:
             - a,b
         """
+
+        # added if filename does not exist to this, to create the directory and file
+        if not os.path.exists(filename):
+            directory, file = os.path.split(filename)
+            Shell.mkdir(directory)
+            command = f'cd {directory} && touch {file}'
+            r = Shell.run(command)
+            print(r)
+
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
+            print(graph)
 
-        for name, node in graph["cloudmesh"]["nodes"].items():
-            print ("Adding:", name)
-            self.add_job(**node)
+        if graph is not None:
 
-        for edge in graph["cloudmesh"]["dependencies"]:
-            print("Dependency:", edge)
-            self.add_dependencies(edge)
+            for name, node in graph["cloudmesh"]["nodes"].items():
+                print ("Adding:", name)
+                self.add_job(**node)
+
+            for edge in graph["cloudmesh"]["dependencies"]:
+                print("Dependency:", edge)
+                self.add_dependencies(edge)
 
 
 
