@@ -780,10 +780,12 @@ class Workflow:
 
     def remove_workflow(self):
         # gvl rrewritten
-        d = os.path.dirname(self.filename)
-        os.system(f"rm -r {d}")
+        # this method needs to be vastly improved before used
+        d = os.path.dirname('workflow.yaml')
+        os.system(f"rm -rf {d}")
         self.graph = None
-        self.jobs = None
+        self.graph.nodes = None
+        self.graph.edges = None
 
     def remove_job(self, name):
         # gvl rewritten by gregor not tested
@@ -802,10 +804,10 @@ class Workflow:
         # gvl implemented but not tested
         s = "done"
         _status = {"workflow": s,
-                  "job": None}
+                  "job": {}}
         for name in self.jobs:
-            state = self.jobs["status"]
-            progress = self.jobs["progress"]
+            state = self.jobs[name]["status"]
+            progress = self.jobs[name]["progress"]
             _status["job"][name] = {
                 "status": state,
                 "progress": progress
@@ -817,3 +819,5 @@ class Workflow:
             elif state in ["filed"]:
                 s = "failed"
         _status["workflow"] = s
+
+        return _status
