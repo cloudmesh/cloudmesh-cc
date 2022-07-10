@@ -160,6 +160,16 @@ class Test_workflow_new:
         assert "b" in f_data
         assert "jobs" in f_data
 
+    def test_delete_job(self):
+        HEADING()
+        global f_workflow
+        global m_workflow
+        Benchmark.Start()
+        f_workflow.remove_job(name='a')
+        m_workflow.remove_job(name='job-local-1')
+        assert 'a' not in f_workflow.graph.nodes
+        assert 'job-local-1' not in m_workflow.graph.nodes
+
 class rest:
 
     def test_json_dump(self):
