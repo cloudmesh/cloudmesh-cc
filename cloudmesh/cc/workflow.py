@@ -246,7 +246,19 @@ class Graph:
                 pass
             # and so on
 
-    def save(self,
+    def save_to_file(self, filename):
+
+        data = {
+            'Jobs': dict(self.nodes),
+            'Dependencies': dict(self.edges),
+        }
+
+        with open(filename, 'w') as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        outfile.close()
+
+    def save_picture(self,
              filename="test.svg",
              colors=None,
              layout=nx.spring_layout,
@@ -478,9 +490,11 @@ class Workflow:
 
 
 
-    def save(self, filename):
+    def save(self):
         # implicitly done when using yamldb
-        self.graph.save()
+        print('SSABBVE')
+        print(self.filename)
+        self.graph.save_to_file(filename=self.filename)
 
     def add_job(self,
                 name=None,
@@ -524,12 +538,18 @@ class Workflow:
             script=script,
             instance=None
         )
+        print('here')
+        self.save()
+        print('there')
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
 
     def add_dependencies(self, dependency):
         self.graph.add_dependencies(dependency=dependency)
+        print('here')
+        self.save()
+        print('there')
 
     def update_status(self, name, status):
         self.graph[name]["status"] = status
