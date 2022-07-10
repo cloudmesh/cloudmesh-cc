@@ -1,26 +1,27 @@
-Jobs:
-  a:
-    label: job-1-label
-    kind: local
-    user: gregor
-    host: localhost
-    status: ready
-    progress: 0
-    created: '2022-07-10 12:50:03.408334'
-    modified: '2022-07-10 12:50:03.408334'
-    script: test-a.sh
-    instance: null
-    name: a
-  b:
-    label: job-2-label
-    kind: local
-    user: gregor
-    host: localhost
-    status: ready
-    progress: 0
-    created: '2022-07-10 12:50:03.409328'
-    modified: '2022-07-10 12:50:03.409328'
-    script: test-a.sh
-    instance: null
-    name: b
-Dependencies: {}
+workflow:
+  jobs:
+    a:
+      label: job-1-label
+      kind: local
+      user: gregor
+      host: localhost
+      status: ready
+      progress: 0
+      created: '2022-07-10 16:59:42.107788'
+      modified: '2022-07-10 16:59:42.107788'
+      script: test-a.sh
+      instance: null
+      name: a
+    b:
+      label: job-2-label
+      kind: local
+      user: gregor
+      host: localhost
+      status: ready
+      progress: 0
+      created: '2022-07-10 16:59:42.108759'
+      modified: '2022-07-10 16:59:42.108759'
+      script: test-a.sh
+      instance: null
+      name: b
+  dependencies: {}
