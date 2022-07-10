@@ -1,5 +1,5 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow_three.py
+# pytest -v -x --capture=no tests/test_workflow_new.py
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
 # ##############################################################
@@ -48,16 +48,39 @@ if username is None:
         quit()
     variables["username"] = username
 
-class Test_workflow:
+
+class Test_workflow_new:
 
     def test_load_workflow(self):
+        """
+        Testing if the a workflow can be made from loading a yaml file
+        :return:
+        """
         HEADING()
-        global w
+        global f_workflow
         Benchmark.Start()
-        w = Workflow()
-        w.load("tests/workflow.yaml")
+        f_workflow = Workflow(filename="tests/workflow.yaml")
         Benchmark.Stop()
-        print(w.graph)
+        print(f_workflow.graph)
+        assert f_workflow.jobs is not None  # this tests that the load function actually added the nodes
+        assert f_workflow.graph.edges is not None  # this tests that the load function actually added the edges
+
+    def test_manual_workflow(self):
+        """
+        Testing if the initialization of a workflow can be made manually.
+        :return:
+        """
+        HEADING()
+        global m_workflow
+        Benchmark.Start()
+        m_workflow = Workflow()
+        Benchmark.Stop()
+        print(m_workflow.graph)
+        assert len(m_workflow.graph.nodes) == 0   # this tests that the load function actually added the nodes. There are no nodes
+        assert len(m_workflow.graph.edges) == 0  # this tests that the load function actually added the edges. There are no edges
+
+
+class rest:
 
     def test_set_up(self):
         """
@@ -72,7 +95,8 @@ class Test_workflow:
 
         login = {
             "localhost": {"user": "gregor", "host": "local"},
-            "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+            "rivanna": {"user": f"{username}",
+                        "host": "rivanna.hpc.virginia.edu"},
             "pi": {"user": "gregor", "host": "red"},
         }
 
@@ -144,4 +168,4 @@ class Test_workflow:
         parents = w.predecessor(name='job-local-2')
         print(parents)
         Benchmark.Stop()
-        assert 'start','job-local-1' in parents
+        assert 'start', 'job-local-1' in parents
