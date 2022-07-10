@@ -249,8 +249,11 @@ class Graph:
     def save_to_file(self, filename):
 
         data = {
-            'Jobs': dict(self.nodes),
-            'Dependencies': dict(self.edges),
+            'workflow':
+                {
+                    'jobs': dict(self.nodes),
+                    'dependencies': dict(self.edges),
+             }
         }
 
         with open(filename, 'w') as outfile:
@@ -484,25 +487,23 @@ class Workflow:
             #     print ("Adding:", name)
             #     self.add_job(**node)
 
-            nodes = graph['Jobs']
-
-            for name in nodes:
-                print(name)
-                node = nodes[name]
-                print(node)
-                self.add_job(**node)
-
-
             # for edge in graph["cloudmesh"]["dependencies"]:
             #     print("Dependency:", edge)
             #     self.add_dependencies(edge)
 
+            nodes = graph['workflow']['jobs']
+            edges = graph['workflow']['dependencies']
 
+            for name, node in nodes.items():
+                print('Adding node . . .', name)
+                self.add_job(**node)
+
+            for name, edge in edges.items():
+                print('Adding edge . . . ', name)
+                self.add_dependencies(edge)
 
     def save(self):
         # implicitly done when using yamldb
-        print('SSABBVE')
-        print(self.filename)
         self.graph.save_to_file(filename=self.filename)
 
     def add_job(self,
@@ -512,6 +513,9 @@ class Workflow:
                 label=None,
                 kind="local",
                 status="ready",
+                created=None,
+                modified=None,
+                instance=None,
                 progress=0,
                 script=None,
                 pid=None,
@@ -521,6 +525,7 @@ class Workflow:
         user = user or self.user
         host = host or self.host
         defined = True
+
         if name is None:
             defined = False
             Console.error("name is None")
@@ -532,6 +537,7 @@ class Workflow:
             Console.error("host is None")
         if not defined:
             raise ValueError("user or host not specified")
+
 
         now = str(DateTime.now())
         self.graph.add_node(
@@ -545,11 +551,10 @@ class Workflow:
             created=now,
             modified=now,
             script=script,
-            instance=None
+            instance=None,
+            **argv
         )
-        print('here')
         self.save()
-        print('there')
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
