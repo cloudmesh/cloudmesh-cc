@@ -131,26 +131,34 @@ class Test_workflow_new:
         Benchmark.Stop()
         print(len(m_workflow.jobs) == n)
 
-class rest:
-
     def test_yaml_dump(self):
         HEADING()
-        global w
+        global f_workflow
+        global m_workflow
         Benchmark.Start()
-        data = w.yaml
-        print(data)
+        f_data = f_workflow.yaml
+        m_data = m_workflow.yaml
+        print(f_data)
+        print(m_data)
         Benchmark.Stop()
-        assert "start" in data
-        assert "end" in data
-        assert "user" in data
+        assert "start" in m_data
+        assert "end" in m_data
+        assert "user" in m_data
+        assert "a" in f_data
+        assert "b" in f_data
+        assert "jobs" in f_data
+
+class rest:
 
     def test_json_dump(self):
         HEADING()
-        global w
+        global f_workflow
+        global m_workflow
         Benchmark.Start()
-        w.json(filepath='~/experiment/out-file.JSON')
+        m_workflow.json(filepath='~/experiment/out-file.JSON')
+        f_workflow.json(filepath='~/experiment/out-file.JSON')
         Benchmark.Stop()
-        assert os.path.exists(path_expand('~/experiment/out-file.JSON')) == True
+        assert os.path.exists(path_expand('~/experiment/out-file.JSON')) is True
         f = open(path_expand('~/experiment/out-file.JSON'))
         data = json.load(f)
         print(type(data))
