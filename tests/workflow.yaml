@@ -1,20 +1,33 @@
-cloudmesh:
-  nodes:
-    a:
-       name: a
-       user: gregor
-       host: localhost
-       kind: local
-       status: ready
-       label: job-1-label
-       script: test-a.sh
-    b:
-       name: b
-       user: gregor
-       host: localhost
-       kind: local
-       status: ready
-       label: job-2-label
-       script: test-a.sh
-  dependencies:
-    - a,b
+Jobs:
+  a:
+    label: job-1-label
+    kind: local
+    user: gregor
+    host: localhost
+    status: ready
+    progress: 0
+    created: '2022-07-10 12:23:43.108133'
+    modified: '2022-07-10 12:23:43.108133'
+    script: test-a.sh
+    instance: null
+    name: a
+    parent: []
+  b:
+    label: job-2-label
+    kind: local
+    user: gregor
+    host: localhost
+    status: ready
+    progress: 0
+    created: '2022-07-10 12:23:43.110260'
+    modified: '2022-07-10 12:23:43.110260'
+    script: test-a.sh
+    instance: null
+    name: b
+    parent:
+    - a
+Dependencies:
+  a-b:
+    source: a
+    destination: b
+    name: a-b
