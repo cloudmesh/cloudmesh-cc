@@ -170,6 +170,27 @@ class Test_workflow_new:
         assert 'a' not in f_workflow.graph.nodes
         assert 'job-local-1' not in m_workflow.graph.nodes
 
+    # def test_delete_workflow(self):
+    #     HEADING()
+    #     global f_workflow
+    #     global m_workflow
+    #     Benchmark.Start()
+    #     f_workflow.remove_workflow()
+    #     m_workflow.remove_workflow()
+    #     assert not os.path.isfile('~/.cloudmesh/workflow/workflow.yaml')
+    #     assert not os.path.isfile('tests/workflow.yaml')
+
+    def test_workflow_status(self):
+        HEADING()
+        global f_workflow
+        global m_workflow
+        Benchmark.Start()
+        fstatus= f_workflow.status()
+        mstatus = m_workflow.status()
+        print(fstatus)
+        print(mstatus)
+        assert True
+
 class rest:
 
     def test_json_dump(self):
