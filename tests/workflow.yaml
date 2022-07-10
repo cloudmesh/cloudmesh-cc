@@ -6,12 +6,11 @@ Jobs:
     host: localhost
     status: ready
     progress: 0
-    created: '2022-07-10 12:23:43.108133'
-    modified: '2022-07-10 12:23:43.108133'
+    created: '2022-07-10 12:50:03.408334'
+    modified: '2022-07-10 12:50:03.408334'
     script: test-a.sh
     instance: null
     name: a
-    parent: []
   b:
     label: job-2-label
     kind: local
@@ -19,15 +18,9 @@ Jobs:
     host: localhost
     status: ready
     progress: 0
-    created: '2022-07-10 12:23:43.110260'
-    modified: '2022-07-10 12:23:43.110260'
+    created: '2022-07-10 12:50:03.409328'
+    modified: '2022-07-10 12:50:03.409328'
     script: test-a.sh
     instance: null
     name: b
-    parent:
-    - a
-Dependencies:
-  a-b:
-    source: a
-    destination: b
-    name: a-b
+Dependencies: {}
