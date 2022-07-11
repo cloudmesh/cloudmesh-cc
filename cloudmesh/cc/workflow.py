@@ -366,7 +366,7 @@ class Workflow:
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        self.load(self.filename)
+        #self.load(self.filename)
 
         # should this go into graph?
         # if Path.exists(filename):
