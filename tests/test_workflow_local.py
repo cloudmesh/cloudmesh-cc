@@ -47,14 +47,17 @@ if username is None:
         quit()
     variables["username"] = username
 
+global w
+
 class Test_workflow:
 
     def test_load_workflow(self):
         HEADING()
         global w
         Benchmark.Start()
-        w = Workflow()
-        w.load("tests/workflow.yaml")
+        w = Workflow(name='workflow', filename=path_expand("tests/workflow.yaml"))
+        print(w.filename)
+        #w.load(filename=)
         Benchmark.Stop()
         print(w.graph)
 
@@ -74,7 +77,7 @@ class Test_workflow:
         global w
         global username
         Benchmark.Start()
-        w = Workflow()
+        #w = Workflow(filename=path_expand("tests/workflow.yaml"))
 
         login = {
             "localhost": {"user": "gregor", "host": "local"},
