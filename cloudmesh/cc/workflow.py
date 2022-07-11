@@ -1,6 +1,5 @@
 import io
 import time
-from pprint import pprint
 
 import graphviz
 import matplotlib.image as mpimg
@@ -23,8 +22,6 @@ from cloudmesh.common.util import banner
 import os
 from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
 import json
-from cloudmesh.common.Printer import PrettyTable
-from cloudmesh.common.Printer import Printer
 
 """
 This class enables to manage dependencies between jobs.
@@ -66,10 +63,10 @@ g.set_color("status",
              "done": "white"}
              "other": "grey"
             )
-            
+
 as you can see you can also define colors for other values that could be set in this case 
 for the node status. To display the graph you can say:
-            
+
 g.show()
 
 """
@@ -104,7 +101,6 @@ class Graph:
                        done="#CCFFCC",
                        failed="#FFCCCC",
                        running='#CCE5FF')
-
 
     def add_color(self, key, **colors):
         if self.colors is None:
@@ -159,7 +155,6 @@ class Graph:
             self.nodes[source]["parent"] = []
         self.nodes[destination]["parent"].append(source)
 
-
     def done(self, parent):
         """
         removes from all nodes the names parent
@@ -185,7 +180,8 @@ class Graph:
         result = []
         for name in self.nodes:
             try:
-                if self.nodes[name]["progress"] != 100 and len(self.nodes[name]["parent"]) == 0:
+                if self.nodes[name]["progress"] != 100 and len(
+                        self.nodes[name]["parent"]) == 0:
                     result.append(name)
             except:
                 pass
@@ -249,22 +245,7 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename):
-
-        data = {
-            'workflow':
-                {
-                    'jobs': dict(self.nodes),
-                    'dependencies': dict(self.edges),
-             }
-        }
-
-        with open(filename, 'w') as outfile:
-            yaml.dump(data, outfile, default_flow_style=False)
-
-        outfile.close()
-
-    def save_picture(self,
+    def save(self,
              filename="test.svg",
              colors=None,
              layout=nx.spring_layout,
@@ -282,7 +263,7 @@ class Graph:
             else:
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
-                if name in ["start","end"]:
+                if name in ["start", "end"]:
                     shape = "diamond"
                 else:
                     shape = "rounded"
@@ -366,29 +347,38 @@ class Workflow:
         # if graph is not None, overwrite the graph potentially read from filename
 
         # gvl reimplemented but did not test
-        if filename is not None:
-            # the commented out code below is NOT necessary I think if the file is being inserted
-            # base = os.path.basename(filename).replace(".yaml", "")
-            # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
-            # self.name = name
-            self.filename = filename
-
-        if filename is None:
-            base =  "workflow"
+        if filename:
+            base = os.path.basename(filename).replace(".yaml", "")
             self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
             self.name = name
 
+        if filename is None and name is None:
+            base = "workflow"
+            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            self.name = name
 
         self.filename = path_expand(self.filename)
 
-        print("Filename:", self.filename)
+        print("Filename:", filename)
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        self.load(self.filename)
+        self.load(filename)
 
+        # should this go into graph?
+        # if Path.exists(filename):
+        #    self.workflow = self.load(filename)
+        # else:
+        #    directory = path_expand(filename)
+        #    Shell.mkdir(directory)
+        #    self.data = {}
+        #    self.save()
+
+        # self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
+
+        # self.label = None
 
     @property
     def jobs(self):
@@ -423,18 +413,16 @@ class Workflow:
         :return:
         """
         parents = []
-        candidates = self.predecessor(name)
+        candidates = self.predecessors(name)
         print(candidates)
         for candidate in candidates:
-            node = self.graph.nodes[candidate]
-            if node['progress'] != 100:
+            if candidate['progress'] != 100:
                 parents.append(candidate)
 
         if parents == []:
             return None
         else:
             return parents
-
 
     def load(self, filename, clear=False):
         """
@@ -471,43 +459,20 @@ class Workflow:
           dependencies:
             - a,b
         """
-
-        # added if filename does not exist to this, to create the directory and file
-        if not os.path.exists(filename):
-            directory, file = os.path.split(filename)
-            Shell.mkdir(directory)
-            command = f'cd {directory} && touch {file}'
-            r = Shell.run(command)
-            print(r)
-
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
-            print(graph)
 
-        if graph is not None:
+        for name, node in graph["cloudmesh"]["nodes"].items():
+            print("Adding:", name)
+            self.add_job(**node)
 
-            # for name, node in graph["Jobs"]["a"].items():
-            #     print ("Adding:", name)
-            #     self.add_job(**node)
+        for edge in graph["cloudmesh"]["dependencies"]:
+            print("Dependency:", edge)
+            self.add_dependencies(edge)
 
-            # for edge in graph["cloudmesh"]["dependencies"]:
-            #     print("Dependency:", edge)
-            #     self.add_dependencies(edge)
-
-            nodes = graph['workflow']['jobs']
-            edges = graph['workflow']['dependencies']
-
-            for name, node in nodes.items():
-                print('Adding node . . .', name)
-                self.add_job(**node)
-
-            for name, edge in edges.items():
-                print('Adding edge . . . ', name)
-                self.add_dependencies(edge)
-
-    def save(self):
+    def save(self, filename):
         # implicitly done when using yamldb
-        self.graph.save_to_file(filename=self.filename)
+        self.graph.save()
 
     def add_job(self,
                 name=None,
@@ -516,19 +481,15 @@ class Workflow:
                 label=None,
                 kind="local",
                 status="ready",
-                created=None,
-                modified=None,
-                instance=None,
                 progress=0,
                 script=None,
-                pid=None,
-                **argv
+                pid=None
                 ):
+
         label = label or name
         user = user or self.user
         host = host or self.host
         defined = True
-
         if name is None:
             defined = False
             Console.error("name is None")
@@ -540,7 +501,6 @@ class Workflow:
             Console.error("host is None")
         if not defined:
             raise ValueError("user or host not specified")
-
 
         now = str(DateTime.now())
         self.graph.add_node(
@@ -554,37 +514,35 @@ class Workflow:
             created=now,
             modified=now,
             script=script,
-            instance=None,
-            **argv
+            instance=None
         )
-        self.save()
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
 
     def add_dependencies(self, dependency):
         self.graph.add_dependencies(dependency=dependency)
-        self.save()
 
     def update_status(self, name, status):
         self.graph[name]["status"] = status
 
-    def run_parallel(self, order=None, parallel=False, dryrun=False, show=True, period=0.5):
+    def run_parallel(self, order=None, parallel=False, dryrun=False, show=True,
+                     period=0.5):
         finished = False
 
         undefined = []
-        completed = [] # list of completed nodes
-        running = [] # list of runiing nodes
+        completed = []  # list of completed nodes
+        running = []  # list of runiing nodes
         outstanding = list(self.jobs)  # list of outstanding nodes
-        failed = [] # list of failed nodes
+        failed = []  # list of failed nodes
 
         def info():
-            print ("Undefined:  ", undefined)
-            print ("Completed:  ", completed)
-            print ("Running:    ", running)
-            print ("Outstanding:", outstanding)
-            print ("Failed:     ", failed)
-            print ("Ready:      ", self.graph.todo())
+            print("Undefined:  ", undefined)
+            print("Completed:  ", completed)
+            print("Running:    ", running)
+            print("Outstanding:", outstanding)
+            print("Failed:     ", failed)
+            print("Ready:      ", self.graph.todo())
 
         def update(name):
             banner(f"update {name}")
@@ -750,7 +708,7 @@ class Workflow:
     def yaml(self):
         # gvl reimplemented not tested
         data = {
-            'jobs: ' : dict(self.jobs),
+            'jobs: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return yaml.dump(data)
@@ -758,11 +716,10 @@ class Workflow:
     def json(self, filepath=None):
         # gvl reimplemented not tested
         data = {
-            'jobs: ' : dict(self.jobs),
+            'jobs: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return json.dumps(data, indent=2)
-
 
     @property
     def table(self):
@@ -778,15 +735,12 @@ class Workflow:
                                     'parent',
                                     'kind'])
 
-
     def remove_workflow(self):
         # gvl rrewritten
-        # this method needs to be vastly improved before used
-        d = os.path.dirname('workflow.yaml')
-        os.system(f"rm -rf {d}")
+        d = os.path.dirname(self.filename)
+        os.system("rm -r {d}")
         self.graph = None
-        self.graph.nodes = None
-        self.graph.edges = None
+        self.jobs = None
 
     def remove_job(self, name):
         # gvl rewritten by gregor not tested
@@ -795,20 +749,19 @@ class Workflow:
 
         # remove dependencies to job
         dependencies = self.graph.edges.items()
-        for edge, dependency in list(dependencies):
-            if dependency["source"] == name or dependency["destination"] == name:
+        for edge, dependency in dependencies:
+            if dependency["source"] == name or dependency[
+                "destinatiom"] == name:
                 del self.graph.edges[edge]
-
-        self.save()
 
     def status(self):
         # gvl implemented but not tested
         s = "done"
         _status = {"workflow": s,
-                  "job": {}}
+                   "job": None}
         for name in self.jobs:
-            state = self.jobs[name]["status"]
-            progress = self.jobs[name]["progress"]
+            state = self.jobs["status"]
+            progress = self.jobs["progress"]
             _status["job"][name] = {
                 "status": state,
                 "progress": progress
@@ -820,11 +773,3 @@ class Workflow:
             elif state in ["filed"]:
                 s = "failed"
         _status["workflow"] = s
-
-        return _status
-
-
-    def list_dependencies(self):
-        edges = self.dependencies
-        return Printer.dict(edges)
-
