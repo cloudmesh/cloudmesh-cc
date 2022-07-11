@@ -90,6 +90,18 @@ def load_workflow(name:str):
 
 @app.get("/workflows/")
 def list_workflows():
+    """
+    this command reacts dependent on which options we specify
+                If we do not specify anything the workflows will be listed.
+                If we specify a workflow name only that workflow will be listed
+                If we also specify a job the job will be listed.
+                If we only specif the job name, all jobs with that name from all
+                workflows will be returned.
+    :param name:
+    :param job:
+    :return:
+    """
+
     try:
         directory = path_expand(f"~/.cloudmesh/workflow/")
         result = glob.glob(f"{directory}/*")
@@ -129,33 +141,33 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.delete("/workflow/{name}/{job}")
+@app.delete("/delete/{name}/{job}")
 def delete_workflow(name:str, job:str):
     """
-    this command reacts dependent on which options we specify
-                If we do not specify anything the workflows will be listed.
-                If we specify a workflow name only that workflow will be listed
-                If we also specify a job the job will be listed.
-                If we only specif the job name, all jobs with that name from all
-                workflows will be returned.
+    deletes the job in the specified workflow if specified and the workflow otherwise
     :param name:
     :param job:
     :return:
     """
     if job is not None:
-        try:
-            directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-            os.system(f" rm -r {directory}")
-            return {"message": f"The workflow {name} was deleted  and the directory {directory} was removed"}
-        except Exception as e:
-            return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
-    else:
+    # if we specify to delete the job
         try:
             w = load_workflow(name)
             print(w[job])
+            w.remove_job(name)
             return {name: w}
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
+    else:
+    # if we specify to delete the workflow
+        try:
+            # w = load_workflow(name)
+            directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+            os.system(f" rm -r {directory}")
+            return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
+        except Exception as e:
+            return {"message": f"There was an error locating the workflow '{name}'"}
+
 
 @app.get("/workflow/{name}")
 def get_workflow(name: str, job: str = None):
