@@ -55,9 +55,9 @@ class Test_workflow:
         HEADING()
         global w
         Benchmark.Start()
-        w = Workflow(name='workflow', filename=path_expand("tests/workflow.yaml"))
+        w = Workflow()
         print(w.filename)
-        #w.load(filename=)
+        w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
         Benchmark.Stop()
         print(w.graph)
 
@@ -77,7 +77,7 @@ class Test_workflow:
         global w
         global username
         Benchmark.Start()
-        #w = Workflow(filename=path_expand("tests/workflow.yaml"))
+        w = Workflow(filename=path_expand("tests/workflow.yaml"))
 
         login = {
             "localhost": {"user": "gregor", "host": "local"},
