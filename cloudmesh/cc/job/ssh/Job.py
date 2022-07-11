@@ -80,12 +80,18 @@ class Job():
         os.system(command)
         if os_is_windows():
 
-            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
+            command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
             print(command)
-            state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
-            state = state.decode('utf-8')
-            if state == '':
-                state = 0
+            state = os.system(command)
+            # ps = subprocess.Popen(('bash', '-c', f'"{command} ; exit 0" &'), stdout=subprocess.PIPE)
+            # print(ps)
+            # print(type(ps))
+            # output = subprocess.check_output(stdin=ps.stdout)
+            # ps.wait()
+            # state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
+            #state = state.decode('utf-8')
+            #if state == '':
+            #    state = 0
 
         else:
             command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
