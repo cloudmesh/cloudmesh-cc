@@ -245,6 +245,21 @@ class Graph:
                 pass
             # and so on
 
+    def save_to_file(self, filename):
+
+        data = {
+            'cloudmesh':
+                {
+                    'nodes': dict(self.nodes),
+                    'dependencies': dict(self.edges),
+             }
+        }
+
+        with open(filename, 'w') as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        outfile.close()
+
     def save(self,
              filename="test.svg",
              colors=None,
@@ -350,7 +365,7 @@ class Workflow:
         if filename:
             # base = os.path.basename(filename).replace(".yaml", "")
             # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
-            # self.name = name
+            self.name = name
             self.filename = filename
 
         if filename is None and name is None:
@@ -366,7 +381,7 @@ class Workflow:
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        #self.load(self.filename)
+        self.load(self.filename)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -463,18 +478,27 @@ class Workflow:
 
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
+        print("after opening the filename", filename)
 
+
+            # for name, node in graph["cloudmesh"]["nodes"].items():
         for name, node in graph["cloudmesh"]["nodes"].items():
             print("Adding:", name)
             self.add_job(**node)
+
 
         for edge in graph["cloudmesh"]["dependencies"]:
             print("Dependency:", edge)
             self.add_dependencies(edge)
 
+
     def save(self, filename):
-        # implicitly done when using yamldb
-        self.graph.save()
+        if os_is_windows():
+            name = os.path.basename(filename).replace(".yaml","")
+            dir = path_expand(f"~/.cloudmesh/workflow/{name}")
+            location = f"{dir}/{name}.yaml"
+            self.graph.save_to_file(location)
+        self.graph.save_to_file(filename)
 
     def add_job(self,
                 name=None,
@@ -485,7 +509,8 @@ class Workflow:
                 status="ready",
                 progress=0,
                 script=None,
-                pid=None
+                pid=None,
+                **kwargs
                 ):
 
         label = label or name
@@ -751,16 +776,24 @@ class Workflow:
         self.jobs = None
 
     def remove_job(self, name):
-        # gvl rewritten by gregor not tested
         # remove job
-        del self.jobs[name]
+
+        #del self.jobs[name]
+        p = self.jobs.pop(name)
+        # print("popped:",p)
 
         # remove dependencies to job
         dependencies = self.graph.edges.items()
+
+        dellist = []
         for edge, dependency in dependencies:
-            if dependency["source"] == name or dependency[
-                "destinatiom"] == name:
-                del self.graph.edges[edge]
+            if dependency["source"] == name or dependency["destination"] == name:
+                dellist.append(edge)
+
+        for key in dellist:
+            self.graph.edges.pop(key)
+
+        self.save(self.filename)
 
     def status(self):
         # gvl implemented but not tested

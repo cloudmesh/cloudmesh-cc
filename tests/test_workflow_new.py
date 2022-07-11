@@ -143,6 +143,7 @@ class Test_workflow_new:
         Benchmark.Stop()
         print(len(m_workflow.jobs) == n)
 
+
     def test_predecessor(self):
         HEADING()
         Benchmark.Start()
@@ -224,6 +225,13 @@ class Test_workflow_new:
         print(m_json)
         assert '"dependencies": {' in m_json
         assert ' "jobs: ": {' in f_json
+
+    def test_create_run(self):
+        os.system("rm -r ~/experiment")
+        exp = path_expand("~/experiment")
+        shutil.rmtree(exp, ignore_errors=True)
+        os.system('cp tests/workflow-sh/*.sh .')
+        assert not os.path.isfile(exp)
 
     def test_run(self):
         HEADING()

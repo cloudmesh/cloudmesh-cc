@@ -86,10 +86,10 @@ async def item_table(request: Request):
 def load_workflow(name:str):
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
     w = Workflow(name=name, filename=filename)
-    w.load(filename)
+    # w.load(filename)
     return w
 
-@app.get("/workflows/")
+@app.get("/workflows")
 def list_workflows():
     """
     this command reacts dependent on which options we specify
@@ -112,7 +112,7 @@ def list_workflows():
         return {"message": f"No workflows found"}
 
 
-@app.post("/upload/")
+@app.post("/upload")
 async def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
@@ -128,9 +128,7 @@ async def upload_workflow(file: UploadFile = File(...)):
         with open(location, 'wb') as f:
             f.write(contents)
 
-        print("AFTER WRITING TO",location)
-        w = Workflow()
-        w.load(filename=location)
+        w = load_workflow(name)
         print(w.yaml)
     except Exception as e:
         return {"message": f"There was an error uploading the file {e}"}
@@ -146,8 +144,8 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.delete("/delete/{name}/{job}")
-def delete_workflow(name:str, job:str):
+@app.delete("/delete/{name}")
+def delete_workflow(name:str, job: str=None):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
     :param name:
@@ -157,13 +155,12 @@ def delete_workflow(name:str, job:str):
     if job is not None:
     # if we specify to delete the job
         try:
-            print("AAAAAAAAAAAAAAAAAAA")
             w = load_workflow(name)
             # print(w[job])
-            # w.remove_job(name)
-            # return {name: w}
+            w.remove_job(job)
+            return {"message": f"The job {job} was deleted in the workflow {name}"}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
     else:
     # if we specify to delete the workflow
         try:
@@ -172,7 +169,7 @@ def delete_workflow(name:str, job:str):
             os.system(f"rm -r {directory}")
             return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error deleting the workflow '{name}'"}
 
 
 @app.get("/workflow/{name}")
@@ -184,14 +181,14 @@ def get_workflow(name: str, job: str = None):
             result = w[job]
             return {name: result}
         except Exception as e:
-            return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
+            return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
             w = load_workflow(name)
             print(w.yaml)
             return {name: w}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
 
@@ -353,7 +350,7 @@ async def add_job(name: str, **kwargs) -> bool:
 #     d = f"<h1>{name}</h1>"
 #     d += "<table>"
 #     d += f"<tr> <th> attribute </th><th> value </th> </tr>"
-# 
+#
 #     for attribute in q.queues[queue][job]:
 #         value = q.queues[queue][job][attribute]
 #         d += f"<tr> <td> {attribute} </td><td> {value} </td> </tr>"
