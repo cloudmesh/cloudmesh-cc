@@ -378,12 +378,10 @@ class Workflow:
         print("Filename:", self.filename)
 
         self.graph = Graph(name=name, filename=filename)
-        print("after graph moment")
         self.user = user
         self.host = host
         # gvl addded load but not tested
         self.load(self.filename)
-        print("after loading")
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -482,21 +480,16 @@ class Workflow:
             graph = yaml.safe_load(stream)
         print("after opening the filename", filename)
 
-        try:
-            print("add items")
-            print(graph["cloudmesh"]["nodes"].items())
-        # for name, node in graph["cloudmesh"]["nodes"].items():
-            for name, node in graph["cloudmesh"]["nodes"].items():
-                print("Adding:", name)
-                self.add_job(**node)
 
-            print("done")
+            # for name, node in graph["cloudmesh"]["nodes"].items():
+        for name, node in graph["cloudmesh"]["nodes"].items():
+            print("Adding:", name)
+            self.add_job(**node)
 
-            for edge in graph["cloudmesh"]["dependencies"]:
-                print("Dependency:", edge)
-                self.add_dependencies(edge)
-        except Exception as e:
-            print(e)
+
+        for edge in graph["cloudmesh"]["dependencies"]:
+            print("Dependency:", edge)
+            self.add_dependencies(edge)
 
 
     def save(self, filename):
@@ -504,7 +497,6 @@ class Workflow:
             name = os.path.basename(filename).replace(".yaml","")
             dir = path_expand(f"~/.cloudmesh/workflow/{name}")
             location = f"{dir}/{name}.yaml"
-            print("calling save to this location",location)
             self.graph.save_to_file(location)
         self.graph.save_to_file(filename)
 
@@ -795,9 +787,7 @@ class Workflow:
         for key in dellist:
             self.graph.edges.pop(key)
 
-        print("saving the file now")
         self.save(self.filename)
-        print("succesfully saved")
 
     def status(self):
         # gvl implemented but not tested

@@ -117,11 +117,10 @@ async def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+        location = f"{directory}/{name}.yaml"
         if os_is_windows():
-            location = f"{directory}//{name}.yaml"
             Shell.mkdir(directory)
         else:
-            location = f"{directory}/{name}.yaml"
             os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
         contents = await file.read()
@@ -129,7 +128,6 @@ async def upload_workflow(file: UploadFile = File(...)):
         with open(location, 'wb') as f:
             f.write(contents)
 
-        print("AFTER WRITING TO",location)
         w = load_workflow(name)
         print(w.yaml)
     except Exception as e:
@@ -158,10 +156,8 @@ def delete_workflow(name:str, job:str):
     # if we specify to delete the job
         try:
             w = load_workflow(name)
-            print("old filename",w.filename)
             # print(w[job])
             w.remove_job(job)
-            print("new filename",w.filename)
             return {"message": f"The job {job} was deleted in the workflow {name}"}
         except Exception as e:
             return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
