@@ -169,6 +169,12 @@ class Test_workflow:
     #     banner("Workflow")
     #     print(w.graph)
 
+    # def test_remove_job(self):
+    #     HEADING()
+    #     global w
+    #     Benchmark.Start()
+    #     w.remove_job('job-local-1')
+
 
 class todo:
 
