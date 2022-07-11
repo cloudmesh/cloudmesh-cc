@@ -111,13 +111,14 @@ def list_workflows():
         return {"message": f"No workflows found"}
 
 
-@app.post("/workflow")
+@app.post("/upload")
 async def upload_workflow(file: UploadFile = File(...)):
     try:
 
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-        location = f"{directory}/{name}.yaml"
+        # location = f"{directory}/{name}.yaml"
+        location = f"{directory}/{name}/{name}.yaml"
 
         os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
