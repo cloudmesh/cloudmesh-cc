@@ -248,7 +248,7 @@ class Graph:
     def save_to_file(self, filename):
 
         data = {
-            'cloudmesh':
+            'workflow':
                 {
                     'nodes': dict(self.nodes),
                     'dependencies': dict(self.edges),
@@ -454,7 +454,7 @@ class Workflow:
         """
         # self.graph.load(...)
         """ 
-        cloudmesh:
+        workflow:
           nodes:
             a:
                name: a
@@ -479,17 +479,17 @@ class Workflow:
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
         print("after opening the filename", filename)
+        from pprint import pprint
+        pprint (graph)
 
-        print (graph)
 
-
-        # for name, node in graph["cloudmesh"]["nodes"].items():
-        for name, node in graph["cloudmesh"]["nodes"].items():
+        # for name, node in graph["workflow"]["nodes"].items():
+        for name, node in graph["workflow"]["nodes"].items():
             print("Adding:", name)
             self.add_job(**node)
 
 
-        for edge in graph["cloudmesh"]["dependencies"]:
+        for edge in graph["workflow"]["dependencies"]:
             print("Dependency:", edge)
             self.add_dependencies(edge)
 
