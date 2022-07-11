@@ -480,8 +480,10 @@ class Workflow:
             graph = yaml.safe_load(stream)
         print("after opening the filename", filename)
 
+        print (graph)
 
-            # for name, node in graph["cloudmesh"]["nodes"].items():
+
+        # for name, node in graph["cloudmesh"]["nodes"].items():
         for name, node in graph["cloudmesh"]["nodes"].items():
             print("Adding:", name)
             self.add_job(**node)
