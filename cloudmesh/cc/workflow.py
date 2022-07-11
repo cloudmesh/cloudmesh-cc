@@ -245,6 +245,21 @@ class Graph:
                 pass
             # and so on
 
+    def save_to_file(self, filename):
+
+        data = {
+            'cloudmesh':
+                {
+                    'nodes': dict(self.nodes),
+                    'dependencies': dict(self.edges),
+             }
+        }
+
+        with open(filename, 'w') as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        outfile.close()
+
     def save(self,
              filename="test.svg",
              colors=None,
@@ -350,7 +365,7 @@ class Workflow:
         if filename:
             # base = os.path.basename(filename).replace(".yaml", "")
             # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
-            # self.name = name
+            self.name = name
             self.filename = filename
 
         if filename is None and name is None:
@@ -363,10 +378,12 @@ class Workflow:
         print("Filename:", self.filename)
 
         self.graph = Graph(name=name, filename=filename)
+        print("after graph moment")
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        #self.load(self.filename)
+        self.load(self.filename)
+        print("after loading")
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -463,18 +480,33 @@ class Workflow:
 
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
+        print("after opening the filename", filename)
 
-        for name, node in graph["cloudmesh"]["nodes"].items():
-            print("Adding:", name)
-            self.add_job(**node)
+        try:
+            print("add items")
+            print(graph["cloudmesh"]["nodes"].items())
+        # for name, node in graph["cloudmesh"]["nodes"].items():
+            for name, node in graph["cloudmesh"]["nodes"].items():
+                print("Adding:", name)
+                self.add_job(**node)
 
-        for edge in graph["cloudmesh"]["dependencies"]:
-            print("Dependency:", edge)
-            self.add_dependencies(edge)
+            print("done")
+
+            for edge in graph["cloudmesh"]["dependencies"]:
+                print("Dependency:", edge)
+                self.add_dependencies(edge)
+        except Exception as e:
+            print(e)
+
 
     def save(self, filename):
-        # implicitly done when using yamldb
-        self.graph.save()
+        if os_is_windows():
+            name = os.path.basename(filename).replace(".yaml","")
+            dir = path_expand(f"~/.cloudmesh/workflow/{name}")
+            location = f"{dir}/{name}.yaml"
+            print("calling save to this location",location)
+            self.graph.save_to_file(location)
+        self.graph.save_to_file(filename)
 
     def add_job(self,
                 name=None,
@@ -485,7 +517,8 @@ class Workflow:
                 status="ready",
                 progress=0,
                 script=None,
-                pid=None
+                pid=None,
+                **kwargs
                 ):
 
         label = label or name
@@ -762,6 +795,9 @@ class Workflow:
         for key in dellist:
             self.graph.edges.pop(key)
 
+        print("saving the file now")
+        self.save(self.filename)
+        print("succesfully saved")
 
     def status(self):
         # gvl implemented but not tested

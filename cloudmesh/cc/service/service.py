@@ -86,10 +86,10 @@ async def item_table(request: Request):
 def load_workflow(name:str):
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
     w = Workflow(name=name, filename=filename)
-    w.load(filename)
+    # w.load(filename)
     return w
 
-@app.get("/workflows/")
+@app.get("/workflows")
 def list_workflows():
     """
     this command reacts dependent on which options we specify
@@ -112,15 +112,16 @@ def list_workflows():
         return {"message": f"No workflows found"}
 
 
-@app.post("/upload/")
+@app.post("/upload")
 async def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-        location = f"{directory}/{name}.yaml"
         if os_is_windows():
+            location = f"{directory}//{name}.yaml"
             Shell.mkdir(directory)
         else:
+            location = f"{directory}/{name}.yaml"
             os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
         contents = await file.read()
@@ -129,8 +130,7 @@ async def upload_workflow(file: UploadFile = File(...)):
             f.write(contents)
 
         print("AFTER WRITING TO",location)
-        w = Workflow()
-        w.load(filename=location)
+        w = load_workflow(name)
         print(w.yaml)
     except Exception as e:
         return {"message": f"There was an error uploading the file {e}"}
@@ -146,7 +146,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.delete("/delete/{name}/{job}")
+@app.delete("/delete/{name}")
 def delete_workflow(name:str, job:str):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
@@ -158,11 +158,13 @@ def delete_workflow(name:str, job:str):
     # if we specify to delete the job
         try:
             w = load_workflow(name)
+            print("old filename",w.filename)
             # print(w[job])
             w.remove_job(job)
-            return {"message": f"The job {job} in workflow {name} was deleted"}
+            print("new filename",w.filename)
+            return {"message": f"The job {job} was deleted in the workflow {name}"}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
     else:
     # if we specify to delete the workflow
         try:
@@ -171,7 +173,7 @@ def delete_workflow(name:str, job:str):
             os.system(f"rm -r {directory}")
             return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error deleting the workflow '{name}'"}
 
 
 @app.get("/workflow/{name}")
@@ -183,14 +185,14 @@ def get_workflow(name: str, job: str = None):
             result = w[job]
             return {name: result}
         except Exception as e:
-            return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
+            return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
             w = load_workflow(name)
             print(w.yaml)
             return {name: w}
         except Exception as e:
-            return {"message": f"There was an error locating the workflow '{name}'"}
+            return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
 
