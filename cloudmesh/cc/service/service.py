@@ -15,6 +15,7 @@ import pkg_resources
 from cloudmesh.common.console import Console
 import os
 from cloudmesh.common.util import  path_expand
+from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
 import glob
 
@@ -111,20 +112,23 @@ def list_workflows():
         return {"message": f"No workflows found"}
 
 
-@app.post("/upload")
+@app.post("/upload/")
 async def upload_workflow(file: UploadFile = File(...)):
     try:
-
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-        # location = f"{directory}/{name}.yaml"
-        location = f"{directory}/{name}/{name}.yaml"
-
-        os.system(f"mkdir -p {directory}")
+        location = f"{directory}/{name}.yaml"
+        if os_is_windows():
+            Shell.mkdir(directory)
+        else:
+            os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
         contents = await file.read()
+
         with open(location, 'wb') as f:
             f.write(contents)
+
+        print("AFTER WRITING TO",location)
         w = Workflow()
         w.load(filename=location)
         print(w.yaml)
@@ -153,10 +157,11 @@ def delete_workflow(name:str, job:str):
     if job is not None:
     # if we specify to delete the job
         try:
+            print("AAAAAAAAAAAAAAAAAAA")
             w = load_workflow(name)
-            print(w[job])
-            w.remove_job(name)
-            return {name: w}
+            # print(w[job])
+            # w.remove_job(name)
+            # return {name: w}
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
     else:
@@ -164,7 +169,7 @@ def delete_workflow(name:str, job:str):
         try:
             # w = load_workflow(name)
             directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-            os.system(f" rm -r {directory}")
+            os.system(f"rm -r {directory}")
             return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
@@ -272,101 +277,101 @@ async def add_job(name: str, **kwargs) -> bool:
 #
 # QUEUES
 #
-@app.get("/queues/", response_class=HTMLResponse)
-async def list_queues(request: Request):
-    global q
-    return templates.TemplateResponse('templates/queues.html',
-                                      {"request": request,
-                                       "queues": q.queues})
-
-
-#TODO: fix
-@app.post("/queue")
-async def add_queue(name: str):
-    global q
-    q.create(name=name)
-    return {
-        "queues": q.queues
-    }
-
-# TODO this may not be right
-@app.delete("/queue/{name}")
-async def delete_queue(name: str):
-    global q
-    q.remove(name)
-    return {
-        "queues": q.queues
-    }
-
-
+# @app.get("/queues/", response_class=HTMLResponse)
+# async def list_queues(request: Request):
+#     global q
+#     return templates.TemplateResponse('templates/queues.html',
+#                                       {"request": request,
+#                                        "queues": q.queues})
 #
-# JOBS
 #
-
-#TODO: fix
-@app.post("/job")
-async def add_job(name: str, job: str, command: str):
-    global q
-    q.add(name=name, job=job, command=command)
-    return {
-        "jobs": q.queues[name]
-    }
-
-# TODO this may not be right
-@app.delete("/job/{queue}/{name}")
-async def delete_job(name: str, queue:str):
-    global q
-    q.remove(name)
-    return {
-        "jobs": q.queues[name]
-    }
-
-@app.get("/jobs/{queue}", response_class=HTMLResponse)
-async def list_jobs(request: Request, queue: str):
-    global q
-    jobs = []
-    for q in q.queues:
-        if q == queue:
-            for job in q.queues[queue]:
-                jobs.append(q.queues[queue][job])
-    order = q.queues[queue][job][0:1]
-    order = [word.capitalize() for word in order]
-    Console.error(str(order))
-
-    return templates.TemplateResponse("templates/item.html",
-                                      {"request": request,
-                                       "id": id,
-                                       "jobs": jobs,
-                                       "order": order})
-
-
-@app.get("/job/{queue}/{job}", response_class=HTMLResponse)
-async def read_job(queue: str, job: str):
-    global q
-    result = Printer.attribute(q.queues[queue][job], output='html')
-    name = q.queues[queue][job]["name"]
-    d = f"<h1>{name}</h1>"
-    d += "<table>"
-    d += f"<tr> <th> attribute </th><th> value </th> </tr>"
-
-    for attribute in q.queues[queue][job]:
-        value = q.queues[queue][job][attribute]
-        d += f"<tr> <td> {attribute} </td><td> {value} </td> </tr>"
-    d += "</table>"
-    result = d
-    print(Printer.attribute(q.queues[queue][job]))
-    print(result)
-
-    page = f"""
-    <html>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
-        <head>
-            <title>Some HTML in here</title>
-        </head>
-        <body>
-            {result}
-        </body>
-    </html>
-    """
-    return page
+# #TODO: fix
+# @app.post("/queue")
+# async def add_queue(name: str):
+#     global q
+#     q.create(name=name)
+#     return {
+#         "queues": q.queues
+#     }
+#
+# # TODO this may not be right
+# @app.delete("/queue/{name}")
+# async def delete_queue(name: str):
+#     global q
+#     q.remove(name)
+#     return {
+#         "queues": q.queues
+#     }
+#
+#
+# #
+# # JOBS
+# #
+#
+# #TODO: fix
+# @app.post("/job")
+# async def add_job(name: str, job: str, command: str):
+#     global q
+#     q.add(name=name, job=job, command=command)
+#     return {
+#         "jobs": q.queues[name]
+#     }
+#
+# # TODO this may not be right
+# @app.delete("/job/{queue}/{name}")
+# async def delete_job(name: str, queue:str):
+#     global q
+#     q.remove(name)
+#     return {
+#         "jobs": q.queues[name]
+#     }
+#
+# @app.get("/jobs/{queue}", response_class=HTMLResponse)
+# async def list_jobs(request: Request, queue: str):
+#     global q
+#     jobs = []
+#     for q in q.queues:
+#         if q == queue:
+#             for job in q.queues[queue]:
+#                 jobs.append(q.queues[queue][job])
+#     order = q.queues[queue][job][0:1]
+#     order = [word.capitalize() for word in order]
+#     Console.error(str(order))
+#
+#     return templates.TemplateResponse("templates/item.html",
+#                                       {"request": request,
+#                                        "id": id,
+#                                        "jobs": jobs,
+#                                        "order": order})
+#
+#
+# @app.get("/job/{queue}/{job}", response_class=HTMLResponse)
+# async def read_job(queue: str, job: str):
+#     global q
+#     result = Printer.attribute(q.queues[queue][job], output='html')
+#     name = q.queues[queue][job]["name"]
+#     d = f"<h1>{name}</h1>"
+#     d += "<table>"
+#     d += f"<tr> <th> attribute </th><th> value </th> </tr>"
+# 
+#     for attribute in q.queues[queue][job]:
+#         value = q.queues[queue][job][attribute]
+#         d += f"<tr> <td> {attribute} </td><td> {value} </td> </tr>"
+#     d += "</table>"
+#     result = d
+#     print(Printer.attribute(q.queues[queue][job]))
+#     print(result)
+#
+#     page = f"""
+#     <html>
+#         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+#         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+#         <head>
+#             <title>Some HTML in here</title>
+#         </head>
+#         <body>
+#             {result}
+#         </body>
+#     </html>
+#     """
+#     return page
