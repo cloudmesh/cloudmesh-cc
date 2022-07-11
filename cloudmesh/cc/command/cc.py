@@ -150,9 +150,9 @@ class CcCommand(PluginCommand):
                 workflows will be returned.
                             
             cc workflow service add [--name=NAME] --job=JOB ARGS...
-                This command ads a job. with the specified arguments. A check 
+                This command adds a job. with the specified arguments. A check 
                 is returned and the user is alerted if arguments are missing
-                arguments are passe in ATTRIBUT=VALUE fashion.
+                arguments are passe in ATTRIBUTE=VALUE fashion.
                 if the name of the workflow is ommitted the default workflow is used.
                 If no cob name is specified an automated number that is kept in the 
                 config.yaml file will be used and the name will be job-n

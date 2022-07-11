@@ -144,7 +144,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.delete("/delete/{name}")
+@app.delete("/workflow/{name}")
 def delete_workflow(name:str, job: str=None):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
@@ -191,59 +191,10 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-
-wf_add_description =\
-"""
-adds a workflow with the given name from data included in the filename.
-the underlying database will use that name and if not explicitly
-specified the location of the database will be
-`~/.cloudmesh/workflow/NAME/NAME.yaml`
-To identify the location a special configuration file will be placed in
-`~/.cloudmesh/workflow/config.yaml` that contains the location of
-the directories for the named workflows.
-
-* **name**: name of the workflow to be added
-* *return* boolean
-"""
-@app.post("/workflow/{name}",
-          summary="Add a workflow from a file",
-          description=wf_add_description
-          )
-async def add_workflow(name: str, **kwargs) -> bool:
-    """
-        adds a workflow with the given name from data included in the filename.
-                the underlying database will use that name and if not explicitly
-                specified the location of the database will be
-                `~/.cloudmesh/workflow/NAME/NAME.yaml`
-                To identify the location a special configuration file will be placed in
-                `~/.cloudmesh/workflow/config.yaml` that contains the location of
-                the directories for the named workflows.
-
-    :param name:
-    :param kwargs:
-    :return: bool=True if add was successful
-    """
-    params = dict(kwargs if kwargs else {})
-    dir = params["directory"] if params["directory"] else f"~./cloudmesh/workflow/{name}"
-    if os.path.exists(path_expand(f"{dir}/{name}.yaml")):
-        Console.warning("Workflow already exists. Exiting.")
-        return False
-
-    if not kwargs:
-        w = load_workflow(name)
-    else:
-        us = None if "user" not in params else params["user"]
-        ho = None if "host" not in params else params["host"]
-        w = Workflow(name=name, filename=f"{dir}/{name}.yaml",user=us,host=ho)
-    # w.save()
-    return True
-
-
-
-@app.post("/workflow/{name}/{job}")
+@app.post("/workflow/{name}")
 async def add_job(name: str, **kwargs) -> bool:
-    """
-    This command ads a job. with the specified arguments. A check
+    """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
+    This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
                 arguments are passed in ATTRIBUTE=VALUE fashion.
                 if the name of the workflow is omitted the default workflow is used.
@@ -255,19 +206,27 @@ async def add_job(name: str, **kwargs) -> bool:
     :return:
     """
 
-    for attribute in ["job","user","host"]:
-        if attribute not in kwargs:
-            print("error")
-            # return the error object in fastapi
 
-    w = load_workflow(name)
+    # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
+    # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
+    # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
 
-    try:
-        w.add_job(kwargs)
-        return True
-    except Exception as e:
-        print(e)
-        return False
+    w = get_workflow(name)
+    print(w.yaml)
+    print(kwargs)
+    # for attribute in ["job","user","host"]:
+    #     if attribute not in kwargs:
+    #         print("error")
+    #         # return the error object in fastapi
+    #
+    # w = load_workflow(name)
+    #
+    # try:
+    #     w.add_job(kwargs)
+    #     return True
+    # except Exception as e:
+    #     print(e)
+    #     return False
 
 
 

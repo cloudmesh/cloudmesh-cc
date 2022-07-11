@@ -784,6 +784,7 @@ class Workflow:
             if dependency["source"] == name or dependency["destination"] == name:
                 dellist.append(edge)
 
+        # TODO: remove parent node
         for key in dellist:
             self.graph.edges.pop(key)
 
