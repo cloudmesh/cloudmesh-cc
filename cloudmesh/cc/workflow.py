@@ -345,12 +345,13 @@ class Workflow:
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
-
+        print(filename)
         # gvl reimplemented but did not test
         if filename:
-            base = os.path.basename(filename).replace(".yaml", "")
-            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
-            self.name = name
+            # base = os.path.basename(filename).replace(".yaml", "")
+            # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            # self.name = name
+            self.filename = filename
 
         if filename is None and name is None:
             base = "workflow"
@@ -359,13 +360,13 @@ class Workflow:
 
         self.filename = path_expand(self.filename)
 
-        print("Filename:", filename)
+        print("Filename:", self.filename)
 
         self.graph = Graph(name=name, filename=filename)
         self.user = user
         self.host = host
         # gvl addded load but not tested
-        self.load(filename)
+        self.load(self.filename)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -459,6 +460,7 @@ class Workflow:
           dependencies:
             - a,b
         """
+
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
 
