@@ -84,7 +84,7 @@ class Job():
             print(command)
             state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
             state = state.decode('utf-8')
-            if state is '':
+            if state == '':
                 state = 0
 
         else:
