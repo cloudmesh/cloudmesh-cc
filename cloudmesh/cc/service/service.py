@@ -145,7 +145,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 # print(resp.json())
 
 @app.delete("/delete/{name}")
-def delete_workflow(name:str, job:str):
+def delete_workflow(name:str, job: str=None):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
     :param name:
