@@ -7,7 +7,7 @@ cloudmesh:
          kind: local
          status: ready
          label: job-1-label
-         script: test-a.sh
+         script: b.sh
       b:
          name: b
          user: gregor
@@ -15,6 +15,6 @@ cloudmesh:
          kind: local
          status: ready
          label: job-2-label
-         script: test-a.sh
+         script: b.sh
     dependencies:
       - a,b
