@@ -120,7 +120,7 @@ async def upload_workflow(file: UploadFile = File(...)):
     finally:
         await file.close()
 
-    return {"message": f"Successfuly uploaded {file.filename}"}
+    return {"message": f"Successfully uploaded {file.filename}"}
 
 # import requests
 #
@@ -129,9 +129,8 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-
-@app.get("/workflow/{name}")
-def get_workflow(name:str, job:str=None):
+@app.delete("/workflow/{name}/{job}")
+def delete_workflow(name:str, job:str):
     """
     this command reacts dependent on which options we specify
                 If we do not specify anything the workflows will be listed.
@@ -147,19 +146,19 @@ def get_workflow(name:str, job:str=None):
         try:
             directory = path_expand(f"~/.cloudmesh/workflow/{name}")
             os.system(f" rm -r {directory}")
-            return {"message": f"The workflow {name} was deleted  and the directory {directory removed}"}
+            return {"message": f"The workflow {name} was deleted  and the directory {directory} was removed"}
         except Exception as e:
             return {"message": f"There was an error locating the job '{job}' in workflow '{name}'"}
     else:
         try:
             w = load_workflow(name)
-            print(w[job)
+            print(w[job])
             return {name: w}
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
 
-@app.delete("/workflow/{name}/{job}")
-def delete_workflow(name:str, job:str):
+@app.get("/workflow/{name}")
+def get_workflow(name: str, job: str = None):
     if job is not None:
         try:
             w = load_workflow(name)
@@ -245,16 +244,6 @@ async def add_job(name: str, **kwargs) -> bool:
         if attribute not in kwargs:
             print("error")
             # return the error object in fastapi
-    # params = dict(kwargs = kwargs if kwargs else {})
-    # na = None if "name" not in params else params["name"]
-    # us = None if "user" not in params else params["user"]
-    # ho = None if "host" not in params else params["host"]
-    # la = None if "label" not in params else params["label"]
-    # ki = "local" if "kind" not in params else params["kind"]
-    # st = "ready" if "status" not in params else params["status"]
-    # pr = 0 if "progress" not in params else params["progress"]
-    # sc = None if "script" not in params else params["script"]
-    # pi = None if "pid" not in params else params["pid"]
 
     w = load_workflow(name)
 
