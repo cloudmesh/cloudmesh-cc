@@ -51,7 +51,7 @@ except:  # noqa: E722
     login_success = False
 
 run_job = f"run"
-wait_job = f"wait"
+wait_job = f"run-killme"
 
 
 @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")

@@ -39,7 +39,7 @@ else:
 job = None
 
 run_job = f"run"
-wait_job = f"wait"
+wait_job = f"run-killme"
 
 
 @pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")

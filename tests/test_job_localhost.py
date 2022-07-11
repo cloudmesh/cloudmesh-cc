@@ -43,7 +43,7 @@ else:
 job = None
 
 run_job = f"run"
-wait_job = f"wait"
+wait_job = f"run-killme"
 
 
 @pytest.mark.skipif(os_is_windows(), reason="Test can not be run on Windows")
