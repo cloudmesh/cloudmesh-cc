@@ -622,7 +622,10 @@ class Workflow:
             print(self.table)
 
             if show:
-                filename = "/tmp/a.svg"
+                if os_is_windows():
+                    filename = "a.svg"
+                else:
+                    filename = "/tmp/a.svg"
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
                 if os_is_mac():
@@ -686,7 +689,10 @@ class Workflow:
                 Console.msg(f"running {name}")
 
             if show:
-                filename = "/tmp/a.svg"
+                if os_is_windows():
+                    filename = "a.svg"
+                else:
+                    filename = "/tmp/a.svg"
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
                 if os_is_mac():
