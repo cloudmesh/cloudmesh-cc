@@ -74,7 +74,7 @@ class Test_workflow_new:
         HEADING()
         global f_workflow
         Benchmark.Start()
-        f_workflow = Workflow(filename="tests/workflow.yaml")
+        f_workflow = Workflow(filename="tests/workflow_new.yaml")
         Benchmark.Stop()
         print(f_workflow.graph)
         assert f_workflow.jobs is not None  # this tests that the load function actually added the nodes
