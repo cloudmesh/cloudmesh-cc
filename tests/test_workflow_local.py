@@ -122,7 +122,13 @@ class Test_workflow:
     def test_show(self):
         HEADING()
         global w
-        w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        if os_is_windows():
+            try:
+                w.graph.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            except Exception as e:
+                print(e.output)
+        else:
+            w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         # Shell.browser("/tmp/test-dot.svg")
         # assert os.path.exists("~/tmp/test-dot.svg") == True
 
