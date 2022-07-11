@@ -143,6 +143,8 @@ class Test_workflow_new:
         Benchmark.Stop()
         print(len(m_workflow.jobs) == n)
 
+class rest:
+
     def test_predecessor(self):
         HEADING()
         Benchmark.Start()
