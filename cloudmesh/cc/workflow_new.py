@@ -663,7 +663,7 @@ class Workflow:
 
             if show:
                 filename = "/tmp/a.svg"
-                self.graph.save(filename=filename, colors="status",
+                self.graph.save_picture(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
                 if os_is_mac():
                     os.system(f'open {filename}')
