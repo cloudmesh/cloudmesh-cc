@@ -120,8 +120,8 @@ class Test_workflow_new:
         m_workflow.add_job(name="end", kind="local", user=user, host=host)
 
         for host, kind in [("localhost", "local"),
-                           ("rivanna", "remote-slurm"),
-                           ("rivanna", "ssh")]:
+                           ("rivanna", "remote-slurm"),]:
+            # ("rivanna", "ssh")
             print("HOST:", host)
             user = login[host]["user"]
             host = login[host]["host"]
@@ -179,15 +179,6 @@ class Test_workflow_new:
         assert "b" in f_data
         assert "jobs" in f_data
 
-    def test_delete_job(self):
-        HEADING()
-        global f_workflow
-        global m_workflow
-        Benchmark.Start()
-        f_workflow.remove_job(name='a')
-        m_workflow.remove_job(name='job-local-1')
-        assert 'a' not in f_workflow.graph.nodes
-        assert 'job-local-1' not in m_workflow.graph.nodes
 
     # def test_delete_workflow(self):
     #     HEADING()
@@ -233,3 +224,19 @@ class Test_workflow_new:
         print(m_json)
         assert '"dependencies": {' in m_json
         assert ' "jobs: ": {' in f_json
+
+    def test_run(self):
+        HEADING()
+        Benchmark.Start()
+        #f_workflow.run_parallel(show=True, period=1)  # these jobs don't really exist yet
+        m_workflow.run_parallel(show=True, period=1)
+
+    def test_delete_job(self):
+        HEADING()
+        global f_workflow
+        global m_workflow
+        Benchmark.Start()
+        f_workflow.remove_job(name='a')
+        m_workflow.remove_job(name='job-local-1')
+        assert 'a' not in f_workflow.graph.nodes
+        assert 'job-local-1' not in m_workflow.graph.nodes
