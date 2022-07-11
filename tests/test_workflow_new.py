@@ -9,7 +9,7 @@ from pprint import pprint
 import shelve
 import pytest
 
-from cloudmesh.cc.workflow import Workflow
+from cloudmesh.cc.workflow_new import Workflow
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
