@@ -501,7 +501,7 @@ class Workflow:
                 print('Adding node . . .', name)
                 self.add_job(**node)
 
-            for name, edge in edges.items():
+            for name, edge in edges:
                 print('Adding edge . . . ', name)
                 self.add_dependencies(edge)
 
