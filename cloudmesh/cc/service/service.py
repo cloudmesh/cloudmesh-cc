@@ -157,11 +157,10 @@ def delete_workflow(name:str, job:str):
     if job is not None:
     # if we specify to delete the job
         try:
-            print("AAAAAAAAAAAAAAAAAAA")
             w = load_workflow(name)
             # print(w[job])
-            # w.remove_job(name)
-            # return {name: w}
+            w.remove_job(job)
+            return {"message": f"The job {job} in workflow {name} was deleted"}
         except Exception as e:
             return {"message": f"There was an error locating the workflow '{name}'"}
     else:
@@ -353,7 +352,7 @@ async def add_job(name: str, **kwargs) -> bool:
 #     d = f"<h1>{name}</h1>"
 #     d += "<table>"
 #     d += f"<tr> <th> attribute </th><th> value </th> </tr>"
-# 
+#
 #     for attribute in q.queues[queue][job]:
 #         value = q.queues[queue][job][attribute]
 #         d += f"<tr> <td> {attribute} </td><td> {value} </td> </tr>"

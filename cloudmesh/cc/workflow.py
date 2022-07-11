@@ -745,16 +745,23 @@ class Workflow:
         self.jobs = None
 
     def remove_job(self, name):
-        # gvl rewritten by gregor not tested
         # remove job
-        del self.jobs[name]
+
+        #del self.jobs[name]
+        p = self.jobs.pop(name)
+        # print("popped:",p)
 
         # remove dependencies to job
         dependencies = self.graph.edges.items()
+
+        dellist = []
         for edge, dependency in dependencies:
-            if dependency["source"] == name or dependency[
-                "destinatiom"] == name:
-                del self.graph.edges[edge]
+            if dependency["source"] == name or dependency["destination"] == name:
+                dellist.append(edge)
+
+        for key in dellist:
+            self.graph.edges.pop(key)
+
 
     def status(self):
         # gvl implemented but not tested
