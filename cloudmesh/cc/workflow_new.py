@@ -482,7 +482,7 @@ class Workflow:
 
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
-            print(graph)
+            print('AAAAAAAA', graph)
 
         if graph is not None:
 
