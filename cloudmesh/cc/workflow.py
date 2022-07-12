@@ -688,7 +688,8 @@ class Workflow:
                 elif os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
-                    Shell.browser(filename='a.png')
+                    cwd = os.getcwd()
+                    os.system(f'start chrome {cwd}\\{filename}')
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
 
@@ -755,7 +756,8 @@ class Workflow:
                 elif os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
-                    Shell.browser(filename='a.png')
+                    cwd = os.getcwd()
+                    os.system(f'start chrome {cwd}\\{filename}')
 
     def sequential_order(self):
         tuples = []
