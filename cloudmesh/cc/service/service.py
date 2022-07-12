@@ -72,7 +72,7 @@ async def read_item(request: Request, id: str):
 
 @app.get("/")
 async def home():
-    return {"msg": "Cloudmesh b cc"}
+    return {"msg": "cloudmesh.cc is up"}
 
 @app.get("/items", response_class=HTMLResponse)
 async def item_table(request: Request):

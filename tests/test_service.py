@@ -25,7 +25,7 @@ class TestService:
         response = client.get("/")
         Benchmark.Stop()
         assert response.status_code == 200
-        assert response.json() == {"msg": "Hello World"}
+        assert response.json() == {"msg": "cloudmesh.cc is up"}
 
     def test_benchmark(self):
         HEADING()
