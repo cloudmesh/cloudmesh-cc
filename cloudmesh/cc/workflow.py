@@ -625,6 +625,7 @@ class Workflow:
                 elif job['kind'] in ["ssh"]:
                     print(job)
                     from cloudmesh.cc.job.ssh.Job import Job as ssh_job
+                    job["status"] = "running"
                     name = job['name']
                     host = job['host']
                     username = job['user']
@@ -633,6 +634,25 @@ class Workflow:
                                          username=username, label=label)
                     remote_job.sync()
                     remote_job.run()
+
+                elif job['kind'] in ['wsl']:
+                    from cloudmesh.cc.job.wsl.Job import Job as wsl_Job
+                    job["status"] = "running"
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+
+                    job["instance"] = wsl_Job(name=name,
+                                                host=host,
+                                                username=username,
+                                                label=label)
+                    job["instance"].sync()
+                    job["instance"].run()
+                    print(str(job["instance"]))
+                    running.append(name)
+                    outstanding.remove(name)
+
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:

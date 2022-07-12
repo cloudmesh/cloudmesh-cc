@@ -119,11 +119,11 @@ class Job:
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
+                  f' && ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2>&1 &"'
+                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2> {self.name}.error &"'
 
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'

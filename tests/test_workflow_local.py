@@ -61,11 +61,22 @@ def create_workflow():
     user = login["localhost"]["user"]
     host = login["localhost"]["host"]
 
-    w.add_job(name="start", kind="local", user=user, host=host)
-    w.add_job(name="end", kind="local", user=user, host=host)
+    if os_is_windows():
+        jobkind="wsl"
+    else:
+        jobkind="local"
 
-    for host, kind in [("localhost", "local"),
-                       ("rivanna", "local")]:
+    w.add_job(name="start", kind=jobkind, user=user, host=host)
+    w.add_job(name="end", kind=jobkind, user=user, host=host)
+
+    # w.add_job(name="start", kind="local", user=user, host=host)
+    # w.add_job(name="end", kind="local", user=user, host=host)
+
+    # for host, kind in [("localhost", "local"),
+    #                    ("rivanna", "local")]:
+    for host, kind in [("localhost", jobkind),
+                       ("rivanna", jobkind)]:
+
         # ("rivanna", "ssh")
 
         print("HOST:", host)
