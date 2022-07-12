@@ -198,12 +198,10 @@ class Graph:
 
     def add_dependencies(self, dependency, nodedata=None, edgedata=None):
         nodes = Parameter.expand(dependency)
-        print(nodes)
         # check if all nodes exists if not create the missing once
         # loop through all node pairs and create adges, as name for adges
         # you use {source}-{destination}
         for node in nodes:
-            print(node)
             if nodedata is None:
                 self.add_node(node)
             else:
@@ -360,7 +358,6 @@ class Workflow:
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
-        print(filename)
         # gvl reimplemented but did not test
         if filename:
             # base = os.path.basename(filename).replace(".yaml", "")
@@ -379,7 +376,7 @@ class Workflow:
         self.host = host
 
         try:
-            print("Filename:", self.filename)
+            print("Workflow Filename:", self.filename)
             self.graph = Graph(name=name, filename=filename)
             # gvl addded load but not tested
             self.load(self.filename)
@@ -481,19 +478,13 @@ class Workflow:
 
         with open(filename, 'r') as stream:
             graph = yaml.safe_load(stream)
-        print("after opening the filename", filename)
-        from pprint import pprint
-        pprint (graph)
-
 
         # for name, node in graph["workflow"]["nodes"].items():
         for name, node in graph["workflow"]["nodes"].items():
-            print("Adding:", name)
             self.add_job(**node)
 
 
         for edge in graph["workflow"]["dependencies"]:
-            print("Dependency:", edge)
             self.add_dependencies(edge)
 
 

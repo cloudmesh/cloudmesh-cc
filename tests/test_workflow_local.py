@@ -52,11 +52,14 @@ class Test_workflow:
         global w
         Benchmark.Start()
         w = Workflow()
-        print(w.filename)
         w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
         Benchmark.Stop()
         print(w.graph)
-
+        g = str(w.graph)
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+        assert "a-b:" in g
+        assert "host: localhost" in g
+        
 class a:
 
     def test_create_run(self):
