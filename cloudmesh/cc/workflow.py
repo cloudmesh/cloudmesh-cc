@@ -553,6 +553,15 @@ class Workflow:
     def update_status(self, name, status):
         self.graph[name]["status"] = status
 
+    def set_progress(self, name, percent):
+        self.graph[name]["progress"] = percent
+
+    def update_progress(self, name):
+        # fetches log file and looks for progress event TBD
+        # once progress is fetched set it for the named job
+        raise NotImplementedError
+
+
     def run_parallel(self, order=None, parallel=False, dryrun=False, show=True,
                      period=0.5):
         finished = False
@@ -730,11 +739,9 @@ class Workflow:
     def sequential_order(self):
         tuples = []
         for name, edge in self.graph.edges.items():
-            print(edge["source"], edge["destination"])
             tuples.append((edge["source"], edge["destination"]))
         g = nx.DiGraph(tuples)
         order = list(nx.topological_sort(g))
-        print(order)
         return order
 
     @property
