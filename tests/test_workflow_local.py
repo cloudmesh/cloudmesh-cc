@@ -200,21 +200,19 @@ class Test_workflow:
             assert node["status"] == "done"
 
 
-class a:
-
     def test_run_topo(self):
          HEADING()
+         w = create_workflow()
          Benchmark.Start()
          w.run_topo(show=True)
          Benchmark.Stop()
          banner("Workflow")
          print(w.graph)
 
-    # def test_remove_job(self):
-    #     HEADING()
-    #     global w
-    #     Benchmark.Start()
-    #     w.remove_job('job-local-1')
+         for name, node in w.jobs.items():
+            assert node["progress"] == 100
+            assert node["parent"] == []
+            assert node["status"] == "done"
 
 
     def test_benchmark(self):
