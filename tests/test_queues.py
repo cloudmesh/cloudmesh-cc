@@ -35,25 +35,8 @@ class TestQueues:
         Benchmark.Stop()
         # print(q.info())
         assert 'local' in q.queues
-        print()
+        assert os.path.exists(path_expand("~/.cloudmesh/queue/test.yamldb"))
 
-class f:
-
-    def test_filename(self):
-        if kind == "shelve":
-            s1 = "~/.cloudmesh/queue/queuetest1"
-            s2 = "~/.cloudmesh/queue/queuetest2.db"
-            s3 = "~/.cloudmesh/queue/queuetest3.dat"
-            q1 = Queues(filename=s1)
-            q1.close()
-            # q2 = Queues(filename=s2)
-            q3 = Queues(filename=s3)
-            q3.close()
-            assert os.path.exists(q1.filename)
-            # assert os.path.exists(q2.filename)
-            assert os.path.exists(q3.filename)
-        else:
-            assert True
 
     def test_add(self):
         HEADING()
@@ -73,18 +56,17 @@ class f:
             for job in q.queues[queue]:
                 n.append(q.queues[queue][job])
 
-        # print(Printer.list(n))
+        for f in ['yaml', 'json', 'csv', 'html', 'table']:
 
-        # for f in ['yaml', 'json', 'csv', 'html', 'table']:
+            print(Printer.write(n, output=f))
 
-        # print(Printer.write(n, output=f))
+        print(Printer.attribute(q.config))
+        print(Printer.attribute(q.config, output='json'))
 
-        # print(q.config)
-        # print(Printer.attribute(q.config))
-        # print(Printer.attribute(q.config, output='json'))
-
-        # pprint(n)
         assert len(q.get("local")) == 3
+        assert q["local"]["job-1"]["name"] == "job-1"
+
+class f:
 
     def test_remove(self):
         HEADING()
