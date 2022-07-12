@@ -64,7 +64,7 @@ class TestJobLocalhost:
         global job
         global username
         global host
-        global prefix
+
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)
@@ -86,7 +86,6 @@ class TestJobLocalhost:
     # potentially wrong
     def test_run_fast(self):
         HEADING()
-        global prefix
 
         banner("create job")
         Benchmark.Start()
@@ -183,7 +182,6 @@ class TestJobLocalhost:
         HEADING()
         global username
         global host
-        global prefix
         global wait_job
 
         Benchmark.Start()

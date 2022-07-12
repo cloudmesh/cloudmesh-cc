@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_db_shelve.py
 # pytest -v  tests/test_db_shelve.py
-# pytest -v --capture=no  tests/test_db_shelve.py::Test_db_shelve::<METHODNAME>
+# pytest -v --capture=no  tests/test_db_shelve.py::TestDbShelve::<METHODNAME>
 ###############################################################
 import os.path
 import shelve
@@ -20,8 +20,9 @@ name = "computers"
 if os_is_linux():
     name = "computers.db"
 
+
 @pytest.mark.incremental
-class Test_db_shelve:
+class TestDbShelve:
 
     def test_shelve_open_and_close(self):
         HEADING()

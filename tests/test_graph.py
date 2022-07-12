@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_graph.py
 # pytest -v  tests/test_graph.py
-# pytest -v --capture=no  tests/test_graph.py::Test_graph::<METHODNAME>
+# pytest -v --capture=no  tests/test_graph.py::TestGraph::<METHODNAME>
 ###############################################################
 import os.path
 
@@ -18,7 +18,7 @@ g.sep = "_"
 
 
 @pytest.mark.incremental
-class Test_graph:
+class TestGraph:
 
     def test_create(self):
         HEADING()
@@ -112,11 +112,7 @@ class Test_graph:
         print(r)
         g.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         Shell.browser("/tmp/test-dot.svg")
-
         Benchmark.Stop()
-
-
-class todo:
 
     def test_benchmark(self):
         HEADING()

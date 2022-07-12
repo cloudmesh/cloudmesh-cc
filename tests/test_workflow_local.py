@@ -1,7 +1,7 @@
 # ##############################################################
 # pytest -v -x --capture=no tests/test_workflow_local.py
 # pytest -v  tests/test_workflow.py
-# pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
+# pytest -v --capture=no  tests/workflow.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 from pprint import pprint
@@ -29,7 +29,6 @@ from cloudmesh.common.StopWatch import StopWatch
 """
 
 variables = Variables()
-
 
 name = "run"
 
@@ -95,7 +94,8 @@ def create_workflow():
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
-class Test_workflow:
+
+class TestWorkflowLocal:
 
     def test_load_workflow(self):
         HEADING()
@@ -110,14 +110,12 @@ class Test_workflow:
         assert "a-b:" in g
         assert "host: localhost" in g
 
-
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         os.system('cp tests/workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
-
 
     def test_set_up(self):
         """
@@ -129,11 +127,10 @@ class Test_workflow:
         Benchmark.Start()
         w = create_workflow()
         Benchmark.Stop()
-        g  = str(w.graph)
+        g = str(w.graph)
         print(g)
         assert "name: start" in g
         assert "start-job-rivanna.hpc.virginia.edu-3:" in g
-
 
     def test_show(self):
         HEADING()
@@ -146,8 +143,7 @@ class Test_workflow:
         else:
             w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         # Shell.browser("/tmp/test-dot.svg")
-        assert os.path.exists("/tmp/test-dot.svg") == True
-
+        assert os.path.exists("/tmp/test-dot.svg")
 
     def test_get_node(self):
         HEADING()
@@ -171,7 +167,6 @@ class Test_workflow:
         assert "job-rivanna.hpc.virginia.edu-3" in t
         assert "job-rivanna.hpc.virginia.edu-3" in t
 
-
     def test_order(self):
         HEADING()
         global w
@@ -180,11 +175,10 @@ class Test_workflow:
         Benchmark.Stop()
         print(order)
         assert len(order) == len(w.jobs)
-        for i in range(1,len(order)):
-            parent = order[i-1]
+        for i in range(1, len(order)):
+            parent = order[i - 1]
             name = order[i]
             assert name not in w[parent]['parent']
-
 
     def test_run_parallel(self):
         HEADING()
@@ -199,21 +193,19 @@ class Test_workflow:
             assert node["parent"] == []
             assert node["status"] == "done"
 
-
     def test_run_topo(self):
-         HEADING()
-         w = create_workflow()
-         Benchmark.Start()
-         w.run_topo(show=True)
-         Benchmark.Stop()
-         banner("Workflow")
-         print(w.graph)
+        HEADING()
+        w = create_workflow()
+        Benchmark.Start()
+        w.run_topo(show=True)
+        Benchmark.Stop()
+        banner("Workflow")
+        print(w.graph)
 
-         for name, node in w.jobs.items():
+        for name, node in w.jobs.items():
             assert node["progress"] == 100
             assert node["parent"] == []
             assert node["status"] == "done"
-
 
     def test_benchmark(self):
         HEADING()

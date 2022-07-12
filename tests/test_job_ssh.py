@@ -172,7 +172,6 @@ class TestJobsSsh:
         HEADING()
         global username
         global host
-        global prefix
         global wait_job
 
         Benchmark.Start()

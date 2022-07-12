@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_db_yaml.py
 # pytest -v  tests/test_db_yaml.py
-# pytest -v --capture=no  tests/test_db_yaml.py::Test_db_yaml::<METHODNAME>
+# pytest -v --capture=no  tests/test_db_yaml.py::TestDbYaml::<METHODNAME>
 ###############################################################
 import os.path
 
@@ -13,7 +13,7 @@ from cloudmesh.common.util import HEADING
 
 
 @pytest.mark.incremental
-class Test_db_yaml:
+class TestDbYaml:
     """
     def yaml_open_and_close():
     def yaml_read()

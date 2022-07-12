@@ -1,7 +1,7 @@
 # ##############################################################
 # pytest -v -x --capture=no tests/test_workflow.py
 # pytest -v  tests/test_workflow.py
-# pytest -v --capture=no  tests/workflow.py::Test_queues::<METHODNAME>
+# pytest -v --capture=no  tests/workflow.py::TestWorkflow::<METHODNAME>
 # ##############################################################
 import os.path
 from pprint import pprint
@@ -39,7 +39,9 @@ if "username" in variables:
 else:
     username = os.path.basename(os.environ["HOME"])
 
-class Test_workflow:
+w = None
+
+class TestWorkflow:
 
     def test_load_workflow(self):
         HEADING()
@@ -146,4 +148,4 @@ class todo:
 
     def test_benchmark(self):
         HEADING()
-        # StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

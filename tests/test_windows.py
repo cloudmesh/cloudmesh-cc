@@ -13,7 +13,7 @@ from cloudmesh.common.util import HEADING
 @pytest.mark.incremental
 class TestConfig:
 
-    def test_Shell_run(self):
+    def test_shell_run(self):
         HEADING()
         Benchmark.Start()
         result = Shell.run("cms cc help")
@@ -24,7 +24,7 @@ class TestConfig:
         assert "upload" in result
         assert "start" in result
 
-    def test_Shell_mkdir(self):
+    def test_shell_mkdir(self):
         HEADING()
         Benchmark.Start()
         result = Shell.mkdir("~/a_dir")
@@ -35,4 +35,5 @@ class TestConfig:
 class rest:
     def test_benchmark(self):
         HEADING()
-        Benchmark.print(csv=True, sysinfo=False, tag="cc")
+        StopWatch.benchmark(sysinfo=False, tag="cc-windows", user="test", node="test")
+

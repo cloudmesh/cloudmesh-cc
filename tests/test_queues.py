@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_queues.py
 # pytest -v  tests/test_queues.py
-# pytest -v --capture=no  tests/test_queues.py::Test_queues::<METHODNAME>
+# pytest -v --capture=no  tests/test_queues.py::TestQueues::<METHODNAME>
 ###############################################################
 import os.path
 from pprint import pprint
@@ -20,7 +20,7 @@ q = None
 
 
 @pytest.mark.incremental
-class Test_queues:
+class TestQueues:
     def test_shelve_open_and_close(self):
         HEADING()
         Benchmark.Start()

@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_queue.py
 # pytest -v  tests/test_queue.py
-# pytest -v --capture=no  tests/test_queue.py::Test_queue::<METHODNAME>
+# pytest -v --capture=no  tests/test_queue.py::TestQueue::<METHODNAME>
 ###############################################################
 
 import pytest
@@ -14,7 +14,7 @@ q = None
 
 
 @pytest.mark.incremental
-class Test_Queue:
+class TestQueue:
 
     def test_create(self):
         HEADING()

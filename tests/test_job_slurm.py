@@ -173,7 +173,6 @@ class TestJobsSlurm:
         HEADING()
         global username
         global host
-        global prefix
         global wait_job
         global job_id
 
