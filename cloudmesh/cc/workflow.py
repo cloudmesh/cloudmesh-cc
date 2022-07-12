@@ -697,12 +697,12 @@ class Workflow:
 
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
         # bug the tno file needs to be better handled
-
         if order is None:
             order = self.sequential_order
 
         for name in order():
             job = self.job(name=name)
+
             if not dryrun:
                 if job['kind'] in ["local"]:
                     from cloudmesh.cc.job.localhost.Job import Job as local_Job
@@ -736,6 +736,28 @@ class Workflow:
                                          username=username, label=label)
                     remote_job.sync()
                     remote_job.run()
+                elif job['kind'] in ['wsl']:
+                    from cloudmesh.cc.job.wsl.Job import Job as wsl_job
+                    name = job['name']
+                    host = job['host']
+                    username = job['user']
+                    label = name
+                    job = wsl_job(name=name, host=host,
+                                         username=username, label=label)
+                    job.sync()
+                    job.run()
+
+                    job.watch(period=0.5)
+                    self.graph.done(name)
+                    print(self.table)
+                    status = job.get_status()
+                    progress = job.get_progress()
+                    banner(name)
+                    print(str(job))
+                    print('Status: ', status)
+                    print('Progress: ', progress)
+                    self.jobs[name]['status'] = status
+                    self.jobs[name]['progress'] = progress
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:

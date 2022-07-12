@@ -50,10 +50,11 @@ def create_workflow():
     global username
     w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
 
+    localuser = os.environ["USERNAME"]
     login = {
-        "localhost": {"user": "gregor", "host": "local"},
+        "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
-        "pi": {"user": "gregor", "host": "red"},
+        "pi": {"user": f"{localuser}", "host": "red"},
     }
 
     n = 0
