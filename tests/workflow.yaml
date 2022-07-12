@@ -1,4 +1,4 @@
-cloudmesh:
+workflow:
   nodes:
     a:
       name: a
