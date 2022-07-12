@@ -12,8 +12,13 @@ import pytest
 from cloudmesh.cc.db.shelve.database import Database
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.util import HEADING
 
+name = "computers"
+
+if os_is_linux():
+    name = "computers.db"
 
 @pytest.mark.incremental
 class Test_db_shelve:
@@ -21,7 +26,7 @@ class Test_db_shelve:
     def test_shelve_open_and_close(self):
         HEADING()
         Benchmark.Start()
-        computers = shelve.open('computers')
+        computers = shelve.open(name)
         computers['temperature'] = {
             'red': 80,
             'blue': 40,
@@ -32,7 +37,7 @@ class Test_db_shelve:
 
     def test_shelve_read(self):
         HEADING()
-        computers = shelve.open('computers')
+        computers = shelve.open(name)
         Benchmark.Start()
         temperature = computers['temperature']
         Benchmark.Stop()
