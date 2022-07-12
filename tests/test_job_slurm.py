@@ -31,13 +31,8 @@ else:
 username = variables["username"]
 
 if username is None:
-    Console.warning("Username not entered. Please enter a username,\n"
-                    "or no input to quit.\n")
-    username = input()
-    if username == '':
-        print("quitting")
-        quit()
-    variables["username"] = username
+    Console.error("No username provided.")
+    quit()
 
 job = None
 job_id = None
