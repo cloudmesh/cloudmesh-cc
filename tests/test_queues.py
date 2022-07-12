@@ -21,62 +21,23 @@ kind = "yamldb"
 # kind = "shelve"
 q = None
 
-def shelve_name(prefix):
-    if os_is_windows() or os_is_mac():
-        return path_expand(prefix)
-    else:
-        return path_expand(f"{prefix}.db")
 
 @pytest.mark.incremental
 class TestQueues:
-    def test_shelve_open_and_close(self):
-        HEADING()
-        Benchmark.Start()
-        name = shelve_name("computers")
-        computers = shelve.open(name)
-        computers['temperature'] = {
-            'red': 80,
-            'blue': 40,
-            'yellow': 50,
-        }
-        print(computers["temperature"])
-        assert computers["temperature"]["red"] == 80
-        computers.close()
-        Benchmark.Stop()
-        assert os.path.exists("computers.db")
-
-    def test_shelve_read(self):
-        HEADING()
-        name = shelve_name("computers")
-        computers = shelve.open(name)
-        Benchmark.Start()
-        temperature = computers['temperature']
-        Benchmark.Stop()
-        print('Initial temperature:')
-        pprint(temperature)
-        assert computers['temperature']['red'] == 80
-        computers.close()
-        # Alison: note that this is the code for shelve database remove() method
-        if os_is_windows():
-            os.remove("computers.bak")
-            os.remove("computers.dat")
-            os.remove("computers.dir")
-        else:
-            os.remove("computers.db")
-
-class f:
 
     def test_create(self):
         HEADING()
         global q
         Benchmark.Start()
-        q = Queues(filename='~/.cloudmesh/queue/queuetest1', database=kind)
+        q = Queues(filename='~/.cloudmesh/queue/test.yamldb')
         q.create(name='local')
         q.create(name='rivanna')
         Benchmark.Stop()
         # print(q.info())
         assert 'local' in q.queues
         print()
+
+class f:
 
     def test_filename(self):
         if kind == "shelve":

@@ -6,6 +6,10 @@ import yaml as pyyaml
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Shell import Shell
 from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+from cloudmesh.common.systeminfo import os_is_linux
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.util import path_expand
 
 """
 This is a program that allows for the instantiation of jobs and then
@@ -97,6 +101,7 @@ class Queue:
         names: commands of the jobs. The queue will have several commands:
         instantiate, add, remove, run, get, and list.
     """
+
 
     def __init__(self, name=None):
         """
