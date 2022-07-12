@@ -604,49 +604,34 @@ class Workflow:
 
             job = self.job(name=name)
             if not dryrun and job["status"] in ["ready"]:
+                local = wsl = ssh = False
                 if job['kind'] in ["local"]:
-                    from cloudmesh.cc.job.localhost.Job import Job as local_Job
-                    job["status"] = "running"
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-
-                    job["instance"] = local_Job(name=name,
+                    local = True
+                    from cloudmesh.cc.job.localhost.Job import Job
+                elif job['kind'] in ["wsl"]:
+                    wsl = True
+                    from cloudmesh.cc.job.wsl.Job import Job
+                elif job['kind'] in ['ssh']:
+                    ssh = True
+                    from cloudmesh.cc.job.ssh.Job import Job
+                else:
+                    from cloudmesh.cc.job.localhost.Job import Job
+                job["status"] = "running"
+                name = job['name']
+                host = job['host']
+                username = job['user']
+                label = name
+                if local or wsl:
+                    job["instance"] = Job(name=name,
                                                 host=host,
                                                 username=username,
                                                 label=label)
-                    job["instance"].sync()
-                    job["instance"].run()
-                    print(str(job["instance"]))
-                    running.append(name)
-                    outstanding.remove(name)
-
-                elif job['kind'] in ["ssh"]:
-                    print(job)
-                    from cloudmesh.cc.job.ssh.Job import Job as ssh_job
-                    job["status"] = "running"
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    remote_job = ssh_job(name=name, host=host,
-                                         username=username, label=label)
-                    remote_job.sync()
-                    remote_job.run()
-
-                elif job['kind'] in ['wsl']:
-                    from cloudmesh.cc.job.wsl.Job import Job as wsl_Job
-                    job["status"] = "running"
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-
-                    job["instance"] = wsl_Job(name=name,
-                                                host=host,
-                                                username=username,
-                                                label=label)
+                if ssh:
+                    job = Job(name=name, host=host, username=username,
+                              label=label)
+                    job.sync()
+                    job.run()
+                if local or wsl:
                     job["instance"].sync()
                     job["instance"].run()
                     print(str(job["instance"]))
@@ -704,49 +689,29 @@ class Workflow:
             job = self.job(name=name)
 
             if not dryrun:
+                local = wsl = ssh = False
                 if job['kind'] in ["local"]:
-                    from cloudmesh.cc.job.localhost.Job import Job as local_Job
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    localhost_job = local_Job(name=name, host=host,
-                                              username=username, label=label)
-                    localhost_job.sync()
-                    localhost_job.run()
-                    localhost_job.watch(period=0.5)
-                    self.graph.done(name)
-                    print(self.table)
-                    status = localhost_job.get_status()
-                    progress = localhost_job.get_progress()
-                    banner(name)
-                    print(str(localhost_job))
-                    print('Status: ', status)
-                    print('Progress: ', progress)
-                    self.jobs[name]['status'] = status
-                    self.jobs[name]['progress'] = progress
-                elif job['kind'] in ["ssh"]:
-                    print(job)
-                    from cloudmesh.cc.job.ssh.Job import Job as ssh_job
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    remote_job = ssh_job(name=name, host=host,
-                                         username=username, label=label)
-                    remote_job.sync()
-                    remote_job.run()
-                elif job['kind'] in ['wsl']:
-                    from cloudmesh.cc.job.wsl.Job import Job as wsl_job
-                    name = job['name']
-                    host = job['host']
-                    username = job['user']
-                    label = name
-                    job = wsl_job(name=name, host=host,
-                                         username=username, label=label)
-                    job.sync()
-                    job.run()
-
+                    local = True
+                    from cloudmesh.cc.job.localhost.Job import Job
+                elif job['kind'] in ["wsl"]:
+                    wsl = True
+                    from cloudmesh.cc.job.wsl.Job import Job
+                elif job['kind'] in ['ssh']:
+                    ssh = True
+                    from cloudmesh.cc.job.ssh.Job import Job
+                else:
+                    from cloudmesh.cc.job.localhost.Job import Job
+                if local or ssh:
+                    job["status"] = "running"
+                name = job['name']
+                host = job['host']
+                username = job['user']
+                label = name
+                job = Job(name=name, host=host,
+                                          username=username, label=label)
+                job.sync()
+                job.run()
+                if local or wsl:
                     job.watch(period=0.5)
                     self.graph.done(name)
                     print(self.table)
@@ -758,6 +723,7 @@ class Workflow:
                     print('Progress: ', progress)
                     self.jobs[name]['status'] = status
                     self.jobs[name]['progress'] = progress
+
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:
