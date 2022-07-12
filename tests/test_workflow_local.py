@@ -44,6 +44,7 @@ else:
 
 global w
 
+
 class Test_workflow:
 
     def test_load_workflow(self):
@@ -55,6 +56,8 @@ class Test_workflow:
         w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
         Benchmark.Stop()
         print(w.graph)
+
+class a:
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
