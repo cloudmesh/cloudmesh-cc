@@ -825,4 +825,4 @@ class Workflow:
             elif state in ["filed"]:
                 s = "failed"
         _status["workflow"] = s
-        reurn _status
+        return _status
