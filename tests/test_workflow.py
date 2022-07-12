@@ -18,6 +18,7 @@ import networkx as nx
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import banner
+from cloudmesh.common.StopWatch import StopWatch
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -40,6 +41,7 @@ else:
     username = os.path.basename(os.environ["HOME"])
 
 w = None
+
 
 class TestWorkflow:
 
