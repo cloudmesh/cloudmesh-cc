@@ -354,7 +354,7 @@ class Workflow:
 
     """
 
-    def __init__(self, name=None, filename=None, user=None, host=None):
+    def __init__(self, name=None, filename=None, user=None, host=None, clear=True):
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
@@ -379,7 +379,8 @@ class Workflow:
             print("Workflow Filename:", self.filename)
             self.graph = Graph(name=name, filename=filename)
             # gvl addded load but not tested
-            self.load(self.filename)
+            if not clear:
+                self.load(self.filename)
         except:
             pass
 
@@ -395,6 +396,9 @@ class Workflow:
         # self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
 
         # self.label = None
+
+    def __str__(self):
+        return (str(self.graph))
 
     @property
     def jobs(self):

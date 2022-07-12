@@ -20,6 +20,7 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 import shutil
 from cloudmesh.common.util import banner
+from cloudmesh.common.StopWatch import StopWatch
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -45,6 +46,55 @@ else:
 global w
 
 
+def create_workflow():
+    global w
+    global username
+    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+
+    login = {
+        "localhost": {"user": "gregor", "host": "local"},
+        "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+        "pi": {"user": "gregor", "host": "red"},
+    }
+
+    n = 0
+
+    user = login["localhost"]["user"]
+    host = login["localhost"]["host"]
+
+    w.add_job(name="start", kind="local", user=user, host=host)
+    w.add_job(name="end", kind="local", user=user, host=host)
+
+    for host, kind in [("localhost", "local"),
+                       ("rivanna", "local")]:
+        # ("rivanna", "ssh")
+
+        print("HOST:", host)
+        user = login[host]["user"]
+        host = login[host]["host"]
+        label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
+        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        n = n + 1
+
+        first = n - 3
+        second = n - 2
+        third = n - 1
+        w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+        w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+        w.add_dependencies(f"job-{host}-{third},end")
+        w.add_dependencies(f"start,job-{host}-{first}")
+
+    print(len(w.jobs) == n)
+    g = str(w.graph)
+    print(g)
+    assert "name: start" in g
+    assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+    return w
+
 class Test_workflow:
 
     def test_load_workflow(self):
@@ -68,7 +118,6 @@ class Test_workflow:
         os.system('cp tests/workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
 
-class a:
 
     def test_set_up(self):
         """
@@ -77,49 +126,14 @@ class a:
         """
         HEADING()
         global w
-        global username
         Benchmark.Start()
-        w = Workflow(filename=path_expand("tests/workflow.yaml"))
-
-        login = {
-            "localhost": {"user": "gregor", "host": "local"},
-            "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
-            "pi": {"user": "gregor", "host": "red"},
-        }
-
-        n = 0
-
-        user = login["localhost"]["user"]
-        host = login["localhost"]["host"]
-
-        w.add_job(name="start", kind="local", user=user, host=host)
-        w.add_job(name="end", kind="local", user=user, host=host)
-
-        for host, kind in [("localhost", "local"),
-                           ("rivanna", "local")]:
-            # ("rivanna", "ssh")
-
-            print("HOST:", host)
-            user = login[host]["user"]
-            host = login[host]["host"]
-            label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
-            n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
-            n = n + 1
-            w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
-            n = n + 1
-
-            first = n - 3
-            second = n - 2
-            third = n - 1
-            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
-            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
-            w.add_dependencies(f"job-{host}-{third},end")
-            w.add_dependencies(f"start,job-{host}-{first}")
-
+        w = create_workflow()
         Benchmark.Stop()
-        print(len(w.jobs) == n)
+        g  = str(w.graph)
+        print(g)
+        assert "name: start" in g
+        assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+
 
     def test_show(self):
         HEADING()
@@ -132,17 +146,19 @@ class a:
         else:
             w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         # Shell.browser("/tmp/test-dot.svg")
-        # assert os.path.exists("~/tmp/test-dot.svg") == True
+        assert os.path.exists("/tmp/test-dot.svg") == True
+
 
     def test_get_node(self):
         HEADING()
         global w
         Benchmark.Start()
-        s1 = w["start"]
-        s2 = w.job("start")
+        job_start_1 = w["start"]
+        job_start_2 = w.job("start")
         Benchmark.Stop()
-        print(s1)
-        assert s1 == s2
+        print(job_start_1)
+        assert job_start_1 == job_start_2
+        assert job_start_1["name"] == "start"
 
     def test_table(self):
         HEADING()
@@ -150,7 +166,11 @@ class a:
         Benchmark.Start()
         print(w.table)
         Benchmark.Stop()
-        assert True
+        t = str(w.table)
+        assert "| progress |" in t
+        assert "job-rivanna.hpc.virginia.edu-3" in t
+        assert "job-rivanna.hpc.virginia.edu-3" in t
+
 
     def test_order(self):
         HEADING()
@@ -160,22 +180,35 @@ class a:
         Benchmark.Stop()
         print(order)
         assert len(order) == len(w.jobs)
+        for i in range(1,len(order)):
+            parent = order[i-1]
+            name = order[i]
+            assert name not in w[parent]['parent']
 
-    def test_run(self):
+
+    def test_run_parallel(self):
         HEADING()
+        w = create_workflow()
         Benchmark.Start()
         w.run_parallel(show=True, period=1.0)
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+        for name, node in w.jobs.items():
+            assert node["progress"] == 100
+            assert node["parent"] == []
+            assert node["status"] == "done"
 
-    # def test_run(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     w.run(show=True)
-    #     Benchmark.Stop()
-    #     banner("Workflow")
-    #     print(w.graph)
+
+class a:
+
+    def test_run_topo(self):
+         HEADING()
+         Benchmark.Start()
+         w.run_topo(show=True)
+         Benchmark.Stop()
+         banner("Workflow")
+         print(w.graph)
 
     # def test_remove_job(self):
     #     HEADING()
@@ -184,8 +217,6 @@ class a:
     #     w.remove_job('job-local-1')
 
 
-class todo:
-
     def test_benchmark(self):
         HEADING()
-        # StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
