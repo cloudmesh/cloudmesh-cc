@@ -743,7 +743,7 @@ class Workflow:
     def yaml(self):
         # gvl reimplemented not tested
         data = {
-            'jobs: ': dict(self.jobs),
+            'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return yaml.dump(data)
@@ -751,7 +751,7 @@ class Workflow:
     def json(self, filepath=None):
         # gvl reimplemented not tested
         data = {
-            'jobs: ': dict(self.jobs),
+            'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return json.dumps(data, indent=2)
