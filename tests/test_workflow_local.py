@@ -28,7 +28,7 @@ from cloudmesh.common.util import banner
 """
 
 variables = Variables()
-username = os.path.basename(os.environ["HOME"])
+
 
 name = "run"
 
@@ -36,6 +36,11 @@ if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
 else:
     host = variables["host"]
+
+if "username" in variables:
+    username = variables["username"]
+else:
+    username = os.path.basename(os.environ["HOME"])
 
 global w
 

@@ -34,17 +34,10 @@ if "host" not in variables:
 else:
     host = variables["host"]
 
-username = variables["username"]
-
-if username is None:
-    Console.warning("Username not entered. Please enter a username,\n"
-                    "or no input to quit.\n")
-    username = input()
-    if username == '':
-        print("quitting")
-        print("quitting")
-        quit()
-    variables["username"] = username
+if "username" in variables:
+    username = variables["username"]
+else:
+    username = os.path.basename(os.environ["HOME"])
 
 class Test_workflow:
 

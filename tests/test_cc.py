@@ -20,8 +20,8 @@ class TestConfig:
         Benchmark.Stop()
         VERBOSE(result)
 
-        assert "cc add --queue=QUEUE --job=JOB --command=COMMAND" in result
-        assert "upload" in result
+        assert "cc start" in result
+        assert "cc workflow add" in result
         assert "start" in result
 
     def test_queue_create(self):
