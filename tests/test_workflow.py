@@ -140,7 +140,7 @@ class TestWorkflow:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        w.run()
+        w.run_topo()
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
