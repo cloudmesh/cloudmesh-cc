@@ -66,7 +66,6 @@ class TestQueues:
         assert len(q.get("local")) == 3
         assert q["local"]["job-1"]["name"] == "job-1"
 
-class f:
 
     def test_remove(self):
         HEADING()
@@ -83,6 +82,7 @@ class f:
         assert len(q.queues) == 1  # this is because there were 2 queues and now there is only one.
         print()
 
+
     def test_list(self):
         HEADING()
         global q
@@ -95,6 +95,7 @@ class f:
         Benchmark.Stop()
         assert len(q.queues) == 2
 
+
     def test_run(self):
         HEADING()
         global q
@@ -105,6 +106,7 @@ class f:
         pprint(q.queues)
         Benchmark.Stop()
         assert q.counter == 6
+
 
     def test_get(self):
         HEADING()
