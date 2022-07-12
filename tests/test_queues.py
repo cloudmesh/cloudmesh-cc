@@ -13,18 +13,26 @@ from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_linux
+from cloudmesh.common.systeminfo import os_is_mac
 
 kind = "yamldb"
 # kind = "shelve"
 q = None
 
+def shelve_name(prefix):
+    if os_is_windows() or os_is_mac():
+        return prefix
+    else:
+        return f"{prefix}.db"
 
 @pytest.mark.incremental
 class TestQueues:
     def test_shelve_open_and_close(self):
         HEADING()
         Benchmark.Start()
-        computers = shelve.open('computers')
+        name = shelve_name("computers")
+        computers = shelve.open(name)
         computers['temperature'] = {
             'red': 80,
             'blue': 40,
@@ -35,7 +43,8 @@ class TestQueues:
 
     def test_shelve_read(self):
         HEADING()
-        computers = shelve.open('computers')
+        name = shelve_name("computers")
+        computers = shelve.open(name)
         Benchmark.Start()
         temperature = computers['temperature']
         Benchmark.Stop()
@@ -50,6 +59,8 @@ class TestQueues:
             os.remove("computers.dir")
         else:
             os.remove("computers.db")
+
+class f:
 
     def test_create(self):
         HEADING()
