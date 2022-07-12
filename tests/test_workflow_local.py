@@ -28,6 +28,7 @@ from cloudmesh.common.util import banner
 """
 
 variables = Variables()
+username = os.path.basename(os.environ["HOME"])
 
 name = "run"
 
@@ -35,17 +36,6 @@ if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
 else:
     host = variables["host"]
-
-username = variables["username"]
-
-if username is None:
-    Console.warning("Username not entered. Please set a username,\n"
-                    "or no input to quit.\n")
-    username = input()
-    if username == '':
-        print("quitting")
-        quit()
-    variables["username"] = username
 
 global w
 

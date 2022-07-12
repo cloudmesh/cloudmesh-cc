@@ -375,13 +375,16 @@ class Workflow:
 
         self.filename = path_expand(self.filename)
 
-        print("Filename:", self.filename)
-
-        self.graph = Graph(name=name, filename=filename)
         self.user = user
         self.host = host
-        # gvl addded load but not tested
-        self.load(self.filename)
+
+        try:
+            print("Filename:", self.filename)
+            self.graph = Graph(name=name, filename=filename)
+            # gvl addded load but not tested
+            self.load(self.filename)
+        except:
+            pass
 
         # should this go into graph?
         # if Path.exists(filename):
