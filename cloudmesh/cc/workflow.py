@@ -543,6 +543,7 @@ class Workflow:
             script=script,
             instance=None
         )
+        # TODO: self.save()
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
@@ -777,10 +778,12 @@ class Workflow:
 
     def remove_workflow(self):
         # gvl rrewritten
+        # TODO: the rm seems wrong
         d = os.path.dirname(self.filename)
         os.system("rm -r {d}")
         self.graph = None
         self.jobs = None
+        self.graph.edges = None
 
     def remove_job(self, name):
         # remove job
@@ -822,3 +825,4 @@ class Workflow:
             elif state in ["filed"]:
                 s = "failed"
         _status["workflow"] = s
+        reurn _status
