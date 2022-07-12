@@ -15,6 +15,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.util import path_expand
 
 kind = "yamldb"
 # kind = "shelve"
@@ -22,9 +23,9 @@ q = None
 
 def shelve_name(prefix):
     if os_is_windows() or os_is_mac():
-        return prefix
+        return path_expand(prefix)
     else:
-        return f"{prefix}.db"
+        return path_expand(f"{prefix}.db")
 
 @pytest.mark.incremental
 class TestQueues:
@@ -38,8 +39,11 @@ class TestQueues:
             'blue': 40,
             'yellow': 50,
         }
+        print(computers["temperature"])
+        assert computers["temperature"]["red"] == 80
         computers.close()
         Benchmark.Stop()
+        assert os.path.exists("computers.db")
 
     def test_shelve_read(self):
         HEADING()
