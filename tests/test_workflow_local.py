@@ -50,7 +50,10 @@ def create_workflow():
     global username
     w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
 
-    localuser = os.environ["USERNAME"]
+    if os_is_windows():
+        localuser = os.environ["USERNAME"]
+    else:
+        localuser = os.environ['USER']
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
