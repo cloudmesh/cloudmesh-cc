@@ -59,15 +59,16 @@ class Test_workflow:
         assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
         assert "a-b:" in g
         assert "host: localhost" in g
-        
-class a:
 
-    def test_create_run(self):
-        os.system("rm -r ~/experiment")
+
+    def test_reset_experiment_dir(self):
+        os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         os.system('cp tests/workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
+
+class a:
 
     def test_set_up(self):
         """
