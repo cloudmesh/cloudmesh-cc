@@ -191,10 +191,8 @@ class Job:
         return 0
 
     def get_error(self):
-        experimentdir = f'/mnt/c/Users/{self.username}/experiment/{self.name}'
-        command = f'cp {experimentdir}/{self.name}.err {self.name}.err'
-        print(command)
-        os.system(command)
+        Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err",f"{self.name}.err")
+
         content = readfile(f"{self.name}.err")
         print(content)
         return content
