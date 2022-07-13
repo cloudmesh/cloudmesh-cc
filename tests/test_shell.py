@@ -1,3 +1,10 @@
+# ##############################################################
+# pytest -v --capture=no tests/test_shell.py
+# pytest -v  tests/test_shell.py
+# pytest -v --capture=no  tests/shell.py::Test_Shell::<METHODNAME>
+# ##############################################################
+
+
 """
 This is the test for the new shell commands that we are implementing
 for the purpose of making the workflow more easily synonymous with each of the
@@ -9,6 +16,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
+from pathlib import Path
 
 class TestShell:
 
@@ -61,17 +69,23 @@ class TestShell:
         assert 'ujson' in r
 
     def test_shell_dialog(self):
+        """
+        This method may be one of the more interactive (visual) methods for testing
+        :return:
+        """
         HEADING()
         Benchmark.Start()
-
-
+        r = Shell.dialog()
         Benchmark.Stop()
+        assert True # unless visually the dialog does not work appropriately
 
     def test_shell_fgrep(self):
         HEADING()
         Benchmark.Start()
-
+        file = path_expand('requirements.txt')
+        r = Shell.fgrep(filename=file, s='docker-compose')
         Benchmark.Stop()
+        assert 'docker-compose' in r
 
     def test_shell_grep(self):
         HEADING()
@@ -103,16 +117,15 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.copy(filename=file)
+        r = Shell.copy(file, f'{Path.cwd()}', f'{Path.cwd()}/shell-directory')
         Benchmark.Stop()
 
     def test_shell_sync(self):
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.rsync(filename=file)
+        r = Shell.rsync(file)
         print(r)
         Benchmark.Stop()
 
-r = Shell.browser("requirements.txt")
-print(r)
+
