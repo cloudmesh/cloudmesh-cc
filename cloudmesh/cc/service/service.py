@@ -53,31 +53,33 @@ templates = Jinja2Templates(directory=template_dir)
 # ROUTES
 #
 
-@app.get("/item/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
-    global q
-    jobs = []
-    for queue in q.queues:
-        for job in q.queues[queue]:
-            jobs.append(q.queues[queue][job])
-    order = q.queues[queue][job].keys()
-    order = [word.capitalize() for word in order]
-    Console.error(str(order))
-
-    return templates.TemplateResponse("templates/item.html",
-                                      {"request": request,
-                                       "id": id,
-                                       "jobs": jobs,
-                                       "order": order})
+# # deprecated only here as example/test once working example is implemented, remove
+# @app.get("/item/{id}", response_class=HTMLResponse)
+# async def read_item(request: Request, id: str):
+#     global q
+#     jobs = []
+#     for queue in q.queues:
+#         for job in q.queues[queue]:
+#             jobs.append(q.queues[queue][job])
+#     order = q.queues[queue][job].keys()
+#     order = [word.capitalize() for word in order]
+#     Console.error(str(order))
+#
+#     return templates.TemplateResponse("templates/item.html",
+#                                       {"request": request,
+#                                        "id": id,
+#                                        "jobs": jobs,
+#                                        "order": order})
+#
+# # deprecated only here as example/test once working example is implemented, remove
+# @app.get("/items", response_class=HTMLResponse)
+# async def item_table(request: Request):
+#     return templates.TemplateResponse("templates/table.html",
+#                                       {"request": request})
 
 @app.get("/")
 async def home():
     return {"msg": "cloudmesh.cc is up"}
-
-@app.get("/items", response_class=HTMLResponse)
-async def item_table(request: Request):
-    return templates.TemplateResponse("templates/table.html",
-                                      {"request": request})
 
 #
 # WORKFLOW
