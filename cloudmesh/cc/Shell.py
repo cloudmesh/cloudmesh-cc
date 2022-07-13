@@ -25,9 +25,10 @@ class Shell_path:
             if source_map.host == "localhost" or source.map.host == "wsl":
                 shutil.copy2(s, d)
             else:
-                protocol = source_map.protocol if not "cp" else dest_map.protocol
-                command = f"{protocol} {source_map.path} {dest_map.path}"
-                os.system(command)
+                pass
+                # protocol = source_map.protocol if not "cp" else dest_map.protocol
+                # command = f"{protocol} {source_map.path} {dest_map.path}"
+                # os.system(command)
 
 
     @staticmethod
@@ -56,7 +57,6 @@ class Shell_path:
                 dest.scp, userhost, dest.path = _name.split(":")
                 dest.user, dest.host = userhost.split("@")
                 dest.protocol = "scp"
-                dest.path=f"{dest.user}@{dest.host}:{dest.path}"
             else:
                 Console.error("format of scp command is not correct")
         if _name.startswith("rsync:"):
@@ -65,7 +65,6 @@ class Shell_path:
                 dest.scp, userhost, dest.path = _name.split(":")
                 dest.user, dest.host = userhost.split("@")
                 dest.protocol = "rsync -a"
-                f"{dest.user}@{dest.host}:{dest.path}"
             else:
                 Console.error("format of rsync command is not correct")
         return dest
