@@ -107,30 +107,34 @@ class TestGraph:
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
         Shell.mkdir("dest")
-        if not os_is_windows():
-            g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
-            # g.save(filename="dest/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
-            g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-            # Shell.browser("dest/test-pyplot.svg")
-            r = Shell.cat("dest/test-dot.dot")
-            print(r)
-            g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
-            if os_is_linux():
-                Shell.run("gopen dest/test-graphviz.svg")
-                Shell.run("gopen dest/test-dot.svg")
-            else:
-                Shell.browser("dest/test-graphviz.svg")
-                Shell.browser("file://dest/test-dot.svg")
-        else:
-            g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
-            # g.save(filename="test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
-            g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+
+        g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+        g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+        g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+
+        # TODO: please fix shell cat for windows
+        r = Shell.cat("dest/test-dot.dot")
+        print(r)
+        # TODO: please improve shell.browser so that when on linux we do svg gopen is used
+
+        # TODO:
+        # Shell.browser("dest/test-graphviz.svg")
+        # Shell.browser("dest/test-dot.svg")
+
+        # TODO: all this is part of Shell.browser
+
+        if os_is_linux():
+            Shell.run("gopen dest/test-graphviz.svg")
+            Shell.run("gopen dest/test-dot.svg")
+            # alternative is "chromium dest/test-dot.svg"
+        elif os_is_mac():
             Shell.browser("dest/test-graphviz.svg")
-            # Shell.browser("dest/test-pyplot.svg")
-            # please fix shell cat for windows
+            Shell.browser("dest/test-dot.svg")
+        elif os_is_windows():
+            Shell.browser("dest/test-graphviz.svg")
             # r = Shell.cat("test-dot.dot")
             # print(r)
-            g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            # TODO: please improve SHell.browser so it works on windows also
             cwd = os.getcwd()
             os.system(f'start chrome {cwd}\\dest\\test-dot.svg')
             os.system(f'start chrome {cwd}\\dest\\test-graphviz.svg')
