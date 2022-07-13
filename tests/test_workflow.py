@@ -65,10 +65,14 @@ class TestWorkflow:
         Benchmark.Start()
         w = Workflow()
 
+        if os_is_windows():
+            localuser = os.environ["USERNAME"]
+        else:
+            localuser = os.environ['USER']
         login = {
-            "localhost": {"user": "gregor", "host": "local"},
+            "localhost": {"user": f"{localuser}", "host": "local"},
             "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
-            "pi": {"user": "gregor", "host": "red"},
+            "pi": {"user": f"{localuser}", "host": "red"},
         }
 
         n = 0
@@ -76,10 +80,14 @@ class TestWorkflow:
         user = login["localhost"]["user"]
         host = login["localhost"]["host"]
 
-        w.add_job(name="start", kind="local", user=user, host=host)
-        w.add_job(name="end", kind="local", user=user, host=host)
+        if os_is_windows():
+            jobkind = "wsl"
+        else:
+            jobkind = "local"
+        w.add_job(name="start", kind=jobkind, user=user, host=host)
+        w.add_job(name="end", kind=jobkind, user=user, host=host)
 
-        for host, kind in [("localhost", "local"),
+        for host, kind in [("localhost", jobkind),
                            ("rivanna", "remote-slurm"),
                            ("rivanna", "ssh")]:
             print("HOST:", host)
