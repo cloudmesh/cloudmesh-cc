@@ -26,7 +26,7 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.head(filename=file)
+        r = Shell.head(file)
         Benchmark.Stop()
         assert 'docker-compose' not in r
         assert 'cloudmesh-sys' in r
@@ -37,7 +37,7 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.cat(filename=file)
+        r = Shell.cat(file)
         Benchmark.Stop()
         assert 'starlette' in r
         assert 'cloudmesh-sys' in r
@@ -48,7 +48,7 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         host = 'www.google.com'
-        r = Shell.ping(host=host)
+        r = Shell.ping(host)
         Benchmark.Stop()
         assert 'packets' in r
         assert 'www.google.com' in r
@@ -85,7 +85,7 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.fgrep(filename=file, s='docker-compose')
+        r = Shell.fgrep(file, 'docker-compose')
         Benchmark.Stop()
         assert 'docker-compose' in r
 
