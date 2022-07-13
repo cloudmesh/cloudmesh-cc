@@ -110,7 +110,18 @@ class TestShell:
     def test_shell_browser(self):
         HEADING()
         Benchmark.Start()
-        r = Shell.browser("requirements.txt")
+        # Shell.copy("test-graphviz.svg", '/tmp/test-graphviz.svg')
+        Shell.copy("test-graphviz.svg", '~/test-graphviz.svg')
+        r = Shell.browser("~/test-graphviz.svg")
+        # assert r == path_expand(f'~/test-graphviz.svg')
+        # input()
+        # r = Shell.browser("file://~/test-graphviz.svg")
+        # r = Shell.browser("test-graphviz.svg")
+        # r = Shell.browser("file://test-graphviz.svg")
+        # r = Shell.browser("file://tmp/test-graphviz.svg")
+        # r = Shell.browser("http://google.com")
+        # r = Shell.browser("https://google.com")
+        print(r)
         Benchmark.Stop()
 
     def test_shell_copy(self):
@@ -119,13 +130,13 @@ class TestShell:
         file = path_expand('requirements.txt')
         r = Shell.copy(file, f'{Path.cwd()}/shell-directory')
         Benchmark.Stop()
-        assert file in f'{Path.cwd()}/shell-directory'
+        assert os.path.exists(path_expand(f'shell-directory/{file}'))
 
-    def test_shell_sync(self):
-        HEADING()
-        Benchmark.Start()
-        file = path_expand('requirements.txt')
-        r = Shell.rsync(file)
-        Benchmark.Stop()
+    # def test_shell_sync(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     file = path_expand('requirements.txt')
+    #     r = Shell.rsync(file)
+    #     Benchmark.Stop()
 
 
