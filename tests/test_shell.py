@@ -18,6 +18,8 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
 from pathlib import Path
 
+import time
+
 class TestShell:
 
     def test_shell_head(self):
@@ -111,8 +113,18 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         # Shell.copy("test-graphviz.svg", '/tmp/test-graphviz.svg')
-        Shell.copy("test-graphviz.svg", '~/test-graphviz.svg')
-        r = Shell.browser("~/test-graphviz.svg")
+        # Shell.copy("test-graphviz.svg", "~/test-graphviz.svg")
+        # r = Shell.browser("~/test-graphviz.svg")
+        Shell.copy("test-graphviz.svg", f"{Path.home()}/test-graphviz.svg")
+        r = Shell.browser(f"~/test-graphviz.svg")
+        print('i just opened the home dir and the svg in there')
+        time.sleep(5)
+        r = Shell.browser(f'test-graphviz.svg')
+        print('i just tried no slashes')
+        time.sleep(5)
+        r = Shell.browser(f'./test-graphviz.svg')
+        print('i just tried something wacky')
+        time.sleep(5)
         # assert r == path_expand(f'~/test-graphviz.svg')
         # input()
         # r = Shell.browser("file://~/test-graphviz.svg")
