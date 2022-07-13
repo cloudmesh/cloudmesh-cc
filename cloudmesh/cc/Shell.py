@@ -44,7 +44,7 @@ class Shell_path:
         if _name.startswith("wsl:"):
             if os_is_windows():
                 user = os.environ["USERNAME"]
-                dest.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/")
+                dest.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/").replace("~","")
                 dest.protocol = "cp"
                 dest.user = user
                 dest.host = "wsl"
@@ -69,3 +69,13 @@ class Shell_path:
             else:
                 Console.error("format of rsync command is not correct")
         return dest
+
+    @classmethod
+    # @NotImplementedInWindows
+    def head(cls, *args):
+        """
+        executes head with the given arguments
+        :param args:
+        :return:
+        """
+        pass
