@@ -111,14 +111,15 @@ class TestGraph:
             g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
             # g.save(filename="dest/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
             g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-            Shell.browser("desl/test-graphviz.svg")
             # Shell.browser("dest/test-pyplot.svg")
             r = Shell.cat("dest/test-dot.dot")
             print(r)
             g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
             if os_is_linux():
+                Shell.run("gopen dest/test-graphviz.svg")
                 Shell.run("gopen dest/test-dot.svg")
             else:
+                Shell.browser("dest/test-graphviz.svg")
                 Shell.browser("file://dest/test-dot.svg")
         else:
             g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
