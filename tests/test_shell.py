@@ -1,3 +1,10 @@
+# ##############################################################
+# pytest -v --capture=no tests/test_shell.py
+# pytest -v  tests/test_shell.py
+# pytest -v --capture=no  tests/shell.py::Test_Shell::<METHODNAME>
+# ##############################################################
+
+
 """
 This is the test for the new shell commands that we are implementing
 for the purpose of making the workflow more easily synonymous with each of the
@@ -111,8 +118,6 @@ class TestShell:
         Benchmark.Start()
         file = path_expand('requirements.txt')
         r = Shell.rsync(filename=file)
-        print(r)
         Benchmark.Stop()
 
-r = Shell.browser("requirements.txt")
-print(r)
+Shell.which('ls')
