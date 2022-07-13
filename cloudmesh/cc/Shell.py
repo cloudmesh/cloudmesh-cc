@@ -43,17 +43,17 @@ class Shell_path:
         return None
 
     @classmethod
-    def fake_browser(filename=None, engine='python -m webbrowser -t', browser=None):
+    def fake_browser(cls, filename=None, engine='python -m webbrowser -t', browser=None):
         print('a', filename)
         _filename = Shell_path.map_filename(filename)
-        print('b')
+        print('b', _filename)
         if _filename.path.startswith('http'):
-            result = requests.get(_filename)
+            result = requests.get(_filename.path)
             print(result.text)
             return result.text
         else:
-            os.path.exists(_filename)
-            result = readfile(_filename)
+            os.path.exists(_filename.path)
+            result = readfile(_filename.path)
             return result
 
     @classmethod
@@ -79,42 +79,87 @@ class Shell_path:
     @staticmethod
     def map_filename(name):
         _name = str(name)
-        dest = dotdict()
+        result = dotdict()
+
+        print('bbb', _name)
 
         # regular
-        dest.path = _name
-        dest.protocol = "cp"
-        dest.user = os.system('for /F %i in ("%userprofile%") do @echo %~ni') if os_is_windows() else os.environ["USER"]
-        dest.host = "localhost"
+        result.path = _name
+        result.protocol = "cp"
+        result.user = os.path.basename(os.environ["HOME"])
+        result.host = "localhost"
 
-        if _name.startswith("wsl:"):
+        if _name.startswith("http"):
+            result.path = _name
+            result.protocol = _name.split(':')[0]
+            result.user = os.path.basename(os.environ["HOME"])
+            result.host = "localhost"
+        elif _name.startswith("wsl:"):
             if os_is_windows():
                 user = os.environ["USERNAME"]
-                dest.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/").replace("~","")
-                dest.protocol = "cp"
-                dest.user = user
-                dest.host = "wsl"
+                result.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/").replace("~","")
+                result.protocol = "cp"
+                result.user = user
+                result.host = "wsl"
             else:
                 Console.error("wsl is only compatible with Windows")
-        if _name.startswith("scp:"):
+        elif _name.startswith("scp:"):
             # scp source destination
             if '@' in _name:
-                dest.scp, userhost, dest.path = _name.split(":")
-                dest.user, dest.host = userhost.split("@")
-                dest.protocol = "scp"
-                dest.path=f"{dest.user}@{dest.host}:{dest.path}"
+                result.scp, userhost, result.path = _name.split(":")
+                result.user, result.host = userhost.split("@")
+                result.protocol = "scp"
+                result.path=f"{result.user}@{result.host}:{result.path}"
             else:
                 Console.error("format of scp command is not correct")
-        if _name.startswith("rsync:"):
+        elif _name.startswith("rsync:"):
             # rsync -a
             if '@' in _name:
-                dest.scp, userhost, dest.path = _name.split(":")
-                dest.user, dest.host = userhost.split("@")
-                dest.protocol = "rsync -a"
-                f"{dest.user}@{dest.host}:{dest.path}"
+                result.scp, userhost, result.path = _name.split(":")
+                result.user, result.host = userhost.split("@")
+                result.protocol = "rsync -a"
+                f"{result.user}@{result.host}:{result.path}"
             else:
                 Console.error("format of rsync command is not correct")
-        return dest
+
+        elif _name.startswith("."):
+            result.path = path_expand(_name)
+            result.protocol = "localhost"
+            result.user = os.path.basename(os.environ["HOME"])
+            result.host = "localhost"
+        elif _name.startswith("~"):
+            result.path = path_expand(_name)
+            result.protocol = "localhost"
+            result.user = os.path.basename(os.environ["HOME"])
+            result.host = "localhost"
+        else:
+            result.path = path_expand(f'./{_name}')
+            result.protocol = "localhost"
+            result.user = os.path.basename(os.environ["HOME"])
+            result.host = "localhost"
+        return result
+
+
+    def path_abs(text, slashreplace=True):
+        """ returns a string with expanded variable.
+
+        :param text: the path to be expanded, which can include ~ and environment variables
+        :param text: string
+
+        """
+        result = os.path.expandvars(os.path.expanduser(text))
+
+        if not result.startswith("./"):
+            result = "./" + result
+
+        if result.startswith("./"):
+            result = result.replace(".", os.getcwd(), 1)
+
+        # if is_gitbash() or is_cmd_exe():
+        #     if slashreplace:
+        #         result = result.replace("/", "\\")
+
+        return result
 
     @classmethod
     # @NotImplementedInWindows

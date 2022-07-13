@@ -32,7 +32,7 @@ class TestShell:
         # r = Shell.browser("~/test-graphviz.svg")
         # Shell.copy("test-graphviz.svg", f"{Path.home()}/test-graphviz.svg")
         r = browser('http://google.com')
-        print(r)
+        assert '<title>Google</title>' in r
         # r = browser(f'https://google.com')
         # r = browser(
         #     f"C:/Users/abeck/cm/cloudmesh-cc/test-graphviz.svg")
