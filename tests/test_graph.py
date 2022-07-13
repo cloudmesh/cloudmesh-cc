@@ -13,6 +13,8 @@ from cloudmesh.common.Benchmark import Benchmark, StopWatch
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_linux
+from cloudmesh.common.systeminfo import os_is_mac
 
 g = Graph()
 g.sep = "_"
@@ -104,29 +106,33 @@ class TestGraph:
         Benchmark.Start()
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
-        if not os_is_windows:
-            g.save(filename="/tmp/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
-            # g.save(filename="/tmp/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
-            g.save(filename="/tmp/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-            Shell.browser("/tmp/test-graphviz.svg")
-            # Shell.browser("/tmp/test-pyplot.svg")
-            r = Shell.cat("/tmp/test-dot.dot")
+        Shell.mkdir("dest")
+        if not os_is_windows():
+            g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+            # g.save(filename="dest/test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
+            g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+            Shell.browser("desl/test-graphviz.svg")
+            # Shell.browser("dest/test-pyplot.svg")
+            r = Shell.cat("dest/test-dot.dot")
             print(r)
-            g.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
-            Shell.browser("/tmp/test-dot.svg")
+            g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            if os_is_linux():
+                Shell.run("gopen dest/test-dot.svg")
+            else:
+                Shell.browser("file://dest/test-dot.svg")
         else:
-            g.save(filename="test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+            g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
             # g.save(filename="test-pyplot.svg",colors="status", layout=nx.circular_layout, engine="pyplot")
-            g.save(filename="test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-            Shell.browser("test-graphviz.svg")
-            # Shell.browser("test-pyplot.svg")
+            g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+            Shell.browser("dest/test-graphviz.svg")
+            # Shell.browser("dest/test-pyplot.svg")
             # please fix shell cat for windows
             # r = Shell.cat("test-dot.dot")
             # print(r)
-            g.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
             cwd = os.getcwd()
-            os.system(f'start chrome {cwd}\\test-dot.svg')
-            os.system(f'start chrome {cwd}\\test-graphviz.svg')
+            os.system(f'start chrome {cwd}\\dest\\test-dot.svg')
+            os.system(f'start chrome {cwd}\\dest\\test-graphviz.svg')
             #Shell.browser("test-dot.svg", browser='chrome')
         Benchmark.Stop()
 
