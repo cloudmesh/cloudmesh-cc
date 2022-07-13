@@ -84,8 +84,13 @@ class TestWorkflow:
             jobkind = "wsl"
         else:
             jobkind = "local"
-        w.add_job(name="start", kind=jobkind, user=user, host=host)
-        w.add_job(name="end", kind=jobkind, user=user, host=host)
+
+        for script in ["start", "end"]:
+            command = f"cp ./tests/workflow-sh/{script}.sh ."
+            os.system(command)
+            assert os.path.isfile(f"./{script}.sh")
+            w.add_job(name=script, kind=jobkind, user=user, host=host)
+
 
         for host, kind in [("localhost", jobkind),
                            ("rivanna", "remote-slurm"),
@@ -93,11 +98,15 @@ class TestWorkflow:
             print("HOST:", host)
             user = login[host]["user"]
             host = login[host]["host"]
+
             w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            os.system(f"cp ./tests/workflow-sh/job-{host}-{n}.sh .")
             n = n + 1
             w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            os.system(f"cp ./tests/workflow-sh/job-{host}-{n}.sh .")
             n = n + 1
             w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+            os.system(f"cp ./tests/workflow-sh/job-{host}-{n}.sh .")
             n = n + 1
 
             first = n - 3
@@ -107,6 +116,7 @@ class TestWorkflow:
             w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
             w.add_dependencies(f"job-{host}-{third},end")
             w.add_dependencies(f"start,job-{host}-{first}")
+
 
         Benchmark.Stop()
         print(len(w.jobs) == n)
