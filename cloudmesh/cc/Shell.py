@@ -16,8 +16,8 @@ class Shell_path:
             d = path_expand(destination)
             shutil.copy2(s, d)
         else:
-            source_map = source.map_filename()
-            dest_map = destination.map_filename()
+            source_map = Shell_path.map_filename(source)
+            dest_map = Shell_path.map_filename(destination)
             s = source_map.path
             d = dest_map.path
 
