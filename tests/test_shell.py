@@ -16,6 +16,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
+from pathlib import Path
 
 class TestShell:
 
@@ -68,17 +69,23 @@ class TestShell:
         assert 'ujson' in r
 
     def test_shell_dialog(self):
+        """
+        This method may be one of the more interactive (visual) methods for testing
+        :return:
+        """
         HEADING()
         Benchmark.Start()
-
-
+        r = Shell.dialog()
         Benchmark.Stop()
+        assert True # unless visually the dialog does not work appropriately
 
     def test_shell_fgrep(self):
         HEADING()
         Benchmark.Start()
-
+        file = path_expand('requirements.txt')
+        r = Shell.fgrep(filename=file, s='docker-compose')
         Benchmark.Stop()
+        assert 'docker-compose' in r
 
     def test_shell_grep(self):
         HEADING()
@@ -110,14 +117,22 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.copy(filename=file)
+        r = Shell.copy(file, f'{Path.cwd()}', f'{Path.cwd()}/shell-directory')
         Benchmark.Stop()
 
     def test_shell_sync(self):
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
+<<<<<<< HEAD
         r = Shell.rsync(filename=file)
         Benchmark.Stop()
 
 Shell.which('ls')
+=======
+        r = Shell.rsync(file)
+        print(r)
+        Benchmark.Stop()
+
+
+>>>>>>> 8fa57377052d773cd0616e889d43de9c9a2841a6
