@@ -13,7 +13,8 @@ from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.Shell import Shell
+# from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.Shell import Shell_path as Shell
 import networkx as nx
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
