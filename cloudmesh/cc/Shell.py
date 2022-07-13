@@ -63,8 +63,8 @@ class Shell_path:
             d = path_expand(destination)
             shutil.copy2(s, d)
         else:
-            source_map = source.map_filename()
-            dest_map = destination.map_filename()
+            source_map = Shell_path.map_filename(source)
+            dest_map = Shell_path.map_filename(destination)
             s = source_map.path
             d = dest_map.path
 
@@ -90,7 +90,7 @@ class Shell_path:
         if _name.startswith("wsl:"):
             if os_is_windows():
                 user = os.environ["USERNAME"]
-                dest.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/")
+                dest.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/").replace("~","")
                 dest.protocol = "cp"
                 dest.user = user
                 dest.host = "wsl"
@@ -115,3 +115,13 @@ class Shell_path:
             else:
                 Console.error("format of rsync command is not correct")
         return dest
+
+    @classmethod
+    # @NotImplementedInWindows
+    def head(cls, *args):
+        """
+        executes head with the given arguments
+        :param args:
+        :return:
+        """
+        pass
