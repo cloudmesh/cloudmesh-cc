@@ -117,8 +117,9 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.copy(file, f'{Path.cwd()}', f'{Path.cwd()}/shell-directory')
+        r = Shell.copy(file, f'{Path.cwd()}/shell-directory')
         Benchmark.Stop()
+        assert file in f'{Path.cwd()}/shell-directory'
 
     def test_shell_sync(self):
         HEADING()
