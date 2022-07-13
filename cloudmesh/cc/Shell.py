@@ -3,12 +3,58 @@ import shutil
 
 from cloudmesh.common.console import Console
 from cloudmesh.common.dotdict import dotdict
-from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_windows, os_is_linux, os_is_mac
 from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.util import readfile
+
+import webbrowser
+import requests
 
 
 class Shell_path:
+
+    @staticmethod
+    def browser(filename=None, engine='python -m webbrowser -t',
+                browser=None):
+        """
+        :param filename:
+        :param engine:
+        :param browser:
+        :return:
+        """
+        if not os.path.isabs(filename) and 'http' not in filename:
+            filename = path_expand(filename)
+
+        if ".svg" in filename:
+            if browser:
+                try:
+                    webbrowser.get(browser).open(filename, new=2)
+                except Exception as e:
+                    Console.error('Specified browser not available.')
+            else:
+                webbrowser.open(filename, new=2)
+        else:
+            if 'file:' not in filename and 'http' not in filename:
+                command = f"{engine} file:///{filename}"
+            else:
+                webbrowser.open(filename, new=2)
+        #print(command)
+        #os.system(command)
+        return None
+
+    @classmethod
+    def fake_browser(filename=None, engine='python -m webbrowser -t', browser=None):
+        print('a', filename)
+        _filename = Shell_path.map_filename(filename)
+        print('b')
+        if _filename.path.startswith('http'):
+            result = requests.get(_filename)
+            print(result.text)
+            return result.text
+        else:
+            os.path.exists(_filename)
+            result = readfile(_filename)
+            return result
 
     @classmethod
     def copy(cls, source, destination, expand=False):
