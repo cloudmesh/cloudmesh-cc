@@ -124,15 +124,7 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-<<<<<<< HEAD
-        r = Shell.rsync(filename=file)
-        Benchmark.Stop()
-
-Shell.which('ls')
-=======
         r = Shell.rsync(file)
-        print(r)
         Benchmark.Stop()
 
 
->>>>>>> 8fa57377052d773cd0616e889d43de9c9a2841a6
