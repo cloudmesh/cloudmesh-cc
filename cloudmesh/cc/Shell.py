@@ -5,6 +5,7 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Shell
 
 
 class Shell_path:
@@ -37,7 +38,7 @@ class Shell_path:
         # regular
         dest.path = _name
         dest.protocol = "cp"
-        dest.user = os.environ["USERNAME"] if os_is_windows() else os.environ["USER"]
+        dest.user = os.system('for /F %i in ("%userprofile%") do @echo %~ni') if os_is_windows() else os.environ["USER"]
         dest.host = "localhost"
 
         if _name.startswith("wsl:"):

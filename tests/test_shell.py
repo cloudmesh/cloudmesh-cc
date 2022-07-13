@@ -12,7 +12,8 @@ OS we have on the team.
 """
 import os.path
 
-from cloudmesh.common.Shell import Shell
+# from cloudmesh.common.Shell import Shell
+from cloudmesh.cc.Shell import Shell_path as Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
