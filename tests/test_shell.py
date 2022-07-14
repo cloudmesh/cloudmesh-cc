@@ -235,17 +235,6 @@ class TestShell:
         assert not os.path.exists(path_expand('psuedo-directory'))
         assert not os.path.exists(path_expand('~/delete-test-file'))
 
-    def test_shell_dialog(self):
-        """
-        This method may be one of the more interactive (visual) methods for testing
-        :return:
-        """
-        HEADING()
-        Benchmark.Start()
-        r = Shell.dialog()
-        Benchmark.Stop()
-        assert True # unless visually the dialog does not work appropriately
-
     def test_shell_fgrep(self):
         HEADING()
         Shell = Shell_path

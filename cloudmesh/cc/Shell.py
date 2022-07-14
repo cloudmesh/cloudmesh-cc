@@ -126,7 +126,6 @@ class Shell_path:
 
         return result
 
-
     def path_abs(text, slashreplace=True):
         """ returns a string with expanded variable.
 
