@@ -248,9 +248,10 @@ class TestShell:
 
     def test_shell_fgrep(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell.fgrep(file, 'docker-compose')
+        r = Shell.fgrep('docker-compose', file)
         Benchmark.Stop()
         assert 'docker-compose' in r
 
@@ -290,12 +291,11 @@ class TestShell:
         HEADING()
         Shell = Shell_path
         Benchmark.Start()
-        dir = os.path.join(Path.home(), 'cm\\cloudmesh-cc\\test-dot.svg')
+        dir = os.path.join(Path.home(), 'cm/cloudmesh-cc/test-dot.svg')
         # Shell.copy("test-graphviz.svg", '/tmp/test-graphviz.svg')
         # Shell.copy("test-graphviz.svg", "~/test-graphviz.svg")
         # r = Shell.browser("~/test-graphviz.svg")
         #Shell.copy("test-graphviz.svg", f"{Path.home()}/test-graphviz.svg")
-        r = Shell.browser(f'http://google.com')
         r = Shell.browser(f'https://google.com')
         r = Shell.browser(dir)
         r = Shell.browser(f"file:///{dir}")
@@ -305,23 +305,25 @@ class TestShell:
         # assert r == path_expand(f'~/test-graphviz.svg')
         # input()
         # r = Shell.browser("file://~/test-graphviz.svg")
-        # r = Shell.browser("test-graphviz.svg")
         # r = Shell.browser("file://test-graphviz.svg")
         # r = Shell.browser("file://tmp/test-graphviz.svg")
-        # r = Shell.browser("http://google.com")
-        # r = Shell.browser("https://google.com")
         print(r)
         Benchmark.Stop()
 
-
-class Rest:
     def test_shell_copy(self):
         HEADING()
+        Shell = Shell_path
+        Shell.mkdir('shell-directory')
         Benchmark.Start()
-        file = path_expand('requirements.txt')
-        r = Shell.copy(file, f'{Path.cwd()}/shell-directory')
+        r = Shell.copy(f'requirements.txt', f'shell-directory')
+        r = Shell.copy(f'requirements.txt', f'requirements2.txt')
+        r = Shell.copy(f'requirements.txt', f'shell-directory/test.txt')
         Benchmark.Stop()
-        assert os.path.exists(path_expand(f'shell-directory/{file}'))
+        assert os.path.exists(path_expand(f'shell-directory/requirements.txt'))
+        assert os.path.exists(path_expand(f'requirements2.txt'))
+        assert os.path.exists(path_expand(f'shell-directory/test.txt'))
+        os.system('rm -rf shell-directory')
+        os.system('rm requirements2.txt')
 
     # def test_shell_sync(self):
     #     HEADING()

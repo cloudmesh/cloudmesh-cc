@@ -53,24 +53,20 @@ class Shell_path:
             return result
 
     @classmethod
-    def copy(cls, source, destination, expand=False):
-        if expand:
-            s = path_expand(source)
-            d = path_expand(destination)
+    def copy(cls, source, destination):
+
+        source_map = Shell_path.map_filename(source)
+        dest_map = Shell_path.map_filename(destination)
+        s = source_map.path
+        d = dest_map.path
+
+        if source_map.host == "localhost" or source.map.host == "wsl":
             shutil.copy2(s, d)
         else:
-            source_map = Shell_path.map_filename(source)
-            dest_map = Shell_path.map_filename(destination)
-            s = source_map.path
-            d = dest_map.path
-
-            if source_map.host == "localhost" or source.map.host == "wsl":
-                shutil.copy2(s, d)
-            else:
-                pass
-                # protocol = source_map.protocol if not "cp" else dest_map.protocol
-                # command = f"{protocol} {source_map.path} {dest_map.path}"
-                # os.system(command)
+            pass
+            # protocol = source_map.protocol if not "cp" else dest_map.protocol
+            # command = f"{protocol} {source_map.path} {dest_map.path}"
+            # os.system(command)
 
 
     @staticmethod
@@ -227,3 +223,11 @@ class Shell_path:
         """
         location = cls.map_filename(location).path
         os.remove(location)
+
+    @classmethod
+    def fgrep(cls, string=None, file=None):
+        if not os_is_windows():
+            r = Shell.run(f'fgrep {string} {file}')
+        else:
+            r = Shell.run(f'grep -F {string} {file}')
+        return r
