@@ -32,46 +32,14 @@ class Shell_path:
         return r
 
     @staticmethod
-    def browser2(filename=None):
+    def browser(filename=None):
         """
         :param filename:
-        :param browser:
         :return:
         """
-
         if not os.path.isabs(filename) and 'http' not in filename:
-            filename = path_expand(filename)
-
+            filename = Shell_path.map_filename(filename).path
         webbrowser.open(filename, new=2)
-
-    @staticmethod
-    def browser(filename=None, engine='python -m webbrowser -t',
-                browser=None):
-        """
-        :param filename:
-        :param engine:
-        :param browser:
-        :return:
-        """
-        if not os.path.isabs(filename) and 'http' not in filename:
-            filename = path_expand(filename)
-
-        if ".svg" in filename:
-            if browser:
-                try:
-                    webbrowser.get(browser).open(filename, new=2)
-                except Exception as e:
-                    Console.error('Specified browser not available.')
-            else:
-                webbrowser.open(filename, new=2)
-        else:
-            if 'file:' not in filename and 'http' not in filename:
-                command = f"{engine} file:///{filename}"
-            else:
-                webbrowser.open(filename, new=2)
-        #print(command)
-        #os.system(command)
-        return None
 
     @classmethod
     def fake_browser(cls, filename=None, engine='python -m webbrowser -t', browser=None):

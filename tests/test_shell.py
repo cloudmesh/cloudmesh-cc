@@ -279,22 +279,22 @@ class TestShell:
         os.system('rm -rf shell-new-dir/another-dir')
         os.system('rm -rf ~/shell-dir')
 
-
-class Rest:
     def test_shell_browser(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
+        dir = os.path.join(Path.home(), 'cm\\cloudmesh-cc\\test-dot.svg')
         # Shell.copy("test-graphviz.svg", '/tmp/test-graphviz.svg')
         # Shell.copy("test-graphviz.svg", "~/test-graphviz.svg")
         # r = Shell.browser("~/test-graphviz.svg")
         #Shell.copy("test-graphviz.svg", f"{Path.home()}/test-graphviz.svg")
         r = Shell.browser(f'http://google.com')
         r = Shell.browser(f'https://google.com')
-        r = Shell.browser(f"C:/Users/abeck/cm/cloudmesh-cc/test-graphviz.svg")
-        r = Shell.browser(f"file:///C:/Users/abeck/cm/cloudmesh-cc/test-graphviz.svg")
-        r = Shell.browser(f"~/test-graphviz.svg")
-        r = Shell.browser(f'test-graphviz.svg')
-        r = Shell.browser(f'./test-graphviz.svg')
+        r = Shell.browser(dir)
+        r = Shell.browser(f"file:///{dir}")
+        r = Shell.browser(f"~/cm/cloudmesh-cc/test-dot.svg")
+        r = Shell.browser(f'test-dot.svg')
+        r = Shell.browser(f'./test-dot.svg')
         # assert r == path_expand(f'~/test-graphviz.svg')
         # input()
         # r = Shell.browser("file://~/test-graphviz.svg")
@@ -306,6 +306,8 @@ class Rest:
         print(r)
         Benchmark.Stop()
 
+
+class Rest:
     def test_shell_copy(self):
         HEADING()
         Benchmark.Start()
