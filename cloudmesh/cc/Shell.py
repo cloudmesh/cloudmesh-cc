@@ -6,12 +6,43 @@ from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.systeminfo import os_is_windows, os_is_linux, os_is_mac
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.Shell import Shell
 
 import webbrowser
 import requests
 
 
 class Shell_path:
+
+    @staticmethod
+    def open(filename=None, program=None):
+        if not os.path.isabs(filename):
+            filename = path_expand(filename)
+
+        if os_is_linux():
+            r = Shell.run(f"gopen {filename}")
+        if os_is_mac():
+            command = f'open {filename}'
+            if program:
+                command += f' -a {program}'
+            r = Shell.run(command)
+        if os_is_windows():
+            r = Shell.run(f"start {filename}")
+
+        return r
+
+    @staticmethod
+    def browser2(filename=None):
+        """
+        :param filename:
+        :param browser:
+        :return:
+        """
+
+        if not os.path.isabs(filename) and 'http' not in filename:
+            filename = path_expand(filename)
+
+        webbrowser.open(filename, new=2)
 
     @staticmethod
     def browser(filename=None, engine='python -m webbrowser -t',

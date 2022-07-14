@@ -18,7 +18,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
 from pathlib import Path
-from cloudmesh.common.systeminfo import os_is_windows, os_is_linux
+from cloudmesh.common.systeminfo import os_is_windows, os_is_linux, os_is_mac
 
 import time
 
@@ -96,7 +96,10 @@ class TestShell:
         assert result.user == user
         assert result.host == 'localhost'
         if os_is_linux():
-            assert result.path == f'C:\\home\\{user}\\cm'
+            if user == 'root':
+                assert result.path == f'C:\\root\\cm'
+            else:
+                assert result.path == f'C:\\home\\{user}\\cm'
         else:
             assert result.path == f'C:\\Users\\{user}\\cm'
 
@@ -127,7 +130,28 @@ class TestShell:
         assert result.user == user
         assert result.host == 'localhost'
         assert result.path == path_expand('./cm')
+        Benchmark.Stop()
 
+    def test_open(self):
+        HEADING()
+        Benchmark.Start()
+        r = Shell.open('test-dot.svg')
+        r2 = Shell.open('~/cm/cloudmesh-cc/test-dot.svg')
+        if os_is_windows():
+            assert 'command not found' and 'cannot find the file' not in r
+            assert 'command not found' and 'cannot find the file' not in r2
+            print('a')
+        if os_is_linux():
+            assert 'command not found' and 'cannot find the file' not in r
+            assert 'command not found' and 'cannot find the file' not in r2
+            print('b')
+        if os_is_mac():
+            assert 'command not found' and 'cannot find the file' and 'Unable to find application' not in r
+            assert 'command not found' and 'cannot find the file' and 'Unable to find application' not in r2
+            r3 = Shell.open('test-dot.svg', program='Google Chrome')
+            assert 'command not found' and 'cannot find the file' and 'Unable to find application' not in r2
+
+            print('c')
 
         Benchmark.Stop()
 
