@@ -44,12 +44,9 @@ class Shell_path:
 
     @classmethod
     def fake_browser(cls, filename=None, engine='python -m webbrowser -t', browser=None):
-        print('a', filename)
         _filename = Shell_path.map_filename(filename)
-        print('b', _filename)
         if _filename.path.startswith('http'):
             result = requests.get(_filename.path)
-            print(result.text)
             return result.text
         else:
             os.path.exists(_filename.path)
@@ -84,6 +81,7 @@ class Shell_path:
 
         result.user = os.path.basename(os.environ["HOME"])
         result.host = "localhost"
+        result.protocol = "localhost"
 
         if _name.startswith("http"):
             result.path = _name
@@ -111,17 +109,12 @@ class Shell_path:
                 Console.error("The format of the name is not supported: {name}")
         elif _name.startswith(".") or _name.startswith("~"):
             result.path = path_expand(_name)
-            result.protocol = "localhost"
         elif _name[1] == ":":
-            c, result.path = _name.split(":")
-            result.path = path_expand(result.path)
-            result.protocol = "localhost"
-        #elif not _name.startswith("/"):
-        #    result.path = _name
-        #    result.protocol = "localhost"
+            drive, path = _name.split(":", 1)
+            result.path = drive + ":" + path_expand(path)
+            result.path = result.path.replace("/", "\\")
         else:
             result.path = path_expand(_name)
-            result.protocol = "localhost"
 
         return result
 

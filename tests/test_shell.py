@@ -49,7 +49,6 @@ class TestShell:
         # r = Shell.browser("file://tmp/test-graphviz.svg")
         # r = Shell.browser("http://google.com")
         # r = Shell.browser("https://google.com")
-        print(r)
         Benchmark.Stop()
 
     def test_map_filename(self):
