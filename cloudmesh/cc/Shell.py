@@ -24,7 +24,7 @@ class Shell_path:
         if os_is_mac():
             command = f'open {filename}'
             if program:
-                command += f' -a {program}'
+                command += f' -a "{program}"'
             r = Shell.run(command)
         if os_is_windows():
             r = Shell.run(f"start {filename}")
