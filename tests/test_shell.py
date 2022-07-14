@@ -18,6 +18,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
 from pathlib import Path
+from cloudmesh.common.systeminfo import os_is_windows
 
 import time
 
@@ -55,19 +56,38 @@ class TestShell:
         HEADING()
         Benchmark.Start()
         user = os.path.basename(os.environ["HOME"])
+        if os_is_windows():
+            pwd = os.getcwd().replace("C:","/mnt/c").replace("\\","/")
+        else:
+            pwd = os.getcwd()
+        print("pwd",pwd)
+
+        ## wsl:~/dir         /mnt/c/Users/USER/dir
+        # wsl:dir           /mnt/c/Users/USER/{PWD}/dir
+        # wsl:./dir         /mnt/c/Users/USER/{PWD}/dir
+        ## wsl:/mnt/c/Users  /mnt/c/Users
+        # wsl:/dir          /dir
 
         result = Shell.map_filename(name='wsl:~/cm')
         assert result.user == user
         assert result.host == 'wsl'
         assert result.path == f'/mnt/c/Users/{user}/cm'
 
+        result = Shell.map_filename(name='wsl:dir')
+        assert result.user == user
+        assert result.host == 'wsl'
+        assert result.path == f'{pwd}/dir'
+
+        result = Shell.map_filename(name='wsl:./dir')
+        assert result.user == user
+        assert result.host == 'wsl'
+        assert result.path == f'{pwd}/dir'
+
         result = Shell.map_filename(name='wsl:/mnt/c/home')
         assert result.user == user
         assert result.host == 'wsl'
-        assert result.path == f'/mnt/c/Users/{user}'
-        # assert result.path == f'/mnt/c/Users/{user}/cm'
+        assert result.path == f'/mnt/c/home'
 
-        # TODO: test does not pass
         result = Shell.map_filename(name='C:~/cm')
         assert result.user == user
         assert result.host == 'localhost'
@@ -91,7 +111,10 @@ class TestShell:
         result = Shell.map_filename(name='/tmp')
         assert result.user == user
         assert result.host == 'localhost'
-        assert result.path == '/tmp'
+        if os_is_windows():
+            assert result.path == '\\tmp'
+        else:
+            assert result.path == '/tmp'
 
         result = Shell.map_filename(name='./cm')
         assert result.user == user

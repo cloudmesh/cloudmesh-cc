@@ -85,11 +85,10 @@ class Shell_path:
 
         if _name.startswith("http"):
             result.path = _name
-            result.protocol = _name.split(':')[0]
+            result.protocol = _name.split(':',1)[0]
         elif _name.startswith("wsl:"):
             result.path = _name.replace("wsl:", "")\
-                .replace("~",f"/mnt/c/Users/{result.user}")\
-                .replace("home",f"Users/{result.user}")
+                .replace("~",f"/mnt/c/Users/{result.user}")
             result.protocol = "cp"
             result.host = "wsl"
         elif _name.startswith("scp:"):
@@ -111,7 +110,10 @@ class Shell_path:
             result.path = path_expand(_name)
         elif _name[1] == ":":
             drive, path = _name.split(":", 1)
-            result.path = drive + ":" + path_expand(path)
+            if os_is_windows():
+                result.path = path_expand(path)
+            else:
+                result.path = drive + ":" + path_expand(path)
             result.path = result.path.replace("/", "\\")
         else:
             result.path = path_expand(_name)
