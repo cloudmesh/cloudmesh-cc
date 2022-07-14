@@ -13,7 +13,8 @@ OS we have on the team.
 import os.path
 
 # from cloudmesh.common.Shell import Shell
-from cloudmesh.cc.Shell import Shell_path as Shell
+from cloudmesh.cc.Shell import Shell_path
+from cloudmesh.common.Shell import Shell as Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
@@ -25,6 +26,8 @@ import time
 class TestShell:
 
     def test_fake_browser(self):
+        Shell = Shell_path
+
         browser = Shell.fake_browser
         HEADING()
         Benchmark.Start()
@@ -54,6 +57,7 @@ class TestShell:
 
     def test_map_filename(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
         user = os.path.basename(os.environ["HOME"])
         if os_is_windows():
@@ -132,7 +136,6 @@ class TestShell:
         Benchmark.Stop()
 
 
-class Rest:
     def test_shell_head(self):
         HEADING()
         Benchmark.Start()
