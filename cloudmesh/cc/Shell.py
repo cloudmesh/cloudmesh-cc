@@ -82,64 +82,47 @@ class Shell_path:
         _name = str(name)
         result = dotdict()
 
-        print('bbb', _name)
+        result.user = os.path.basename(os.environ["HOME"])
+        result.host = "localhost"
 
         if _name.startswith("http"):
             result.path = _name
             result.protocol = _name.split(':')[0]
-            result.user = os.path.basename(os.environ["HOME"])
-            result.host = "localhost"
         elif _name.startswith("wsl:"):
-            if os_is_windows():
-                user = os.environ["USERNAME"]
-                result.path = _name.replace("wsl:", "").replace("~",f"/mnt/c/Users/{user}").replace("home",f"Users/{user}")
-                if (result.path.endswith("/")):
-                    result.path = result.path[0:-1]
-                result.protocol = "cp"
-                result.user = user
-                result.host = "wsl"
-            else:
-                Console.error("wsl is only compatible with Windows")
+            result.path = _name.replace("wsl:", "")\
+                .replace("~",f"/mnt/c/Users/{result.user}")\
+                .replace("home",f"Users/{result.user}")
+            result.protocol = "cp"
+            result.host = "wsl"
         elif _name.startswith("scp:"):
             # scp source destination
-            if '@' in _name:
+            try:
                 result.scp, userhost, result.path = _name.split(":")
                 result.user, result.host = userhost.split("@")
                 result.protocol = "scp"
-            else:
-                Console.error("format of scp command is not correct")
+            except:
+                Console.error("The format of the name is not supported: {name}")
         elif _name.startswith("rsync:"):
-            # rsync -a
-            if '@' in _name:
+            try:
                 result.scp, userhost, result.path = _name.split(":")
                 result.user, result.host = userhost.split("@")
-                result.protocol = "rsync -a"
-            else:
-                Console.error("format of rsync command is not correct")
-        elif _name.startswith("."):
+                result.protocol = "rsync"
+            except:
+                Console.error("The format of the name is not supported: {name}")
+        elif _name.startswith(".") or _name.startswith("~"):
             result.path = path_expand(_name)
             result.protocol = "localhost"
-            result.user = os.path.basename(os.environ["HOME"])
-            result.host = "localhost"
-        elif _name.startswith("~"):
-            result.path = path_expand(_name)
-            result.protocol = "localhost"
-            result.user = os.path.basename(os.environ["HOME"])
-            result.host = "localhost"
-        elif _name.capitalize().startswith("C:"):
+        elif _name[1] == ":":
             c, result.path = _name.split(":")
             result.path = path_expand(result.path)
             result.protocol = "localhost"
-            result.user = os.path.basename(os.environ["HOME"])
-            result.host = "localhost"
+        #elif not _name.startswith("/"):
+        #    result.path = _name
+        #    result.protocol = "localhost"
         else:
-            if (_name.startswith("/")):
-                result.path = path_expand(f'.{_name}')
-            else:
-                result.path = path_expand(f'./{_name}')
+            result.path = path_expand(_name)
             result.protocol = "localhost"
-            result.user = os.path.basename(os.environ["HOME"])
-            result.host = "localhost"
+
         return result
 
 

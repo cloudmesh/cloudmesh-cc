@@ -57,17 +57,18 @@ class TestShell:
         Benchmark.Start()
         user = os.path.basename(os.environ["HOME"])
 
-        result = Shell.map_filename(name='wsl:~/cm/')
+        result = Shell.map_filename(name='wsl:~/cm')
         assert result.user == user
         assert result.host == 'wsl'
         assert result.path == f'/mnt/c/Users/{user}/cm'
 
-        result = Shell.map_filename(name='wsl:/mnt/c/home/')
+        result = Shell.map_filename(name='wsl:/mnt/c/home')
         assert result.user == user
         assert result.host == 'wsl'
         assert result.path == f'/mnt/c/Users/{user}'
         # assert result.path == f'/mnt/c/Users/{user}/cm'
 
+        # TODO: test does not pass
         result = Shell.map_filename(name='C:~/cm')
         assert result.user == user
         assert result.host == 'localhost'
@@ -91,8 +92,7 @@ class TestShell:
         result = Shell.map_filename(name='/tmp')
         assert result.user == user
         assert result.host == 'localhost'
-        assert result.path == path_expand('./tmp')
-        # assert result.path == '/tmp'
+        assert result.path == '/tmp'
 
         result = Shell.map_filename(name='./cm')
         assert result.user == user
@@ -108,7 +108,7 @@ class Rest:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell_path.head(file)
+        r = Shell.head(file)
         Benchmark.Stop()
         assert 'docker-compose' not in r
         assert 'cloudmesh-sys' in r
@@ -119,7 +119,7 @@ class Rest:
         HEADING()
         Benchmark.Start()
         file = path_expand('requirements.txt')
-        r = Shell_path.cat(file)
+        r = Shell.cat(file)
         Benchmark.Stop()
         assert 'starlette' in r
         assert 'cloudmesh-sys' in r
