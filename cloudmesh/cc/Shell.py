@@ -92,7 +92,9 @@ class Shell_path:
         elif _name.startswith("wsl:"):
             if os_is_windows():
                 user = os.environ["USERNAME"]
-                result.path = _name.replace("wsl:", f"/mnt/c/Users/{user}/").replace("~","")
+                result.path = _name.replace("wsl:", "").replace("~",f"/mnt/c/Users/{user}").replace("home",f"Users/{user}")
+                if (result.path.endswith("/")):
+                    result.path = result.path[0:-1]
                 result.protocol = "cp"
                 result.user = user
                 result.host = "wsl"
@@ -124,8 +126,17 @@ class Shell_path:
             result.protocol = "localhost"
             result.user = os.path.basename(os.environ["HOME"])
             result.host = "localhost"
+        elif _name.capitalize().startswith("C:"):
+            c, result.path = _name.split(":")
+            result.path = path_expand(result.path)
+            result.protocol = "localhost"
+            result.user = os.path.basename(os.environ["HOME"])
+            result.host = "localhost"
         else:
-            result.path = path_expand(f'./{_name}')
+            if (_name.startswith("/")):
+                result.path = path_expand(f'.{_name}')
+            else:
+                result.path = path_expand(f'./{_name}')
             result.protocol = "localhost"
             result.user = os.path.basename(os.environ["HOME"])
             result.host = "localhost"

@@ -13,7 +13,7 @@ OS we have on the team.
 import os.path
 
 # from cloudmesh.common.Shell import Shell
-from cloudmesh.cc.Shell import Shell_path
+from cloudmesh.cc.Shell import Shell_path as Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
@@ -24,7 +24,7 @@ import time
 class TestShell:
 
     def test_fake_browser(self):
-        browser = Shell_path.fake_browser
+        browser = Shell.fake_browser
         HEADING()
         Benchmark.Start()
         # Shell.copy("test-graphviz.svg", '/tmp/test-graphviz.svg')
@@ -51,6 +51,57 @@ class TestShell:
         # r = Shell.browser("https://google.com")
         print(r)
         Benchmark.Stop()
+
+    def test_map_filename(self):
+        HEADING()
+        Benchmark.Start()
+        user = os.path.basename(os.environ["HOME"])
+
+        result = Shell.map_filename(name='wsl:~/cm/')
+        assert result.user == user
+        assert result.host == 'wsl'
+        assert result.path == f'/mnt/c/Users/{user}/cm'
+
+        result = Shell.map_filename(name='wsl:/mnt/c/home/')
+        assert result.user == user
+        assert result.host == 'wsl'
+        assert result.path == f'/mnt/c/Users/{user}'
+        # assert result.path == f'/mnt/c/Users/{user}/cm'
+
+        result = Shell.map_filename(name='C:~/cm')
+        assert result.user == user
+        assert result.host == 'localhost'
+        assert result.path == f'C:\\Users\\{user}\\cm'
+
+        result = Shell.map_filename(name='scp:user@host:~/cm')
+        assert result.user == "user"
+        assert result.host == 'host'
+        assert result.path == f'~/cm'
+
+        result = Shell.map_filename(name='scp:user@host:/tmp')
+        assert result.user == "user"
+        assert result.host == 'host'
+        assert result.path == f'/tmp'
+
+        result = Shell.map_filename(name='~/cm')
+        assert result.user == user
+        assert result.host == 'localhost'
+        assert result.path == path_expand('~/cm')
+
+        result = Shell.map_filename(name='/tmp')
+        assert result.user == user
+        assert result.host == 'localhost'
+        assert result.path == path_expand('./tmp')
+        # assert result.path == '/tmp'
+
+        result = Shell.map_filename(name='./cm')
+        assert result.user == user
+        assert result.host == 'localhost'
+        assert result.path == path_expand('./cm')
+
+
+        Benchmark.Stop()
+
 
 class Rest:
     def test_shell_head(self):
@@ -140,53 +191,6 @@ class Rest:
         Benchmark.Stop()
         assert os.path.exists(path_expand('shell-directory'))
 
-    def test_map_filename(self):
-        HEADING()
-        Benchmark.Start()
-        user = os.path.basename(os.environ["HOME"])
-
-        result = Shell.map_filename(name='wsl:~/cm/')
-        assert result.user == user
-        assert result.host == 'wsl'
-        assert result.path == f'/mnt/c/Users/{user}/cm'
-
-        result = Shell.map_filename(name='wsl:/mnt/c/home/')
-        assert result.user == user
-        assert result.host == 'wsl'
-        assert result.path == f'/mnt/c/Users/{user}/cm'
-
-        result = Shell.map_filename(name='C:~/cm')
-        assert result.user == user
-        assert result.host == 'localhost'
-        assert result.path == f'C:\\Users\\{user}\\cm'
-
-        result = Shell.map_filename(name='scp:user@host:~/cm')
-        assert result.user == "user"
-        assert result.host == 'host'
-        assert result.path == f'~/cm'
-
-        result = Shell.map_filename(name='scp:user@host:/tmp')
-        assert result.user == "user"
-        assert result.host == 'host'
-        assert result.path == f'/tmp'
-
-        result = Shell.map_filename(name='~/cm')
-        assert result.user == user
-        assert result.host == 'localhost'
-        assert result.path == path_expand('~/cm')
-
-        result = Shell.map_filename(name='/tmp')
-        assert result.user == user
-        assert result.host == 'localhost'
-        assert result.path == '/tmp'
-
-        result = Shell.map_filename(name='./cm')
-        assert result.user == user
-        assert result.host == 'localhost'
-        assert result.path == path_expand('./cm')
-
-
-        Benchmark.Stop()
 
 class Rest:
     def test_shell_browser(self):
