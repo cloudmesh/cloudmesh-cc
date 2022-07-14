@@ -261,11 +261,23 @@ class TestShell:
 
     def test_shell_mkdir(self):
         HEADING()
+
+        os.system('rm -rf shell-directory')
+        os.system('rm -rf shell-new-dir/another-dir')
+        os.system('rm -rf ~/shell-dir')
+        Shell = Shell_path
         Benchmark.Start()
-        r = Shell.mkdir('shell-directory')
-        print(r)
+        Shell.mkdir('shell-directory')
+        assert os.path.exists('shell-directory')
+        Shell.mkdir('shell-new-dir/another-dir')
+        assert os.path.exists('shell-new-dir/another-dir')
+        Shell.mkdir('~/shell-dir')
+        dir = os.path.join(Path.home(), 'shell-dir')
+        assert os.path.exists(dir)
         Benchmark.Stop()
-        assert os.path.exists(path_expand('shell-directory'))
+        os.system('rm -rf shell-directory')
+        os.system('rm -rf shell-new-dir/another-dir')
+        os.system('rm -rf ~/shell-dir')
 
 
 class Rest:
@@ -277,26 +289,12 @@ class Rest:
         # r = Shell.browser("~/test-graphviz.svg")
         #Shell.copy("test-graphviz.svg", f"{Path.home()}/test-graphviz.svg")
         r = Shell.browser(f'http://google.com')
-        print('testing unsecured')
-        time.sleep(3)
         r = Shell.browser(f'https://google.com')
-        print('testing secured')
-        time.sleep(3)
         r = Shell.browser(f"C:/Users/abeck/cm/cloudmesh-cc/test-graphviz.svg")
-        print('i just tried a fullpath')
-        time.sleep(3)
         r = Shell.browser(f"file:///C:/Users/abeck/cm/cloudmesh-cc/test-graphviz.svg")
-        print('i just tried with file:')
-        time.sleep(3)
         r = Shell.browser(f"~/test-graphviz.svg")
-        print('i just opened the home dir and the svg in there')
-        time.sleep(5)
         r = Shell.browser(f'test-graphviz.svg')
-        print('i just tried no slashes')
-        time.sleep(5)
         r = Shell.browser(f'./test-graphviz.svg')
-        print('i just tried something wacky')
-        time.sleep(5)
         # assert r == path_expand(f'~/test-graphviz.svg')
         # input()
         # r = Shell.browser("file://~/test-graphviz.svg")
@@ -307,7 +305,6 @@ class Rest:
         # r = Shell.browser("https://google.com")
         print(r)
         Benchmark.Stop()
-
 
     def test_shell_copy(self):
         HEADING()

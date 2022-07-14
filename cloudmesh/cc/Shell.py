@@ -223,3 +223,29 @@ class Shell_path:
         filename = cls.map_filename(filename).path
         r = Shell.run(f'tail -n {lines} {filename}')
         return r
+
+    @classmethod
+    def mkdir(cls, directory):
+        """
+        creates a directory with all its parents in ots name
+        :param directory: the path of the directory
+        :return:
+        """
+        directory = cls.map_filename(directory).path
+        try:
+            os.makedirs(directory)
+            return True
+        except OSError as e:
+            return False
+        #
+
+        '''EEXIST (errno 17) occurs under two conditions when the path exists:
+        - it is a file
+        - it is a directory
+
+        if it is a file, this is a valid error, otherwise, all
+        is fine.
+           if e.errno == errno.EEXIST and os.path.isdir(directory):
+               pass
+           else:
+               raise'''
