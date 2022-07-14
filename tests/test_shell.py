@@ -72,7 +72,10 @@ class TestShell:
         result = Shell.map_filename(name='wsl:~/cm')
         assert result.user == user
         assert result.host == 'wsl'
-        assert result.path == f'/mnt/c/Users/{user}/cm'
+        if os_is_linux():
+            assert result.path == f'/mnt/c/home/{user}/cm'
+        else:
+            assert result.path == f'/mnt/c/Users/{user}/cm'
 
         result = Shell.map_filename(name='wsl:dir')
         assert result.user == user
