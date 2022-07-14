@@ -161,7 +161,6 @@ class TestShell:
 
         Benchmark.Stop()
 
-
     def test_shell_head(self):
         HEADING()
         Shell = Shell_path
@@ -177,6 +176,23 @@ class TestShell:
         print('----')
         print(r)
         assert 'cloudmesh-cmd5' in r
+        assert 'cloudmesh-sys' not in r
+
+    def test_shell_tail(self):
+        HEADING()
+        Shell = Shell_path
+        Benchmark.Start()
+        r = Shell.tail('requirements.txt')
+        Benchmark.Stop()
+        print(r)
+        assert 'cloudmesh-sys' not in r
+        assert '#' in r
+        assert 'pydot' in r
+        assert 'cloudmesh-cmd5' not in r
+        r = Shell.tail('requirements.txt', lines=1)
+        print('----')
+        print(r)
+        assert 'graphviz' in r
         assert 'cloudmesh-sys' not in r
 
     def test_shell_cat(self):
@@ -211,15 +227,6 @@ class TestShell:
         r = Shell.rm('psuedo-directory')
         Benchmark.Stop()
         assert not os.path.exists(path_expand('psuedo-directory'))
-
-    def test_shell_tail(self):
-        HEADING()
-        Benchmark.Start()
-        file = path_expand('requirements.txt')
-        r = Shell.tail(filename=file)
-        Benchmark.Stop()
-        assert 'pexpect' in r
-        assert 'ujson' in r
 
     def test_shell_dialog(self):
         """

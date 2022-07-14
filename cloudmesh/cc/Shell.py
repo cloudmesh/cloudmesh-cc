@@ -185,7 +185,6 @@ class Shell_path:
         return result
 
     @classmethod
-    # @NotImplementedInWindows
     def head(cls, filename=None, lines=10):
         """
         executes head with the given arguments
@@ -212,4 +211,15 @@ class Shell_path:
         r = Shell.run(f'ping {parameters}')
         if r is None:
             Console.error("ping is not installed")
+        return r
+
+    @classmethod
+    def tail(cls, filename=None, lines=10):
+        """
+        executes tail with the given arguments
+        :param args:
+        :return:
+        """
+        filename = cls.map_filename(filename).path
+        r = Shell.run(f'tail -n {lines} {filename}')
         return r
