@@ -186,13 +186,15 @@ class Shell_path:
 
     @classmethod
     # @NotImplementedInWindows
-    def head(cls, *args):
+    def head(cls, filename=None, lines=10):
         """
         executes head with the given arguments
         :param args:
         :return:
         """
-        pass
+        filename = cls.map_filename(filename).path
+        r = Shell.run(f'head -n {lines} {filename}')
+        return r
 
     @classmethod
     def ping(cls, host=None, count=1):

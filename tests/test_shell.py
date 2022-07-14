@@ -164,14 +164,20 @@ class TestShell:
 
     def test_shell_head(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
-        file = path_expand('requirements.txt')
-        r = Shell.head(file)
+        r = Shell.head('requirements.txt')
         Benchmark.Stop()
+        print(r)
         assert 'docker-compose' not in r
         assert 'cloudmesh-sys' in r
         assert '#' in r
         assert 'starlette' not in r
+        r = Shell.head('requirements.txt', lines=1)
+        print('----')
+        print(r)
+        assert 'cloudmesh-cmd5' in r
+        assert 'cloudmesh-sys' not in r
 
     def test_shell_cat(self):
         HEADING()
