@@ -18,7 +18,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
 from pathlib import Path
-from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import os_is_windows, os_is_linux
 
 import time
 
@@ -92,7 +92,10 @@ class TestShell:
         result = Shell.map_filename(name='C:~/cm')
         assert result.user == user
         assert result.host == 'localhost'
-        assert result.path == f'C:\\Users\\{user}\\cm'
+        if os_is_linux():
+            assert result.path == f'C:\\home\\{user}\\cm'
+        else:
+            assert result.path == f'C:\\Users\\{user}\\cm'
 
         result = Shell.map_filename(name='scp:user@host:~/cm')
         assert result.user == "user"
