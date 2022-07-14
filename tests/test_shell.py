@@ -1,7 +1,7 @@
 # ##############################################################
 # pytest -v --capture=no tests/test_shell.py
 # pytest -v  tests/test_shell.py
-# pytest -v --capture=no  tests/test_shell.py::Test_Shell::<METHODNAME>
+# pytest -v --capture=no  tests/test_shell.py::TestShell::<METHODNAME>
 # ##############################################################
 
 
@@ -223,10 +223,17 @@ class TestShell:
 
     def test_shell_rm(self):
         HEADING()
+        Shell = Shell_path
+        user_dir = Path.home()
+        user_dir = os.path.join(user_dir, 'delete-test-file')
         Benchmark.Start()
+        os.system('touch psuedo-directory')
         r = Shell.rm('psuedo-directory')
+        os.system(f'touch {user_dir}')
+        r = Shell.rm('~/delete-test-file')
         Benchmark.Stop()
         assert not os.path.exists(path_expand('psuedo-directory'))
+        assert not os.path.exists(path_expand('~/delete-test-file'))
 
     def test_shell_dialog(self):
         """

@@ -217,3 +217,13 @@ class Shell_path:
                pass
            else:
                raise'''
+
+    @classmethod
+    def rm(cls, location):
+        """
+        executes rm with the given arguments
+        :param args:
+        :return:
+        """
+        location = cls.map_filename(location).path
+        os.remove(location)
