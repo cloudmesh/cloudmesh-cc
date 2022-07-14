@@ -60,6 +60,7 @@ class TestShell:
             pwd = os.getcwd().replace("C:","/mnt/c").replace("\\","/")
         else:
             pwd = os.getcwd()
+
         print("pwd",pwd)
 
         ## wsl:~/dir         /mnt/c/Users/USER/dir

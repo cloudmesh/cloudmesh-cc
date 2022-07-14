@@ -76,6 +76,8 @@ class Shell_path:
 
     @staticmethod
     def map_filename(name):
+        pwd = os.getcwd()
+
         _name = str(name)
         result = dotdict()
 
@@ -87,8 +89,17 @@ class Shell_path:
             result.path = _name
             result.protocol = _name.split(':',1)[0]
         elif _name.startswith("wsl:"):
-            result.path = _name.replace("wsl:", "")\
-                .replace("~",f"/mnt/c/Users/{result.user}")
+            result.path = _name.replace("wsl:", "")
+            print("result.path",result.path)
+            # Abbreviations: replace ~ with home dir and ./ + / with pwd
+            if result.path.startswith("~"):
+                result.path = result.path.replace("~",f"/mnt/c/Users/{result.user}")
+            elif not result.path.startswith("/"):
+                if os_is_windows():
+                    pwd = pwd.replace("C:","/mnt/c").replace("\\","/")
+                else:
+                    pass
+                result.path = pwd + "/" + result.path.replace("./","")
             result.protocol = "cp"
             result.host = "wsl"
         elif _name.startswith("scp:"):
