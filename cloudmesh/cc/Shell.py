@@ -193,3 +193,21 @@ class Shell_path:
         :return:
         """
         pass
+
+    @classmethod
+    def ping(cls, host=None, count=1):
+        """
+        execute ping
+        :param host: the host to ping
+        :param count: the number of pings
+        :return:
+        """
+        r = None
+        option = '-n' if os_is_windows() else '-c'
+        parameters = "{option} {count} {host}".format(option=option,
+                                                      count=count,
+                                                      host=host)
+        r = Shell.run(f'ping {parameters}')
+        if r is None:
+            Console.error("ping is not installed")
+        return r

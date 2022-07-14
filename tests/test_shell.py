@@ -1,7 +1,7 @@
 # ##############################################################
 # pytest -v --capture=no tests/test_shell.py
 # pytest -v  tests/test_shell.py
-# pytest -v --capture=no  tests/shell.py::Test_Shell::<METHODNAME>
+# pytest -v --capture=no  tests/test_shell.py::Test_Shell::<METHODNAME>
 # ##############################################################
 
 
@@ -18,6 +18,7 @@ from cloudmesh.common.Shell import Shell as Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import Console
 from pathlib import Path
 from cloudmesh.common.systeminfo import os_is_windows, os_is_linux, os_is_mac
 
@@ -138,6 +139,7 @@ class TestShell:
 
     def test_open(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
         r = Shell.open('test-dot.svg')
         r2 = Shell.open('~/cm/cloudmesh-cc/test-dot.svg')
@@ -184,11 +186,16 @@ class TestShell:
 
     def test_shell_ping(self):
         HEADING()
+        Shell = Shell_path
         Benchmark.Start()
         host = 'www.google.com'
         r = Shell.ping(host)
+        print(r)
         Benchmark.Stop()
-        assert 'packets' in r
+        if 'not found' in r:
+            Console.error('ping not installed')
+            assert False
+        assert 'Packets' or 'packets' in r
         assert 'www.google.com' in r
         assert 'time=' in r
 
