@@ -6,6 +6,7 @@ import time
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import writefile
 from cloudmesh.common.variables import Variables
 
 class Slurm:
@@ -100,11 +101,16 @@ class Job():
         try:
             r = Shell.run(f'{command}')
             state = 0
-        except:  # noqa: E722
+        except Exception as e:  # noqa: E722
+            print(e.output)
             state = 1
+        print('past try except')
         job_id = str(r).split()[-1]
-        time.sleep(10)
+        print('sleeping')
+        #time.sleep(10)
+        print('getting error')
         error = self.get_error()
+        print('getting log')
         log = self.get_log()
         return state, log, error, job_id
 
@@ -240,19 +246,36 @@ class Job():
         #         f"Process {pid} not found. It is likely it already completed.")
         return r
 
-    def create(self, command, ntasks=1):
+    def create(self, command, file, jobname, card_name, gpu_count, system_partition, time):
         """
         creates a template
         for the slurm sbatch
         """
-        template = \
-            f"""
-        #!/bin/bash
-        #
-        #SBATCH --job-name=test
-        #SBATCH --output=result.out
-        #
-        #SBATCH --ntasks={ntasks}
-        #
-        """
-        template += f"\n{command}"
+        script = """\
+            #!/usr/bin/env bash
+        
+            #SBATCH --job-name=mlcommons-eq-{card_name}-{gpu_count}
+            #SBATCH --output=%u-%j.out
+            #SBATCH --error=%u-%j.err
+            #SBATCH --partition={system.partition}
+            #SBATCH -c {cpu_num}
+            #SBATCH --mem={mem}
+            #SBATCH --time={time}
+            #SBATCH --gres=gpu:{card_name}:{gpu_count}
+            #SBATCH --mail-user=%u@virginia.edu
+            #SBATCH --mail-type=ALL
+            #SBATCH --account={user.account}
+        
+            python {filename}
+            """
+
+        data ={
+            "name": "mnl_mnist",
+            "filename": "mnl_mnist.py",
+            "partition": "dev",
+            "cardname": "a100",
+            "gpu_count": 1
+        }
+
+        writefile(f"{jobname}.sh", script.format(**data))
+        script += f"\n{command}"
