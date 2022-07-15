@@ -112,33 +112,12 @@ class TestGraph:
         g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
         g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
 
-        # TODO: please fix shell cat for windows
         r = Shell.cat("dest/test-dot.dot")
         print(r)
-        # TODO: please improve shell.browser so that when on linux we do svg gopen is used
 
-        # TODO:
-        # Shell.browser("dest/test-graphviz.svg")
-        # Shell.browser("dest/test-dot.svg")
+        Shell.open('dest/test-graphviz.svg')
+        Shell.open('dest/test-dot.svg')
 
-        # TODO: all this is part of Shell.browser
-
-        if os_is_linux():
-            Shell.run("gopen dest/test-graphviz.svg")
-            Shell.run("gopen dest/test-dot.svg")
-            # alternative is "chromium dest/test-dot.svg"
-        elif os_is_mac():
-            Shell.browser("dest/test-graphviz.svg")
-            Shell.browser("dest/test-dot.svg")
-        elif os_is_windows():
-            Shell.browser("dest/test-graphviz.svg")
-            # r = Shell.cat("test-dot.dot")
-            # print(r)
-            # TODO: please improve SHell.browser so it works on windows also
-            cwd = os.getcwd()
-            os.system(f'start chrome {cwd}\\dest\\test-dot.svg')
-            os.system(f'start chrome {cwd}\\dest\\test-graphviz.svg')
-            #Shell.browser("test-dot.svg", browser='chrome')
         Benchmark.Stop()
 
     def test_benchmark(self):
