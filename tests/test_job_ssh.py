@@ -1,7 +1,7 @@
 ###############################################################
 # pytest -v --capture=no tests/test_job_ssh.py
 # pytest -v  tests/test_job_ssh.py
-# pytest -v --capture=no  tests/test_job_ssh.py::TestJobSsh::<METHODNAME>
+# pytest -v --capture=no  tests/test_job_ssh.py::TestJobsSsh::<METHODNAME>
 ###############################################################
 import os
 import shutil
@@ -47,9 +47,43 @@ run_job = f"run"
 wait_job = f"run-killme"
 
 
+
 @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
 class TestJobsSsh:
+
+    def test_python(self):
+        pyname = "hello-world"
+
+        HEADING()
+        Benchmark.Start()
+        os.system(f"cp ./tests/{pyname}.py .")
+        pyjob = Job(name=pyname, host=host, username=username)
+        pyjob.sync(python=True)
+        assert pyjob.exists(f"{pyname}.py")
+
+        s, l, e = pyjob.run(python=True)
+        # give it some time to complete
+        time.sleep(5)
+        print(l)
+        # print(e)
+
+        # log = pyjob.get_log()
+        # print(log)
+        Benchmark.Stop()
+
+
+        # progress and status not supported yet
+        # progress = pyjob.get_progress()
+        # print("Progress:", progress)
+        # status = pyjob.get_status(refresh=True)
+        # print("Status:", status)
+        assert l is not None
+        assert s == 0
+        # assert progress == 100
+        # assert status == "done"
+        assert pyjob.exists(f"{pyname}.py")
+
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")

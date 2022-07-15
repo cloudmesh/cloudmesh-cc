@@ -73,14 +73,20 @@ class Job():
         print(command)
         os.system(command)
 
-    def run(self):
+    def run(self, python=False):
         self.mkdir_experimentdir()
 
-        command = f'chmod ug+x ./{self.name}.sh'
+        if python:
+            command = f'chmod ug+x {self.name}.py'
+        else:
+            command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
 
-            command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
+            if python:
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2> {self.name}.error &"'
+            else:
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
             print(command)
             state = os.system(command)
             # ps = subprocess.Popen(('bash', '-c', f'"{command} ; exit 0" &'), stdout=subprocess.PIPE)
@@ -153,9 +159,12 @@ class Job():
         content = readfile(f"{self.name}.log")
         return content
 
-    def sync(self):
+    def sync(self, python=False):
         self.mkdir_experimentdir()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        if python:
+            command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
+        else:
+            command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
@@ -164,7 +173,7 @@ class Job():
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
-        if "cannot acces" in r:
+        if "cannot access" in r:
             return False
         return True
 
