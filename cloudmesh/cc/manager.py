@@ -79,7 +79,7 @@ class WorkflowCLIManager:
         status = w.status()
         print(status)
 
-    def graph(self, filename:str=None):
+    def graph(self, filename: str = None):
         # cc workflow graph --name=NAME
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
@@ -96,7 +96,7 @@ class WorkflowServiceManager:
         self.host = host
         self.port = port
 
-    def add_job(self, job:str=None, **argv):
+    def add_job(self, job: str = None, **argv):
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         if self.name is None:
             name = "workflow"
@@ -112,7 +112,6 @@ class WorkflowServiceManager:
         # resp = requests.post(url=url, files=file)
         # print(resp.json())
 
-
         # cc workflow add [--name=NAME] [--job=JOB] ARGS...
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
@@ -121,7 +120,7 @@ class WorkflowServiceManager:
         url = f'https://{self.host}:{self.port}/workflow'
         file = {'file': open(filename, 'rb')}
 
-        r = requests.post(url=url,files=file)
+        r = requests.post(url=url, files=file)
         print(r.json())
 
     def delete(self):
@@ -129,21 +128,15 @@ class WorkflowServiceManager:
         r = requests.delete('https://{self.host}:{self.port}/workflow?name={name}&job={job}')
         pass
 
-    def list(self, job:str=None):
+    def list(self, job: str = None):
         # cc workflow service list [--name=NAME] [--job=JOB]
         if self.name is None:
             self.name = "workflow"
         if job is None:
-            n=0
+            n = 0
             job = f"job-{n}"
 
-    def status_job(self, name:str=None, job:str=None, output:str=None):
-        pass
-
-    def delete(self, name: str = None, job: str = None):
-        pass
-
-    def list(self, name: str = None, job: str = None):
+    def status_job(self, name: str = None, job: str = None, output: str = None):
         pass
 
     def run(self, name: str = None, job: str = None, filename: str = None):

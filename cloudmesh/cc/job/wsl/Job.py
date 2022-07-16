@@ -93,7 +93,7 @@ class Job:
     def run(self):
         self.mkdir_experimentdir()
         # make sure executable is set
-        print ("A")
+        print("A")
         command = f'chmod a+x {self.name}.sh'
         os.system(command)
         print("B")
@@ -102,7 +102,7 @@ class Job:
         cwd = Path.as_posix(Path.cwd())
         userdir_name = os.path.split(home)[1]
 
-        print ("C")
+        print("C")
 
         experimentdir = f'/c/Users/{userdir_name}/experiment/{self.name}'
         wsl_experimentdir = f"/mnt/c/Users/{userdir_name}/experiment/{self.name}"
@@ -111,9 +111,8 @@ class Job:
         #           f' ". ~/.profile && cd {wsl_experimentdir}' \
         #           f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
 
-        print ("D")
+        print("D")
         Shell.mkdir(experimentdir)
-
 
         print("E")
 
@@ -191,7 +190,7 @@ class Job:
         return 0
 
     def get_error(self):
-        Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err",f"{self.name}.err")
+        Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err", f"{self.name}.err")
 
         content = readfile(f"{self.name}.err")
         print(content)

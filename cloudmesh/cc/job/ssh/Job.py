@@ -12,7 +12,7 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 
 
-class Job():
+class Job:
 
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
@@ -95,8 +95,8 @@ class Job():
             # output = subprocess.check_output(stdin=ps.stdout)
             # ps.wait()
             # state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
-            #state = state.decode('utf-8')
-            #if state == '':
+            # state = state.decode('utf-8')
+            # if state == '':
             #    state = 0
 
         else:
@@ -104,13 +104,11 @@ class Job():
             # time.sleep(1)
             print(command)
             state = os.system(f'{command} &')
-        sate = 0
         error = self.get_error()
         log = self.get_log()
         return state, log, error
 
     def clear(self):
-        content = None
         try:
             source = f'~/experiment/{self.name}/{self.name}.log'
             destination = f"{self.name}.log"
@@ -141,7 +139,7 @@ class Job():
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:   # noqa: E722
+            except:  # noqa: E722
                 return 0
         return 0
 
@@ -224,10 +222,10 @@ class Job():
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None
-            time.sleep(2)
+            time.sleep(period)
         pid = None
         while pid is None:
-            time.sleep(1)
+            time.sleep(period)
             pid = self.get_pid(refresh=True)
 
         command = f'ssh {self.username}@{self.host} "pgrep -P {pid}"'
