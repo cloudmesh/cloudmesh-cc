@@ -9,12 +9,10 @@ import sys
 import time
 import io
 
-import paramiko
-import pexpect
-from pexpect import popen_spawn
+import networkx as nx
 
 import pytest
-from cloudmesh.cc.job.slurm.Job import Job
+from cloudmesh.cc.workflow import Workflow
 
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
@@ -49,199 +47,132 @@ login_success = False
 if not os_is_windows():
     try:
         command = f"ssh {username}@{host} hostname"
-        #r = Shell.run(command)
-        #print(r)
+        r = Shell.run(command)
+        print(r)
         #time.sleep(5)
-        #login_success = "Could not resolve hostname" not in r
-        ssh_new_key = "Are you sure you want to continue connecting"
-        user_dir = os.path.expanduser('~/.ssh/id_rsa')
-
-        paramiko_agent = paramiko.Agent()
-        agent_keys = paramiko_agent.get_keys()
-
-        client = paramiko.client.SSHClient()
-        client.load_system_host_keys()
-        mykey = paramiko.RSAKey.from_private_key_file(user_dir)
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(host, username=username, look_for_keys=False, pkey=mykey)
-        _stdin, _stdout, _stderr = client.exec_command('hostname')
-        print(_stdout.read().decode())
-        if 'not found in known_hosts' in _stdout.read().decode():
-            Console.error('Please use ssh-keygen, ssh-agent, ssh-add, and ssh-copy-id')
-            login_success = False
-        else:
-            login_success = True
-
-    except Exception as e:  # noqa: E722
-        if 'No such file or directory' and 'id_rsa' in str(e):
-            Console.error('Please use ssh-keygen')
-            quit()
-        if 'Authentication failed' in str(e):
-            Console.error('Please use ssh-copy-id')
-            quit()
+        login_success = "Could not resolve hostname" not in r
+    except Exception as e:
         print(e)
-        pass
 
 run_job = f"run-slurm"
 wait_job = f"wait-slurm"
 
 
-@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+#@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
 class TestWorkflowSlurm:
 
-    def test_create_run(self):
-        os.system("rm -r ~/experiment")
-        exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
-        for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
-            assert os.path.isfile(f"./{script}.sh")
-        assert not os.path.isfile(exp)
-
-    def test_create(self):
+    def test_load_slurm_workflow(self):
         HEADING()
-        global job
+        global w
+        Benchmark.Start()
+        w = Workflow()
+        w.load("tests/workflow-slurm/slurm-workflow.yaml")
+        Benchmark.Stop()
+        print(w.graph)
+
+    def test_set_up(self):
+        """
+        establishing a queues object, saving 2 queues to it, each with 10 jobs
+        :return: no return
+        """
+        HEADING()
+        global w
         global username
-        global host
         Benchmark.Start()
-        name = f"run-slurm"
-        job = Job(name=name, host=host, username=username)
-        Benchmark.Stop()
-        print(job)
-        assert job.name == name
-        assert job.host == host
-        assert job.username == username
+        w = Workflow()
 
-    def test_sync(self):
-        HEADING()
-        global job
-
-        Benchmark.Start()
-        job.sync()
-        Benchmark.Stop()
-        assert job.exists("run-slurm.sh")
-
-        # potentially wrong
-
-    def test_run_fast(self):
-        HEADING()
-
-        Benchmark.Start()
-        global job
-        global job_id
-        job = Job(name=f"run-slurm", host=host, username=username)
-        job.sync()
-
-        s, l, e, job_id = job.run()
-        # give it some time to complete
-        time.sleep(5)
-        print("State:", s)
-        print(l)
-        # print(e)
-
-        log = job.get_log()
-        if log is None:
-            print('super fast')
-            assert True
+        if os_is_windows():
+            localuser = os.environ["USERNAME"]
         else:
-            progress = job.get_progress()
-            print("Progress:", progress)
-            status = job.get_status(refresh=True)
-            print("Status:", status)
-            assert log is not None
-            assert s == 0
-            assert progress == 100
-            assert status == "done"
+            localuser = os.environ['USER']
+        login = {
+            "localhost": {"user": f"{localuser}", "host": "local"},
+            "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+            "pi": {"user": f"{localuser}", "host": "red"},
+        }
+
+        n = 0
+
+        user = login["localhost"]["user"]
+        host = login["localhost"]["host"]
+
+        jobkind = 'slurm'
+
+        for script in ["slurm"]:
+            Shell.copy(f"./tests/workflow-slurm/{script}.sh", ".")
+            assert os.path.isfile(f"./{script}.sh")
+            w.add_job(name=script, kind=jobkind, user=user, host=host)
+
+        for host, kind in [("rivanna", "slurm")]:
+            print("HOST:", host)
+            user = login[host]["user"]
+            host = login[host]["host"]
+
+            print(n)
+            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
+            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
+            # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
+            n = n + 1
+            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
+            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
+            n = n + 1
+            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
+            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
+            n = n + 1
+
+            first = n - 3
+            second = n - 2
+            third = n - 1
+            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+            w.add_dependencies(f"job-{host}-{third},end")
+            w.add_dependencies(f"start,job-{host}-{first}")
 
         Benchmark.Stop()
+        print(len(w.jobs) == n)
 
-    # will fail if previous test fails
-    def test_exists_run(self):
+    def test_show(self):
         HEADING()
-        global job
-        name = f"run-slurm"
-        Benchmark.Start()
-        correct = job.exists(f"{name}.sh")
-        Benchmark.Stop()
+        global w
+        if os_is_windows():
+            w.graph.save(filename="test-slurm.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        else:
+            w.graph.save(filename="/tmp/test-slurm.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        # Shell.browser("/tmp/test-slurm.svg")
+        # assert os.path.exists("~/tmp/test-slurm.svg") == True
 
-        assert correct
-
-    def test_run_wait(self):
+    def test_get_node(self):
         HEADING()
-        global run_job
-
+        global w
         Benchmark.Start()
-        jobWait = Job(name=f"{run_job}", host=host, username=username)
-        jobWait.clear()
-        jobWait.sync()
-        # problem
-        s, l, e, j = jobWait.run()
-        jobWait.watch(period=0.5)
-        log = jobWait.get_log()
-        progress = jobWait.get_progress()
-        print("Progress:", progress)
-        status = jobWait.get_status(refresh=True)
-        print("Status:", status, s, progress)
-        assert log is not None
-        assert s == 0
-        assert progress == 100
-        assert status == "done"
-
+        s1 = w["start"]
+        s2 = w.job("start")
         Benchmark.Stop()
+        print(s1)
+        assert s1 == s2
 
-        # will fail if previous test fails
-
-    def test_exists_wait(self):
+    def test_table(self):
         HEADING()
-        global job
-        name = f"run-slurm"
+        global w
         Benchmark.Start()
-        correct = job.exists(f"{name}.sh")
+        print(w.table)
         Benchmark.Stop()
+        assert True
 
-        assert correct
-
-    def test_kill(self):
-        """
-        Creates a job from run-killme.sh, which includes wait of 1 hour
-        Deletes this job AND it's children
-        This way, it tests if the job or any of its children
-        is found in the ps
-        """
+    def test_order(self):
         HEADING()
-        global username
-        global host
-        global prefix
-        global wait_job
-        global job_id
-
+        global w
         Benchmark.Start()
-        job_kill = Job(name=f"{wait_job}", host=host, username=username)
-        banner("Clear the job log")
-        job_kill.clear()
-        banner("Sync the job to the experiment directory")
-        job_kill.sync()
-
-        banner("Run the job")
-        job_kill.run()
-        time.sleep(3)
-
-        banner("Kill the Job")
-        r = job_kill.kill(period=2, job_id=job_id)
-        assert r.count('\n') == 1
-        assert job_id not in r
-        banner(f"Job kill is done")
-
+        order = w.sequential_order()
         Benchmark.Stop()
+        print(order)
+        assert len(order) == len(w.jobs)
 
-        # child = job_kill.get_pid()
-        # status = job_kill.get_status()
-        # print("Status", status)
+    def test_run(self):
+        HEADING()
+        Benchmark.Start()
+        w.run_topo()
         Benchmark.Stop()
-        # ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
-        # banner(f"{ps}")
-        # assert 'sleep 3600' not in ps
-        # assert f" {parent} " not in ps
-        # assert f" {child} " not in ps
-        # assert status == "running"
+        banner("Workflow")
+        print(w.graph)

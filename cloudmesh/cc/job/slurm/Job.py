@@ -103,13 +103,8 @@ class Job:
         except Exception as e:  # noqa: E722
             print(e.output)
             state = 1
-        print('past try except')
         job_id = str(r).split()[-1]
-        print('sleeping')
-        # time.sleep(10)
-        print('getting error')
         error = self.get_error()
-        print('getting log')
         log = self.get_log()
         return state, log, error, job_id
 

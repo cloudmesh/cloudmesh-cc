@@ -1,0 +1,12 @@
+workflow:
+  nodes:
+    c:
+      name: c
+      user: jp
+      host: rivanna
+      kind: local
+      status: ready
+      label: job-1-label
+      script: slurm.sh
+  dependencies:
+    - c
