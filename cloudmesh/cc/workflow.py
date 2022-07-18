@@ -601,7 +601,7 @@ class Workflow:
 
             job = self.job(name=name)
             if not dryrun and job["status"] in ["ready"]:
-                local = wsl = ssh = False
+                local = wsl = ssh = slurm = lsf = False
                 if job['kind'] in ["local"]:
                     local = True
                     from cloudmesh.cc.job.localhost.Job import Job
@@ -611,6 +611,12 @@ class Workflow:
                 elif job['kind'] in ['ssh']:
                     ssh = True
                     from cloudmesh.cc.job.ssh.Job import Job
+                elif job['kind'] in ['slurm']:
+                    slurm = True
+                    from cloudmesh.cc.job.slurm.Job import Job
+                elif job['kind'] in ['lsf']:
+                    lsf = True
+                    from cloudmesh.cc.job.lsf.Job import Job
                 else:
                     from cloudmesh.cc.job.localhost.Job import Job
                 job["status"] = "running"
@@ -623,7 +629,7 @@ class Workflow:
                                           host=host,
                                           username=username,
                                           label=label)
-                if ssh:
+                if ssh or slurm:
                     job = Job(name=name, host=host, username=username,
                               label=label)
                     job.sync()
@@ -686,7 +692,7 @@ class Workflow:
             job = self.job(name=name)
 
             if not dryrun:
-                local = wsl = ssh = False
+                local = wsl = ssh = slurm = lsf = False
                 if job['kind'] in ["local"]:
                     local = True
                     from cloudmesh.cc.job.localhost.Job import Job
@@ -696,9 +702,15 @@ class Workflow:
                 elif job['kind'] in ['ssh']:
                     ssh = True
                     from cloudmesh.cc.job.ssh.Job import Job
+                elif job['kind'] in ['slurm']:
+                    slurm = True
+                    from cloudmesh.cc.job.slurm.Job import Job
+                elif job['kind'] in ['lsf']:
+                    lsf = True
+                    from cloudmesh.cc.job.lsf.Job import Job
                 else:
                     from cloudmesh.cc.job.localhost.Job import Job
-                if local or ssh:
+                if local or ssh or slurm:
                     job["status"] = "running"
                 name = job['name']
                 host = job['host']
@@ -708,7 +720,7 @@ class Workflow:
                           username=username, label=label)
                 job.sync()
                 job.run()
-                if local or wsl:
+                if local or wsl or slurm:
                     job.watch(period=0.5)
                     self.graph.done(name)
                     print(self.table)

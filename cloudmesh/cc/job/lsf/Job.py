@@ -10,7 +10,7 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.variables import Variables
 
 
-class Slurm:
+class Lsf:
 
     def __init__(self, host):
         if host.startswith("rivanna"):
@@ -41,17 +41,18 @@ class Job:
 
         self.username = username
         self.host = host
-        self.name = name or "job"
+        self.name = name
         self.directory = directory
-
         if label is None:
-            self.label = name or "job"
-        else:
             self.label = name
 
         # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
+
+        if self.name is None:
+            Console.error("Name is not defined")
+            raise ValueError
 
         if self.username is None:
             self.username = os.environ["USERNAME"]
