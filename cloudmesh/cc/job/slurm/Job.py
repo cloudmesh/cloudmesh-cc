@@ -9,6 +9,7 @@ from cloudmesh.common.util import readfile
 from cloudmesh.common.util import writefile
 from cloudmesh.common.variables import Variables
 
+
 class Slurm:
 
     def __init__(self, host):
@@ -21,7 +22,7 @@ class Slurm:
             Console.error("Slurm not yet set up for this host")
 
 
-class Job():
+class Job:
 
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
@@ -64,7 +65,6 @@ class Job():
 
         self.slurm = Slurm(self.host)
 
-
     def __str__(self):
         msg = [
             f"host:      {self.host}",
@@ -76,7 +76,6 @@ class Job():
             f"locals     {locals()}"
         ]
         return "\n".join(msg)
-
 
     @property
     def status(self):
@@ -92,12 +91,12 @@ class Job():
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'ssh {self.username}@{self.host} '\
+        command = f'ssh {self.username}@{self.host} ' \
                   f'"cd {self.directory} && {self.slurm.sbatch} ' \
                   f'{self.name}.sh"'
         print(command)
         state = None
-        #state = os.system(f'{command} &')
+        # state = os.system(f'{command} &')
         try:
             r = Shell.run(f'{command}')
             state = 0
@@ -107,7 +106,7 @@ class Job():
         print('past try except')
         job_id = str(r).split()[-1]
         print('sleeping')
-        #time.sleep(10)
+        # time.sleep(10)
         print('getting error')
         error = self.get_error()
         print('getting log')
@@ -146,7 +145,7 @@ class Job():
                 progress = lines[-1].split("progress=")[1]
                 progress = progress.split()[0]
                 return int(progress)
-            except:   # noqa: E722
+            except:  # noqa: E722
                 return 0
         return 0
 
@@ -269,7 +268,7 @@ class Job():
             python {filename}
             """
 
-        data ={
+        data = {
             "name": "mnl_mnist",
             "filename": "mnl_mnist.py",
             "partition": "dev",

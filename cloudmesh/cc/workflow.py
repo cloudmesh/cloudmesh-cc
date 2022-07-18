@@ -183,7 +183,7 @@ class Graph:
                 if self.nodes[name]["progress"] != 100 and len(
                         self.nodes[name]["parent"]) == 0:
                     result.append(name)
-            except:
+            except:  # noqa: E722
                 pass
         return result
 
@@ -191,7 +191,7 @@ class Graph:
         self.nodes[name]["status"] = status
 
     def get_status(self, name):
-        self.nodes[name]["status"]
+        return self.nodes[name]["status"]
 
     def add_dependency(self, source, destination):
         self.add_dependencies(self, f"{source},{destination}")
@@ -250,7 +250,7 @@ class Graph:
                 {
                     'nodes': dict(self.nodes),
                     'dependencies': dict(self.edges),
-             }
+                }
         }
 
         with open(filename, 'w') as outfile:
@@ -381,7 +381,7 @@ class Workflow:
             # gvl addded load but not tested
             if not clear:
                 self.load(self.filename)
-        except:
+        except:  # noqa: E722
             pass
 
         # should this go into graph?
@@ -398,7 +398,7 @@ class Workflow:
         # self.label = None
 
     def __str__(self):
-        return (str(self.graph))
+        return str(self.graph)
 
     @property
     def jobs(self):
@@ -487,14 +487,12 @@ class Workflow:
         for name, node in graph["workflow"]["nodes"].items():
             self.add_job(**node)
 
-
         for edge in graph["workflow"]["dependencies"]:
             self.add_dependencies(edge)
 
-
     def save(self, filename):
         if os_is_windows():
-            name = os.path.basename(filename).replace(".yaml","")
+            name = os.path.basename(filename).replace(".yaml", "")
             dir = path_expand(f"~/.cloudmesh/workflow/{name}")
             location = f"{dir}/{name}.yaml"
             self.graph.save_to_file(location)
@@ -562,7 +560,6 @@ class Workflow:
         # once progress is fetched set it for the named job
         raise NotImplementedError
 
-
     def run_parallel(self, order=None, parallel=False, dryrun=False, show=True,
                      period=0.5):
         finished = False
@@ -623,9 +620,9 @@ class Workflow:
                 label = name
                 if local or wsl:
                     job["instance"] = Job(name=name,
-                                                host=host,
-                                                username=username,
-                                                label=label)
+                                          host=host,
+                                          username=username,
+                                          label=label)
                 if ssh:
                     job = Job(name=name, host=host, username=username,
                               label=label)
@@ -708,7 +705,7 @@ class Workflow:
                 username = job['user']
                 label = name
                 job = Job(name=name, host=host,
-                                          username=username, label=label)
+                          username=username, label=label)
                 job.sync()
                 job.run()
                 if local or wsl:
@@ -798,7 +795,7 @@ class Workflow:
     def remove_job(self, name):
         # remove job
 
-        #del self.jobs[name]
+        # del self.jobs[name]
         p = self.jobs.pop(name)
         # print("popped:",p)
 

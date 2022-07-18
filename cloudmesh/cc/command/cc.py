@@ -11,6 +11,7 @@ from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
 import pkg_resources
 
+
 # TODO: these imports needs to be put in where it is needed.
 #  It is not supposed to be a global import
 
@@ -277,7 +278,7 @@ class CcCommand(PluginCommand):
                 reload = False
             cloudmesh_cc = pkg_resources.resource_filename("cloudmesh.cc", "../..")
 
-            print ("Reload:", reload)
+            print("Reload:", reload)
             print("Dir:", cloudmesh_cc)
             import uvicorn
             from cloudmesh.cc.service.service import app
@@ -327,7 +328,6 @@ class CcCommand(PluginCommand):
             name = get_workflow_name()
 
             from cloudmesh.cc.manager import WorkflowServiceManager
-
 
             manager = WorkflowServiceManager(name, filename=arguments.filename)
             manager.add_from_filename(name, arguments.filename)
@@ -452,7 +452,7 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.status(filename= arguments.filename)
+            manager.status(filename=arguments.filename)
 
         # produce a graph for the workflow
         elif arguments.workflow and arguments.graph:
@@ -470,7 +470,6 @@ class CcCommand(PluginCommand):
         # cc workflow service list [--name=NAME] [--job=JOB]
         # cc workflow service job add [--name=NAME] --job=JOB ARGS...
         # cc workflow service run --name=NAME
-
 
         """
         #

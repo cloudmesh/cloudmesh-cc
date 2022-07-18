@@ -9,7 +9,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.util import path_expand
 
 
-class Job():
+class Job:
 
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
@@ -31,7 +31,6 @@ class Job():
         self.name = name
         self.directory = directory
         self.label = label
-
 
         # print("self.data", self.data)
         for key, value in self.data.items():
@@ -150,7 +149,7 @@ class Job():
             os.system(command)
             os.system("sync")
             content = readfile(f"{self.name}.log")
-        except:
+        except:  # noqa: E722
             pass
         return content
 

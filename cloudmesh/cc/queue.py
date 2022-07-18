@@ -102,7 +102,6 @@ class Queue:
         instantiate, add, remove, run, get, and list.
     """
 
-
     def __init__(self, name=None):
         """
         Initializes the queue object

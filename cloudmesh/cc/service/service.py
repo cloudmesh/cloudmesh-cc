@@ -14,10 +14,11 @@ from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
 import os
-from cloudmesh.common.util import  path_expand
+from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
 import glob
+
 
 def test_run():
     kind = 'yamldb'
@@ -48,6 +49,7 @@ app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
 templates = Jinja2Templates(directory=template_dir)
+
 
 #
 # ROUTES
@@ -81,15 +83,17 @@ templates = Jinja2Templates(directory=template_dir)
 async def home():
     return {"msg": "cloudmesh.cc is up"}
 
+
 #
 # WORKFLOW
 #
 
-def load_workflow(name:str):
+def load_workflow(name: str):
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
     w = Workflow(name=name, filename=filename)
     # w.load(filename)
     return w
+
 
 @app.get("/workflows")
 def list_workflows():
@@ -109,7 +113,7 @@ def list_workflows():
         directory = path_expand(f"~/.cloudmesh/workflow/")
         result = glob.glob(f"{directory}/*")
         result = [os.path.basename(e) for e in result]
-        return{"workflows": result}
+        return {"workflows": result}
     except Exception as e:
         return {"message": f"No workflows found"}
 
@@ -139,6 +143,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 
     return {"message": f"Successfully uploaded {file.filename}"}
 
+
 # import requests
 #
 # url = 'http://127.0.0.1:8000/upload'
@@ -147,7 +152,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 # print(resp.json())
 
 @app.delete("/workflow/{name}")
-def delete_workflow(name:str, job: str=None):
+def delete_workflow(name: str, job: str = None):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
     :param name:
@@ -155,7 +160,7 @@ def delete_workflow(name:str, job: str=None):
     :return:
     """
     if job is not None:
-    # if we specify to delete the job
+        # if we specify to delete the job
         try:
             w = load_workflow(name)
             # print(w[job])
@@ -164,7 +169,7 @@ def delete_workflow(name:str, job: str=None):
         except Exception as e:
             return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
     else:
-    # if we specify to delete the workflow
+        # if we specify to delete the workflow
         try:
             # w = load_workflow(name)
             directory = path_expand(f"~/.cloudmesh/workflow/{name}")
@@ -179,7 +184,7 @@ def get_workflow(name: str, job: str = None):
     if job is not None:
         try:
             w = load_workflow(name)
-            print (w.yaml)
+            print(w.yaml)
             result = w[job]
             return {name: result}
         except Exception as e:
@@ -208,7 +213,6 @@ async def add_job(name: str, **kwargs) -> bool:
     :return:
     """
 
-
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
@@ -229,8 +233,6 @@ async def add_job(name: str, **kwargs) -> bool:
     # except Exception as e:
     #     print(e)
     #     return False
-
-
 
 #
 # QUEUES
