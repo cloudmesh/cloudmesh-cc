@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=slurm
-#SBATCH --output=%u-%j.out
-#SBATCH --error=%u-%j.err
+#SBATCH --job-name=slurm.sh
+#SBATCH --output=slurm.log
+#SBATCH --error=slurm.error
 #SBATCH --partition=dev
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4GB

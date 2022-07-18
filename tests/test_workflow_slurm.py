@@ -27,7 +27,7 @@ import subprocess
 
 variables = Variables()
 
-name = "run-slurm"
+name = "slurm"
 
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
@@ -99,7 +99,7 @@ class TestWorkflowSlurm:
 
         jobkind = 'slurm'
 
-        for script in ["slurm"]:
+        for script in ["start", "end"]:
             Shell.copy(f"./tests/workflow-slurm/{script}.sh", ".")
             assert os.path.isfile(f"./{script}.sh")
             w.add_job(name=script, kind=jobkind, user=user, host=host)
@@ -114,20 +114,10 @@ class TestWorkflowSlurm:
             Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
             # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
             n = n + 1
-            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
-            n = n + 1
-            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
-            n = n + 1
 
-            first = n - 3
-            second = n - 2
-            third = n - 1
-            w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
-            w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
-            w.add_dependencies(f"job-{host}-{third},end")
-            w.add_dependencies(f"start,job-{host}-{first}")
+            w.add_dependencies(f"slurm,end")
+            w.add_dependencies(f"start,slurm")
+
 
         Benchmark.Stop()
         print(len(w.jobs) == n)
@@ -146,8 +136,8 @@ class TestWorkflowSlurm:
         HEADING()
         global w
         Benchmark.Start()
-        s1 = w["start"]
-        s2 = w.job("start")
+        s1 = w["slurm"]
+        s2 = w.job("slurm")
         Benchmark.Stop()
         print(s1)
         assert s1 == s2
