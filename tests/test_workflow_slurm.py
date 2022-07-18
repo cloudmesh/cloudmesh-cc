@@ -94,8 +94,8 @@ class TestWorkflowSlurm:
 
         n = 0
 
-        user = login["localhost"]["user"]
-        host = login["localhost"]["host"]
+        user = login["rivanna"]["user"]
+        host = login["rivanna"]["host"]
 
         jobkind = 'slurm'
 
