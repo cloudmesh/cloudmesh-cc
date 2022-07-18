@@ -58,11 +58,11 @@ class TestJobsSsh:
         HEADING()
         Benchmark.Start()
         os.system(f"cp ./tests/{pyname}.py .")
-        pyjob = Job(name=pyname, host=host, username=username)
-        pyjob.sync(python=True)
+        pyjob = Job(name=pyname, host=host, username=username, type="python")
+        pyjob.sync()
         assert pyjob.exists(f"{pyname}.py")
 
-        s, l, e = pyjob.run(python=True)
+        s, l, e = pyjob.run()
         # give it some time to complete
         time.sleep(5)
         print(l)

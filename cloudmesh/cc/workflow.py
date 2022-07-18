@@ -541,7 +541,7 @@ class Workflow:
             script=script,
             instance=None
         )
-        # TODO: self.save()
+        self.save(self.filename)
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
@@ -754,7 +754,6 @@ class Workflow:
 
     @property
     def yaml(self):
-        # gvl reimplemented not tested
         data = {
             'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
@@ -762,7 +761,6 @@ class Workflow:
         return yaml.dump(data)
 
     def json(self, filepath=None):
-        # gvl reimplemented not tested
         data = {
             'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)

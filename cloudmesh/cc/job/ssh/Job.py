@@ -14,7 +14,7 @@ from cloudmesh.common.systeminfo import os_is_windows
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, directory=None, type="sh", **argv):
         """
         cms set username=abc123
 
@@ -34,6 +34,7 @@ class Job:
         self.name = name
         self.directory = directory
         self.label = label
+        self.type = type
 
         # print("self.data", self.data)
         for key, value in self.data.items():
@@ -73,17 +74,17 @@ class Job:
         print(command)
         os.system(command)
 
-    def run(self, python=False):
+    def run(self):
         self.mkdir_experimentdir()
 
-        if python:
+        if self.type == "python":
             command = f'chmod ug+x {self.name}.py'
         else:
             command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
 
-            if python:
+            if self.type == "python":
                 command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2> {self.name}.error &"'
             else:
                 command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
@@ -157,9 +158,9 @@ class Job:
         content = readfile(f"{self.name}.log")
         return content
 
-    def sync(self, python=False):
+    def sync(self):
         self.mkdir_experimentdir()
-        if python:
+        if self.type == "python":
             command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
         else:
             command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."

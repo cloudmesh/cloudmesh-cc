@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi import File
 from fastapi import UploadFile
+from pydantic import BaseModel
 
 from fastapi.staticfiles import StaticFiles
 import pkg_resources
@@ -33,6 +34,18 @@ def test_run():
     q.add(name='rivanna', job='job06', command='hostname')
     q.add(name='rivanna', job='job07', command='git status')
     return q
+
+
+class Jobpy(BaseModel):
+    name: str
+    user: str
+    host: str
+    label: str | None = None
+    kind: str | None = None
+    status: str | None = None
+    progress: int | None = None
+    script: str | None = None
+    pid: int | None = None
 
 
 q = test_run()
@@ -88,9 +101,9 @@ async def home():
 # WORKFLOW
 #
 
-def load_workflow(name: str):
+def load_workflow(name: str) -> Workflow:
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-    w = Workflow(name=name, filename=filename)
+    w = Workflow(name=name, filename=filename, clear=False)
     # w.load(filename)
     return w
 
@@ -188,6 +201,7 @@ def get_workflow(name: str, job: str = None):
             result = w[job]
             return {name: result}
         except Exception as e:
+            print(e)
             return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
@@ -195,11 +209,25 @@ def get_workflow(name: str, job: str = None):
             print(w.yaml)
             return {name: w}
         except Exception as e:
+            print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
+@app.get("/run")
+def run_workflow(name: str, type:str="topo"):
+    w = load_workflow(name)
+
+    try:
+        w.run_topo()
+    except Exception as e:
+        print("Exception:", e)
+    # if type=="topo":
+    #     w.run_topo()
+    # else:
+    #     w.run_parallel()
+    print("HIIIIIIIIIIIIIIII")
 
 @app.post("/workflow/{name}")
-async def add_job(name: str, **kwargs) -> bool:
+async def add_job(name: str, job: Jobpy):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
@@ -216,23 +244,28 @@ async def add_job(name: str, **kwargs) -> bool:
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
+    # {
+    #   "name": "c",
+    #   "user": "gregor",
+    #   "host": "localhost",
+    #   "label": "pydantic test",
+    #   "kind": "local",
+    #   "status": "ready",
+    #   "progress": 0,
+    #   "script": "c.sh",
+    #   "pid": 0
+    # }
+    w = load_workflow(name)
+    # print(w.yaml)
 
-    w = get_workflow(name)
-    print(w.yaml)
-    print(kwargs)
-    # for attribute in ["job","user","host"]:
-    #     if attribute not in kwargs:
-    #         print("error")
-    #         # return the error object in fastapi
-    #
-    # w = load_workflow(name)
-    #
-    # try:
-    #     w.add_job(kwargs)
-    #     return True
-    # except Exception as e:
-    #     print(e)
-    #     return False
+    try:
+        w.add_job(name=job.name,user=job.user,host=job.host,label=job.label,
+                  kind=job.kind,status=job.status,progress=job.progress,script=job.script)
+    except Exception as e:
+        print(e)
+
+    return {"jobs":w.jobs}
+
 
 #
 # QUEUES
