@@ -16,3 +16,4 @@ docker-compose
 networkx[default]
 pydot
 graphviz
+pygraphviz
