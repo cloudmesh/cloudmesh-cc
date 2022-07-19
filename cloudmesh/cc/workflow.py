@@ -22,6 +22,7 @@ from cloudmesh.common.util import banner
 import os
 from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
 import json
+from cloudmesh.cc.la
 
 """
 This class enables to manage dependencies between jobs.
@@ -271,7 +272,7 @@ class Graph:
         for name, e in self.nodes.items():
             if colors is None:
                 graph.add_node(name)
-                dot.node(name, color='white')
+                dot.node(name, color='white', label="gregor")
                 color_map.append('white')
             else:
                 value = e[colors]
@@ -281,6 +282,7 @@ class Graph:
                 else:
                     shape = "rounded"
                 dot.node(name,
+                         label="gregor2",
                          # color=self.colors[colors][value],
                          style=f'filled,rounded',
                          shape=shape,
