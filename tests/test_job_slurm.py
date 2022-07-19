@@ -94,9 +94,11 @@ class TestJobsSlurm:
         job = Job(name=f"run-slurm", host=host, username=username)
         job.sync()
 
-        s, l, e, job_id = job.run()
+        s, job_id = job.run()
         # give it some time to complete
         time.sleep(5)
+
+        l, e = job.retrieve_output()
         print("State:", s)
         print(l)
         # print(e)
@@ -137,9 +139,9 @@ class TestJobsSlurm:
         jobWait.clear()
         jobWait.sync()
         # problem
-        s, l, e, j = jobWait.run()
+        s, j = jobWait.run()
         jobWait.watch(period=0.5)
-        log = jobWait.get_log()
+        e, log = jobWait.retrieve_output()
         progress = jobWait.get_progress()
         print("Progress:", progress)
         status = jobWait.get_status(refresh=True)
@@ -189,7 +191,6 @@ class TestJobsSlurm:
 
         banner("Kill the Job")
         r = job_kill.kill(period=2, job_id=job_id)
-        assert r.count('\n') == 1
         assert job_id not in r
         banner(f"Job kill is done")
 

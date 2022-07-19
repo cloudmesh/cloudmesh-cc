@@ -103,9 +103,12 @@ class Job:
             print(e.output)
             state = 1
         job_id = str(r).split()[-1]
+        return state, job_id
+
+    def retrieve_output(self):
         error = self.get_error()
         log = self.get_log()
-        return state, log, error, job_id
+        return error, log
 
     def clear(self):
         content = None
@@ -175,8 +178,12 @@ class Job:
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
+        progress = 0
         while not finished:
-            progress = int(self.get_progress(refresh=True))
+            try:
+                progress = int(self.get_progress(refresh=True))
+            except:
+                pass
             finished = progress == 100
             if not finished:
                 time.sleep(period)
