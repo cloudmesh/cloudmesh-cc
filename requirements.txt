@@ -16,3 +16,5 @@ docker-compose
 networkx[default]
 pydot
 graphviz
+pexpect
+fastapi
