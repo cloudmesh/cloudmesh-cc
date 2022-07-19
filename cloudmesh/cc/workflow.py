@@ -22,7 +22,6 @@ from cloudmesh.common.util import banner
 import os
 from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
 import json
-from cloudmesh.cc.la
 
 """
 This class enables to manage dependencies between jobs.
