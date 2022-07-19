@@ -178,6 +178,7 @@ class Job:
     def watch(self, period=10):
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
+        progress = 0
         while not finished:
             try:
                 progress = int(self.get_progress(refresh=True))
