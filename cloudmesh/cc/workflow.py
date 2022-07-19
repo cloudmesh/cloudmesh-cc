@@ -13,7 +13,7 @@ from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import writefile
 from pathlib import Path
-from cloudmesh.cc.db.yamldb import database as ydb
+from yamldb import YamlDB
 from cloudmesh.cc.queue import Job
 from cloudmesh.common.console import Console
 from cloudmesh.common.DateTime import DateTime
