@@ -39,6 +39,7 @@ networkx[default]
 pydot
 graphviz
 pexpect
+pygraphviz
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
