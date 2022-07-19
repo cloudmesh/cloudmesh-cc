@@ -103,9 +103,12 @@ class Job:
             print(e.output)
             state = 1
         job_id = str(r).split()[-1]
+        return state, job_id
+
+    def retrieve_output(self):
         error = self.get_error()
         log = self.get_log()
-        return state, log, error, job_id
+        return error, log
 
     def clear(self):
         content = None
