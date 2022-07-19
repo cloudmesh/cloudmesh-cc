@@ -179,7 +179,10 @@ class Job:
         """waits and wathes every seconds in period, till the job has completed"""
         finished = False
         while not finished:
-            progress = int(self.get_progress(refresh=True))
+            try:
+                progress = int(self.get_progress(refresh=True))
+            except:
+                pass
             finished = progress == 100
             if not finished:
                 time.sleep(period)
