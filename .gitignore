@@ -1,3 +1,4 @@
+dest
 *.error
 *.log
 .DS_Store
