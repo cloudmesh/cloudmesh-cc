@@ -78,7 +78,7 @@ class Job:
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error'
+        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1'
         print(command)
         state = os.system(f'{command} &')
         logfile = path_expand(f"{self.directory}/{self.name}.sh")
@@ -91,9 +91,8 @@ class Job:
             print("STARTED")
             if not started:
                 time.sleep(0.1)
-        error = self.get_error()
         log = self.get_log()
-        return state, log, error
+        return state, log
 
     def clear(self):
         content = None
@@ -132,13 +131,13 @@ class Job:
                 return 0
         return 0
 
-    def get_error(self):
-        command = f"cp {self.directory}/{self.name}.error {self.name}.error"
-        print(command)
-        os.system(command)
-        os.system("sync")
-        content = readfile(f"{self.name}.error")
-        return content
+    # def get_error(self):
+    #     command = f"cp {self.directory}/{self.name}.error {self.name}.error"
+    #     print(command)
+    #     os.system(command)
+    #     os.system("sync")
+    #     content = readfile(f"{self.name}.error")
+    #     return content
 
     def get_log(self):
         content = None
