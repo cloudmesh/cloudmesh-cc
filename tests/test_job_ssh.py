@@ -17,7 +17,8 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
-import subprocess
+from cloudmesh.vpn.vpn import Vpn
+from subprocess import STDOUT, check_output
 from pathlib import Path
 from cloudmesh.common.util import banner
 
@@ -32,18 +33,19 @@ if "host" not in variables:
 else:
     host = variables["host"]
 
-if "username" in variables:
-    username = variables["username"]
-else:
-    username = os.path.basename(os.environ["HOME"])
+username = variables["username"]
+
+if username is None:
+    Console.error("No username provided. Use cms set username=ComputingID")
+    quit()
 
 job = None
 
 try:
-    r = Shell.run(f"ssh {username}@{host} hostname")
-    login_success = "Could not resolve hostname" not in r
-    if "'s password:" in r:
-        print('if statement worked')
+    if not Vpn.enabled():
+        raise Exception('vpn not enabled')
+    check_output(f"ssh {username}@{host} hostname", stderr=STDOUT, timeout=6)
+    login_success = True
 except:  # noqa: E722
     login_success = False
 
@@ -51,8 +53,7 @@ run_job = f"run"
 wait_job = f"run-killme"
 
 
-
-@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
 @pytest.mark.incremental
 class TestJobsSsh:
 

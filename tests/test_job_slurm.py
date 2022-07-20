@@ -36,7 +36,7 @@ else:
 username = variables["username"]
 
 if username is None:
-    Console.error("No username provided.")
+    Console.error("No username provided. Use cms set username=ComputingID")
     quit()
 
 job = None

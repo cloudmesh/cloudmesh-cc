@@ -21,8 +21,9 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
+from cloudmesh.vpn.vpn import Vpn
+from subprocess import STDOUT, check_output
 from cloudmesh.common.systeminfo import os_is_windows
-import subprocess
 from pathlib import Path
 from cloudmesh.common.util import banner
 
@@ -46,24 +47,20 @@ if username is None:
 
 job = None
 job_id = None
-login_success = False
 
-if not os_is_windows():
-    try:
-        command = f"ssh {username}@{host} hostname"
-        r = Shell.run(command)
-        print(r)
-        #time.sleep(5)
-        login_success = "Could not resolve hostname" not in r
-    except Exception as e:
-        print(e)
+try:
+    if not Vpn.enabled():
+        raise Exception('vpn not enabled')
+    check_output(f"ssh {username}@{host} hostname", stderr=STDOUT, timeout=6)
+    login_success = True
+except:  # noqa: E722
+    login_success = False
 
 run_job = f"run-slurm"
 wait_job = f"wait-slurm"
 
 w = None
 
-#@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
 class TestWorkflowSlurm:
 
@@ -164,6 +161,7 @@ class TestWorkflowSlurm:
         print(order)
         assert len(order) == len(w.jobs)
 
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run(self):
         HEADING()
         Benchmark.Start()
