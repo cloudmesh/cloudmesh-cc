@@ -101,7 +101,9 @@ class Job:
         except Exception as e:  # noqa: E722
             print(e)
             state = 1
-        job_id = str(r).split()[-1]
+        for line in str(r).splitlines():
+            if line.startswith('Submitted'):
+                job_id = line.split()[-1]
         return state, job_id
 
     def clear(self):
