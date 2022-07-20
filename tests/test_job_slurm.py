@@ -100,7 +100,8 @@ class TestJobsSlurm:
 
         s, job_id = job.run()
         # give it some time to complete
-        time.sleep(7)
+        # time.sleep(7)
+        job.watch(period=0.5)
 
         print("State:", s)
 
