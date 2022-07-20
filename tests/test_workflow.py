@@ -14,6 +14,8 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
+from cloudmesh.vpn.vpn import Vpn
+from subprocess import STDOUT, check_output
 import networkx as nx
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
@@ -39,12 +41,21 @@ if "host" not in variables:
 else:
     host = variables["host"]
 
-if "username" in variables:
-    username = variables["username"]
-else:
-    username = os.path.basename(os.environ["HOME"])
+username = variables["username"]
+
+if username is None:
+    Console.error("No username provided. Use cms set username=ComputingID")
+    quit()
 
 w = None
+
+try:
+    if not Vpn.enabled():
+        raise Exception('vpn not enabled')
+    check_output(f"ssh {username}@{host} hostname", stderr=STDOUT, timeout=6)
+    login_success = True
+except:  # noqa: E722
+    login_success = False
 
 
 class TestWorkflow:
@@ -163,6 +174,7 @@ class TestWorkflow:
         print(order)
         assert len(order) == len(w.jobs)
 
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run(self):
         HEADING()
         Benchmark.Start()
