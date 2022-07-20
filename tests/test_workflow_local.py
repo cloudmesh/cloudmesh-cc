@@ -132,11 +132,13 @@ class TestWorkflowLocal:
         w = Workflow()
         w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
         Benchmark.Stop()
-        print(w.graph)
         g = str(w.graph)
+        print(g)
         assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
-        assert "a-b:" in g
-        assert "host: localhost" in g
+        assert "start" in g
+        assert "host: local" in g
+
+class rest:
 
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
