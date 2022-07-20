@@ -93,7 +93,16 @@ class Graph:
         #    colors:
 
     def __getitem__(self, name):
-        return self.nodes[name]
+        #return self.nodes[name]  this is the super basic implementation
+        n_under = name.split('_')
+        n_comma = name.split(',')
+        n_under_length = len(n_under)
+        n_comma_length = len(n_comma)
+        if n_comma_length == 2 or n_under_length == 2:
+            return self.edges[name]
+        else:
+            return self.nodes[name]
+
 
     def set_status_colors(self):
         # self.add_color("status",
