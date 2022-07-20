@@ -37,8 +37,6 @@ variables = Variables()
 host = "localhost"
 if os_is_windows():
     username = os.environ["USERNAME"]
-else:
-    username = os.environ["USER"]
 
 job = None
 
