@@ -3,6 +3,8 @@
 # pytest -v  tests/test_labelmaker.py
 # pytest -v --capture=no  tests/test_labelmaker.py::test_labelmaker::<METHODNAME>
 ###############################################################
+import os
+
 import pytest
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
@@ -31,6 +33,7 @@ class TestLabelmaker:
         r = label.get(**d)
 
         Benchmark.Stop()
+
 
         print(r)
         assert r.startswith(f"name=gregor home={Shell.map_filename('~').path} debug=True")
