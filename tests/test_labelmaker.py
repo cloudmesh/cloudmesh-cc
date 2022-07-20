@@ -33,7 +33,7 @@ class TestLabelmaker:
         Benchmark.Stop()
 
         print(r)
-        assert r.startswith("name=gregor home=/Users/grey debug=True")
+        assert r.startswith(f"name=gregor home={Shell.map_filename('~').path} debug=True")
 
     def test_benchmark(self):
         HEADING()
