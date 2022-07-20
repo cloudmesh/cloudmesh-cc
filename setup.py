@@ -40,10 +40,6 @@ graphviz
 fastapi[all]
 """.split("\n")
 
-# fastapi[all]
-# pygraphviz
-
-
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 
 version = readfile("VERSION")[0].strip()
