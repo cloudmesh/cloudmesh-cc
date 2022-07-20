@@ -5,7 +5,6 @@ import yaml as pyyaml
 
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Shell import Shell
-from cloudmesh.cc.db.yamldb.database import Database as QueueDB
 from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_mac
@@ -179,13 +178,24 @@ class Queues:
     """
 
     # def __init__(self, filename=None, database='yamldb'):
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, database=None):
         """
         Initializes the giant queue structure.
         """
 
         if filename is None:
             filename = "~/.cloudmesh/queue/queue.yamldb"
+
+        if database is not None:
+            self.database = database
+        else:
+            self.database = 'yamldb'
+
+        if self.database == 'yamldb':
+            from cloudmesh.cc.db.yamldb.database import Database as QueueDB
+        else:
+            # we have not implemented any other database outside of yamldb
+            raise NotImplementedError
 
         self.db = QueueDB(filename=filename)
         self.counter = 0
