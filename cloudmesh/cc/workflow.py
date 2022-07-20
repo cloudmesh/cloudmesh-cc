@@ -20,8 +20,11 @@ from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import banner
 import os
-from cloudmesh.common.systeminfo import os_is_linux, os_is_mac, os_is_windows
+from cloudmesh.common.systeminfo import os_is_linux
+from cloudmesh.common.systeminfo import os_is_mac
+from cloudmesh.common.systeminfo import os_is_windows
 import json
+from cloudmesh.cc.labelmaker import Labelmaker
 
 """
 This class enables to manage dependencies between jobs.
@@ -271,7 +274,10 @@ class Graph:
         for name, e in self.nodes.items():
             if colors is None:
                 graph.add_node(name)
-                dot.node(name, color='white', label="gregor")
+                label = self.nodes[name]["label"]
+                replacement = Labelmaker(label)
+                replacement.get(**self.nodes[name])
+                dot.node(name, color='white', label=replacement)
                 color_map.append('white')
             else:
                 value = e[colors]
@@ -280,8 +286,11 @@ class Graph:
                     shape = "diamond"
                 else:
                     shape = "rounded"
+                label = self.nodes[name]["label"]
+                replacement = Labelmaker(label)
+                replacement.get(**self.nodes[name])
                 dot.node(name,
-                         label="gregor2",
+                         label=label,
                          # color=self.colors[colors][value],
                          style=f'filled,rounded',
                          shape=shape,

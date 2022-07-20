@@ -17,7 +17,6 @@ class Labelmaker:
 
     def get(self, **data):
         now = datetime.now()
-        print (self.variables)
         variables = Variables()
         replacements = {}
 
