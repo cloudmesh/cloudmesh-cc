@@ -92,6 +92,9 @@ class Graph:
         #    name:
         #    colors:
 
+    def __getitem__(self, name):
+        return self.nodes[name]
+
     def set_status_colors(self):
         # self.add_color("status",
         #                ready="white",
