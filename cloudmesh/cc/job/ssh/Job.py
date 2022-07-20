@@ -82,9 +82,9 @@ class Job:
         if os_is_windows():
 
             if self.type == "python":
-                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2> {self.name}.error &"'
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2>&1 &"'
             else:
-                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
             print(command)
             state = os.system(command)
             # ps = subprocess.Popen(('bash', '-c', f'"{command} ; exit 0" &'), stdout=subprocess.PIPE)
@@ -98,13 +98,12 @@ class Job:
             #    state = 0
 
         else:
-            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2> {self.name}.error"'
+            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
             # time.sleep(1)
             print(command)
             state = os.system(f'{command} &')
-        error = self.get_error()
         log = self.get_log()
-        return state, log, error
+        return state, log
 
     def clear(self):
         try:
@@ -141,12 +140,12 @@ class Job:
                 return 0
         return 0
 
-    def get_error(self):
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.error")
-        return content
+    # def get_error(self):
+    #     command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
+    #     print(command)
+    #     os.system(command)
+    #     content = readfile(f"{self.name}.error")
+    #     return content
 
     def get_log(self):
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
