@@ -32,15 +32,17 @@ cloudmesh-cmd5
 cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
-fastapi[all]
 yamldb
 docker-compose
 networkx[default]
 pydot
 graphviz
-pexpect
-pygraphviz
+fastapi[all]
 """.split("\n")
+
+# fastapi[all]
+# pygraphviz
+
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 

@@ -105,11 +105,6 @@ class Job:
         job_id = str(r).split()[-1]
         return state, job_id
 
-    def retrieve_output(self):
-        error = self.get_error()
-        log = self.get_log()
-        return error, log
-
     def clear(self):
         content = None
         try:
@@ -146,12 +141,12 @@ class Job:
                 return 0
         return 0
 
-    def get_error(self):
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.error")
-        return content
+    # def get_error(self):
+    #     command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
+    #     print(command)
+    #     os.system(command)
+    #     content = readfile(f"{self.name}.error")
+    #     return content
 
     def get_log(self):
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
@@ -256,7 +251,6 @@ class Job:
         
             #SBATCH --job-name=mlcommons-eq-{card_name}-{gpu_count}
             #SBATCH --output=%u-%j.out
-            #SBATCH --error=%u-%j.err
             #SBATCH --partition={system.partition}
             #SBATCH -c {cpu_num}
             #SBATCH --mem={mem}

@@ -1,7 +1,6 @@
 #!/bin/sh
 #SBATCH --job-name=run-slurm.sh
 #SBATCH --output=run-slurm.log
-#SBATCH --error=run-slurm.error
 #SBATCH --partition=dev
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4GB

@@ -98,10 +98,7 @@ class TestJobsSlurm:
         # give it some time to complete
         time.sleep(5)
 
-        l, e = job.retrieve_output()
         print("State:", s)
-        print(l)
-        # print(e)
 
         log = job.get_log()
         if log is None:
@@ -141,7 +138,7 @@ class TestJobsSlurm:
         # problem
         s, j = jobWait.run()
         jobWait.watch(period=0.5)
-        e, log = jobWait.retrieve_output()
+        log = jobWait.get_log()
         progress = jobWait.get_progress()
         print("Progress:", progress)
         status = jobWait.get_status(refresh=True)

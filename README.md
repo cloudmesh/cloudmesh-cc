@@ -1,15 +1,35 @@
 Documentation
 =============
 
+## Install
 
-[![image](https://img.shields.io/travis/TankerHQ/cloudmesh-cc.svg?branch=main)](https://travis-ci.org/TankerHQ/cloudmesn-cc)
+OSX
 
-[![image](https://img.shields.io/pypi/pyversions/cloudmesh-cc.svg)](https://pypi.org/project/cloudmesh-cc)
+We use fastapi as teh webserver with uvicorn.  To install it, the newest versions of FastAPI are partially implemented in rust.
+Thus you will need to install rust on your machine with 
 
-[![image](https://img.shields.io/pypi/v/cloudmesh-cc.svg)](https://pypi.org/project/cloudmesh-cc/)
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
-[![image](https://img.shields.io/github/license/TankerHQ/python-cloudmesh-cc.svg)](https://github.com/TankerHQ/python-cloudmesh-cc/blob/main/LICENSE)
+Additionally, do the following command to ensure that there is a working version of the proper graphics on your device:
 
-see cloudmesh.cmd5
+```bash
+sudo apt-get install graphviz graphviz-dev
+```
 
-* https://github.com/cloudmesh/cloudmesh.cmd5
+Then
+
+```bash
+cloudmesh-installer --ssh get cc
+```
+
+After it is installe, please use 
+
+```bash
+mkdir cm
+cd cm
+pip install cloudmesh-installer
+cloudmesh-installer get cc
+```
+

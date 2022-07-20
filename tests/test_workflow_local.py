@@ -86,12 +86,15 @@ def create_workflow():
         print("HOST:", host)
         user = login[host]["user"]
         host = login[host]["host"]
-        label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
-        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
+
+        label = "debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}"
+
+        w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
         n = n + 1
-        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
-        w.add_job(name=f"job-{host}-{n}", kind=kind, user=user, host=host)
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
 
         first = n - 3
