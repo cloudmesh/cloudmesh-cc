@@ -181,6 +181,7 @@ class Job:
             finished = progress == 100
             if not finished:
                 time.sleep(period)
+        self.get_error()
 
     def get_pid(self, refresh=False):
         """get the pid from the job"""
