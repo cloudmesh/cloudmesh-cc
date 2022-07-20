@@ -127,7 +127,7 @@ class Graph:
     def __str__(self):
         data = {
             "nodes": dict(self.nodes),
-            "edges": dict(self.edges),
+            "dependencies": dict(self.edges),
         }
         if self.colors:
             data["colors"] = dict(self.colors)
