@@ -1,6 +1,8 @@
 import os
 from pprint import pprint
 
+import pkg_resources
+
 # from cloudmesh.cc.hostdata import Data
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Shell import Shell
@@ -9,7 +11,6 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
-import pkg_resources
 
 
 # TODO: these imports needs to be put in where it is needed.
@@ -28,9 +29,10 @@ import pkg_resources
 # else:
 #     Console.error("kind not supported")
 
+# noinspection PyShadowingNames,HttpUrlsUsage
 class CcCommand(PluginCommand):
 
-    # noinspection PyUnusedLocal
+    # noinspection PyUnusedLocal,PyShadowingNames,HttpUrlsUsage
     @command
     def do_cc(self, args, arguments):
         """
@@ -154,7 +156,7 @@ class CcCommand(PluginCommand):
                 This command adds a job. with the specified arguments. A check 
                 is returned and the user is alerted if arguments are missing
                 arguments are passe in ATTRIBUTE=VALUE fashion.
-                if the name of the workflow is ommitted the default workflow is used.
+                if the name of the workflow is committed the default workflow is used.
                 If no cob name is specified an automated number that is kept in the 
                 config.yaml file will be used and the name will be job-n
             
@@ -224,7 +226,8 @@ class CcCommand(PluginCommand):
 
         # VERBOSE(arguments)
 
-        # banner("rewriting arguments so we can use . notation for file, parameter, and experiment", color="RED")
+        # banner("rewriting arguments so we can use . notation for file,
+        # parameter, and experiment", color="RED")
 
         map_parameters(arguments,
                        "filename",
@@ -237,7 +240,8 @@ class CcCommand(PluginCommand):
 
         # VERBOSE(arguments)
 
-        # banner("rewriting arguments, so we convert to appropriate types for easier handling", color="RED")
+        # banner("rewriting arguments, so we convert to appropriate types for
+        # easier handling", color="RED")
 
         arguments = Parameter.parse(arguments)
 
@@ -245,14 +249,16 @@ class CcCommand(PluginCommand):
 
         # VERBOSE(arguments)
 
-        # banner("showcasing tom simple if parsing based on teh dotdict", color="RED")
+        # banner("showcasing tom simple if parsing based on teh dotdict",
+        # color="RED")
 
         #
-        # It is important to keep the programming here to a minimum and any substantial programming ought
-        # to be conducted in a separate class outside the command parameter manipulation. If between the
-        # elif statement you have more than 10 lines, you may consider putting it in a class that you import
-        # here and have proper methods in that class to handle the functionality. See the Manager class for
-        # an example.
+        # It is important to keep the programming here to a minimum and any
+        # substantial programming ought to be conducted in a separate class
+        # outside the command parameter manipulation. If between the elif
+        # statement you have more than 10 lines, you may consider putting it in
+        # a class that you import here and have proper methods in that class
+        # to handle the functionality. See the Manager class for an example.
         #
 
         def get_workflow_name():
@@ -276,19 +282,20 @@ class CcCommand(PluginCommand):
                 reload = True
             else:
                 reload = False
-            cloudmesh_cc = pkg_resources.resource_filename("cloudmesh.cc", "../..")
+            cloudmesh_cc = pkg_resources.resource_filename("cloudmesh.cc",
+                                                           "../..")
 
             print("Reload:", reload)
             print("Dir:", cloudmesh_cc)
             import uvicorn
-            from cloudmesh.cc.service.service import app
 
-            r = uvicorn.run("cloudmesh.cc.service.service:app",
-                            host=host,
-                            port=port,
-                            workers=1,
-                            reload=reload, reload_dirs=[cloudmesh_cc, cloudmesh_cc + "/service"])
-            print(r)
+            uvicorn.run("cloudmesh.cc.service.service:app",
+                        host=host,
+                        port=port,
+                        workers=1,
+                        reload=reload,
+                        reload_dirs=[cloudmesh_cc, cloudmesh_cc + "/service"])
+
         elif arguments.doc:
             url = "http://{host}:{port}}/docs"
             Shell.browser(url)
@@ -329,8 +336,8 @@ class CcCommand(PluginCommand):
 
             from cloudmesh.cc.manager import WorkflowServiceManager
 
-            manager = WorkflowServiceManager(name, filename=arguments.filename)
-            manager.add_from_filename(name, arguments.filename)
+            manager = WorkflowServiceManager(name)
+            manager.add_from_filename(name)
 
         # cc workflow service list [--name=NAME] [--job=JOB]
         # cc workflow service job add [--name=NAME] --job=JOB ARGS...
@@ -349,12 +356,14 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.add_from_filename(name, arguments.filename)
+            manager.add_from_filename(name)
 
-        # add a job (with specifications as specified by the user) to a workflow. Can be a file that already exists
+        # add a job (with specifications as specified by the user) to a
+        # workflow. Can be a file that already exists
         # DONE
         elif arguments.workflow and arguments.add and arguments.job:
-            # cc workflow add [--name=NAME] [--job=JOB] ARGS... these are the arguments we need for the add job
+            # cc workflow add [--name=NAME] [--job=JOB] ARGS... these are the
+            # arguments we need for the add job
             name = get_workflow_name()
 
             from cloudmesh.cc.manager import WorkflowCLIManager
@@ -452,7 +461,6 @@ class CcCommand(PluginCommand):
             from cloudmesh.cc.manager import WorkflowCLIManager
 
             manager = WorkflowCLIManager(name)
-            manager.status(filename=arguments.filename)
 
         # produce a graph for the workflow
         elif arguments.workflow and arguments.graph:
