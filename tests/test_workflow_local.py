@@ -138,8 +138,6 @@ class TestWorkflowLocal:
         assert "start" in g
         assert "host: local" in g
 
-class rest:
-
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
