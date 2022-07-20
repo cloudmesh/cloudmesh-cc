@@ -12,6 +12,18 @@ Thus you will need to install rust on your machine with
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
+Additionally, do the following command to ensure that there is a working version of the proper graphics on your device:
+
+```bash
+sudo apt-get install graphviz graphviz-dev
+```
+
+Then
+
+```bash
+cloudmesh-installer --ssh get cc
+```
+
 After it is installe, please use 
 
 ```bash
