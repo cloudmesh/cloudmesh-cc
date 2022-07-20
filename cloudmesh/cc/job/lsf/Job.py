@@ -7,7 +7,6 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import writefile
-from cloudmesh.common.variables import Variables
 
 
 class Lsf:
@@ -101,7 +100,7 @@ class Job:
             r = Shell.run(f'{command}')
             state = 0
         except Exception as e:  # noqa: E722
-            print(e.output)
+            print(e)
             state = 1
         job_id = str(r).split()[-1]
         error = self.get_error()
