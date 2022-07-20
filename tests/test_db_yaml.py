@@ -10,7 +10,10 @@ import pytest
 from cloudmesh.cc.db.yamldb.database import Database
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
+from pathlib import Path
+from cloudmesh.common.util import banner
 
+banner(Path(__file__).name, c = "#", color="RED")
 
 @pytest.mark.incremental
 class TestDbYaml:

@@ -9,6 +9,10 @@ import pytest
 from cloudmesh.cc.queue import Queue
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 q = None
 

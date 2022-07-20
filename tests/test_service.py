@@ -12,6 +12,10 @@ from fastapi.testclient import TestClient
 
 import cloudmesh.cc.service
 from cloudmesh.cc.service.service import app
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 client = TestClient(app)
 

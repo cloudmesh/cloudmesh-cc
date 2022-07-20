@@ -23,6 +23,10 @@ from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
 import subprocess
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 
 variables = Variables()

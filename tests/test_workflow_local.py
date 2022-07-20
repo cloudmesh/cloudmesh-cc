@@ -7,6 +7,7 @@ import os.path
 from pprint import pprint
 import shelve
 import pytest
+from pathlib import Path
 
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.cc.queue import Queues
@@ -27,6 +28,8 @@ from cloudmesh.common.StopWatch import StopWatch
     It will draw upon the the test_queues file, because there is a file that
     was created with a bunch of jobs. 
 """
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 variables = Variables()
 

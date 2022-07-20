@@ -15,6 +15,10 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_mac
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 g = Graph()
 g.sep = "_"

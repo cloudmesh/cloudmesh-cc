@@ -1,13 +1,13 @@
 import os
+from pathlib import Path
 
 import time
+
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
-from cloudmesh.common.util import readfile
-from cloudmesh.common.variables import Variables
-from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import banner
-from pathlib import Path
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import readfile
 
 
 class Job:
