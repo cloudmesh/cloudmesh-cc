@@ -37,8 +37,7 @@ docker-compose
 networkx[default]
 pydot
 graphviz
-pexpect
-fastapi
+fastapi[all]
 """.split("\n")
 
 # fastapi[all]

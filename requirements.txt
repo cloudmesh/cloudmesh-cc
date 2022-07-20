@@ -8,13 +8,10 @@ cloudmesh-configuration
 #
 #    pip-compile setup.py
 #
-starlette==0.19.1
-ujson==5.4.0
-fastapi==0.78.0
 yamldb
 docker-compose
 networkx[default]
 pydot
 graphviz
 pexpect
-fastapi
+fastapi[all]

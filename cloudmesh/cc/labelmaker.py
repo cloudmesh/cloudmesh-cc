@@ -13,9 +13,18 @@ class Labelmaker:
             .replace("{now.", "{now_")
         self.variables = re.findall(r'{(.*?)}', self.template)
 
-    # "%m/%d/%Y, %H:%M:%S"
+
 
     def get(self, **data):
+        """
+        If now is followed by any of them its uste as strfmt
+        Example: now.%m/%d/%Y, %H:%M:%S"
+
+        :param data:
+        :type data:
+        :return:
+        :rtype:
+        """
         now = datetime.now()
         variables = Variables()
         replacements = {}
