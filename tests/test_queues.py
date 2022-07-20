@@ -16,6 +16,10 @@ from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.util import path_expand
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 kind = "yamldb"
 # kind = "shelve"

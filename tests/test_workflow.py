@@ -19,6 +19,10 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import banner
 from cloudmesh.common.StopWatch import StopWatch
+from pathlib import Path
+from cloudmesh.common.util import banner
+
+banner(Path(__file__).name, c = "#", color="RED")
 
 """
     This is a python file to test to make sure the workflow class works.
