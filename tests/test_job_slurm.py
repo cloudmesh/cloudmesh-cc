@@ -43,6 +43,8 @@ job = None
 job_id = None
 
 try:
+    if not Vpn.enabled():
+        raise Exception('vpn not enabled')
     check_output(f"ssh {username}@{host} hostname", stderr=STDOUT, timeout=6)
     login_success = True
 except:  # noqa: E722
@@ -77,8 +79,7 @@ class TestJobsSlurm:
         assert job.host == host
         assert job.username == username
 
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_sync(self):
         HEADING()
         global job
@@ -90,8 +91,7 @@ class TestJobsSlurm:
 
         # potentially wrong
 
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run_fast(self):
         HEADING()
 
@@ -125,8 +125,7 @@ class TestJobsSlurm:
         Benchmark.Stop()
 
     # will fail if previous test fails
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_exists_run(self):
         HEADING()
         global job
@@ -137,8 +136,7 @@ class TestJobsSlurm:
 
         assert correct
 
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run_wait(self):
         HEADING()
         global run_job
@@ -164,8 +162,7 @@ class TestJobsSlurm:
 
         # will fail if previous test fails
 
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_exists_wait(self):
         HEADING()
         global job
@@ -176,8 +173,7 @@ class TestJobsSlurm:
 
         assert correct
 
-    @pytest.mark.skipif(not Vpn.enabled(), reason=f"not connected to VPN")
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
+    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_kill(self):
         """
         Creates a job from run-killme.sh, which includes wait of 1 hour
