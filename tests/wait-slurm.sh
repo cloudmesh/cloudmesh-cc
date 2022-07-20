@@ -1,7 +1,6 @@
 #!/bin/sh
 #SBATCH --job-name=wait-slurm.sh
 #SBATCH --output=wait-slurm.log
-#SBATCH --error=wait-slurm.error
 #SBATCH --partition=dev
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4GB
