@@ -96,7 +96,7 @@ class TestJobWsl:
         job.sync()
 
         banner("run job")
-        s, l, e = job.run()
+        s, l = job.run()
         print("State:", s)
 
         banner("check")
@@ -144,7 +144,7 @@ class TestJobWsl:
         jobWait.clear()
         jobWait.sync()
         # problem
-        s, l, e = jobWait.run()
+        s, l = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
