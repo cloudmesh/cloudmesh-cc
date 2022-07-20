@@ -93,16 +93,12 @@ class Job:
     def run(self):
         self.mkdir_experimentdir()
         # make sure executable is set
-        print("A")
         command = f'chmod a+x {self.name}.sh'
         os.system(command)
-        print("B")
 
         home = Path.as_posix(Path.home())
         cwd = Path.as_posix(Path.cwd())
         userdir_name = os.path.split(home)[1]
-
-        print("C")
 
         experimentdir = f'/c/Users/{userdir_name}/experiment/{self.name}'
         wsl_experimentdir = f"/mnt/c/Users/{userdir_name}/experiment/{self.name}"
@@ -111,18 +107,15 @@ class Job:
         #           f' ". ~/.profile && cd {wsl_experimentdir}' \
         #           f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
 
-        print("D")
         Shell.mkdir(experimentdir)
 
-        print("E")
+        command = f'wsl nohup sh -c' \
+                  f' ". ~/.profile && cd {wsl_experimentdir}' \
+                  f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && ./{self.name}.sh > {self.name}.log 2> {self.name}.error &"'
-
-        command = f'wsl nohup sh -c' \
-                  f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2> {self.name}.error &"'
+                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2>&1 &"'
 
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
@@ -132,10 +125,9 @@ class Job:
         state = os.system(command)
 
         log = self.get_log()
-        log = 1
         # error = self.get_error()
-        error = 0
-        return state, log, error
+        # error = 0
+        return state, log
 
     def clear(self):
         content = None
@@ -189,12 +181,12 @@ class Job:
                 return 0
         return 0
 
-    def get_error(self):
-        Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err", f"{self.name}.err")
-
-        content = readfile(f"{self.name}.err")
-        print(content)
-        return content
+    # def get_error(self):
+    #     Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err", f"{self.name}.err")
+    #
+    #     content = readfile(f"{self.name}.err")
+    #     print(content)
+    #     return content
 
     def watch(self, period=2):
         """waits and wathes every seconds in period, till the job has completed"""
@@ -235,24 +227,18 @@ class Job:
         # find logfile
         #
         logfile = f'~/experiment/{self.name}/{self.name}.log'
-        print(f'here is logfile {logfile}')
         log = None
         while log is None:
             try:
                 log = readfile(logfile)
-                print(f'here is my log {log}')
                 lines = log.splitlines()
-                print(f'here is my lines {lines}')
                 found = False
-                print(f' here is my found {found}')
                 for line in lines:
                     if line.startswith("# cloudmesh") and "pid=" in line:
                         found = True
-                        print(f'i found it {found}')
                         break
                 if not found:
                     log = None
-                    print('not found...')
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None

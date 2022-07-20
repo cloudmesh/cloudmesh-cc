@@ -92,6 +92,18 @@ class Graph:
         #    name:
         #    colors:
 
+    def __getitem__(self, name):
+        #return self.nodes[name]  this is the super basic implementation
+        n_under = name.split('_')
+        n_comma = name.split(',')
+        n_under_length = len(n_under)
+        n_comma_length = len(n_comma)
+        if n_comma_length == 2 or n_under_length == 2:
+            return self.edges[name]
+        else:
+            return self.nodes[name]
+
+
     def set_status_colors(self):
         # self.add_color("status",
         #                ready="white",
@@ -115,7 +127,7 @@ class Graph:
     def __str__(self):
         data = {
             "nodes": dict(self.nodes),
-            "edges": dict(self.edges),
+            "dependencies": dict(self.edges),
         }
         if self.colors:
             data["colors"] = dict(self.colors)
@@ -255,7 +267,7 @@ class Graph:
                     'dependencies': dict(self.edges),
                 }
         }
-
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, 'w') as outfile:
             yaml.dump(data, outfile, default_flow_style=False)
 
@@ -505,10 +517,9 @@ class Workflow:
 
     def save(self, filename):
         if os_is_windows():
-            name = os.path.basename(filename).replace(".yaml", "")
-            dir = path_expand(f"~/.cloudmesh/workflow/{name}")
-            location = f"{dir}/{name}.yaml"
-            self.graph.save_to_file(location)
+            name = os.path.basename(filename).replace(r".yaml", "")
+            dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+            self.graph.save_to_file(dir)
         self.graph.save_to_file(filename)
 
     def add_job(self,

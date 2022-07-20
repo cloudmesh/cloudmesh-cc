@@ -100,12 +100,13 @@ class TestJobLocalhost:
         job.sync()
 
         banner("run job")
-        s, l, e = job.run()
+        s, l = job.run()
         print("State:", s)
 
         banner("check")
 
         finished = False
+        log = None
         while not finished:
             log = job.get_log()
             if log is not None:
@@ -147,8 +148,7 @@ class TestJobLocalhost:
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
         jobWait.sync()
-        # problem
-        s, l, e = jobWait.run()
+        s, l = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()

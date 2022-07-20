@@ -66,7 +66,7 @@ class TestJobsSsh:
         pyjob.sync()
         assert pyjob.exists(f"{pyname}.py")
 
-        s, l, e = pyjob.run()
+        s, l = pyjob.run()
         # give it some time to complete
         time.sleep(5)
         print(l)
@@ -131,7 +131,7 @@ class TestJobsSsh:
         job = Job(name=f"run", host=host, username=username)
         job.sync()
 
-        s, l, e = job.run()
+        s, l = job.run()
         # give it some time to complete
         time.sleep(5)
         print("State:", s)
@@ -173,8 +173,7 @@ class TestJobsSsh:
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
         jobWait.sync()
-        # problem
-        s, l, e = jobWait.run()
+        s, l = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()

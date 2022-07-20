@@ -38,7 +38,7 @@ class TestGraph:
         assert len(g.nodes) == 0
         assert len(g.edges) == 0
 
-    def test_nodes(self):
+    def test_add_nodes(self):
         HEADING()
         global g
         Benchmark.Start()
@@ -59,6 +59,34 @@ class TestGraph:
         Benchmark.Stop()
         assert len(g.nodes) == 2
         assert len(g.edges) == 1
+
+    def test_get_node(self):
+        HEADING()
+        global g
+        Benchmark.Start()
+        node1 = g.__getitem__('a')
+        node2 = g.__getitem__('b')
+        n1 = g['a']
+        n2 = g['b']
+        another_node1 = g.nodes['a']
+        another_node2 = g.nodes['b']
+        Benchmark.Stop()
+        print('First Node: ', n1)
+        print('Second Node: ', n2)
+        assert node1 == n1 == another_node1
+        assert node2 == n2 == another_node2
+
+    def test_get_edge(self):
+        HEADING()
+        global g
+        Benchmark.Start()
+        edge = g['a_b']
+        e = g.edges['a_b']
+        another_edge = g.edges['a_b']
+        Benchmark.Stop()
+        print('First Edge: ', e)
+        assert edge == e == another_edge
+
 
     def test_str(self):
         HEADING()

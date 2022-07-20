@@ -22,6 +22,7 @@ from cloudmesh.common.util import path_expand
 import shutil
 from cloudmesh.common.util import banner
 from cloudmesh.common.StopWatch import StopWatch
+# from utilities import set_host_user
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -34,6 +35,8 @@ banner(Path(__file__).name, c = "#", color="RED")
 variables = Variables()
 
 name = "run"
+
+# host, username = set_host_user()
 
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
@@ -56,7 +59,11 @@ def create_workflow():
     if os_is_windows():
         localuser = os.environ["USERNAME"]
     else:
-        localuser = os.environ['USER']
+        try:
+            localuser = os.environ['USER']
+        except:
+            # docker image does not have user variable. so just do basename of home
+            localuser = os.system('basename $HOME')
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
@@ -125,11 +132,11 @@ class TestWorkflowLocal:
         w = Workflow()
         w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
         Benchmark.Stop()
-        print(w.graph)
         g = str(w.graph)
+        print(g)
         assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
-        assert "a-b:" in g
-        assert "host: localhost" in g
+        assert "start" in g
+        assert "host: local" in g
 
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
