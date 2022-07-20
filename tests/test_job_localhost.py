@@ -106,6 +106,7 @@ class TestJobLocalhost:
         banner("check")
 
         finished = False
+        log = None
         while not finished:
             log = job.get_log()
             if log is not None:

@@ -21,9 +21,6 @@ class TestLabelmaker:
 
     def test_label(self):
         HEADING()
-        global job
-        global username
-        global host
 
         Benchmark.Start()
 

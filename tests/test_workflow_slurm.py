@@ -61,6 +61,7 @@ if not os_is_windows():
 run_job = f"run-slurm"
 wait_job = f"wait-slurm"
 
+w = None
 
 #@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found")
 @pytest.mark.incremental
