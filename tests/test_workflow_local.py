@@ -56,7 +56,11 @@ def create_workflow():
     if os_is_windows():
         localuser = os.environ["USERNAME"]
     else:
-        localuser = os.environ['USER']
+        try:
+            localuser = os.environ['USER']
+        except:
+            # docker image does not have user variable. so just do basename of home
+            localuser = os.system('basename $HOME')
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},

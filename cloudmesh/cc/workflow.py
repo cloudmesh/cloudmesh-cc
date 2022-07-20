@@ -255,7 +255,7 @@ class Graph:
                     'dependencies': dict(self.edges),
                 }
         }
-
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, 'w') as outfile:
             yaml.dump(data, outfile, default_flow_style=False)
 
@@ -505,10 +505,9 @@ class Workflow:
 
     def save(self, filename):
         if os_is_windows():
-            name = os.path.basename(filename).replace(".yaml", "")
-            dir = path_expand(f"~/.cloudmesh/workflow/{name}")
-            location = f"{dir}/{name}.yaml"
-            self.graph.save_to_file(location)
+            name = os.path.basename(filename).replace(r".yaml", "")
+            dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+            self.graph.save_to_file(dir)
         self.graph.save_to_file(filename)
 
     def add_job(self,
