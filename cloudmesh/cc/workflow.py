@@ -276,8 +276,8 @@ class Graph:
                 graph.add_node(name)
                 label = self.nodes[name]["label"]
                 replacement = Labelmaker(label)
-                replacement.get(**self.nodes[name])
-                dot.node(name, color='white', label=replacement)
+                msg = replacement.get(**self.nodes[name])
+                dot.node(name, color='white', label=msg)
                 color_map.append('white')
             else:
                 value = e[colors]
@@ -288,9 +288,9 @@ class Graph:
                     shape = "rounded"
                 label = self.nodes[name]["label"]
                 replacement = Labelmaker(label)
-                replacement.get(**self.nodes[name])
+                msg = replacement.get(**self.nodes[name])
                 dot.node(name,
-                         label=label,
+                         label=msg,
                          # color=self.colors[colors][value],
                          style=f'filled,rounded',
                          shape=shape,
