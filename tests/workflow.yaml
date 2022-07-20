@@ -1,20 +1,172 @@
 workflow:
   nodes:
-    a:
-      name: a
-      user: gregor
-      host: localhost
+    start:
+      label: start
       kind: local
+      user: green
+      host: local
       status: ready
-      label: job-1-label
-      script: b.sh
-    b:
-      name: b
-      user: gregor
-      host: localhost
+      progress: 0
+      created: '2022-07-20 16:59:14.015704'
+      modified: '2022-07-20 16:59:14.015704'
+      script: null
+      instance: null
+      name: start
+      parent: []
+    end:
+      label: end
       kind: local
+      user: green
+      host: local
       status: ready
-      label: job-2-label
-      script: b.sh
+      progress: 0
+      created: '2022-07-20 16:59:14.016250'
+      modified: '2022-07-20 16:59:14.016250'
+      script: null
+      instance: null
+      name: end
+      parent:
+      - job-local-2
+    job-local-0:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: green
+      host: local
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.027738'
+      modified: '2022-07-20 16:59:14.027738'
+      script: null
+      instance: null
+      name: job-local-0
+      parent:
+      - start
+    job-local-1:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: green
+      host: local
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.028885'
+      modified: '2022-07-20 16:59:14.028885'
+      script: null
+      instance: null
+      name: job-local-1
+      parent:
+      - job-local-0
+    job-local-2:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: green
+      host: local
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.030385'
+      modified: '2022-07-20 16:59:14.030385'
+      script: null
+      instance: null
+      name: job-local-2
+      parent:
+      - job-local-1
+    job-rivanna.hpc.virginia.edu-3:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.032327'
+      modified: '2022-07-20 16:59:14.032327'
+      script: null
+      instance: null
+      name: job-rivanna.hpc.virginia.edu-3
+    job-rivanna.hpc.virginia.edu-4:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.035211'
+      modified: '2022-07-20 16:59:14.035211'
+      script: null
+      instance: null
+      name: job-rivanna.hpc.virginia.edu-4
+    job-rivanna.hpc.virginia.edu-5:
+      label: 'debug={cm.debug}
+
+        home={os.HOME}
+
+        {name}
+
+        {now.%m/%d/%Y, %H:%M:%S}
+
+        progress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      created: '2022-07-20 16:59:14.038497'
+      modified: '2022-07-20 16:59:14.038497'
+      script: null
+      instance: null
+      name: job-rivanna.hpc.virginia.edu-5
   dependencies:
-    - a,b
+    job-local-0-job-local-1:
+      source: job-local-0
+      destination: job-local-1
+      name: job-local-0-job-local-1
+    job-local-1-job-local-2:
+      source: job-local-1
+      destination: job-local-2
+      name: job-local-1-job-local-2
+    job-local-2-end:
+      source: job-local-2
+      destination: end
+      name: job-local-2-end
+    start-job-local-0:
+      source: start
+      destination: job-local-0
+      name: start-job-local-0

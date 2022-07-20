@@ -22,6 +22,7 @@ from cloudmesh.common.util import path_expand
 import shutil
 from cloudmesh.common.util import banner
 from cloudmesh.common.StopWatch import StopWatch
+# from utilities import set_host_user
 
 """
     This is a python file to test to make sure the workflow class works.
@@ -34,6 +35,8 @@ banner(Path(__file__).name, c = "#", color="RED")
 variables = Variables()
 
 name = "run"
+
+# host, username = set_host_user()
 
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"

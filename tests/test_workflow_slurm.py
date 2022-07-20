@@ -170,3 +170,11 @@ class TestWorkflowSlurm:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+
+    # def test_run(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     w.run_parallel()
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
