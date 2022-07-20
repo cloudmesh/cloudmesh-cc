@@ -286,7 +286,10 @@ class Graph:
                     shape = "diamond"
                 else:
                     shape = "rounded"
-                label = self.nodes[name]["label"]
+                try:
+                    label = self.nodes[name]["label"]
+                except:
+                    label = name
                 replacement = Labelmaker(label)
                 msg = replacement.get(**self.nodes[name])
                 dot.node(name,
