@@ -215,7 +215,11 @@ def get_workflow(name: str, job: str = None):
 @app.get("/run")
 def run_workflow(name: str, type:str="topo"):
     w = load_workflow(name)
-
+    # TODO: temp
+    print("pwd")
+    Shell.run("pwd")
+    os.system("ls")
+    Shell.run("echo kms")
     try:
         w.run_topo()
     except Exception as e:
@@ -263,6 +267,12 @@ async def add_job(name: str, job: Jobpy):
                   kind=job.kind,status=job.status,progress=job.progress,script=job.script)
     except Exception as e:
         print(e)
+
+    #TODO: this is a temp solution, change later
+    directory = path_expand(f"~/.cloudmesh/workflow/workflow")
+    location = f"{directory}/run.sh"
+    tests = path_expand(f"~/cm/cloudmesh-cc/tests/run.sh")
+    Shell.copy(tests, location)
 
     return {"jobs":w.jobs}
 
