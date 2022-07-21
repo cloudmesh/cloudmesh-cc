@@ -16,5 +16,13 @@ workflow:
        status: ready
        label: b-label
        script: test-b.sh
+    c:
+      name: c
+      user: gregor
+      host: localhost
+      kind: local
+      status: ready
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      script: test-c.sh
   dependencies:
-    - a,b
+    - a,b,c

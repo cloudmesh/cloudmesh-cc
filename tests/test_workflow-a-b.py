@@ -80,6 +80,27 @@ class TestWorkflowAB:
         assert "[]" in table
         assert "test-b.sh" in table
 
+    def test_table_2(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        table = str(w.table2(with_label=True))
+        print(table)
+        Benchmark.Stop()
+        assert "['a']" in table
+        assert "test-a.sh" in table
+        assert "[]" in table
+        assert "test-b.sh" in table
+
+    def test_show(self):
+        HEADING()
+        global w
+
+        w.graph.save(filename="workflow-a-b.svg", colors="status", engine="dot")
+        #Shell.browser("/tmp/workflow-a-b.svg")
+        os.system('open workflow-a-b.svg')
+        #os.path.exists("/tmp/test-dot.svg")
+
     def test_order(self):
         HEADING()
         global w

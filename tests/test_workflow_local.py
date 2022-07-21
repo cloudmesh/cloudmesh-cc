@@ -94,7 +94,7 @@ def create_workflow():
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}"
+        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
 
         w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
         n = n + 1
@@ -207,6 +207,20 @@ class TestWorkflowLocal:
             name = order[i]
             assert name not in w[parent]['parent']
 
+    # def test_run_topo(self):
+    #     HEADING()
+    #     w = create_workflow()
+    #     Benchmark.Start()
+    #     w.run_topo(show=True, filename="topo.svg")
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
+    #
+    #     for name, node in w.jobs.items():
+    #         assert node["progress"] == 100
+    #         assert node["parent"] == []
+    #         assert node["status"] == "done"
+
     def test_run_parallel(self):
         HEADING()
         w = create_workflow()
@@ -215,20 +229,6 @@ class TestWorkflowLocal:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
-        for name, node in w.jobs.items():
-            assert node["progress"] == 100
-            assert node["parent"] == []
-            assert node["status"] == "done"
-
-    def test_run_topo(self):
-        HEADING()
-        w = create_workflow()
-        Benchmark.Start()
-        w.run_topo(show=True, filename="topo.svg")
-        Benchmark.Stop()
-        banner("Workflow")
-        print(w.graph)
-
         for name, node in w.jobs.items():
             assert node["progress"] == 100
             assert node["parent"] == []

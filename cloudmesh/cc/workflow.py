@@ -600,12 +600,13 @@ class Workflow:
         failed = []  # list of failed nodes
 
         def info():
-            print("Undefined:  ", undefined)
-            print("Completed:  ", completed)
-            print("Running:    ", running)
-            print("Outstanding:", outstanding)
-            print("Failed:     ", failed)
-            print("Ready:      ", self.graph.todo())
+            print("Undefined:   ", undefined)
+            print("Completed:   ", completed)
+            print("Running:     ", running)
+            print("Outstanding: ", outstanding)
+            print("Failed:      ", failed)
+            print("Ready:       ", self.graph.todo())
+            print("Dependencies:", len(self.graph.edges))
 
         def update(name):
             banner(f"update {name}")
@@ -699,7 +700,8 @@ class Workflow:
                 print("TODO", name)
                 start(name)
 
-            print(self.table)
+            # print(self.table)
+            print(self.table2(with_label=True))
 
             if show:
                 self.graph.save(filename=filename, colors="status",
@@ -715,7 +717,15 @@ class Workflow:
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
 
-            # input("ENTER")
+            # debugging
+            info()
+
+            input()
+
+        # save graph occurs again to make sure things are being saved
+        self.graph.save(filename=filename, colors="status",
+                        layout=nx.circular_layout, engine="dot")
+
 
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):
         # bug the tno file needs to be better handled
@@ -822,6 +832,41 @@ class Workflow:
     def table(self):
         # gvl rewritten
         with_label = False
+
+        data = dict(self.graph.nodes)
+
+        for name in self.graph.nodes:
+            label = self.graph.nodes[name]["label"]
+            replacement = Labelmaker(label)
+            msg = replacement.get(**self.graph.nodes[name])
+            data[name]["label"] = msg
+
+        if with_label:
+            order = ['host',
+                     'status',
+                     'label',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+        else:
+            order = ['host',
+                     'status',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+
+        return Printer.write(self.graph.nodes,
+                             order=order)
+
+    def table2(self, with_label=False):
+        # gvl rewritten
+        # with_label = False
 
         data = dict(self.graph.nodes)
 
