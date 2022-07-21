@@ -630,7 +630,9 @@ class Workflow:
             elif status == "undefined":
                 if name in running:
                     running.remove(name)
-                if name not in undefined:
+                if name not in completed:
+                    completed.append(name)
+                if name not in undefined and name not in outstanding:
                     undefined.append(name)
 
         def start(name):
