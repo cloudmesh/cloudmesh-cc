@@ -584,8 +584,13 @@ class Workflow:
         # once progress is fetched set it for the named job
         raise NotImplementedError
 
-    def run_parallel(self, order=None, parallel=False, dryrun=False, show=True,
-                     period=0.5):
+    def run_parallel(self,
+                     order=None,
+                     parallel=False,
+                     dryrun=False,
+                     show=True,
+                     period=0.5,
+                     filename=None):
         finished = False
 
         undefined = []
@@ -673,6 +678,11 @@ class Workflow:
                 # banner(f"Job: {name}")
                 Console.msg(f"running {name}")
 
+        if os_is_windows():
+            filename = filename or "workflow.svg"
+        else:
+            filename = filename or "/tmp/workflow.svg"
+
         while not finished:
 
             info()
@@ -689,10 +699,6 @@ class Workflow:
             print(self.table)
 
             if show:
-                if os_is_windows():
-                    filename = "a.svg"
-                else:
-                    filename = "/tmp/a.svg"
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
                 if os_is_mac():
@@ -707,10 +713,17 @@ class Workflow:
 
             # input("ENTER")
 
-    def run_topo(self, order=None, parallel=False, dryrun=False, show=True):
+    def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):
         # bug the tno file needs to be better handled
         if order is None:
             order = self.sequential_order
+
+        if os_is_windows():
+            filename = filename or "workflow.svg"
+        else:
+            filename = filename or "/tmp/workflow.svg"
+
+        first = True
 
         for name in order():
             job = self.job(name=name)
@@ -766,14 +779,11 @@ class Workflow:
                 Console.msg(f"running {name}")
 
             if show:
-                if os_is_windows():
-                    filename = "a.svg"
-                else:
-                    filename = "/tmp/a.svg"
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
-                if os_is_mac():
+                if first and os_is_mac():
                     os.system(f'open {filename}')
+                    first = False
                 elif os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
@@ -806,6 +816,15 @@ class Workflow:
     @property
     def table(self):
         # gvl rewritten
+
+        data = dict(self.graph.nodes)
+
+        for name in self.graph.nodes:
+            label = self.graph.nodes[name]["label"]
+            replacement = Labelmaker(label)
+            msg = replacement.get(**self.graph.nodes[name])
+            data[name]["label"] = msg
+
         return Printer.write(self.graph.nodes,
                              order=['host',
                                     'status',

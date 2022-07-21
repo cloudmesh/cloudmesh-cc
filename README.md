@@ -3,7 +3,21 @@ Documentation
 
 ## Install
 
-OSX
+### Linux
+
+Install graphviz as follows
+
+```bash
+sudo apt-get install graphviz graphviz-dev
+```
+
+### OSX
+
+We recommend to install gaplin as svg viewer
+
+* <http://gapplin.wolfrosch.com/>
+
+You need to install graphviz
 
 We use fastapi as teh webserver with uvicorn.  To install it, the newest versions of FastAPI are partially implemented in rust.
 Thus you will need to install rust on your machine with 
@@ -12,11 +26,6 @@ Thus you will need to install rust on your machine with
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-Additionally, do the following command to ensure that there is a working version of the proper graphics on your device:
-
-```bash
-sudo apt-get install graphviz graphviz-dev
-```
 
 Then
 
