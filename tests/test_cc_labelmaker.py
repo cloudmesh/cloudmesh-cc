@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_labelmaker.py
-# pytest -v  tests/test_labelmaker.py
-# pytest -v --capture=no  tests/test_labelmaker.py::test_labelmaker::<METHODNAME>
+# pytest -v --capture=no tests/test_cc_labelmaker.py
+# pytest -v  tests/test_cc_labelmaker.py
+# pytest -v --capture=no  tests/test_cc_labelmaker.py::test_cc_labelmaker::<METHODNAME>
 ###############################################################
 
 from pathlib import Path

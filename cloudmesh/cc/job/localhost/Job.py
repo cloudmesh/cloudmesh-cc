@@ -150,6 +150,7 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
+        Shell.run(f"chmod ug+rx ./{self.name}.sh")
         command = f"cp {self.name}.sh {self.directory}/."
         print(command)
         os.system("sync")
