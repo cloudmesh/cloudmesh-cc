@@ -20,6 +20,7 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
+from cloudmesh.common.util import readfile
 
 banner(Path(__file__).name, c = "#", color="RED")
 
@@ -88,6 +89,17 @@ class TestWorkflowAB:
         print(order)
         assert len(order) == len(w.jobs)
 
+    def test_save(self):
+        HEADING()
+        global w
+        dest = "./dest/workflow-a-b.yaml"
+        Benchmark.Start()
+        w.save(filename=dest)
+        Benchmark.Stop()
+        content = readfile(dest)
+        print (content)
+
+class a:
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
