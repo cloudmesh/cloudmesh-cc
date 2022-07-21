@@ -195,8 +195,8 @@ class Graph:
         result = []
         for name in self.nodes:
             try:
-                if self.nodes[name]["progress"] != 100 and len(
-                        self.nodes[name]["parent"]) == 0:
+                if self.nodes[name]["progress"] != 100 and \
+                        len(self.nodes[name]["parent"]) == 0:
                     result.append(name)
             except:  # noqa: E722
                 pass
@@ -633,7 +633,13 @@ class Workflow:
                 if name not in completed:
                     completed.append(name)
                 if name not in undefined and name not in outstanding:
+                #if name not in undefined:
                     undefined.append(name)
+            elif status == 'running':
+                ready.remove(name)
+
+
+
 
         def start(name):
             banner(name)
@@ -734,8 +740,8 @@ class Workflow:
             finished = len(completed) == len(self.jobs)
 
             # debugging
-            #info()
-            #input()
+            info()
+            input()
 
         # save graph occurs again to make sure things are being saved
         self.graph.save(filename=filename, colors="status",
