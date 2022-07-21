@@ -707,7 +707,7 @@ class Workflow:
                 Console.msg(f"running {name}")
 
         if os_is_windows():
-            Shell.makdir("./tmp")
+            Shell.mkdir("./tmp")
             filename = filename or "tmp/workflow.svg"
         else:
             filename = filename or "/tmp/workflow.svg"
@@ -761,7 +761,7 @@ class Workflow:
             order = self.sequential_order
 
         if os_is_windows():
-            Shell.makdir("./tmp")
+            Shell.mkdir("./tmp")
             filename = filename or "tmp/workflow.svg"
         else:
             filename = filename or "/tmp/workflow.svg"
