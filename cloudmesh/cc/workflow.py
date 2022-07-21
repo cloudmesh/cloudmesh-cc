@@ -272,7 +272,7 @@ class Graph:
         # if full, then put all the data that exists into the outfile
         if flag == 'full':
             data = {
-                'workflow':
+                'workflow-full':
                     {
                         'nodes': dict(self.nodes),
                         'dependencies': dict(self.edges),
@@ -283,9 +283,20 @@ class Graph:
         # iterate through **kwargs to get the data that is asked for in the outfile
         elif flag == 'minimal':
             if kwargs:
-                data = {}
-                for key in kwargs:
-                    data[key] = self.nodes[key]
+                data = {
+                    'workflow-minimal':
+                        {
+                            'nodes': {
+                            },
+                            'dependencies': dict(self.edges),
+                        }
+                }
+                for node in self.nodes:
+                    for key in kwargs:
+                        data['workflow-minimal']['nodes'][node] = {}
+                        print(key)
+                        print(self.nodes[node][key])
+                        data['workflow-minimal']['nodes'][node][key] = self.nodes[node][key]
             else:
                 raise ValueError("Please enter which node values you would like")
 
