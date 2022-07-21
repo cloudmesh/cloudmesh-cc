@@ -709,7 +709,7 @@ class Workflow:
                 if first and os_is_mac():
                     os.system(f'open {filename}')
                     first = False
-                elif os_is_linux():
+                elif first and os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
                     cwd = os.getcwd()
@@ -719,7 +719,6 @@ class Workflow:
 
             # debugging
             info()
-
             input()
 
         # save graph occurs again to make sure things are being saved
@@ -799,7 +798,7 @@ class Workflow:
                 if first and os_is_mac():
                     os.system(f'open {filename}')
                     first = False
-                elif os_is_linux():
+                elif first and os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
                     cwd = os.getcwd()
