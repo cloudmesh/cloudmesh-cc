@@ -79,6 +79,11 @@ class Job:
     def status(self):
         return self.get_status()
 
+    def clean(self):
+        command = f'ssh {self.username}@{self.host} "rm -rf {self.directory}"'
+        print(command)
+        os.system(command)
+
     def mkdir_experimentdir(self):
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
@@ -99,7 +104,7 @@ class Job:
             r = Shell.run(f'{command}')
             state = 0
         except Exception as e:  # noqa: E722
-            print(e)
+            print(e.output)
             state = 1
         for line in str(r).splitlines():
             if line.startswith('Submitted'):
@@ -117,30 +122,38 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.name}.log")
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            status = lines[-1].split("status=")[1]
-            status = status.split()[0]
-            return status
+        status = "undefined"
+        try:
+            log = self.get_log(refresh=refresh)
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                status = lines[-1].split("status=")[1]
+                status = status.split(" ")[0]
+                print(status)
+        except:  # noqa: E722
+            pass
+
+        return status
 
     def get_progress(self, refresh=False):
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.name}.log")
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            try:
-                progress = lines[-1].split("progress=")[1]
-                progress = progress.split()[0]
-                return int(progress)
-            except:  # noqa: E722
-                return 0
-        return 0
+        progress = 0
+        try:
+            log = self.get_log(refresh=refresh).splitlines()
+            for line in log:
+                line = line.rstrip('\x00')
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            for i in range(len(lines)-1, -1, -1):
+                line = lines[i]
+                if "progress=" in line:
+                    progress = line.split("progress=")[1]
+                    progress = progress.split(' ',1)[0]
+                    progress = int(progress)
+                    return int(progress)
+        except Exception as e:  # noqa: E722
+            print(e)
+            pass
+
+        return int(progress)
 
     # def get_error(self):
     #     command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
@@ -149,14 +162,20 @@ class Job:
     #     content = readfile(f"{self.name}.error")
     #     return content
 
-    def get_log(self):
-        command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
-        print(command)
-        os.system(command)
-        content = readfile(f"{self.name}.log")
+    def get_log(self, refresh=True):
+        content = None
+        try:
+            if refresh:
+                command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+                print(command)
+                os.system(command)
+            content = readfile(f"{self.name}.log")
+        except:  # noqa: E722
+            pass
         return content
 
     def sync(self):
+        self.clean()
         self.mkdir_experimentdir()
         Shell.run(f"chmod ug+rx ./{self.name}.sh")
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
