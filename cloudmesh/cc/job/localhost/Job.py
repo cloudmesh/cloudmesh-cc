@@ -112,7 +112,7 @@ class Job:
             lines = Shell.find_lines_with(log, "# cloudmesh")
             if len(lines) > 0:
                 status = lines[-1].split("status=")[1]
-                status = status.split()[0]
+                status = status.split(" ")[0]
         except:  # noqa: E722
             pass
 
@@ -122,19 +122,23 @@ class Job:
         progress = 0
         try:
             log = self.get_log(refresh=refresh)
-            lines = Shell.find_lines_with(log, "# cloudmesh")
-            if len(lines) > 0:
-                for line in range(len(lines), 0, -1):
-                    try:
-                        if 'progress=' in line:
-                            progress = line.split("progress=", 1)[1]
-                            progress = progress.split()[0]
-                            progress = int(progress)
-                            return progress
-                    except:
-                        pass
-        except:  # noqa: E722
-            pass
+            print ("AX", log)
+            lines = Shell.find_lines_with(log, "# cloudmesh").reverse()
+            print ("BX", lines)
+            for line in lines:
+                print ("XXX", line)
+                if "progress=" in line:
+                    progress = line.split("progress=")
+                    print ("UUUUU", progress)
+                    progress = progress.split(" ")[0]
+                    progress = int(progress)
+                    print ("PPPP", progress, type(progress))
+                    return int(progress)
+        except Exception as e:  # noqa: E722
+            print("progress B", progress, type(progress))
+            print (e)
+            raise ValueError
+
         return int(progress)
 
     def get_log(self, refresh=True):

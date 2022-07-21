@@ -608,7 +608,8 @@ class Workflow:
             print("Running:     ", running)
             print("Outstanding: ", outstanding)
             print("Failed:      ", failed)
-            print("Ready:       ", self.graph.todo())
+            print()
+            print("Todo:       ", self.graph.todo())
             print("Dependencies:", len(self.graph.edges))
 
         def update(name):
@@ -620,6 +621,8 @@ class Workflow:
             self.jobs[name]['progress'] = progress
 
             print("Job pdate", name, status, progress)
+
+            input()
 
             if progress == 100:
                 self.graph.done(name)
@@ -636,7 +639,6 @@ class Workflow:
                 if name not in completed:
                     completed.append(name)
                 if name not in undefined and name not in outstanding:
-                #if name not in undefined:
                     undefined.append(name)
             # elif status == 'running':
             #    ready.remove(name)
