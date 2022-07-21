@@ -112,7 +112,7 @@ class Graph:
         #                running="blue")
         self.add_color("status",
                        ready="white",
-                       undefined="white",
+                       undefined="#DBFF33",
                        done="#CCFFCC",
                        failed="#FFCCCC",
                        running='#CCE5FF')
@@ -618,7 +618,9 @@ class Workflow:
             progress = self.jobs[name]["instance"].get_progress()
             self.jobs[name]['status'] = status
             self.jobs[name]['progress'] = progress
+
             print("Job pdate", name, status, progress)
+
             if progress == 100:
                 self.graph.done(name)
                 if name in running:
@@ -627,6 +629,7 @@ class Workflow:
                     completed.append(name)
                 if name in undefined:
                     undefined.remove(name)
+
             elif status == "undefined":
                 if name in running:
                     running.remove(name)
@@ -635,8 +638,8 @@ class Workflow:
                 if name not in undefined and name not in outstanding:
                 #if name not in undefined:
                     undefined.append(name)
-            elif status == 'running':
-                ready.remove(name)
+            # elif status == 'running':
+            #    ready.remove(name)
 
 
 
@@ -726,8 +729,9 @@ class Workflow:
             print(self.table2(with_label=True))
 
             if show:
-                self.graph.save(filename=filename, colors="status",
-                                layout=nx.circular_layout, engine="dot")
+                self.graph.save(filename=filename,
+                                colors="status",
+                                engine="dot")
                 if first and os_is_mac():
                     os.system(f'open {filename}')
                     first = False
@@ -740,12 +744,13 @@ class Workflow:
             finished = len(completed) == len(self.jobs)
 
             # debugging
-            info()
-            input()
+            #info()
+            #input()
 
         # save graph occurs again to make sure things are being saved
-        self.graph.save(filename=filename, colors="status",
-                        layout=nx.circular_layout, engine="dot")
+        self.graph.save(filename=filename,
+                        colors="status",
+                        engine="dot")
 
 
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):
