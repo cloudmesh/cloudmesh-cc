@@ -193,11 +193,20 @@ class TestWorkflowSsh:
         print(order)
         assert len(order) == len(w.jobs)
 
+    # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
+    # def test_run_tooo(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     w.run_topo()
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
+
     @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
-    def test_run(self):
+    def test_run_parallel(self):
         HEADING()
         Benchmark.Start()
-        w.run_topo()
+        w.run_prallel()
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
