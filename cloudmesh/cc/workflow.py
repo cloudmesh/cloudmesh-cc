@@ -384,6 +384,8 @@ class Workflow:
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
         # gvl reimplemented but did not test
+        # The workflow is run in experiment/workflow
+
         if filename:
             # base = os.path.basename(filename).replace(".yaml", "")
             # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
@@ -585,6 +587,7 @@ class Workflow:
         raise NotImplementedError
 
     def run_parallel(self,
+                     directory="~/experiment",
                      order=None,
                      parallel=False,
                      dryrun=False,
@@ -634,6 +637,9 @@ class Workflow:
             banner(name)
 
             job = self.job(name=name)
+            wf_name = os.path.basename(filename)
+            # experiment_directory = f'~/experiment/{wf_name}/{self.name}'
+            # job['directory'] = experiment_directory
             if not dryrun and job["status"] in ["ready"]:
                 local = wsl = ssh = slurm = lsf = False
                 if job['kind'] in ["local"]:
@@ -663,9 +669,13 @@ class Workflow:
                                           host=host,
                                           username=username,
                                           label=label)
+                                          # directory=experiment_directory)
                 if ssh or slurm:
-                    job = Job(name=name, host=host, username=username,
+                    job = Job(name=name,
+                              host=host,
+                              username=username,
                               label=label)
+                              # directory=experiment_directory)
                     job.sync()
                     job.run()
                 if local or wsl:
