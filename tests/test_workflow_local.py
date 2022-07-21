@@ -161,11 +161,11 @@ class TestWorkflowLocal:
         global w
         if os_is_windows():
             try:
-                w.graph.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+                w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
             except Exception as e:
                 print(e)
         else:
-            w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            w.graph.save(filename="/tmp/test-dot.svg", colors="status", engine="dot")
         # Shell.browser("/tmp/test-dot.svg")
         if os_is_windows():
             os.path.exists("test-dot.svg")

@@ -753,7 +753,6 @@ class Workflow:
                         colors="status",
                         engine="dot")
 
-
     def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):
         # bug the tno file needs to be better handled
         if order is None:
@@ -795,24 +794,29 @@ class Workflow:
                 host = job['host']
                 username = job['user']
                 label = name
-                job = Job(name=name,
+                _job = Job(name=name,
                           host=host,
                           username=username,
                           label=label)
-                job.sync()
-                job.run()
+                _job.sync()
+                _job.run()
+
                 if local or wsl or slurm:
-                    job.watch(period=0.5)
-                    self.graph.done(name)
-                    print(self.table)
-                    status = job.get_status()
-                    progress = job.get_progress()
-                    banner(name)
-                    print(str(job))
-                    print('Status: ', status)
-                    print('Progress: ', progress)
-                    self.jobs[name]['status'] = status
-                    self.jobs[name]['progress'] = progress
+                    _job.watch(period=0.5)
+                elif ssh or slurm:
+                    _job.watch(period=3)
+
+                self.graph.done(name)
+                print(self.table)
+                log = _job.get_log()
+                status = _job.get_status()
+                progress = _job.get_progress()
+                banner(name)
+                print(str(job))
+                print('Status: ', status)
+                print('Progress: ', progress)
+                self.jobs[name]['status'] = status
+                self.jobs[name]['progress'] = progress
 
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
