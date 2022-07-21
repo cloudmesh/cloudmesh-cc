@@ -206,7 +206,7 @@ class TestWorkflowSsh:
     def test_run_parallel(self):
         HEADING()
         Benchmark.Start()
-        w.run_prallel()
+        w.run_parallel()
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)

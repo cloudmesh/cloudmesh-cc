@@ -158,6 +158,7 @@ class Job:
                 command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
                 print(command)
                 os.system(command)
+                input()
                 os.system("sync")  # tested and returns 0
             content = readfile(f"{self.name}.log")
         except:  # noqa: E722
