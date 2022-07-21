@@ -615,15 +615,15 @@ class Workflow:
             progress = self.jobs[name]["instance"].get_progress()
             self.jobs[name]['status'] = status
             self.jobs[name]['progress'] = progress
-            print(status, progress)
+            print("Job pdate", name, status, progress)
             if progress == 100:
+                self.graph.done(name)
                 if name in running:
                     running.remove(name)
                 if name not in completed:
                     completed.append(name)
                 if name in undefined:
                     undefined.remove(name)
-                self.graph.done(name)
             elif status == "undefined":
                 if name in running:
                     running.remove(name)
