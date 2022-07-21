@@ -542,12 +542,12 @@ class Workflow:
         for edge in graph["workflow"]["dependencies"]:
             self.add_dependencies(edge)
 
-    def save(self, filename):
-        if os_is_windows():
-            name = os.path.basename(filename).replace(r".yaml", "")
-            dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-            self.graph.save_to_file(dir)
-        self.graph.save_to_file(filename)
+    # def save(self, filename):
+    #     if os_is_windows():
+    #         name = os.path.basename(filename).replace(r".yaml", "")
+    #         dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+    #         self.graph.save_to_file(dir)
+    #     self.graph.save_to_file(filename)
 
     def add_job(self,
                 name=None,
