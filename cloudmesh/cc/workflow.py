@@ -617,11 +617,13 @@ class Workflow:
             self.jobs[name]['progress'] = progress
             print(status, progress)
             if progress == 100:
-                running.remove(name)
-                completed.append(name)
-                self.graph.done(name)
+                if name in running:
+                    running.remove(name)
+                if name not in completed:
+                    completed.append(name)
                 if name in undefined:
                     undefined.remove(name)
+                self.graph.done(name)
             elif status == "undefined":
                 running.remove(name)
                 undefined.append(name)
@@ -718,8 +720,8 @@ class Workflow:
             finished = len(completed) == len(self.jobs)
 
             # debugging
-            info()
-            input()
+            #info()
+            #input()
 
         # save graph occurs again to make sure things are being saved
         self.graph.save(filename=filename, colors="status",
