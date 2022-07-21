@@ -156,6 +156,7 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
+        Shell.run(f"chmod ug+rx ./{self.name}.sh")
         if self.type == "python":
             command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
         else:
