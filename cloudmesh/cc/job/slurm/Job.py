@@ -158,6 +158,7 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
+        Shell.run(f"chmod ug+rx ./{self.name}.sh")
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)

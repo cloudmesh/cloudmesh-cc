@@ -144,7 +144,9 @@ class TestGraph:
         r = Shell.cat("dest/test-dot.dot")
         print(r)
 
+        print ("display dest/test-graphviz.svg")
         Shell.open('dest/test-graphviz.svg')
+        print ("display dest/test-dot.svg")
         Shell.open('dest/test-dot.svg')
 
         Benchmark.Stop()

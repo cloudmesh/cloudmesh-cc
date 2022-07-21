@@ -19,6 +19,7 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
+from cloudmesh.common.Shell import Shell
 
 banner(Path(__file__).name, c = "#", color="RED")
 
@@ -43,9 +44,12 @@ job_id = None
 try:
     if not Vpn.enabled():
         raise Exception('vpn not enabled')
-    check_output(f"ssh {username}@{host} hostname", stderr=STDOUT, timeout=6)
+    command = f"ssh {username}@{host} hostname"
+    print (command)
+    content = Shell.run(command, timeout=3)
     login_success = True
-except:  # noqa: E722
+except Exception as e:  # noqa: E722
+    print (e)
     login_success = False
 
 run_job = f"run-slurm"
