@@ -123,7 +123,8 @@ class Job:
         try:
             log = self.get_log(refresh=refresh).splitlines()
             lines = Shell.find_lines_with(log, "# cloudmesh")
-            for line in lines:
+            for i in range(len(lines)-1, -1, -1):
+                line = lines[i]
                 if "progress=" in line:
                     progress = line.split("progress=")[1]
                     progress = progress.split(' ',1)[0]
