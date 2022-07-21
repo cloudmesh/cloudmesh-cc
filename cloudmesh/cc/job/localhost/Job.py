@@ -121,23 +121,16 @@ class Job:
     def get_progress(self, refresh=False):
         progress = 0
         try:
-            log = self.get_log(refresh=refresh)
-            print ("AX", log)
-            lines = Shell.find_lines_with(log, "# cloudmesh").reverse()
-            print ("BX", lines)
+            log = self.get_log(refresh=refresh).splitlines()
+            lines = Shell.find_lines_with(log, "# cloudmesh")
             for line in lines:
-                print ("XXX", line)
                 if "progress=" in line:
-                    progress = line.split("progress=")
-                    print ("UUUUU", progress)
-                    progress = progress.split(" ")[0]
+                    progress = line.split("progress=")[1]
+                    progress = progress.split(' ',1)[0]
                     progress = int(progress)
-                    print ("PPPP", progress, type(progress))
                     return int(progress)
         except Exception as e:  # noqa: E722
-            print("progress B", progress, type(progress))
-            print (e)
-            raise ValueError
+            pass
 
         return int(progress)
 

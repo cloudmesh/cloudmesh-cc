@@ -620,9 +620,8 @@ class Workflow:
             self.jobs[name]['status'] = status
             self.jobs[name]['progress'] = progress
 
-            print("Job pdate", name, status, progress)
+            # print("Job data", name, status, progress)
 
-            input()
 
             if progress == 100:
                 self.graph.done(name)
