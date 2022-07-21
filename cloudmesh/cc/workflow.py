@@ -683,6 +683,8 @@ class Workflow:
         else:
             filename = filename or "/tmp/workflow.svg"
 
+        first = True
+
         while not finished:
 
             info()
@@ -701,8 +703,9 @@ class Workflow:
             if show:
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
-                if os_is_mac():
+                if first and os_is_mac():
                     os.system(f'open {filename}')
+                    first = False
                 elif os_is_linux():
                     os.system(f'gopen {filename}')
                 else:
