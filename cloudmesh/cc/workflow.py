@@ -637,9 +637,9 @@ class Workflow:
             banner(name)
 
             job = self.job(name=name)
-            wf_name = os.path.basename(filename)
-            # experiment_directory = f'~/experiment/{wf_name}/{self.name}'
-            # job['directory'] = experiment_directory
+            wf_name = os.path.basename(filename).split(".")[0]
+            experiment_directory = f'~/experiment/{wf_name}/{name}'
+            job['directory'] = experiment_directory
             if not dryrun and job["status"] in ["ready"]:
                 local = wsl = ssh = slurm = lsf = False
                 if job['kind'] in ["local"]:
@@ -668,14 +668,14 @@ class Workflow:
                     job["instance"] = Job(name=name,
                                           host=host,
                                           username=username,
-                                          label=label)
-                                          # directory=experiment_directory)
+                                          label=label,
+                                          directory=experiment_directory)
                 if ssh or slurm:
                     job = Job(name=name,
                               host=host,
                               username=username,
-                              label=label)
-                              # directory=experiment_directory)
+                              label=label,
+                              directory=experiment_directory)
                     job.sync()
                     job.run()
                 if local or wsl:
@@ -781,8 +781,10 @@ class Workflow:
                 host = job['host']
                 username = job['user']
                 label = name
-                job = Job(name=name, host=host,
-                          username=username, label=label)
+                job = Job(name=name,
+                          host=host,
+                          username=username,
+                          label=label)
                 job.sync()
                 job.run()
                 if local or wsl or slurm:
