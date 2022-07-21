@@ -625,8 +625,10 @@ class Workflow:
                     undefined.remove(name)
                 self.graph.done(name)
             elif status == "undefined":
-                running.remove(name)
-                undefined.append(name)
+                if name in running:
+                    running.remove(name)
+                if name not in undefined:
+                    undefined.append(name)
 
         def start(name):
             banner(name)
