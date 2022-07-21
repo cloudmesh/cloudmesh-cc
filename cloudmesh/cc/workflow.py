@@ -819,6 +819,7 @@ class Workflow:
     @property
     def table(self):
         # gvl rewritten
+        with_label = False
 
         data = dict(self.graph.nodes)
 
@@ -828,16 +829,30 @@ class Workflow:
             msg = replacement.get(**self.graph.nodes[name])
             data[name]["label"] = msg
 
+        if with_label:
+            order = ['host',
+                     'status',
+                     'label',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+        else:
+            order = ['host',
+                     'status',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+
         return Printer.write(self.graph.nodes,
-                             order=['host',
-                                    'status',
-                                    'label',
-                                    'name',
-                                    'progress',
-                                    'script',
-                                    'user',
-                                    'parent',
-                                    'kind'])
+                             order=order)
+
+
 
     def remove_workflow(self):
         # gvl rrewritten

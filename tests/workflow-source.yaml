@@ -1,0 +1,80 @@
+workflow:
+  nodes:
+    start:
+      label: start
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      progress: 0
+      script: null
+      name: start
+    end:
+      label: end
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      progress: 0
+      script: null
+      name: end
+    job-local-0:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      progress: 0
+      script: null
+      name: job-local-0
+    job-local-1:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      progress: 0
+      script: null
+      name: job-local-1
+    job-local-2:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      progress: 0
+      script: null
+      name: job-local-2
+      parent:
+      - job-local-1
+    job-rivanna.hpc.virginia.edu-3:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      script: null
+      instance: null
+      name: job-rivanna.hpc.virginia.edu-3
+    job-rivanna.hpc.virginia.edu-4:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      script: null
+      name: job-rivanna.hpc.virginia.edu-4
+    job-rivanna.hpc.virginia.edu-5:
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      kind: local
+      user: thf2bn
+      host: rivanna.hpc.virginia.edu
+      status: ready
+      progress: 0
+      script: null
+      name: job-rivanna.hpc.virginia.edu-5
+  dependencies:
+      - start,job-local-0,job-local-1,job-local-2,end
+      - start,job-rivanna.hpc.virginia.edu-3,job-rivanna.hpc.virginia.edu-4,job-rivanna.hpc.virginia.edu-5,end
