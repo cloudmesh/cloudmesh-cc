@@ -79,6 +79,7 @@ class Job:
         else:
             command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
+        time.sleep(1)
         if os_is_windows():
 
             if self.type == "python":

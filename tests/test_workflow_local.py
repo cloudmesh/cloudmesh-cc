@@ -234,6 +234,7 @@ class TestWorkflowLocal:
             assert node["parent"] == []
             assert node["status"] == "done"
 
+
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

@@ -258,17 +258,39 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename):
+    def export(self, flag='full', filename=None, **kwargs):
 
-        data = {
-            'workflow':
-                {
-                    'nodes': dict(self.nodes),
-                    'dependencies': dict(self.edges),
-                }
-        }
+        # set up for this method
+        # we want to save the updated workflow to a file that can be viewed!
+        # so each workflow has an infile and an outfile and an out picture!
+        if filename is None:
+            base = "workflow"
+            filename = f"~/experiment/{base}/{base}.yaml"
+            if not os.path.exists(path_expand(filename)):
+                Shell.mkdir(path_expand(filename))
+
+        # if full, then put all the data that exists into the outfile
+        if flag == 'full':
+            data = {
+                'workflow':
+                    {
+                        'nodes': dict(self.nodes),
+                        'dependencies': dict(self.edges),
+                    }
+            }
+
+        # if not full, then put only the requested data into the outfile
+        # iterate through **kwargs to get the data that is asked for in the outfile
+        elif flag == 'minimal':
+            if kwargs:
+                data = {}
+                for key in kwargs:
+                    data[key] = self.nodes[key]
+            else:
+                raise ValueError("Please enter which node values you would like")
+
         os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, 'w') as outfile:
+        with open(path_expand(filename), 'w') as outfile:
             yaml.dump(data, outfile, default_flow_style=False)
 
         outfile.close()
@@ -437,6 +459,9 @@ class Workflow:
     def job(self, name):
         return self.jobs[name]
 
+    def export(self, flag=None, filename=None, **kwargs):
+        self.graph.export(flag=flag, filename=filename, **kwargs)
+
     @property
     def dependencies(self):
         # gvl implemented but not tested
@@ -567,7 +592,7 @@ class Workflow:
             script=script,
             instance=None
         )
-        self.save(self.filename)
+        # self.save(self.filename)
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
@@ -603,6 +628,7 @@ class Workflow:
         failed = []  # list of failed nodes
 
         def info():
+            print(self.graph)
             print("Undefined:   ", undefined)
             print("Completed:   ", completed)
             print("Running:     ", running)
@@ -611,6 +637,7 @@ class Workflow:
             print()
             print("Todo:       ", self.graph.todo())
             print("Dependencies:", len(self.graph.edges))
+
 
         def update(name):
             banner(f"update {name}")
@@ -958,7 +985,7 @@ class Workflow:
         for key in dellist:
             self.graph.edges.pop(key)
 
-        self.save(self.filename)
+        # self.save(self.filename)
 
     def status(self):
         # gvl implemented but not tested
