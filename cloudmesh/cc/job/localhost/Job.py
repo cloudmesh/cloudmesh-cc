@@ -165,6 +165,7 @@ class Job:
         finished = False
         while not finished:
             progress = int(self.get_progress(refresh=True))
+            print(f"Progress {self.name}:", progress)
             finished = progress == 100
             if not finished:
                 time.sleep(period)
