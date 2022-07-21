@@ -1,4 +1,4 @@
-cloudmesh:
+workflow:
   nodes:
     a:
        name: a
@@ -15,6 +15,6 @@ cloudmesh:
        kind: local
        status: ready
        label: b-label
-       script: test-a.sh
+       script: test-b.sh
   dependencies:
     - a,b
