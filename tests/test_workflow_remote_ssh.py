@@ -183,7 +183,6 @@ class TestWorkflowSsh:
         Benchmark.Stop()
         assert True
 
-class a:
 
     def test_order(self):
         HEADING()
