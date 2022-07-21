@@ -3,16 +3,14 @@
 # pytest -v  tests/test_service.py
 # pytest -v --capture=no  tests/test_service.py::TestService::<METHODNAME>
 ###############################################################
+from pathlib import Path
+
 import pytest
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.debug import VERBOSE
-from cloudmesh.common.util import HEADING
 from fastapi.testclient import TestClient
 
-import cloudmesh.cc.service
 from cloudmesh.cc.service.service import app
-from pathlib import Path
+from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 
 banner(Path(__file__).name, c = "#", color="RED")

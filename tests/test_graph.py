@@ -3,19 +3,16 @@
 # pytest -v  tests/test_graph.py
 # pytest -v --capture=no  tests/test_graph.py::TestGraph::<METHODNAME>
 ###############################################################
-import os.path
+
+from pathlib import Path
 
 import networkx as nx
 import pytest
 
 from cloudmesh.cc.workflow import Graph
 from cloudmesh.common.Benchmark import Benchmark, StopWatch
-from cloudmesh.common.util import HEADING
 from cloudmesh.common.Shell import Shell
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.systeminfo import os_is_linux
-from cloudmesh.common.systeminfo import os_is_mac
-from pathlib import Path
+from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 
 banner(Path(__file__).name, c = "#", color="RED")

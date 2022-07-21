@@ -4,24 +4,20 @@
 # pytest -v --capture=no  tests/workflow.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
-from pprint import pprint
-import shelve
-import pytest
+import shutil
 from pathlib import Path
 
-from cloudmesh.cc.workflow import Workflow
-from cloudmesh.cc.queue import Queues
-from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.util import HEADING
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.Shell import Shell
 import networkx as nx
-from cloudmesh.common.variables import Variables
-from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
-import shutil
-from cloudmesh.common.util import banner
+
+from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.StopWatch import StopWatch
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import HEADING
+from cloudmesh.common.util import banner
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.variables import Variables
+
 # from utilities import set_host_user
 
 """
@@ -167,7 +163,7 @@ class TestWorkflowLocal:
             try:
                 w.graph.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
             except Exception as e:
-                print(e.output)
+                print(e)
         else:
             w.graph.save(filename="/tmp/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
         # Shell.browser("/tmp/test-dot.svg")

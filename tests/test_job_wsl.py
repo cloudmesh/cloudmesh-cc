@@ -12,11 +12,12 @@
 import os
 import shutil
 import subprocess
-import time
+from pathlib import Path
 
 import pytest
-from cloudmesh.cc.job.wsl.Job import Job
+import time
 
+from cloudmesh.cc.job.wsl.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.console import Console
 from cloudmesh.common.systeminfo import os_is_windows
@@ -24,8 +25,6 @@ from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
-from pathlib import Path
-from cloudmesh.common.util import banner
 
 banner(Path(__file__).name, c = "#", color="RED")
 

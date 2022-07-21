@@ -4,28 +4,21 @@
 # pytest -v --capture=no  tests/test_workflow_slurm.py::TestWorkflowSlurm::<METHODNAME>
 ###############################################################
 import os
-import shutil
-import sys
-import time
-import io
+from pathlib import Path
+from subprocess import STDOUT, check_output
 
 import networkx as nx
-
 import pytest
-from cloudmesh.cc.workflow import Workflow
 
+from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
-from subprocess import STDOUT, check_output
-from cloudmesh.common.systeminfo import os_is_windows
-from pathlib import Path
-from cloudmesh.common.util import banner
 
 banner(Path(__file__).name, c = "#", color="RED")
 

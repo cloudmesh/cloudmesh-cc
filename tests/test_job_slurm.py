@@ -5,22 +5,20 @@
 ###############################################################
 import os
 import shutil
-import time
+from pathlib import Path
+from subprocess import STDOUT, check_output
 
 import pytest
-from cloudmesh.cc.job.slurm.Job import Job
+import time
 
+from cloudmesh.cc.job.slurm.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Console
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
-from subprocess import STDOUT, check_output
-from pathlib import Path
-from cloudmesh.common.util import banner
 
 banner(Path(__file__).name, c = "#", color="RED")
 

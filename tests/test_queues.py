@@ -4,20 +4,17 @@
 # pytest -v --capture=no  tests/test_queues.py::TestQueues::<METHODNAME>
 ###############################################################
 import os.path
+from pathlib import Path
 from pprint import pprint
-import shelve
+
 import pytest
 
-from cloudmesh.common.Printer import Printer
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import HEADING
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.systeminfo import os_is_linux
-from cloudmesh.common.systeminfo import os_is_mac
-from cloudmesh.common.util import path_expand
-from pathlib import Path
 from cloudmesh.common.util import banner
+from cloudmesh.common.util import path_expand
 
 banner(Path(__file__).name, c = "#", color="RED")
 

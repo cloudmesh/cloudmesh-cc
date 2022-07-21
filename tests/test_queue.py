@@ -48,7 +48,6 @@ class TestQueue:
         size = len(q.jobs)
         remove = int(size / 2)
         # result = q.list() should return a list of the items
-        result = "temp"
         Benchmark.Start()
         print('Before removal')
         q.list()

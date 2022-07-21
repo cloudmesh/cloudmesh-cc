@@ -4,25 +4,22 @@
 # pytest -v --capture=no  tests/workflow.py::TestWorkflow::<METHODNAME>
 # ##############################################################
 import os.path
-from pprint import pprint
-import shelve
+from pathlib import Path
+from subprocess import STDOUT, check_output
+
+import networkx as nx
 import pytest
 
 from cloudmesh.cc.workflow import Workflow
-from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.common.util import HEADING
-from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
-from cloudmesh.vpn.vpn import Vpn
-from subprocess import STDOUT, check_output
-import networkx as nx
-from cloudmesh.common.variables import Variables
-from cloudmesh.common.console import Console
-from cloudmesh.common.util import banner
 from cloudmesh.common.StopWatch import StopWatch
-from pathlib import Path
+from cloudmesh.common.console import Console
+from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
+from cloudmesh.common.variables import Variables
+from cloudmesh.vpn.vpn import Vpn
 
 banner(Path(__file__).name, c = "#", color="RED")
 
@@ -182,9 +179,6 @@ class TestWorkflow:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
-
-
-class todo:
 
     def test_benchmark(self):
         HEADING()
