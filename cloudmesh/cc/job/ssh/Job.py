@@ -153,6 +153,7 @@ class Job:
 
     def get_log(self, refresh=True):
         content = None
+        time.sleep(0.5)
         try:
             if refresh:
                 command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"

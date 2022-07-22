@@ -127,19 +127,20 @@ def create_workflow():
 
 class TestWorkflowSsh:
 
-    def test_load_workflow(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w = Workflow()
-        w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
-        Benchmark.Stop()
-        g = str(w.graph)
-        print(g)
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
-        assert "start" in g
-        assert "host: local" in g
-        print(w.graph)
+    # def test_load_workflow(self):
+    #     HEADING()
+    #     global w
+    #     Benchmark.Start()
+    #     w = Workflow()
+    #     w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
+    #     Benchmark.Stop()
+    #     g = str(w.graph)
+    #     print(g)
+    #     assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+    #     assert "start" in g
+    #     assert "host: local" in g
+    #     print(w.graph)
+
 
     def test_create_workflow(self):
         HEADING()
@@ -158,9 +159,10 @@ class TestWorkflowSsh:
         HEADING()
         global w
         w.graph.save(filename="ssh.svg", colors="status",  engine="dot")
-
+        Shell.cat("ssh.svg")
         Shell.open("ssh.svg")
         # assert os.path.exists("~/tmp/test-dot.svg") == True
+        input()
 
 
     def test_get_node(self):
@@ -193,23 +195,23 @@ class TestWorkflowSsh:
         print(order)
         assert len(order) == len(w.jobs)
 
-    # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
-    # def test_run_tooo(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     w.run_topo(show=True, filename="topo.svg")
-    #     Benchmark.Stop()
-    #     banner("Workflow")
-    #     print(w.graph)
-
     @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
-    def test_run_parallel(self):
+    def test_run_tooo(self):
         HEADING()
         Benchmark.Start()
-        w.run_parallel(show=True, filename="parallel.svg")
+        w.run_topo(show=True, filename="topo.svg")
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+
+    # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
+    # def test_run_parallel(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     w.run_parallel(show=True, filename="parallel.svg")
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
 
     def test_benchmark(self):
         HEADING()
