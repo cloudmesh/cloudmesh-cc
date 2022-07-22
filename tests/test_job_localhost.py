@@ -29,9 +29,6 @@ from cloudmesh.common.variables import Variables
 
 banner(Path(__file__).name, c = "#", color="RED")
 
-if os_is_windows():
-    Console.error("This test can not be run on windows")
-
 variables = Variables()
 
 host = "localhost"
@@ -48,7 +45,7 @@ run_job = f"run"
 wait_job = f"run-killme"
 
 
-@pytest.mark.skipif(os_is_windows(), reason="Test can not be run on Windows")
+# @pytest.mark.skipif(os_is_windows(), reason="Test can not be run on Windows")
 @pytest.mark.incremental
 class TestJobLocalhost:
 
@@ -98,7 +95,8 @@ class TestJobLocalhost:
         job.sync()
 
         banner("run job")
-        s, l = job.run()
+        s = job.run()
+        job.watch(period=0.5)
         print("State:", s)
 
         banner("check")
@@ -146,7 +144,7 @@ class TestJobLocalhost:
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
         jobWait.sync()
-        s, l = jobWait.run()
+        s = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
@@ -207,8 +205,10 @@ class TestJobLocalhost:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'ps -ax -o pid=', shell=True, text=True).strip()
-        assert 'sleep 3600' not in ps
+        ps = subprocess.check_output('ps', shell=True, text=True)
+        if not os_is_windows():
+            ps = subprocess.check_output(f'ps -ax', shell=True, text=True).strip()
+            assert 'sleep 3600' not in ps
 
         banner(f"{ps}")
         assert f"{parent}" not in ps

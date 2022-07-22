@@ -1,5 +1,5 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow_remote_ssh_remote_ssh.py
+# pytest -v -x --capture=no tests/test_workflow_remote_ssh.py
 # pytest -v  tests/test_workflow_remote_ssh.py
 # pytest -v --capture=no  tests/test_workflow_remote_ssh.py::TestWorkflow::<METHODNAME>
 # ##############################################################

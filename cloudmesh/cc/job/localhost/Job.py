@@ -1,11 +1,12 @@
 import os
-
+import subprocess
 import time
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job:
@@ -69,7 +70,12 @@ class Job:
         return self.get_status()
 
     def mkdir_experimentdir(self):
-        command = f'mkdir -p {self.directory}'
+        if os_is_windows():
+            win_directory = Shell.map_filename(self.directory).path
+            # self.directory = self.directory.replace('~','%homepath%')
+            command = f'mkdir "{win_directory}"'
+        else:
+            command = f'mkdir -p {self.directory}'
         print(command)
         os.system(command)
 
@@ -78,9 +84,22 @@ class Job:
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
-        command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1'
-        print(command)
-        state = os.system(f'{command} &')
+        if os_is_windows():
+            # command = fr'''"\"%ProgramFiles%/Git/bin/bash.exe\" -c \"cd {self.directory} && sh ./{self.name}.sh > {self.name}.log 2>&1\""'''
+            # command = f'''cmd.exe /c start "" "%ProgramFiles%\"/Git/bin/bash.exe\" -c \"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'''
+            state = None
+            try:
+                #r = Shell.run(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"')
+                r = subprocess.Popen(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"', shell=True)
+                state = 0
+            except Exception as e:
+                print(e)
+                state = 1
+        else:
+            command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1'
+            print(command)
+            state = os.system(f'{command} &')
+
         logfile = path_expand(f"{self.directory}/{self.name}.sh")
         errorfile = path_expand(f"{self.directory}/{self.name}.sh")
 
@@ -91,8 +110,8 @@ class Job:
             print("STARTED")
             if not started:
                 time.sleep(0.1)
-        log = self.get_log()
-        return state, log
+
+        return state
 
     def clear(self):
         content = None
@@ -153,6 +172,7 @@ class Job:
         Shell.run(f"chmod ug+rx ./{self.name}.sh")
         command = f"cp {self.name}.sh {self.directory}/."
         print(command)
+        Shell.run(command)
         os.system("sync")
         r = os.system(command)
         return r
@@ -214,14 +234,38 @@ class Job:
             time.sleep(1)
             pid = self.get_pid(refresh=True)
 
-        command = f'pgrep -P {pid}'
-        child = Shell.run(command).strip()
-        command = f'kill -9 {pid} {child}'
-        print(command)
-        r = Shell.run(command)
+        print('IM DOING TESTING HERE')
+        print(pid.strip())
+        pid = str(pid).strip()
+        print('printed pid ??')
+        ps = subprocess.check_output('ps', shell=True, text=True)
+        print(ps)
+        r = None
+        if os_is_windows():
+            rs = []
+            child = None
+            results = ps.splitlines()
+            for result in results:
+                rs.append(result.split())
+            print(rs)
+            for result in rs:
+                if result[1] == pid:
+                    child = result[0]
+            try:
+                r = subprocess.check_output(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "kill -9 {pid} {child}"', shell=True)
+                print(r)
+                #r = Shell.run(f'taskkill /PID {pid} /F')
+            except Exception as e:
+                print(e.output)
+        else:
+            command = f'pgrep -P {pid}'
+            child = Shell.run(command).strip()
+            command = f'kill -9 {pid} {child}'
+            r = os.system(command)
+            r = os.system(f'kill -9 {pid}')
         Console.msg(f"Killing {pid} {child}")
         print(r)
-        if "No such process" in r:
+        if "No such process" in str(r):
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
