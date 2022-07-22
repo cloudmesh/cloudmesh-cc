@@ -808,6 +808,7 @@ class Workflow:
 
                 self.graph.done(name)
                 print(self.table)
+                _job.watch(period=1)
                 log = _job.get_log()
                 status = _job.get_status()
                 progress = _job.get_progress()
