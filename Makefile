@@ -52,6 +52,17 @@ clean:
 	rm -rf .tox
 	rm -f *.whl
 
+clear:
+	rm -rf ~/experiment
+	ssh rivanna "rm -rf experiment" 
+	-rm -f *.error
+	-rm -f *.log
+	-rm -f job-local-*
+	-rm -f job-rivanna.hpc.virginia.edu*
+	-rm -f run.sh slurm.sh *-slurm.sh run-killme.sh start.sh test-*.sh end.sh
+	-rm -f *.dot *.svg
+	-rm -rf dest
+	-rm -f hello-world.py
 
 ######################################################################
 # PYPI
