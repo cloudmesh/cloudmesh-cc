@@ -16,6 +16,7 @@ from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
 
 # from utilities import set_host_user
@@ -71,10 +72,7 @@ def create_workflow():
     user = login["localhost"]["user"]
     host = login["localhost"]["host"]
 
-    if os_is_windows():
-        jobkind="wsl"
-    else:
-        jobkind="local"
+    jobkind="local"
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
@@ -120,6 +118,18 @@ def create_workflow():
 
 
 class TestWorkflowLocal:
+
+    def test_experiment_setup(self):
+        full_dir = Shell.map_filename('~/experiment').path
+        try:
+            r = Shell.run(f"rm -rf {full_dir}")
+            r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
+        except Exception as e:
+            print(e.output)
+        # copy all files needed into experiment
+        # run all other tests in ./experiment_ssh
+        # os.chdir("./experiment_ssh")
+        # then run all test there
 
     def test_load_workflow(self):
         HEADING()
@@ -207,32 +217,32 @@ class TestWorkflowLocal:
             name = order[i]
             assert name not in w[parent]['parent']
 
-    # def test_run_topo(self):
-    #     HEADING()
-    #     w = create_workflow()
-    #     Benchmark.Start()
-    #     w.run_topo(show=True, filename="topo.svg")
-    #     Benchmark.Stop()
-    #     banner("Workflow")
-    #     print(w.graph)
-    #
-    #     for name, node in w.jobs.items():
-    #         assert node["progress"] == 100
-    #         assert node["parent"] == []
-    #         assert node["status"] == "done"
-
-    def test_run_parallel(self):
+    def test_run_topo(self):
         HEADING()
         w = create_workflow()
         Benchmark.Start()
-        w.run_parallel(show=True, period=1.0, filename="parallel.svg")
+        w.run_topo(show=True, filename="topo.svg")
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+
         for name, node in w.jobs.items():
             assert node["progress"] == 100
             assert node["parent"] == []
             assert node["status"] == "done"
+
+    # def test_run_parallel(self):
+    #     HEADING()
+    #     w = create_workflow()
+    #     Benchmark.Start()
+    #     w.run_parallel(show=True, period=1.0, filename="parallel.svg")
+    #     Benchmark.Stop()
+    #     banner("Workflow")
+    #     print(w.graph)
+    #     for name, node in w.jobs.items():
+    #         assert node["progress"] == 100
+    #         assert node["parent"] == []
+    #         assert node["status"] == "done"
 
     def test_benchmark(self):
         HEADING()

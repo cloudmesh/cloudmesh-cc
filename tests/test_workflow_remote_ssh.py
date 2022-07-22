@@ -142,8 +142,12 @@ class TestWorkflowSsh:
     #     print(w.graph)
 
     def test_experiment_setup(self):
-
-        Shell.mkdir("experiment")
+        full_dir = Shell.map_filename('~/experiment').path
+        try:
+            r = Shell.run(f"rm -rf {full_dir}")
+            r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
+        except Exception as e:
+            print(e.output)
         # copy all files needed into experiment
         # run all other tests in ./experiment_ssh
         # os.chdir("./experiment_ssh")
@@ -199,10 +203,9 @@ class TestWorkflowSsh:
         Benchmark.Stop()
         print(order)
         assert len(order) == len(w.jobs)
-        input()
 
     @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
-    def test_run_tooo(self):
+    def test_run_topo(self):
         HEADING()
         Benchmark.Start()
         w.run_topo(show=True, filename="topo.svg")
@@ -213,8 +216,10 @@ class TestWorkflowSsh:
     # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     # def test_run_parallel(self):
     #     HEADING()
+    #     self.test_experiment_setup()
+    #     w2 = create_workflow()
     #     Benchmark.Start()
-    #     w.run_parallel(show=True, filename="parallel.svg")
+    #     w2.run_parallel(show=True, filename="parallel.svg").start()
     #     Benchmark.Stop()
     #     banner("Workflow")
     #     print(w.graph)
