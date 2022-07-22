@@ -12,6 +12,7 @@ from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import writefile
+from cloudmesh.common.util import readfile
 from pathlib import Path
 from yamldb import YamlDB
 from cloudmesh.cc.queue import Job
@@ -196,9 +197,9 @@ class Graph:
         for name in self.nodes:
             try:
                 if self.nodes[name]["progress"] != 100 and \
-                        len(self.nodes[name]["parent"]) == 0:
+                        self.nodes[name]["parent"] is None:
                     result.append(name)
-            except:  # noqa: E722
+            except Exception as e:  # noqa: E722
                 pass
         return result
 
@@ -470,6 +471,31 @@ class Workflow:
             return None
         else:
             return parents
+
+    def save_with_state(self, filename, stdout=False):
+        print(self.graph)
+        data = {}
+        data['workflow'] = {
+            "nodes": dict(self.graph.nodes),
+            "dependencies": dict(self.graph.edges),
+        }
+        if self.graph.colors:
+            data["colors"] = dict(self.graph.colors)
+
+        d = str(yaml.dump(data, indent=2))
+        writefile(filename, d)
+        if stdout:
+            return d
+
+    def load_with_state(self, filename):
+        s = readfile(filename)
+        data = yaml.safe_load(s)
+        if "nodes" in data['workflow']:
+            self.graph.nodes = data['workflow']['nodes']
+        if "dependencies" in data['workflow']:
+            self.graph.edges = data['workflow']['dependencies']
+        if "colors" in data:
+            self.graph.colors = data['colors']
 
     def load(self, filename, clear=False):
         """
@@ -944,7 +970,7 @@ class Workflow:
         self.jobs = None
         self.graph.edges = None
 
-    def remove_job(self, name):
+    def remove_job(self, name, state=False):
         # remove job
 
         # del self.jobs[name]
@@ -963,7 +989,10 @@ class Workflow:
         for key in dellist:
             self.graph.edges.pop(key)
 
-        self.save(self.filename)
+        if state:
+            self.save_with_state(self.filename)
+        else:
+            self.save(self.filename)
 
     def status(self):
         # gvl implemented but not tested

@@ -1,5 +1,5 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow.py
+# pytest -v -x --capture=no tests/test_workflow-a-b.py
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::TestWorkflow::<METHODNAME>
 # ##############################################################
@@ -36,6 +36,7 @@ name = "run"
 
 
 w = None
+w1 = None
 
 
 class TestWorkflowAB:
@@ -119,6 +120,41 @@ class TestWorkflowAB:
         Benchmark.Stop()
         content = readfile(dest)
         print (content)
+
+    def test_save_with_state(self):
+        HEADING()
+        global w
+        dest = "./dest/workflow-a-b-state.yaml"
+        Benchmark.Start()
+        w.save_with_state(filename=dest)
+        Benchmark.Stop()
+        content = readfile(dest)
+        banner("read with state")
+        print(content)
+
+    def test_read_with_state(self):
+        HEADING()
+        global w
+        dest = "./dest/workflow-a-b-state.yaml"
+        Benchmark.Start()
+        d = w.save_with_state(filename=dest,stdout=True).strip()
+        w.load_with_state(filename=dest)
+        Benchmark.Stop()
+        content = readfile(dest).strip()
+        banner("load with state")
+        print(content)
+        assert d == content
+
+    def test_new_workflow(self):
+        HEADING()
+        dest = "./dest/workflow-a-b-state.yaml"
+        w = Workflow()
+        w.load_with_state(filename=dest)
+        content = readfile(dest).strip()
+        banner("load from clear workflow with state")
+        print(content)
+        # d = w.save_with_state(filename=dest,stdout=True).strip()
+        # assert d == content
 
 class a:
     def test_benchmark(self):
