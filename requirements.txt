@@ -16,3 +16,4 @@ graphviz
 pexpect
 fastapi[all]
 httpx
+trio

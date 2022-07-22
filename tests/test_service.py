@@ -24,31 +24,31 @@ client = TestClient(app)
 
 @pytest.mark.incremental
 class TestService:
-    # @pytest.mark.anyio
-    # async def test_home(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     async with AsyncClient(app=app, base_url="http://test") as ac:
-    #         response = await ac.get("/")
-    #     assert response.status_code == 200
-    #     assert response.json() == {"msg": "cloudmesh.cc is up"}
-    #     Benchmark.Stop()
-    #
-    # def test_list_workflows(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     response = client.get("/workflows")
-    #     assert response.status_code == 200
-    #     list = glob.glob("~/.cloudmesh/workflow")
-    #     print(list)
-    #     # assert response.json() == {"workflows":list}
-    #     Benchmark.Stop()
+    @pytest.mark.anyio
+    async def test_home(self):
+        HEADING()
+        Benchmark.Start()
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.get("/")
+        assert response.status_code == 200
+        assert response.json() == {"msg": "cloudmesh.cc is up"}
+        Benchmark.Stop()
 
-    # def test_upload_workflow(self):
-    #     HEADING()
-    #     files = {"workflow-source": open("./tests/workflow-source.yaml","rb")}
-    #     response = client.post("/upload",files=files)
-    #     assert response.status_code == 200
+    def test_list_workflows(self):
+        HEADING()
+        Benchmark.Start()
+        response = client.get("/workflows")
+        assert response.status_code == 200
+        list = glob.glob("~/.cloudmesh/workflow")
+        print(list)
+        # assert response.json() == {"workflows":list}
+        Benchmark.Stop()
+
+    def test_upload_workflow(self):
+        HEADING()
+        files = {"workflow-source": open("./tests/workflow-source.yaml","rb")}
+        response = client.post("/upload",files=files)
+        assert response.status_code == 200
 
     # def test_delete_workflow(self):
     #     assert True
@@ -60,12 +60,12 @@ class TestService:
     # async def test_add_job(self):
     #     assert True
 
-    def test_run(self):
-        HEADING()
-        response = client.get("/run?name=atest&type=topo")
-        print(response)
-        assert True
-
-    # def test_benchmark(self):
+    # def test_run(self):
     #     HEADING()
-    #     Benchmark.print(csv=True, sysinfo=False, tag="cc")
+    #     response = client.get("/run?name=workflow&type=topo")
+    #     print(response)
+    #     assert True
+
+    def test_benchmark(self):
+        HEADING()
+        Benchmark.print(csv=True, sysinfo=False, tag="cc")
