@@ -169,13 +169,16 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
-        Shell.run(f"chmod ug+rx ./{self.name}.sh")
         if self.type == "python":
-            command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
+            command1 = f"chmod ug+rx ./{self.name}.py"
+            command2 = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
         else:
-            command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-        print(command)
-        r = os.system(command)
+            command1 = f"chmod ug+rx ./{self.name}.sh"
+            command2 = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        print(command1)
+        r = os.system(command1)
+        print(command2)
+        r = os.system(command2)
         return r
 
     def exists(self, filename):
