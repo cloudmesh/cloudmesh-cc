@@ -46,6 +46,7 @@ class Jobpy(BaseModel):
     progress: int | None = None
     script: str | None = None
     pid: int | None = None
+    parent: str | None = None
 
 
 q = test_run()
@@ -103,8 +104,10 @@ async def home():
 
 def load_workflow(name: str) -> Workflow:
     filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-    w = Workflow(name=name, filename=filename, clear=False)
+    w = Workflow(name=name,filename=filename)
+    w.load_with_state(filename=filename)
     # w.load(filename)
+    print(w.yaml)
     return w
 
 
@@ -132,7 +135,7 @@ def list_workflows():
 
 
 @app.post("/upload")
-async def upload_workflow(file: UploadFile = File(...)):
+def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
@@ -142,7 +145,7 @@ async def upload_workflow(file: UploadFile = File(...)):
         else:
             os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
-        contents = await file.read()
+        contents = file.read()
 
         with open(location, 'wb') as f:
             f.write(contents)
@@ -152,7 +155,7 @@ async def upload_workflow(file: UploadFile = File(...)):
     except Exception as e:
         return {"message": f"There was an error uploading the file {e}"}
     finally:
-        await file.close()
+        file.close()
 
     return {"message": f"Successfully uploaded {file.filename}"}
 
@@ -177,9 +180,10 @@ def delete_workflow(name: str, job: str = None):
         try:
             w = load_workflow(name)
             # print(w[job])
-            w.remove_job(job)
+            w.remove_job(job, state=True)
             return {"message": f"The job {job} was deleted in the workflow {name}"}
         except Exception as e:
+            print(e)
             return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
     else:
         # if we specify to delete the workflow
@@ -216,24 +220,23 @@ def get_workflow(name: str, job: str = None):
 @app.get("/run")
 def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
+    print('THIS IS THE WORKFLOW!!!')
+    print(w)
     # TODO: temp
-    print("pwd")
-    Shell.run("pwd")
-    os.system("ls")
-    Shell.run("echo kms")
+    run_service(w)
+
+def run_service(w: Workflow):
     try:
-        w.run_topo()
+        w.run_parallel(show=True, period=1.0)
     except Exception as e:
         print("Exception:", e)
     # if type=="topo":
     #     w.run_topo()
     # else:
     #     w.run_parallel()
-    print("HIIIIIIIIIIIIIIII")
-
 
 @app.post("/workflow/{name}")
-async def add_job(name: str, job: Jobpy):
+def add_job(name: str, job: Jobpy):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
@@ -250,31 +253,18 @@ async def add_job(name: str, job: Jobpy):
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-    # {
-    #   "name": "c",
-    #   "user": "gregor",
-    #   "host": "localhost",
-    #   "label": "pydantic test",
-    #   "kind": "local",
-    #   "status": "ready",
-    #   "progress": 0,
-    #   "script": "c.sh",
-    #   "pid": 0
-    # }
+
+
     w = load_workflow(name)
-    # print(w.yaml)
 
     try:
         w.add_job(name=job.name, user=job.user, host=job.host, label=job.label,
                   kind=job.kind, status=job.status, progress=job.progress, script=job.script)
+
+        w.add_dependencies(f"{job.parent},{job.name}")
+        w.save_with_state(w.filename)
     except Exception as e:
         print(e)
-
-    # TODO: this is a temp solution, change later
-    directory = path_expand(f"~/.cloudmesh/workflow/workflow")
-    location = f"{directory}/run.sh"
-    tests = path_expand(f"~/cm/cloudmesh-cc/tests/run.sh")
-    Shell.copy(tests, location)
 
     return {"jobs": w.jobs}
 
