@@ -141,6 +141,13 @@ class TestWorkflowSsh:
     #     assert "host: local" in g
     #     print(w.graph)
 
+    def test_experiment_setup(self):
+
+        Shell.mkdir("experiment")
+        # copy all files needed into experiment
+        # run all other tests in ./experiment_ssh
+        # os.chdir("./experiment_ssh")
+        # then run all test there
 
     def test_create_workflow(self):
         HEADING()
@@ -159,10 +166,8 @@ class TestWorkflowSsh:
         HEADING()
         global w
         w.graph.save(filename="ssh.svg", colors="status",  engine="dot")
-        Shell.cat("ssh.svg")
         Shell.open("ssh.svg")
         # assert os.path.exists("~/tmp/test-dot.svg") == True
-        input()
 
 
     def test_get_node(self):
@@ -194,6 +199,7 @@ class TestWorkflowSsh:
         Benchmark.Stop()
         print(order)
         assert len(order) == len(w.jobs)
+        input()
 
     @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run_tooo(self):
