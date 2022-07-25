@@ -227,7 +227,8 @@ def run_workflow(name: str, type: str = "topo"):
 
 def run_service(w: Workflow):
     try:
-        w.run_parallel(show=True, period=1.0)
+        w.run_topo(show=True)
+        # w.run_parallel(show=True, period=1.0)
     except Exception as e:
         print("Exception:", e)
     # if type=="topo":

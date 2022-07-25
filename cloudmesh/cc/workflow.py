@@ -784,7 +784,7 @@ class Workflow:
         if order is None:
             order = self.sequential_order
 
-        if os_is_windows():
+        if os_is_windows() and filename is None:
             Shell.mkdir("./tmp")
             filename = filename or "tmp/workflow.svg"
         else:
