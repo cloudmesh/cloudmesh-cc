@@ -388,13 +388,14 @@ class Workflow:
 
         if filename:
             # base = os.path.basename(filename).replace(".yaml", "")
-            # self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            # self.filename = f"~/.cloudmesh/workflow/{base}/{base}.yaml"
             self.name = name
             self.filename = filename
 
         if filename is None and name is None:
             base = "workflow"
-            self.filename = f"~/.cloudmesh/{base}/{base}.yaml"
+            self.filename = f"~/.cloudmesh/workflow/{base}/{base}.yaml"
+
             self.name = name
 
         self.filename = path_expand(self.filename)
