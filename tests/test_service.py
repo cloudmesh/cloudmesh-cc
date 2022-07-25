@@ -48,25 +48,37 @@ class TestService:
         # assert response.json() == {"workflows":list}
         Benchmark.Stop()
 
-    # def test_upload_workflow(self):
-    #     HEADING()
-    #     files = {"workflow-source": open("./tests/workflow-source.yaml","rb")}
-    #     response = client.post("/upload",files=files)
-    #     assert response.status_code == 200
+    def test_upload_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        files = {"file": open("./tests/workflow-source.yaml","rb")}
+        response = client.post("/upload",files=files)
+        Benchmark.Stop()
+        assert response.status_code == 200
 
-    # def test_delete_workflow(self):
-    #     assert True
-    #
-    # def test_get_workflow(self):
-    #     assert True
-    #
+
+    def test_delete_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        response = client.delete("/workflow/workflow-source")
+        Benchmark.Stop()
+        assert response.status_code == 200
+
+    def test_get_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        Benchmark.Stop()
+        assert True
+
     # @pytest.mark.aniyo
     # async def test_add_job(self):
     #     assert True
 
     def test_run(self):
         HEADING()
+        Benchmark.Start()
         response = client.get("/run?name=workflow&type=topo")
+        Benchmark.Stop()
         assert response.status_code == 200
 
     def test_benchmark(self):
