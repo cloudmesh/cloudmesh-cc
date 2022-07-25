@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 
 from cloudmesh.cc.service.service import app
 from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
@@ -31,61 +32,68 @@ client = TestClient(app)
 @pytest.mark.incremental
 class TestService:
 
-    @pytest.mark.anyio
-    async def test_home(self):
-        HEADING()
-        Benchmark.Start()
-        async with AsyncClient(app=app, base_url="http://test") as ac:
-            response = await ac.get("/")
-        assert response.status_code == 200
-        assert response.json() == {"msg": "cloudmesh.cc is up"}
-        Benchmark.Stop()
-
-    def test_list_workflows(self):
-        HEADING()
-        Benchmark.Start()
-        response = client.get("/workflows")
-        assert response.status_code == 200
-        list = glob.glob("~/.cloudmesh/workflow")
-        print(list)
-        # assert response.json() == {"workflows":list}
-        Benchmark.Stop()
-
-    def test_upload_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        files = {"file": open("./tests/workflow-source.yaml","rb")}
-        response = client.post("/upload",files=files)
-        Benchmark.Stop()
-        assert response.status_code == 200
-
-    # def test_add_job(self):
+    # @pytest.mark.anyio
+    # async def test_home(self):
     #     HEADING()
     #     Benchmark.Start()
-    #     job = '''{
-    #       "name": "string",
-    #       "user": "string",
-    #       "host": "string",
-    #       "label": "string",
-    #       "kind": "string",
-    #       "status": "string",
-    #       "progress": 0,
-    #       "script": "string",
-    #       "pid": 0,
-    #       "parent": "string"
-    #     }'''
-    #     headers = {
-    #         'accept': 'application/json',
-    #         'Content-Type': 'application/json'
-    #     }
+    #     async with AsyncClient(app=app, base_url="http://test") as ac:
+    #         response = await ac.get("/")
+    #     assert response.status_code == 200
+    #     assert response.json() == {"msg": "cloudmesh.cc is up"}
+    #     Benchmark.Stop()
     #
-    #     try:
-    #         response = client.post("/workflow/workflow-source",data=job,headers=headers)
-    #         Benchmark.Stop()
-    #         assert response.ok
-    #     except Exception as e:
-    #         Benchmark.Stop()
-    #         print("Exception:",e)
+    # def test_list_workflows(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     response = client.get("/workflows")
+    #     assert response.status_code == 200
+    #     list = glob.glob("~/.cloudmesh/workflow")
+    #     print(list)
+    #     # assert response.json() == {"workflows":list}
+    #     Benchmark.Stop()
+    #
+    # def test_upload_workflow(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     files = {"file": open("./tests/workflow-source.yaml","rb")}
+    #     response = client.post("/upload",files=files)
+    #     Benchmark.Stop()
+    #     assert response.status_code == 200
+
+    def test_add_job(self):
+        HEADING()
+        Shell.rm('workflow.yaml')
+        Shell.run('touch ~/cm/cloudmesh-cc/tests/workflow.yaml')
+        # w = Workflow(filename='workflow.yaml', name='workflow')
+        w = Workflow(name="workflow", clear=True)
+        # w.save('~/.cloudmesh/workflow/workflow/workflow.yaml')
+        Shell.ls('~/.cloudmesh/workflow/workflow/workflow.yaml')
+        Shell.run('cat ~/.cloudmesh/workflow/workflow/workflow.yaml')
+        input()
+        Benchmark.Start()
+        job = {
+          "name": "job1",
+          "user": "gregor",
+          "host": "localhost",
+          "label": "simple",
+          "kind": "localhost",
+          "status": "undefined",
+          "script": "nothing.sh"
+        }
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        try:
+            response = client.post("/j/workflow/job1",data=job,headers=headers)
+            Benchmark.Stop()
+            assert response.ok
+        except Exception as e:
+            Benchmark.Stop()
+            print("Exception:",e)
+
+class a:
 
     def test_delete_workflow(self):
         HEADING()

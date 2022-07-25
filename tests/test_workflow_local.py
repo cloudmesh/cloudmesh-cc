@@ -45,13 +45,12 @@ if "username" in variables:
 else:
     username = os.path.basename(os.environ["HOME"])
 
-global w
+w = None
 
-
-def create_workflow():
+def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+    w = Workflow(filename=filename, load=False)
 
     if os_is_windows():
         localuser = os.environ["USERNAME"]
@@ -123,7 +122,6 @@ class TestWorkflowLocal:
         full_dir = Shell.map_filename('~/experiment').path
         try:
             r = Shell.run(f"rm -rf {full_dir}")
-            r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment
@@ -133,23 +131,27 @@ class TestWorkflowLocal:
 
     def test_load_workflow(self):
         HEADING()
+        filename = 'tests/workflow.yaml'
         global w
+        w0 = create_workflow(filename=filename)
+        w0.save(filename=filename)
         Benchmark.Start()
         w = Workflow()
-        w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
+        w.load(filename=filename)
         Benchmark.Stop()
         g = str(w.graph)
         print(g)
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+        assert w.filename != path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
+        assert w.filename == path_expand(filename)
         assert "start" in g
         assert "host: local" in g
-
-    def test_reset_experiment_dir(self):
-        os.system("rm -rf ~/experiment")
-        exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
-        os.system('cp tests/workflow-sh/*.sh .')
-        assert not os.path.isfile(exp)
+class c:
+    # def test_reset_experiment_dir(self):
+    #     os.system("rm -rf ~/experiment")
+    #     exp = path_expand("~/experiment")
+    #     shutil.rmtree(exp, ignore_errors=True)
+    #     os.system('cp tests/workflow-sh/*.sh .')
+    #     assert not os.path.isfile(exp)
 
     def test_set_up(self):
         """
