@@ -4,11 +4,11 @@
 # pytest -v --capture=no  tests/test_service.py::TestService::<METHODNAME>
 ###############################################################
 import glob
-import json
 from pathlib import Path
 
 import os
 import yaml
+import json
 import pytest
 from httpx import AsyncClient
 from fastapi.testclient import TestClient
@@ -59,6 +59,34 @@ class TestService:
         Benchmark.Stop()
         assert response.status_code == 200
 
+    # def test_add_job(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     job = '''{
+    #       "name": "string",
+    #       "user": "string",
+    #       "host": "string",
+    #       "label": "string",
+    #       "kind": "string",
+    #       "status": "string",
+    #       "progress": 0,
+    #       "script": "string",
+    #       "pid": 0,
+    #       "parent": "string"
+    #     }'''
+    #     headers = {
+    #         'accept': 'application/json',
+    #         'Content-Type': 'application/json'
+    #     }
+    #
+    #     try:
+    #         response = client.post("/workflow/workflow-source",data=job,headers=headers)
+    #         Benchmark.Stop()
+    #         assert response.ok
+    #     except Exception as e:
+    #         Benchmark.Stop()
+    #         print("Exception:",e)
+
     def test_delete_workflow(self):
         HEADING()
         Benchmark.Start()
@@ -75,11 +103,6 @@ class TestService:
         assert response.status_code == 200
         assert responsejob.ok
 
-    # @pytest.mark.aniyo
-    # async def test_add_job(self):
-    #     assert True
-
-class r:
     def test_run(self):
         HEADING()
         Benchmark.Start()

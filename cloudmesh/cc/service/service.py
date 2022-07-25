@@ -1,6 +1,7 @@
 import logging
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common import dotdict
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import readfile
 from fastapi.responses import HTMLResponse
@@ -108,7 +109,7 @@ def load_workflow(name: str) -> Workflow:
     w = Workflow(name=name,filename=filename)
     w.load_with_state(filename=filename)
     # w.load(filename)
-    print(w.yaml)
+    # print(w.yaml)
     return w
 
 
@@ -202,7 +203,6 @@ def delete_workflow(name: str, job: str = None):
 def get_workflow(name: str, job: str = None):
     if job is not None:
         try:
-            print("job is not none")
             w = load_workflow(name)
             result = w[job]
             return {name: result}
@@ -211,7 +211,6 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
-            print("job is none")
             w = load_workflow(name)
             return {name: w}
         except Exception as e:
@@ -224,19 +223,14 @@ def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
     print('THIS IS THE WORKFLOW!!!')
     print(w)
-    # TODO: temp
-    run_service(w)
-
-def run_service(w: Workflow):
     try:
-        w.run_topo(show=True)
-        # w.run_parallel(show=True, period=1.0)
+        if type == "topo":
+            w.run_topo(show=True)
+        else:
+            w.run_parallel(show=True,period=1.0)
     except Exception as e:
         print("Exception:", e)
-    # if type=="topo":
-    #     w.run_topo()
-    # else:
-    #     w.run_parallel()
+
 
 @app.post("/workflow/{name}")
 def add_job(name: str, job: Jobpy):
@@ -259,16 +253,19 @@ def add_job(name: str, job: Jobpy):
 
 
     w = load_workflow(name)
-
+    print("W.NAME",w.name)
     try:
+        print("after try")
         w.add_job(name=job.name, user=job.user, host=job.host, label=job.label,
                   kind=job.kind, status=job.status, progress=job.progress, script=job.script)
-
+        print("adding dependencies now")
         w.add_dependencies(f"{job.parent},{job.name}")
+        print("saving the state")
         w.save_with_state(w.filename)
     except Exception as e:
-        print(e)
+        print("Exception:",e)
 
+    print("job name:",job.name)
     return {"jobs": w.jobs}
 
 #

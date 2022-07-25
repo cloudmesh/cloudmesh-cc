@@ -260,7 +260,6 @@ class Graph:
             # and so on
 
     def save_to_file(self, filename):
-
         data = {
             'workflow':
                 {
@@ -563,6 +562,7 @@ class Workflow:
                 **kwargs
                 ):
 
+        print("entering add_job")
         label = label or name
         user = user or self.user
         host = host or self.host
@@ -580,6 +580,7 @@ class Workflow:
             raise ValueError("user or host not specified")
 
         now = str(DateTime.now())
+        print("adding the node")
         self.graph.add_node(
             name=name,
             label=label,
@@ -593,7 +594,9 @@ class Workflow:
             script=script,
             instance=None
         )
+        print("saving....")
         self.save(self.filename)
+        print("saved the file")
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
