@@ -2,6 +2,7 @@ import logging
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.Printer import Printer
+from cloudmesh.common.util import readfile
 from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI
@@ -135,17 +136,18 @@ def list_workflows():
 
 
 @app.post("/upload")
-def upload_workflow(file: UploadFile = File(...)):
+async def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-        location = f"{directory}/{name}.yaml"
+        location = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
         if os_is_windows():
             Shell.mkdir(directory)
+            os.system(f"mkdir {directory}")
         else:
             os.system(f"mkdir -p {directory}")
         print("LOG: Create Workflow at:", location)
-        contents = file.read()
+        contents = await file.read()
 
         with open(location, 'wb') as f:
             f.write(contents)
@@ -155,7 +157,7 @@ def upload_workflow(file: UploadFile = File(...)):
     except Exception as e:
         return {"message": f"There was an error uploading the file {e}"}
     finally:
-        file.close()
+        await file.close()
 
     return {"message": f"Successfully uploaded {file.filename}"}
 
@@ -200,8 +202,8 @@ def delete_workflow(name: str, job: str = None):
 def get_workflow(name: str, job: str = None):
     if job is not None:
         try:
+            print("job is not none")
             w = load_workflow(name)
-            print(w.yaml)
             result = w[job]
             return {name: result}
         except Exception as e:
@@ -209,8 +211,8 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
+            print("job is none")
             w = load_workflow(name)
-            print(w.yaml)
             return {name: w}
         except Exception as e:
             print(e)

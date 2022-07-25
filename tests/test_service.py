@@ -4,9 +4,11 @@
 # pytest -v --capture=no  tests/test_service.py::TestService::<METHODNAME>
 ###############################################################
 import glob
+import json
 from pathlib import Path
 
 import os
+import yaml
 import pytest
 from httpx import AsyncClient
 from fastapi.testclient import TestClient
@@ -14,6 +16,7 @@ from fastapi.testclient import TestClient
 
 from cloudmesh.cc.service.service import app
 from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.common.util import readfile
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
@@ -56,7 +59,6 @@ class TestService:
         Benchmark.Stop()
         assert response.status_code == 200
 
-
     def test_delete_workflow(self):
         HEADING()
         Benchmark.Start()
@@ -67,13 +69,17 @@ class TestService:
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
+        responsejob = client.get("/workflow/workflow?job=start")
+        response = client.get("/workflow/workflow")
         Benchmark.Stop()
-        assert True
+        assert response.status_code == 200
+        assert responsejob.ok
 
     # @pytest.mark.aniyo
     # async def test_add_job(self):
     #     assert True
 
+class r:
     def test_run(self):
         HEADING()
         Benchmark.Start()
