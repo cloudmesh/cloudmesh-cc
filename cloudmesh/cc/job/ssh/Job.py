@@ -161,9 +161,6 @@ class Job:
                 os.system(command)
                 os.system("sync")  # tested and returns 0
             content = readfile(f"{self.name}.log")
-            print ("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-            print (content)
-            print ("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
         except:  # noqa: E722
             pass
         return content

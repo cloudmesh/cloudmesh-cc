@@ -67,8 +67,7 @@ class TestService:
     def test_run(self):
         HEADING()
         response = client.get("/run?name=workflow&type=topo")
-        print(response)
-        assert True
+        assert response.status_code == 200
 
     def test_benchmark(self):
         HEADING()
