@@ -253,6 +253,7 @@ def add_job(name: str, job: Jobpy):
 
 
     w = load_workflow(name)
+    print("TYPE(JOB):",type(job))
     print("W.NAME",w.name)
     try:
         print("after try")

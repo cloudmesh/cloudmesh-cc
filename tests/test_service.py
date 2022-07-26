@@ -46,7 +46,7 @@ w = None
 def create_workflow():
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow-service.yaml"), clear=True)
+    w = Workflow(filename=path_expand("./tests/workflow-service.yaml"), clear=True)
 
     localuser = Shell.sys_user()
     login = {
@@ -106,16 +106,13 @@ class TestService:
         HEADING()
         Benchmark.Start()
         yaml_dir = Shell.map_filename('~/cm/cloudmesh-cc/tests/workflow-service.yaml').path
-        try:
-            Shell.run(f'rm {yaml_dir}')
-        except Exception as e:
-            print(e)
-        assert not os.path.exists(yaml_dir)
-        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/').path
-        destination2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
-        print ("DDDD", destination)
+        # try:
+        #     Shell.run(f'rm {yaml_dir}')
+        # except Exception as e:
+        #     print(e)
+        # assert not os.path.exists(yaml_dir)
+        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
         assert not os.path.exists(destination)
-        assert not os.path.exists(destination2)
         w = create_workflow()
         w.save_with_state(yaml_dir)
         Benchmark.Stop()
@@ -142,48 +139,16 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        files = {"file": open("./tests/workflow-source.yaml","rb")}
+        files = {"file": open("./tests/workflow-service.yaml","rb")}
         response = client.post("/upload",files=files)
-        Benchmark.Stop()
-        assert response.status_code == 200
-
-    def test_add_job(self):
-        HEADING()
-        Benchmark.Start()
-        job = '''{
-          "name": "string",
-          "user": "string",
-          "host": "string",
-          "label": "string",
-          "kind": "string",
-          "status": "string",
-          "progress": 0,
-          "script": "string",
-          "pid": 0,
-          "parent": "string"
-        }'''
-        headers = {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-
-        response = client.post("/workflow/workflow-source",json=job,headers=headers)
-        Benchmark.Stop()
-        assert response.ok
-
-
-    def test_delete_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        response = client.delete("/workflow/workflow-source")
         Benchmark.Stop()
         assert response.status_code == 200
 
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        responsejob = client.get("/workflow/workflow?job=start")
-        response = client.get("/workflow/workflow")
+        responsejob = client.get("/workflow/workflow-service?job=start")
+        response = client.get("/workflow/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
         assert responsejob.ok
@@ -191,14 +156,32 @@ class TestService:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        # uploading the correct workflow
-        files = {"file": open("./tests/workflow-service.yaml", "rb")}
-        r = client.post("/upload", files=files)
         response = client.get("/run?name=workflow-service&type=topo")
         Benchmark.Stop()
         assert response.status_code == 200
 
+    def test_add_job(self):
+        HEADING()
+        Benchmark.Start()
+        job = '{"name": "string","user": "string","host": "string","label": "string","kind": "string","status": "string","progress": 0,"script": "string","pid": 0,"parent": "string"}'
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        response = client.post("/workflow/workflow-service",data=job,headers=headers)
+        assert response.ok
+        Benchmark.Stop()
+
+
+    def test_delete_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        response = client.delete("/workflow/workflow-service")
+        Benchmark.Stop()
+        assert response.status_code == 200
+
+
     def test_benchmark(self):
         HEADING()
-        response = client.delete("/workflow/workflow-service")
         Benchmark.print(csv=True, sysinfo=False, tag="cc")
