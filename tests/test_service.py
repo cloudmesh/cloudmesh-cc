@@ -147,18 +147,17 @@ class TestService:
     def test_add_job(self):
         HEADING()
         Benchmark.Start()
-        job = '''{
-          "name": "string",
-          "user": "string",
-          "host": "string",
-          "label": "string",
-          "kind": "string",
-          "status": "string",
-          "progress": 0,
-          "script": "string",
+        job = {
+          "name": "job1",
+          "user": "gregor",
+          "host": "localhost",
+          "label": "simple",
+          "kind": "localhost",
+          "status": "undefined",
+          "script": "nothing.sh",
           "pid": 0,
           "parent": "string"
-        }'''
+        }
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/json'
@@ -171,6 +170,8 @@ class TestService:
         except Exception as e:
             Benchmark.Stop()
             print("Exception:",e)
+
+class b:
 
     def test_delete_workflow(self):
         HEADING()
