@@ -101,7 +101,7 @@ class TestService:
         }
 
         try:
-            response = client.post("/job_add/workflow-source",data=job)
+            response = client.post("/job_add/workflow-source", json=job, headers=headers)
             Benchmark.Stop()
             assert response.ok
         except Exception as e:
