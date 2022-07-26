@@ -128,8 +128,7 @@ class Graph:
 
     def __str__(self):
 
-        data = {}
-        data['workflow'] = {
+        data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
         }
