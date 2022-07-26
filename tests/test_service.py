@@ -106,7 +106,10 @@ class TestService:
         HEADING()
         Benchmark.Start()
         yaml_dir = Shell.map_filename('~/cm/cloudmesh-cc/tests/workflow-service.yaml').path
-        Shell.run(f'rm {yaml_dir}')
+        try:
+            Shell.run(f'rm {yaml_dir}')
+        except Exception as e:
+            print(e)
         assert not os.path.exists(yaml_dir)
         destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/').path
         destination2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
@@ -164,13 +167,10 @@ class TestService:
             'Content-Type': 'application/json'
         }
 
-        try:
-            response = client.post("/workflow/workflow-source",json=job,headers=headers)
-            Benchmark.Stop()
-            assert response.ok
-        except Exception as e:
-            Benchmark.Stop()
-            print("Exception:",e)
+        response = client.post("/workflow/workflow-source",json=job,headers=headers)
+        Benchmark.Stop()
+        assert response.ok
+
 
     def test_delete_workflow(self):
         HEADING()
