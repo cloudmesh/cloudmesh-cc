@@ -31,6 +31,7 @@ client = TestClient(app)
 @pytest.mark.incremental
 class TestService:
 
+
     @pytest.mark.anyio
     async def test_home(self):
         HEADING()
@@ -59,33 +60,33 @@ class TestService:
         Benchmark.Stop()
         assert response.status_code == 200
 
-    # def test_add_job(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     job = '''{
-    #       "name": "string",
-    #       "user": "string",
-    #       "host": "string",
-    #       "label": "string",
-    #       "kind": "string",
-    #       "status": "string",
-    #       "progress": 0,
-    #       "script": "string",
-    #       "pid": 0,
-    #       "parent": "string"
-    #     }'''
-    #     headers = {
-    #         'accept': 'application/json',
-    #         'Content-Type': 'application/json'
-    #     }
-    #
-    #     try:
-    #         response = client.post("/workflow/workflow-source",data=job,headers=headers)
-    #         Benchmark.Stop()
-    #         assert response.ok
-    #     except Exception as e:
-    #         Benchmark.Stop()
-    #         print("Exception:",e)
+    def test_add_job(self):
+        HEADING()
+        Benchmark.Start()
+        job = '''{
+          "name": "string",
+          "user": "string",
+          "host": "string",
+          "label": "string",
+          "kind": "string",
+          "status": "string",
+          "progress": 0,
+          "script": "string",
+          "pid": 0,
+          "parent": "string"
+        }'''
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        try:
+            response = client.post("/workflow/workflow-source",json=job,headers=headers)
+            Benchmark.Stop()
+            assert response.ok
+        except Exception as e:
+            Benchmark.Stop()
+            print("Exception:",e)
 
     def test_delete_workflow(self):
         HEADING()
@@ -115,4 +116,5 @@ class TestService:
 
     def test_benchmark(self):
         HEADING()
+        response = client.delete("/workflow/workflow-service")
         Benchmark.print(csv=True, sysinfo=False, tag="cc")

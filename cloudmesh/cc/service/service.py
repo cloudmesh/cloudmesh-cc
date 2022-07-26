@@ -221,7 +221,6 @@ def get_workflow(name: str, job: str = None):
 @app.get("/run")
 def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
-    print('THIS IS THE WORKFLOW!!!')
     print(w)
     try:
         if type == "topo":
