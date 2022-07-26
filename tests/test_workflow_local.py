@@ -48,7 +48,6 @@ else:
 w = None
 
 
-
 def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username

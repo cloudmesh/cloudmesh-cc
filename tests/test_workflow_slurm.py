@@ -59,6 +59,7 @@ wait_job = f"wait-slurm"
 
 w = None
 
+
 @pytest.mark.incremental
 class TestWorkflowSlurm:
 
