@@ -20,6 +20,7 @@ import os
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.util import banner
 import glob
 
 
@@ -105,8 +106,9 @@ async def home():
 #
 
 def load_workflow(name: str) -> Workflow:
-    filename = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-    w = Workflow(name=name,filename=filename)
+    filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+
+    w = Workflow()
     w.load_with_state(filename=filename)
     # w.load(filename)
     # print(w.yaml)
@@ -218,15 +220,14 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-@app.get("/run")
+@app.get("/run/{name}")
 def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
-    print(w)
     try:
         if type == "topo":
             w.run_topo(show=True)
         else:
-            w.run_parallel(show=True,period=1.0)
+            w.run_parallel(show=True)
         return {"Success":"Workflow ran successfully"}
     except Exception as e:
         print("Exception:", e)

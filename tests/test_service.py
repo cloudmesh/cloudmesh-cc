@@ -7,6 +7,7 @@ import glob
 from pathlib import Path
 
 import os
+import time
 import yaml
 import json
 import pytest
@@ -46,7 +47,7 @@ w = None
 def create_workflow():
     global w
     global username
-    w = Workflow(filename=path_expand("./tests/workflow-service.yaml"), clear=True)
+    w = Workflow(filename=Shell.map_filename("tests/workflow-service.yaml").path)
 
     localuser = Shell.sys_user()
     login = {
@@ -106,15 +107,18 @@ class TestService:
         HEADING()
         Benchmark.Start()
         yaml_dir = Shell.map_filename('~/cm/cloudmesh-cc/tests/workflow-service.yaml').path
-        # try:
-        #     Shell.run(f'rm {yaml_dir}')
-        # except Exception as e:
-        #     print(e)
-        # assert not os.path.exists(yaml_dir)
-        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
-        assert not os.path.exists(destination)
+        yaml_dir2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
+        yaml_dir3 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/workflow-service.yaml').path
+        try:
+            Shell.run(f'rm -rf {yaml_dir}')
+            Shell.run(f'rm -rf {yaml_dir2}')
+        except Exception as e:
+            print(e)
+        assert not os.path.exists(yaml_dir)
+        assert not os.path.exists(yaml_dir2)
         w = create_workflow()
-        w.save_with_state(yaml_dir)
+        w.save_with_state(filename=yaml_dir)
+        w.save_with_state(filename=yaml_dir3)
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -156,7 +160,7 @@ class TestService:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        response = client.get("/run?name=workflow-service&type=topo")
+        response = client.get("/run/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
 
@@ -173,7 +177,7 @@ class TestService:
         assert response.ok
         Benchmark.Stop()
 
-
+class b:
     def test_delete_workflow(self):
         HEADING()
         Benchmark.Start()

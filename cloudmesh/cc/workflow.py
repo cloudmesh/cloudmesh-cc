@@ -126,14 +126,15 @@ class Graph:
         self.colors[key].update(**colors)
 
     def __str__(self):
+
         data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
         }
         if self.colors:
             data["colors"] = dict(self.colors)
-
-        return yaml.dump(data, indent=2)
+        workflow = {'workflow': data}
+        return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
 
@@ -798,7 +799,6 @@ class Workflow:
             filename = filename or "/tmp/workflow.svg"
 
         first = True
-
         for name in order():
             job = self.job(name=name)
 
