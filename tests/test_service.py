@@ -34,7 +34,8 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        dir = Shell.map_filename('tests/workflow-source.yaml').path
+        Shell.rm('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml')
+        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
         Shell.copy2(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
                     dir)
         Benchmark.Stop()
@@ -61,7 +62,8 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        files = {"file": open("./tests/workflow-source.yaml","rb")}
+        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
+        files = {"file": open(dir, "rb")}
         response = client.post("/upload",files=files)
         Benchmark.Stop()
         assert response.status_code == 200
@@ -108,20 +110,11 @@ class TestService:
             Benchmark.Stop()
             print("Exception:",e)
 
-class b:
-
-    def test_delete_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        response = client.delete("/workflow/workflow-source")
-        Benchmark.Stop()
-        assert response.status_code == 200
-
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        responsejob = client.get("/workflow/workflow?job=start")
-        response = client.get("/workflow/workflow")
+        responsejob = client.get("/workflow/workflow-source?job=start")
+        response = client.get("/workflow/workflow-source")
         Benchmark.Stop()
         assert response.status_code == 200
         assert responsejob.ok
@@ -129,10 +122,20 @@ class b:
     def test_run(self):
         HEADING()
         Benchmark.Start()
+        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
         # uploading the correct workflow
-        files = {"file": open("./tests/workflow.yaml", "rb")}
+        files = {"file": open(dir, "rb")}
         r = client.post("/upload", files=files)
-        response = client.get("/run?name=workflow&type=topo")
+        response = client.get("/run/workflow-source?type=topo")
+        Benchmark.Stop()
+        assert response.status_code == 200
+
+class b:
+
+    def test_delete_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        response = client.delete("/workflow/workflow-source")
         Benchmark.Stop()
         assert response.status_code == 200
 
