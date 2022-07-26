@@ -34,12 +34,15 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        Shell.rm('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml')
+        os.system('rm -f ~/.cloudmesh/workflow/workflow-source/workflow-source.yaml')
+        # os.system('mkdir -p  ~/.cloudmesh/workflow/workflow-source/')
         dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
-        Shell.copy2(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
-                    dir)
+        Shell.copy_file(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
+                    f"{dir}/workflow-source.yaml")
         assert os.path.exists(Shell.map_filename("~/.cloudmesh/workflow/workflow-source/workflow-source.yaml").path)
         Benchmark.Stop()
+
+class a:
 
     @pytest.mark.anyio
     async def test_home(self):
