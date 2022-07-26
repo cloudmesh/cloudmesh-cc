@@ -254,20 +254,15 @@ def add_job(name: str, job: Jobpy):
 
 
     w = load_workflow(name)
-    print("TYPE(JOB):",type(job))
-    print("W.NAME",w.name)
+
     try:
-        print("after try")
         w.add_job(name=job.name, user=job.user, host=job.host, label=job.label,
                   kind=job.kind, status=job.status, progress=job.progress, script=job.script)
-        print("adding dependencies now")
         w.add_dependencies(f"{job.parent},{job.name}")
-        print("saving the state")
         w.save_with_state(w.filename)
     except Exception as e:
         print("Exception:",e)
 
-    print("job name:",job.name)
     return {"jobs": w.jobs}
 
 #

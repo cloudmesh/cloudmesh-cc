@@ -106,7 +106,7 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        yaml_dir = Shell.map_filename('~/cm/cloudmesh-cc/tests/workflow-service.yaml').path
+        yaml_dir = Shell.map_filename('./tests/workflow-service.yaml').path
         yaml_dir2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
         yaml_dir3 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/workflow-service.yaml').path
         try:
@@ -177,14 +177,12 @@ class TestService:
         assert response.ok
         Benchmark.Stop()
 
-class b:
     def test_delete_workflow(self):
         HEADING()
         Benchmark.Start()
         response = client.delete("/workflow/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
-
 
     def test_benchmark(self):
         HEADING()
