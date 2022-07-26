@@ -58,21 +58,12 @@ except:  # noqa: E722
     login_success = False
 
 
-
-
 def create_workflow():
     global w
     global username
     w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
 
-    if os_is_windows():
-        localuser = os.environ["USERNAME"]
-    else:
-        try:
-            localuser = os.environ['USER']
-        except:
-            # docker image does not have user variable. so just do basename of home
-            localuser = os.system('basename $HOME')
+    localuser = Shell.sys_user()
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},

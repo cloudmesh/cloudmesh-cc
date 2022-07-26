@@ -20,17 +20,102 @@ from cloudmesh.common.util import readfile
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Console, Shell
 from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
 
 banner(Path(__file__).name, c = "#", color="RED")
 
 client = TestClient(app)
 
+variables = Variables()
+if "host" not in variables:
+    host = "rivanna.hpc.virginia.edu"
+else:
+    host = variables["host"]
+
+username = variables["username"]
+
+if username is None:
+    Console.error("No username provided. Use cms set username=ComputingID")
+    quit()
+
+w = None
+
+def create_workflow():
+    global w
+    global username
+    w = Workflow(filename=path_expand("tests/workflow-service.yaml"), clear=True)
+
+    localuser = Shell.sys_user()
+    login = {
+        "localhost": {"user": f"{localuser}", "host": "local"},
+        "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+        "pi": {"user": f"{localuser}", "host": "red"},
+    }
+
+    n = 0
+
+    user = login["localhost"]["user"]
+    host = login["localhost"]["host"]
+
+    jobkind="local"
+
+    w.add_job(name="start", kind=jobkind, user=user, host=host)
+    w.add_job(name="end", kind=jobkind, user=user, host=host)
+
+    for host, kind in [("localhost", jobkind),
+                       ("rivanna", "ssh")]:
+
+        # ("rivanna", "ssh")
+
+        print("HOST:", host)
+        user = login[host]["user"]
+        host = login[host]["host"]
+        # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
+
+        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+
+        w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
+        n = n + 1
+
+        first = n - 3
+        second = n - 2
+        third = n - 1
+        w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+        w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+        w.add_dependencies(f"job-{host}-{third},end")
+        w.add_dependencies(f"start,job-{host}-{first}")
+
+    print(len(w.jobs) == n)
+    g = str(w.graph)
+    print(g)
+    assert "name: start" in g
+    assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+    return w
+
 @pytest.mark.incremental
 class TestService:
 
+    def test_start_over(self):
+        HEADING()
+        Benchmark.Start()
+        yaml_dir = Shell.map_filename('~/cm/cloudmesh-cc/tests/workflow-service.yaml').path
+        Shell.run(f'rm {yaml_dir}')
+        assert not os.path.exists(yaml_dir)
+        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/').path
+        destination2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
+        print ("DDDD", destination)
+        assert not os.path.exists(destination)
+        assert not os.path.exists(destination2)
+        w = create_workflow()
+        w.save_with_state(yaml_dir)
+        Benchmark.Stop()
 
     @pytest.mark.anyio
     async def test_home(self):
@@ -47,8 +132,7 @@ class TestService:
         Benchmark.Start()
         response = client.get("/workflows")
         assert response.status_code == 200
-        list = glob.glob("~/.cloudmesh/workflow")
-        print(list)
+        print(Shell.run("ls ~/.cloudmesh/workflow"))
         # assert response.json() == {"workflows":list}
         Benchmark.Stop()
 

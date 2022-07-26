@@ -193,7 +193,7 @@ def delete_workflow(name: str, job: str = None):
         try:
             # w = load_workflow(name)
             directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-            os.system(f"rm -r {directory}")
+            os.system(f"rm -rf {directory}")
             return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
         except Exception as e:
             return {"message": f"There was an error deleting the workflow '{name}'"}
