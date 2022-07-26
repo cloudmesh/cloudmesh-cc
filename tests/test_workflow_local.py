@@ -47,11 +47,33 @@ else:
 
 global w
 
+def remove_workflow(filename="test/workflow.yaml"):
+    # Remove workflow source yaml filr
+    Shell.rm(filename)
 
-def create_workflow():
+    #Remove experiment execution directory
+    full_dir = Shell.map_filename('~/experiment').path
+    r = Shell.rmdir(full_dir)
+
+    #remove locat workflow file, for state notification
+    Shell.rm("~/.cloudmesh/workflow/workflow")
+
+    # logic
+    # 1. copy test/workflow.yaml to local dir simulation from where we start the workflow
+    # 2. copy the workflow to ~/experiment wher it is executed
+    # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     we observeve that changes
+    # Why do we need the ~/.cloudmesh dir
+    # * it simulates a remote computer as it would be have ther, as the execution is done
+    #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    # * for ssh slurm and others we simply use ~/experiment
+    # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+
+def create_workflow(filename="tests/workflow.yaml"):
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+    w = Workflow(filename=path_expand(filename), clear=True)
 
     if os_is_windows():
         localuser = os.environ["USERNAME"]
@@ -112,37 +134,35 @@ def create_workflow():
     print(len(w.jobs) == n)
     g = str(w.graph)
     print(g)
+    w.save(filename=filename)
     assert "name: start" in g
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
+banner("TEST START")
 
 class TestWorkflowLocal:
 
-    def test_experiment_setup(self):
-        full_dir = Shell.map_filename('~/experiment').path
-        try:
-            r = Shell.run(f"rm -rf {full_dir}")
-            r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
-        except Exception as e:
-            print(e.output)
-        # copy all files needed into experiment
-        # run all other tests in ./experiment_ssh
-        # os.chdir("./experiment_ssh")
-        # then run all test there
+    def test_clean_files_and_dirs(self):
+        remove_workflow(filename="test/workflow.yaml")
 
-    def test_load_workflow(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w = Workflow()
-        w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
-        Benchmark.Stop()
-        g = str(w.graph)
-        print(g)
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
-        assert "start" in g
-        assert "host: local" in g
+
+
+class a:
+
+    # # THIS TEST DOES NOT MAKE ANY SENSE AS NO WORKKFLOW SHOULD YET EXISTS
+    # def test_load_workflow(self):
+    #     HEADING()
+    #     global w
+    #     Benchmark.Start()
+    #     w = Workflow()
+    #     w.load(filename='tests/workflow.yaml', clear=True)
+    #     Benchmark.Stop()
+    #     g = str(w.graph)
+    #     print(g)
+    #     assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+    #     assert "start" in g
+    #     assert "host: local" in g
 
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
