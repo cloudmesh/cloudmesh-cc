@@ -25,6 +25,7 @@ from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
 
 banner(Path(__file__).name, c = "#", color="RED")
@@ -32,12 +33,7 @@ banner(Path(__file__).name, c = "#", color="RED")
 variables = Variables()
 
 host = "localhost"
-if os_is_windows():
-    username = os.environ["USERNAME"]
-elif os_is_linux():
-    username = os.system('whoami')
-else:
-    username = os.environ["USER"]
+username = Shell.sys_user()
 
 job = None
 

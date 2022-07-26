@@ -27,7 +27,7 @@ from cloudmesh.common.variables import Variables
     was created with a bunch of jobs. 
 """
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
@@ -45,17 +45,18 @@ if "username" in variables:
 else:
     username = os.path.basename(os.environ["HOME"])
 
-global w
+w = None
+
 
 def remove_workflow(filename="test/workflow.yaml"):
     # Remove workflow source yaml filr
     Shell.rm(filename)
 
-    #Remove experiment execution directory
+    # Remove experiment execution directory
     full_dir = Shell.map_filename('~/experiment').path
     r = Shell.rmdir(full_dir)
 
-    #remove locat workflow file, for state notification
+    # remove locat workflow file, for state notification
     Shell.rm("~/.cloudmesh/workflow/workflow")
 
     # logic
@@ -70,19 +71,13 @@ def remove_workflow(filename="test/workflow.yaml"):
     # * for ssh slurm and others we simply use ~/experiment
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
-def create_workflow(filename="tests/workflow.yaml"):
+
+def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username
-    w = Workflow(filename=path_expand(filename), clear=True)
+    w = Workflow(filename=filename, load=False)
 
-    if os_is_windows():
-        localuser = os.environ["USERNAME"]
-    else:
-        try:
-            localuser = os.environ['USER']
-        except:
-            # docker image does not have user variable. so just do basename of home
-            localuser = os.system('basename $HOME')
+    localuser = Shell.sys_user()
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
@@ -94,7 +89,7 @@ def create_workflow(filename="tests/workflow.yaml"):
     user = login["localhost"]["user"]
     host = login["localhost"]["host"]
 
-    jobkind="local"
+    jobkind = "local"
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
@@ -106,7 +101,6 @@ def create_workflow(filename="tests/workflow.yaml"):
     #                    ("rivanna", "local")]:
     for host, kind in [("localhost", jobkind),
                        ("rivanna", jobkind)]:
-
         # ("rivanna", "ssh")
 
         print("HOST:", host)
@@ -116,7 +110,7 @@ def create_workflow(filename="tests/workflow.yaml"):
 
         label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
 
-        w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
         w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
@@ -139,13 +133,24 @@ def create_workflow(filename="tests/workflow.yaml"):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
+
 banner("TEST START")
+
 
 class TestWorkflowLocal:
 
     def test_clean_files_and_dirs(self):
+        HEADING()
         remove_workflow(filename="test/workflow.yaml")
-
+        for filename in [
+            'test/workflow.yaml',
+            '~/experiment',
+            "~/.cloudmesh/workflow/workflow",
+            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+        ]:
+            where = Shell.map_filename(filename).path
+            print (filename, where)
+            #assert not os.path.exists(where)
 
 
 class a:
@@ -161,6 +166,22 @@ class a:
     #     g = str(w.graph)
     #     print(g)
     #     assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+    #     assert "start" in g
+    #     assert "host: local" in g
+
+    # def test_load_workflow(self):
+    #     HEADING()
+    #     filename = 'tests/workflow.yaml'
+    #     global w
+    #     w = create_workflow(filename=filename)
+    #     w.save(filename=filename)
+    #     Benchmark.Start()
+    #     w.load(filename=filename)
+    #     Benchmark.Stop()
+    #     g = str(w.graph)
+    #     print(g)
+    #     assert w.filename != path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
+    #     assert w.filename == path_expand(filename)
     #     assert "start" in g
     #     assert "host: local" in g
 
