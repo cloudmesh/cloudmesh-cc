@@ -1,5 +1,6 @@
 dest
 tests/workflow.yaml
+tests/workflow-service.yaml
 *.error
 *.log
 .DS_Store
