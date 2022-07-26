@@ -107,9 +107,9 @@ class TestService:
         HEADING()
         Benchmark.Start()
         # uploading the correct workflow
-        files = {"file": open("./tests/workflow.yaml", "rb")}
+        files = {"file": open("./tests/workflow-service.yaml", "rb")}
         r = client.post("/upload", files=files)
-        response = client.get("/run?name=workflow&type=topo")
+        response = client.get("/run?name=workflow-service&type=topo")
         Benchmark.Stop()
         assert response.status_code == 200
 
