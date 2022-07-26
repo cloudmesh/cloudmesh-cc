@@ -44,8 +44,6 @@ class TestService:
         assert os.path.exists(destination)
         Benchmark.Stop()
 
-class a:
-
     @pytest.mark.anyio
     async def test_home(self):
         HEADING()
