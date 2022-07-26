@@ -227,6 +227,7 @@ def run_workflow(name: str, type: str = "topo"):
             w.run_topo(show=True)
         else:
             w.run_parallel(show=True,period=1.0)
+        return {"Success":"Workflow ran successfully"}
     except Exception as e:
         print("Exception:", e)
 
