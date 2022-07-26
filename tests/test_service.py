@@ -38,6 +38,7 @@ class TestService:
         dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
         Shell.copy2(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
                     dir)
+        assert os.path.exists(Shell.map_filename("~/.cloudmesh/workflow/workflow-source/workflow-source.yaml").path)
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -84,19 +85,6 @@ class TestService:
           "status": "undefined",
           "script": "nothing.sh"
         }
-
-        #     job = '''{
-        #       "name": "string",
-        #       "user": "string",
-        #       "host": "string",
-        #       "label": "string",
-        #       "kind": "string",
-        #       "status": "string",
-        #       "progress": 0,
-        #       "script": "string",
-        #       "pid": 0,
-        #       "parent": "string"
-        #     }'''
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/json'
