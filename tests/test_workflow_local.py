@@ -48,29 +48,6 @@ else:
 w = None
 
 
-def remove_workflow(filename="test/workflow.yaml"):
-    # Remove workflow source yaml filr
-    Shell.rm(filename)
-
-    # Remove experiment execution directory
-    full_dir = Shell.map_filename('~/experiment').path
-    r = Shell.rmdir(full_dir)
-
-    # remove locat workflow file, for state notification
-    Shell.rm("~/.cloudmesh/workflow/workflow")
-
-    # logic
-    # 1. copy test/workflow.yaml to local dir simulation from where we start the workflow
-    # 2. copy the workflow to ~/experiment wher it is executed
-    # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
-    #     we observeve that changes
-    # Why do we need the ~/.cloudmesh dir
-    # * it simulates a remote computer as it would be have ther, as the execution is done
-    #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
-    #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
-    # * for ssh slurm and others we simply use ~/experiment
-    # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
-
 
 def create_workflow(filename='tests/workflow.yaml'):
     global w
@@ -133,41 +110,102 @@ def create_workflow(filename='tests/workflow.yaml'):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
+def remove_workflow(filename="tests/workflow.yaml"):
+    # Remove workflow source yaml filr
+    Shell.rm(filename)
+
+    # Remove experiment execution directory
+    full_dir = Shell.map_filename('~/experiment').path
+
+    # TODO:
+    # r = Shell.rmdir(full_dir)
+    r = Shell.run(f"rm -fr {full_dir}")
+
+    # remove locat workflow file, for state notification
+    Shell.run("rm -rf ~/.cloudmesh/workflow")
+
+    # logic
+    # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
+    #     # Remove workflow source yaml filr
+    #     Shell.rm(filename)
+    #
+    #     # Remove experiment execution directory
+    #     full_dir = Shell.map_filename('~/experiment').path
+    #
+    #     # TODO:
+    #     # r = Shell.rmdir(full_dir)
+    #     r = Shell.run(f"rm -fr {full_dir}")
+    #
+    #     # remove locat workflow file, for state notification
+    #     Shell.rm("~/.cloudmesh/workflow")
+    #
+    #     # logic
+    #     # 1. copy tests/workflow.yaml to local dir simulation from where we start the workflow
+    #     # 2. copy the workflow to ~/experiment wher it is executed
+    #     # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     #     we observeve that changes
+    #     # Why do we need the ~/.cloudmesh dir
+    #     # * it simulates a remote computer as it would be have ther, as the execution is done
+    #     #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #     #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    #     # * for ssh slurm and others we simply use ~/experiment
+    #     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+    #
+    #     for filename in [
+    #             'tests/workflow.yaml',
+    #             '~/experiment',
+    #             "~/.cloudmesh/workflow/workflow",
+    #             "~/.cloudmesh/workflow/workflow/workflow.yaml"
+    #         ]:
+    #             where = Shell.map_filename(filename).path
+    #             assert not os.path.exists(where)tests//workflow.yaml to local dir simulation from where we start the workflow
+    # 2. copy the workflow to ~/experiment wher it is executed
+    # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     we observeve that changes
+    # Why do we need the ~/.cloudmesh dir
+    # * it simulates a remote computer as it would be have ther, as the execution is done
+    #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    # * for ssh slurm and others we simply use ~/experiment
+    # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+
+    for filename in [
+            'tests/workflow.yaml',
+            '~/experiment',
+            "~/.cloudmesh/workflow/workflow",
+            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+        ]:
+            where = Shell.map_filename(filename).path
+            assert not os.path.exists(where)
+
 
 banner("TEST START")
 
 
 class TestWorkflowLocal:
 
-    def test_clean_files_and_dirs(self):
+
+    def test_load_workflow(self):
         HEADING()
-        remove_workflow(filename="test/workflow.yaml")
-        for filename in [
-            'test/workflow.yaml',
-            '~/experiment',
-            "~/.cloudmesh/workflow/workflow",
-            "~/.cloudmesh/workflow/workflow/workflow.yaml"
-        ]:
-            where = Shell.map_filename(filename).path
-            print (filename, where)
-            #assert not os.path.exists(where)
+        global w
 
 
-class a:
+        Benchmark.Start()
+        remove_workflow(filename="tests/workflow.yaml")
 
-    # # THIS TEST DOES NOT MAKE ANY SENSE AS NO WORKKFLOW SHOULD YET EXISTS
-    # def test_load_workflow(self):
-    #     HEADING()
-    #     global w
-    #     Benchmark.Start()
-    #     w = Workflow()
-    #     w.load(filename='tests/workflow.yaml', clear=True)
-    #     Benchmark.Stop()
-    #     g = str(w.graph)
-    #     print(g)
-    #     assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
-    #     assert "start" in g
-    #     assert "host: local" in g
+        w0 = create_workflow()
+        w0.save('tests/workflow.yaml')
+
+        w = Workflow()
+        w.load(filename='tests/workflow.yaml')
+
+        Benchmark.Stop()
+        g = str(w.graph)
+        print(g)
+
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
+        assert "start" in g
+        assert "host: local" in g
 
     # def test_load_workflow(self):
     #     HEADING()
@@ -199,7 +237,9 @@ class a:
         """
         HEADING()
         global w
+
         Benchmark.Start()
+        remove_workflow(filename="tests/workflow.yaml")
         w = create_workflow()
         Benchmark.Stop()
         g = str(w.graph)
