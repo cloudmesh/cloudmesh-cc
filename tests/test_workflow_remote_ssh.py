@@ -58,10 +58,10 @@ except:  # noqa: E722
     login_success = False
 
 
-def create_workflow():
+def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+    w = Workflow(filename=filename, load=False)
 
     localuser = Shell.sys_user()
     login = {
@@ -115,7 +115,6 @@ def create_workflow():
     return w
 
 
-
 class TestWorkflowSsh:
 
     # def test_load_workflow(self):
@@ -137,6 +136,8 @@ class TestWorkflowSsh:
         try:
             r = Shell.run(f"rm -rf {full_dir}")
             r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
+            r = Shell.run(f"rm tests/workflow.yaml")
+            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow/workflow.yaml")
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment

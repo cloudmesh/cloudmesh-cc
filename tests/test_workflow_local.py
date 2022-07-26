@@ -27,7 +27,7 @@ from cloudmesh.common.variables import Variables
     was created with a bunch of jobs. 
 """
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
@@ -45,22 +45,15 @@ if "username" in variables:
 else:
     username = os.path.basename(os.environ["HOME"])
 
-global w
+w = None
 
 
-def create_workflow():
+def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+    w = Workflow(filename=filename, load=False)
 
-    if os_is_windows():
-        localuser = os.environ["USERNAME"]
-    else:
-        try:
-            localuser = os.environ['USER']
-        except:
-            # docker image does not have user variable. so just do basename of home
-            localuser = os.system('basename $HOME')
+    localuser = Shell.sys_user()
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
@@ -72,7 +65,7 @@ def create_workflow():
     user = login["localhost"]["user"]
     host = login["localhost"]["host"]
 
-    jobkind="local"
+    jobkind = "local"
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
@@ -84,7 +77,6 @@ def create_workflow():
     #                    ("rivanna", "local")]:
     for host, kind in [("localhost", jobkind),
                        ("rivanna", jobkind)]:
-
         # ("rivanna", "ssh")
 
         print("HOST:", host)
@@ -94,7 +86,7 @@ def create_workflow():
 
         label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
 
-        w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
         w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
@@ -112,37 +104,108 @@ def create_workflow():
     print(len(w.jobs) == n)
     g = str(w.graph)
     print(g)
+    w.save(filename=filename)
     assert "name: start" in g
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
+def remove_workflow(filename="tests/workflow.yaml"):
+    # Remove workflow source yaml filr
+    Shell.rm(filename)
+
+    # Remove experiment execution directory
+    full_dir = Shell.map_filename('~/experiment').path
+
+    # TODO:
+    # r = Shell.rmdir(full_dir)
+    r = Shell.run(f"rm -fr {full_dir}")
+
+    # remove locat workflow file, for state notification
+    Shell.run("rm -rf ~/.cloudmesh/workflow")
+
+    # logic
+    # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
+    #     # Remove workflow source yaml filr
+    #     Shell.rm(filename)
+    #
+    #     # Remove experiment execution directory
+    #     full_dir = Shell.map_filename('~/experiment').path
+    #
+    #     # TODO:
+    #     # r = Shell.rmdir(full_dir)
+    #     r = Shell.run(f"rm -fr {full_dir}")
+    #
+    #     # remove locat workflow file, for state notification
+    #     Shell.rm("~/.cloudmesh/workflow")
+    #
+    #     # logic
+    #     # 1. copy tests/workflow.yaml to local dir simulation from where we start the workflow
+    #     # 2. copy the workflow to ~/experiment wher it is executed
+    #     # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     #     we observeve that changes
+    #     # Why do we need the ~/.cloudmesh dir
+    #     # * it simulates a remote computer as it would be have ther, as the execution is done
+    #     #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #     #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    #     # * for ssh slurm and others we simply use ~/experiment
+    #     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+    #
+    #     for filename in [
+    #             'tests/workflow.yaml',
+    #             '~/experiment',
+    #             "~/.cloudmesh/workflow/workflow",
+    #             "~/.cloudmesh/workflow/workflow/workflow.yaml"
+    #         ]:
+    #             where = Shell.map_filename(filename).path
+    #             assert not os.path.exists(where)tests//workflow.yaml to local dir simulation from where we start the workflow
+    # 2. copy the workflow to ~/experiment wher it is executed
+    # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     we observeve that changes
+    # Why do we need the ~/.cloudmesh dir
+    # * it simulates a remote computer as it would be have ther, as the execution is done
+    #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    # * for ssh slurm and others we simply use ~/experiment
+    # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+
+    for filename in [
+            'tests/workflow.yaml',
+            '~/experiment',
+            "~/.cloudmesh/workflow/workflow",
+            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+        ]:
+            where = Shell.map_filename(filename).path
+            assert not os.path.exists(where)
+
+
+banner("TEST START")
+
 
 class TestWorkflowLocal:
 
-    def test_experiment_setup(self):
-        full_dir = Shell.map_filename('~/experiment').path
-        try:
-            r = Shell.run(f"rm -rf {full_dir}")
-            r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
-        except Exception as e:
-            print(e.output)
-        # copy all files needed into experiment
-        # run all other tests in ./experiment_ssh
-        # os.chdir("./experiment_ssh")
-        # then run all test there
 
     def test_load_workflow(self):
         HEADING()
         global w
+
+
         Benchmark.Start()
+        remove_workflow(filename="tests/workflow.yaml")
+
+        w0 = create_workflow()
+        w0.save('tests/workflow.yaml')
+
         w = Workflow()
-        w.load(filename=path_expand('tests/workflow.yaml'), clear=True)
+        w.load(filename='tests/workflow.yaml')
+
         Benchmark.Stop()
         g = str(w.graph)
         print(g)
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow.yaml")
+
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
         assert "start" in g
         assert "host: local" in g
+
 
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
@@ -158,7 +221,9 @@ class TestWorkflowLocal:
         """
         HEADING()
         global w
+
         Benchmark.Start()
+        remove_workflow(filename="tests/workflow.yaml")
         w = create_workflow()
         Benchmark.Stop()
         g = str(w.graph)
