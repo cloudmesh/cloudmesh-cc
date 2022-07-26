@@ -69,8 +69,8 @@ class TestService:
     def test_add_job(self):
         HEADING()
         # w = Workflow(filename='workflow.yaml', name='workflow')
-        global w
-        w = Workflow(filename="tests/workflow-source.yaml")
+        #global w
+        #w = Workflow(filename="tests/workflow-source.yaml")
         # w.save('~/.cloudmesh/workflow/workflow/workflow.yaml')
         Benchmark.Start()
         job = {
@@ -82,13 +82,26 @@ class TestService:
           "status": "undefined",
           "script": "nothing.sh"
         }
+
+        #     job = '''{
+        #       "name": "string",
+        #       "user": "string",
+        #       "host": "string",
+        #       "label": "string",
+        #       "kind": "string",
+        #       "status": "string",
+        #       "progress": 0,
+        #       "script": "string",
+        #       "pid": 0,
+        #       "parent": "string"
+        #     }'''
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/json'
         }
 
         try:
-            response = client.post("/j/workflow/job1",data=job,headers=headers)
+            response = client.post("/job_add/workflow-source",data=job)
             Benchmark.Stop()
             assert response.ok
         except Exception as e:
