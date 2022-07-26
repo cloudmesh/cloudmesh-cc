@@ -35,11 +35,13 @@ class TestService:
         HEADING()
         Benchmark.Start()
         os.system('rm -f ~/.cloudmesh/workflow/workflow-source/workflow-source.yaml')
+        Shell.mkdir("~/.cloudmesh/workflow/workflow-source/")
         # os.system('mkdir -p  ~/.cloudmesh/workflow/workflow-source/')
-        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
+        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
+        print ("DDDD", destination)
         Shell.copy_file(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
-                    f"{dir}/workflow-source.yaml")
-        assert os.path.exists(Shell.map_filename("~/.cloudmesh/workflow/workflow-source/workflow-source.yaml").path)
+                    destination)
+        assert os.path.exists(destination)
         Benchmark.Stop()
 
 class a:
