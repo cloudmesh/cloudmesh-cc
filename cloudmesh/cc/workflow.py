@@ -379,26 +379,28 @@ class Workflow:
 
     """
 
-    def __init__(self, name=None, filename=None, user=None, host=None, clear=True):
+    def __init__(self, name=None, filename=None, user=None, host=None, load=True):
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
         # gvl reimplemented but did not test
         # The workflow is run in experiment/workflow
 
-        if filename:
-            # base = os.path.basename(filename).replace(".yaml", "")
-            # self.filename = f"~/.cloudmesh/workflow/{base}/{base}.yaml"
-            self.name = name
+        print("XYZXYZXYZXYZ")
+        print(f'hereisname {name}')
+        print(f'hereisfilename {filename}')
+        self.name = name or 'workflow'
+
+        # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
+        if not filename:
+            self.filename = f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
+        else:
             self.filename = filename
-
-        if filename is None and name is None:
-            base = "workflow"
-            self.filename = f"~/.cloudmesh/workflow/{base}/{base}.yaml"
-
-            self.name = name
-
         self.filename = path_expand(self.filename)
+        print('HERE IS MY FILENAME')
+        print(self.filename)
+        print('I PRINTED IT')
+        Shell.mkdir(os.path.dirname(self.filename))
 
         self.user = user
         self.host = host
@@ -407,9 +409,10 @@ class Workflow:
             print("Workflow Filename:", self.filename)
             self.graph = Graph(name=name, filename=filename)
             # gvl addded load but not tested
-            if not clear:
+            if load:
                 self.load(self.filename)
-        except:  # noqa: E722
+        except Exception as e:  # noqa: E722
+            Console.error(e, traceflag=True)
             pass
 
         # should this go into graph?
@@ -497,7 +500,7 @@ class Workflow:
         if "colors" in data:
             self.graph.colors = data['colors']
 
-    def load(self, filename, clear=False):
+    def load(self, filename):
         """
         Loads a workflow graph from file. However the file is still stored in
         the filename that was used when the Workflow was created. This allows to

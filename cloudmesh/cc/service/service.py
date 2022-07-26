@@ -45,10 +45,6 @@ class Jobpy(BaseModel):
     label: str | None = None
     kind: str | None = None
     status: str | None = None
-    progress: int | None = None
-    script: str | None = None
-    pid: int | None = None
-    parent: str | None = None
 
 
 q = test_run()
@@ -218,7 +214,7 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-@app.get("/run")
+@app.get("/run/{name}")
 def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
     print(w)
@@ -232,8 +228,8 @@ def run_workflow(name: str, type: str = "topo"):
         print("Exception:", e)
 
 
-@app.post("/workflow/{name}")
-def add_job(name: str, job: Jobpy):
+@app.post("/job_add/{workflow_name}")
+def add_job(workflow_name: str, job: dict):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
@@ -250,22 +246,27 @@ def add_job(name: str, job: Jobpy):
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-
-
-    w = load_workflow(name)
+    pydantic_dict = Jobpy(**job)
+    print(pydantic_dict)
+    print('heres somethingcool')
+    for k in pydantic_dict:
+        print(k)
+    print(pydantic_dict.name)
+    w = load_workflow(workflow_name)
     print("W.NAME",w.name)
     try:
         print("after try")
-        w.add_job(name=job.name, user=job.user, host=job.host, label=job.label,
-                  kind=job.kind, status=job.status, progress=job.progress, script=job.script)
+        w.add_job(name=pydantic_dict.name, user=pydantic_dict.user, host=pydantic_dict.host, label=pydantic_dict.label,
+                  kind=pydantic_dict.kind, status=pydantic_dict.status)
         print("adding dependencies now")
-        w.add_dependencies(f"{job.parent},{job.name}")
+        # jp is outcommenting this because dealing with the parent is too hard
+        # w.add_dependencies(f"{pydantic_dict.parent},{pydantic_dict.name}")
         print("saving the state")
         w.save_with_state(w.filename)
     except Exception as e:
         print("Exception:",e)
 
-    print("job name:",job.name)
+    print("job name:",pydantic_dict.name)
     return {"jobs": w.jobs}
 
 #

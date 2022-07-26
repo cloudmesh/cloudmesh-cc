@@ -13,9 +13,9 @@ import pytest
 from httpx import AsyncClient
 from fastapi.testclient import TestClient
 
-
 from cloudmesh.cc.service.service import app
 from cloudmesh.common.Benchmark import Benchmark
+from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
@@ -142,7 +142,8 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        files = {"file": open("./tests/workflow-source.yaml","rb")}
+        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
+        files = {"file": open(dir, "rb")}
         response = client.post("/upload",files=files)
         Benchmark.Stop()
         assert response.status_code == 200
@@ -175,16 +176,38 @@ class b:
 
     def test_delete_workflow(self):
         HEADING()
+        # w = Workflow(filename='workflow.yaml', name='workflow')
+        #global w
+        #w = Workflow(filename="tests/workflow-source.yaml")
+        # w.save('~/.cloudmesh/workflow/workflow/workflow.yaml')
         Benchmark.Start()
-        response = client.delete("/workflow/workflow-source")
-        Benchmark.Stop()
-        assert response.status_code == 200
+        job = {
+          "name": "job1",
+          "user": "gregor",
+          "host": "localhost",
+          "label": "simple",
+          "kind": "localhost",
+          "status": "undefined",
+          "script": "nothing.sh"
+        }
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        try:
+            response = client.post("/job_add/workflow-source", json=job, headers=headers)
+            Benchmark.Stop()
+            assert response.ok
+        except Exception as e:
+            Benchmark.Stop()
+            print("Exception:",e)
 
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        responsejob = client.get("/workflow/workflow?job=start")
-        response = client.get("/workflow/workflow")
+        responsejob = client.get("/workflow/workflow-source?job=start")
+        response = client.get("/workflow/workflow-source")
         Benchmark.Stop()
         assert response.status_code == 200
         assert responsejob.ok
@@ -192,10 +215,20 @@ class b:
     def test_run(self):
         HEADING()
         Benchmark.Start()
+        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
         # uploading the correct workflow
-        files = {"file": open("./tests/workflow-service.yaml", "rb")}
+        files = {"file": open(dir, "rb")}
         r = client.post("/upload", files=files)
-        response = client.get("/run?name=workflow-service&type=topo")
+        response = client.get("/run/workflow-source?type=topo")
+        Benchmark.Stop()
+        assert response.status_code == 200
+
+class b:
+
+    def test_delete_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        response = client.delete("/workflow/workflow-source")
         Benchmark.Stop()
         assert response.status_code == 200
 
