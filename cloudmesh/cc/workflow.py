@@ -125,15 +125,17 @@ class Graph:
             self.colors[key] = {}
         self.colors[key].update(**colors)
 
+
     def __str__(self):
+
         data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
         }
         if self.colors:
             data["colors"] = dict(self.colors)
-
-        return yaml.dump(data, indent=2)
+        workflow = {'workflow': data}
+        return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
 
@@ -386,9 +388,6 @@ class Workflow:
         # gvl reimplemented but did not test
         # The workflow is run in experiment/workflow
 
-        print("XYZXYZXYZXYZ")
-        print(f'hereisname {name}')
-        print(f'hereisfilename {filename}')
         self.name = name or 'workflow'
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
@@ -397,9 +396,6 @@ class Workflow:
         else:
             self.filename = filename
         self.filename = path_expand(self.filename)
-        print('HERE IS MY FILENAME')
-        print(self.filename)
-        print('I PRINTED IT')
         Shell.mkdir(os.path.dirname(self.filename))
 
         self.user = user
@@ -566,7 +562,6 @@ class Workflow:
                 **kwargs
                 ):
 
-        print("entering add_job")
         label = label or name
         user = user or self.user
         host = host or self.host
@@ -584,7 +579,6 @@ class Workflow:
             raise ValueError("user or host not specified")
 
         now = str(DateTime.now())
-        print("adding the node")
         self.graph.add_node(
             name=name,
             label=label,
@@ -598,9 +592,7 @@ class Workflow:
             script=script,
             instance=None
         )
-        print("saving....")
         self.save(self.filename)
-        print("saved the file")
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
@@ -798,7 +790,6 @@ class Workflow:
             filename = filename or "/tmp/workflow.svg"
 
         first = True
-
         for name in order():
             job = self.job(name=name)
 

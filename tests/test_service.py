@@ -7,26 +7,98 @@ import glob
 from pathlib import Path
 
 import os
+import time
 import yaml
 import json
 import pytest
 from httpx import AsyncClient
 from fastapi.testclient import TestClient
 
+
 from cloudmesh.cc.service.service import app
 from cloudmesh.common.Benchmark import Benchmark
-from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
-from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Console, Shell
 from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
 
 banner(Path(__file__).name, c = "#", color="RED")
 
 client = TestClient(app)
+
+variables = Variables()
+if "host" not in variables:
+    host = "rivanna.hpc.virginia.edu"
+else:
+    host = variables["host"]
+
+username = variables["username"]
+
+if username is None:
+    Console.error("No username provided. Use cms set username=ComputingID")
+    quit()
+
+w = None
+
+def create_workflow():
+    global w
+    global username
+    w = Workflow(filename=Shell.map_filename("tests/workflow-service.yaml").path)
+
+    localuser = Shell.sys_user()
+    login = {
+        "localhost": {"user": f"{localuser}", "host": "local"},
+        "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+        "pi": {"user": f"{localuser}", "host": "red"},
+    }
+
+    n = 0
+
+    user = login["localhost"]["user"]
+    host = login["localhost"]["host"]
+
+    jobkind="local"
+
+    w.add_job(name="start", kind=jobkind, user=user, host=host)
+    w.add_job(name="end", kind=jobkind, user=user, host=host)
+
+    for host, kind in [("localhost", jobkind),
+                       ("rivanna", "ssh")]:
+
+        # ("rivanna", "ssh")
+
+        print("HOST:", host)
+        user = login[host]["user"]
+        host = login[host]["host"]
+        # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
+
+        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+
+        w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
+        n = n + 1
+        w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
+        n = n + 1
+
+        first = n - 3
+        second = n - 2
+        third = n - 1
+        w.add_dependencies(f"job-{host}-{first},job-{host}-{second}")
+        w.add_dependencies(f"job-{host}-{second},job-{host}-{third}")
+        w.add_dependencies(f"job-{host}-{third},end")
+        w.add_dependencies(f"start,job-{host}-{first}")
+
+    print(len(w.jobs) == n)
+    g = str(w.graph)
+    print(g)
+    assert "name: start" in g
+    assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+    return w
 
 @pytest.mark.incremental
 class TestService:
@@ -34,14 +106,19 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        os.system('rm -f ~/.cloudmesh/workflow/workflow-source/workflow-source.yaml')
-        Shell.mkdir("~/.cloudmesh/workflow/workflow-source/")
-        # os.system('mkdir -p  ~/.cloudmesh/workflow/workflow-source/')
-        destination = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
-        print ("DDDD", destination)
-        Shell.copy_file(f"https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/tests/workflow-source.yaml",
-                    destination)
-        assert os.path.exists(destination)
+        yaml_dir = Shell.map_filename('./tests/workflow-service.yaml').path
+        yaml_dir2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
+        yaml_dir3 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/workflow-service.yaml').path
+        try:
+            Shell.run(f'rm -rf {yaml_dir}')
+            Shell.run(f'rm -rf {yaml_dir2}')
+        except Exception as e:
+            print(e)
+        assert not os.path.exists(yaml_dir)
+        assert not os.path.exists(yaml_dir2)
+        w = create_workflow()
+        w.save_with_state(filename=yaml_dir)
+        w.save_with_state(filename=yaml_dir3)
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -66,46 +143,16 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
-        files = {"file": open(dir, "rb")}
+        files = {"file": open("./tests/workflow-service.yaml","rb")}
         response = client.post("/upload",files=files)
         Benchmark.Stop()
         assert response.status_code == 200
 
-    def test_add_job(self):
-        HEADING()
-        # w = Workflow(filename='workflow.yaml', name='workflow')
-        #global w
-        #w = Workflow(filename="tests/workflow-source.yaml")
-        # w.save('~/.cloudmesh/workflow/workflow/workflow.yaml')
-        Benchmark.Start()
-        job = {
-          "name": "job1",
-          "user": "gregor",
-          "host": "localhost",
-          "label": "simple",
-          "kind": "localhost",
-          "status": "undefined",
-          "script": "nothing.sh"
-        }
-        headers = {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-
-        try:
-            response = client.post("/job_add/workflow-source", json=job, headers=headers)
-            Benchmark.Stop()
-            assert response.ok
-        except Exception as e:
-            Benchmark.Stop()
-            print("Exception:",e)
-
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        responsejob = client.get("/workflow/workflow-source?job=start")
-        response = client.get("/workflow/workflow-source")
+        responsejob = client.get("/workflow/workflow-service?job=start")
+        response = client.get("/workflow/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
         assert responsejob.ok
@@ -113,20 +160,27 @@ class TestService:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-source/workflow-source.yaml').path
-        # uploading the correct workflow
-        files = {"file": open(dir, "rb")}
-        r = client.post("/upload", files=files)
-        response = client.get("/run/workflow-source?type=topo")
+        response = client.get("/run/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
 
-class b:
+    def test_add_job(self):
+        HEADING()
+        Benchmark.Start()
+        job = '{"name": "string","user": "string","host": "string","label": "string","kind": "string","status": "string","progress": 0,"script": "string","pid": 0,"parent": "string"}'
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        response = client.post("/workflow/workflow-service",data=job,headers=headers)
+        assert response.ok
+        Benchmark.Stop()
 
     def test_delete_workflow(self):
         HEADING()
         Benchmark.Start()
-        response = client.delete("/workflow/workflow-source")
+        response = client.delete("/workflow/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
 
