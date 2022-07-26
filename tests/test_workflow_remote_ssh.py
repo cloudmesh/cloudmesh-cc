@@ -58,21 +58,12 @@ except:  # noqa: E722
     login_success = False
 
 
-
-
-def create_workflow():
+def create_workflow(filename='tests/workflow.yaml'):
     global w
     global username
-    w = Workflow(filename=path_expand("tests/workflow.yaml"), clear=True)
+    w = Workflow(filename=filename, load=False)
 
-    if os_is_windows():
-        localuser = os.environ["USERNAME"]
-    else:
-        try:
-            localuser = os.environ['USER']
-        except:
-            # docker image does not have user variable. so just do basename of home
-            localuser = os.system('basename $HOME')
+    localuser = Shell.sys_user()
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
@@ -124,7 +115,6 @@ def create_workflow():
     return w
 
 
-
 class TestWorkflowSsh:
 
     # def test_load_workflow(self):
@@ -146,6 +136,8 @@ class TestWorkflowSsh:
         try:
             r = Shell.run(f"rm -rf {full_dir}")
             r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
+            r = Shell.run(f"rm tests/workflow.yaml")
+            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow.yaml")
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment

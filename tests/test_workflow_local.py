@@ -52,14 +52,7 @@ def create_workflow(filename='tests/workflow.yaml'):
     global username
     w = Workflow(filename=filename, load=False)
 
-    if os_is_windows():
-        localuser = os.environ["USERNAME"]
-    else:
-        try:
-            localuser = os.environ['USER']
-        except:
-            # docker image does not have user variable. so just do basename of home
-            localuser = os.system('basename $HOME')
+    localuser = Shell.sys_user()
     login = {
         "localhost": {"user": f"{localuser}", "host": "local"},
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
@@ -122,6 +115,8 @@ class TestWorkflowLocal:
         full_dir = Shell.map_filename('~/experiment').path
         try:
             r = Shell.run(f"rm -rf {full_dir}")
+            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow/workflow.yaml")
+            r = Shell.run(f"rm ~/cm/cloudmesh-cc/tests/workflow.yaml")
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment
@@ -133,10 +128,9 @@ class TestWorkflowLocal:
         HEADING()
         filename = 'tests/workflow.yaml'
         global w
-        w0 = create_workflow(filename=filename)
-        w0.save(filename=filename)
+        w = create_workflow(filename=filename)
+        w.save(filename=filename)
         Benchmark.Start()
-        w = Workflow()
         w.load(filename=filename)
         Benchmark.Stop()
         g = str(w.graph)
@@ -145,13 +139,13 @@ class TestWorkflowLocal:
         assert w.filename == path_expand(filename)
         assert "start" in g
         assert "host: local" in g
-class c:
-    # def test_reset_experiment_dir(self):
-    #     os.system("rm -rf ~/experiment")
-    #     exp = path_expand("~/experiment")
-    #     shutil.rmtree(exp, ignore_errors=True)
-    #     os.system('cp tests/workflow-sh/*.sh .')
-    #     assert not os.path.isfile(exp)
+
+    def test_reset_experiment_dir(self):
+        os.system("rm -rf ~/experiment")
+        exp = path_expand("~/experiment")
+        shutil.rmtree(exp, ignore_errors=True)
+        os.system('cp tests/workflow-sh/*.sh .')
+        assert not os.path.isfile(exp)
 
     def test_set_up(self):
         """
