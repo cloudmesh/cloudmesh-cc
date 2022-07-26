@@ -137,7 +137,7 @@ class TestWorkflowSsh:
             r = Shell.run(f"rm -rf {full_dir}")
             r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
             r = Shell.run(f"rm tests/workflow.yaml")
-            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow.yaml")
+            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow/workflow.yaml")
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment
