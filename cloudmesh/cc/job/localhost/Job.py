@@ -311,22 +311,17 @@ class Job:
         for the slurm sbatch
         """
 
-        print ("SSSS", script, exec)
         if script is None and exec is None:
             Console.error("Script and executable can not be used at the same time.")
 
         if script is not None:
-            print ("exec none")
             exec = script
         elif '.ipynb' in exec:
-            print ("ipynb")
             output = exec.replace(".ipynb", "-output.ipynb")
             exec = f"papermill {exec} {output}"
         elif '.sh' in exec:
-            print ("sh")
             pass
         elif '.py' in exec:
-            print ("py")
             exec = f'python {exec}'
         else:
             pass
