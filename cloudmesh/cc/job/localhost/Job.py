@@ -1,11 +1,13 @@
 import os
 import subprocess
 import time
+import textwrap
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import writefile
 from cloudmesh.common.systeminfo import os_is_windows
 
 
@@ -68,6 +70,7 @@ class Job:
             f"name:      {self.name}",
             f"label:     {self.label}",
             f"directory: {self.directory}",
+            f"filetype:  {self.filetype}",
             f"data:      {self.data}",
             f"locals     {locals()}"
         ]
@@ -125,12 +128,11 @@ class Job:
             state = os.system(f'{command} &')
 
         logfile = path_expand(f"{self.directory}/{self.name}.sh")
-        errorfile = path_expand(f"{self.directory}/{self.name}.sh")
 
         started = False
         while started:
             os.system("sync")
-            started = os.path.exists(logfile) and os.path.exists(errorfile)
+            started = os.path.exists(logfile)
             print("STARTED")
             if not started:
                 time.sleep(0.1)
@@ -303,19 +305,41 @@ class Job:
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
 
-    def create(self, command, ntasks=1):
+    def create(self,  filename=None, script=None, exec=None):
         """
         creates a template
         for the slurm sbatch
         """
-        template = \
+
+        print ("SSSS", script, exec)
+        if script is None and exec is None:
+            Console.error("Script and executable can not be used at the same time.")
+
+        if script is not None:
+            print ("exec none")
+            exec = script
+        elif '.ipynb' in exec:
+            print ("ipynb")
+            output = exec.replace(".ipynb", "-output.ipynb")
+            exec = f"papermill {exec} {output}"
+        elif '.sh' in exec:
+            print ("sh")
+            pass
+        elif '.py' in exec:
+            print ("py")
+            exec = f'python {exec}'
+        else:
+            pass
+
+
+        template = textwrap.dedent(
             f"""
-        #!/bin/bash
-        #
-        #SBATCH --job-name=test
-        #SBATCH --output=result.out
-        #
-        #SBATCH --ntasks={ntasks}
-        #
-        """
-        template += f"\n{command}"
+            #!/bin/sh
+            echo "# cloudmesh status=running progress=1 pid=$$"
+            {exec}
+            echo "# cloudmesh status=running progress=100 pid=$$"
+            #
+            """).strip()
+        script = template.format(exec=exec)
+        writefile(filename=filename, content=script)
+        return script

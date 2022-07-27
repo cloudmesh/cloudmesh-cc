@@ -46,6 +46,7 @@ wait_job = f"run-killme"
 class TestJobLocalhost:
 
     def test_create_run(self):
+        HEADING()
         os.system("rm -r ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
