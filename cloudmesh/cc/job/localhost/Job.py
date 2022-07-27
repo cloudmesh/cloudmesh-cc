@@ -36,6 +36,18 @@ class Job:
         for key, value in self.data.items():
             setattr(self, key, value)
 
+        self.script = getattr(self, 'script', None)
+        if self.script is None:
+            self.filetype = 'sh'
+        elif '.ipynb' in self.script:
+            self.filetype = 'ipynb'
+        elif '.sh' in self.script:
+            self.filetype = 'sh'
+        elif '.py' in self.script:
+            self.filetype = 'python'
+        else:
+            self.filetype = 'os'
+
         if self.name is None:
             Console.error("Name is not defined")
             raise ValueError
@@ -80,6 +92,18 @@ class Job:
         os.system(command)
 
     def run(self):
+        # TODO: allow execution of different job/filetypes.
+        # currently only sh is being done.
+        # if self.script is None:
+        #     self.filetype = 'os'
+        # elif '.ipynb' in self.script:
+        #     self.filetype = 'ipynb'
+        # elif '.sh' in self.script:
+        #     self.filetype = 'sh'
+        # elif '.py' in self.script:
+        #     self.filetype = 'python'
+        # else:
+        #     self.filetype = 'os'
         self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
@@ -169,11 +193,20 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
-        Shell.run(f"chmod ug+rx ./{self.name}.sh")
+        self.chmod()
         command = f"cp {self.name}.sh {self.directory}/."
         print(command)
         Shell.run(command)
         os.system("sync")
+        r = os.system(command)
+        return r
+
+    def chmod(self):
+        if self.filetype == "python":
+            command = f"chmod ug+rx ./{self.name}.py"
+        else:
+            command = f"chmod ug+rx ./{self.name}.sh"
+        print(command)
         r = os.system(command)
         return r
 

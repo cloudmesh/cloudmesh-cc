@@ -132,9 +132,9 @@ class Graph:
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
         }
-        if self.colors:
-            data["colors"] = dict(self.colors)
         workflow = {'workflow': data}
+        if self.colors:
+            workflow["colors"] = dict(self.colors)
         return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
@@ -862,6 +862,22 @@ class Workflow:
                 else:
                     cwd = os.getcwd()
                     os.system(f'start chrome {cwd}\\{filename}')
+
+    def display(self, filename=None, name='workflow', first=True):
+        if os_is_windows():
+            Shell.mkdir("./tmp")
+            filename = filename or f"tmp/{name}.svg"
+        else:
+            filename = filename or f"/tmp/{name}.svg"
+        self.graph.save(filename=filename, colors="status", engine="dot")
+        if first and os_is_mac():
+            os.system(f'open {filename}')
+            first = False
+        elif first and os_is_linux():
+            os.system(f'gopen {filename}')
+        else:
+            cwd = os.getcwd()
+            os.system(f'start chrome {cwd}\\{filename}')
 
     def sequential_order(self):
         tuples = []

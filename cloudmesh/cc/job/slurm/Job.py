@@ -52,6 +52,17 @@ class Job:
         for key, value in self.data.items():
             setattr(self, key, value)
 
+        if self.script is None:
+            self.filetype = 'os'
+        elif '.ipynb' in self.script:
+            self.filetype = 'ipynb'
+        elif '.sh' in self.script:
+            self.filetype = 'sh'
+        elif '.py' in self.script:
+            self.filetype = 'python'
+        else:
+            self.filetype = 'os'
+
         if self.username is None:
             self.username = os.environ["USERNAME"]
 
@@ -177,8 +188,17 @@ class Job:
     def sync(self):
         self.clean()
         self.mkdir_experimentdir()
-        Shell.run(f"chmod ug+rx ./{self.name}.sh")
+        self.chmod()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        print(command)
+        r = os.system(command)
+        return r
+
+    def chmod(self):
+        if self.filetype == "python":
+            command = f"chmod ug+rx ./{self.name}.py"
+        else:
+            command = f"chmod ug+rx ./{self.name}.sh"
         print(command)
         r = os.system(command)
         return r

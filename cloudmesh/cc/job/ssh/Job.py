@@ -11,17 +11,19 @@ from cloudmesh.common.util import readfile
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, directory=None, type="sh", **argv):
+    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
         cms set username=abc123
 
         creates a job by passing either a dict with **dict or named arguments
         attribute1 = value1, ...
 
-        :param data:
-        :type data:
-        :return:
-        :rtype:
+        :param name:
+        :param username:
+        :param host:
+        :param label:
+        :param directory:
+        :param argv:
         """
 
         self.data = argv
@@ -31,11 +33,21 @@ class Job:
         self.name = name
         self.directory = directory
         self.label = label
-        self.type = type
 
         # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
+
+        if self.script is None:
+            self.filetype = 'os'
+        elif '.ipynb' in self.script:
+            self.filetype = 'ipynb'
+        elif '.sh' in self.script:
+            self.filetype = 'sh'
+        elif '.py' in self.script:
+            self.filetype = 'python'
+        else:
+            self.filetype = 'os'
 
         if self.name is None:
             Console.error("Name is not defined")
@@ -74,14 +86,14 @@ class Job:
     def run(self):
         self.mkdir_experimentdir()
 
-        if self.type == "python":
+        if self.filetype == "python":
             command = f'chmod ug+x {self.name}.py'
         else:
             command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
 
-            if self.type == "python":
+            if self.filetype == "python":
                 command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2>&1 &"'
             else:
                 command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
@@ -167,16 +179,23 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
-        if self.type == "python":
-            command1 = f"chmod ug+rx ./{self.name}.py"
-            command2 = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
+        self.chmod()
+
+        if self.filetype == "python":
+            command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
         else:
-            command1 = f"chmod ug+rx ./{self.name}.sh"
-            command2 = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
-        print(command1)
-        r = os.system(command1)
-        print(command2)
-        r = os.system(command2)
+            command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        print(command)
+        r = os.system(command)
+        return r
+
+    def chmod(self):
+        if self.filetype == "python":
+            command = f"chmod ug+rx ./{self.name}.py"
+        else:
+            command = f"chmod ug+rx ./{self.name}.sh"
+        print(command)
+        r = os.system(command)
         return r
 
     def exists(self, filename):
