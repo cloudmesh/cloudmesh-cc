@@ -1,0 +1,12 @@
+workflow:
+  nodes:
+    prepare:
+      name: prepare
+      user: jp
+      host: local
+      kind: local
+      status: ready
+      label: prepare
+      script: prepare.sh
+  dependencies:
+    - c
