@@ -107,7 +107,9 @@ class Job:
         if os_is_windows():
             state = None
             try:
-                r = subprocess.Popen(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"', shell=True)
+                command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
+                print(command)
+                r = subprocess.Popen(command, shell=True)
                 state = 0
             except Exception as e:
                 print(e)
