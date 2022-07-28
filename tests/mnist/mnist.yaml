@@ -3,17 +3,40 @@ workflow:
     start:
       label: start
       kind: local
+      user: green
       host: local
-      exec: "echo start"
+      status: ready
+      progress: 0
+      created: '2022-07-28 02:58:42.664289'
+      modified: '2022-07-28 02:58:42.664289'
+      script: start.sh
+      exec: echo start
+      instance: null
+      name: start
     mlp_mnist:
       label: mlp_mnist
       kind: local
+      user: green
       host: local
-      exec: "echo mnist"
+      status: ready
+      progress: 0
+      created: '2022-07-28 02:58:42.665707'
+      modified: '2022-07-28 02:58:42.665707'
+      script: mlp_mnist.sh
+      exec: echo mnist
+      instance: null
+      name: mlp_mnist
     end:
       label: stop
-      kind: ssh
+      kind: local
+      user: green
       host: local
-      script: "echo end"
-  dependencies:
-    - start,mlp_mnist,end
+      status: ready
+      progress: 0
+      created: '2022-07-28 02:58:42.667127'
+      modified: '2022-07-28 02:58:42.667127'
+      script: end.sh
+      exec: echo end
+      instance: null
+      name: end
+  dependencies: {}

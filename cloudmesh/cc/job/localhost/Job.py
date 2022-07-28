@@ -305,7 +305,8 @@ class Job:
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
 
-    def create(self,  filename=None, script=None, exec=None):
+    @staticmethod
+    def create(filename=None, script=None, exec=None):
         """
         creates a template
         for the slurm sbatch

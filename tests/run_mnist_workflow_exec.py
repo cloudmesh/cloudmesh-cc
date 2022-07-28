@@ -42,7 +42,9 @@ class TestMnist:
         r = Shell.ls()
         pprint(r)
 
-        #w = Workflow(filename=filename, load=True)
+        w = Workflow(filename=filename)
+        w.load(filename=filename)
+        print (w)
         #w.load(filename=filename)
         #w.display(name='mnist')
         # w.run_topo(show=True)

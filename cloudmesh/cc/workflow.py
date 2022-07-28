@@ -142,7 +142,7 @@ class Graph:
         #    raise NotImplementedError
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
-        raise NotImplementedError(" please implement load")
+        Console.warning("please graph load")
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -540,6 +540,15 @@ class Workflow:
                 node["name"] = name
             self.add_job(**node)
 
+        # loops can not be combined
+        for name, node in graph["workflow"]["nodes"].items():
+            if "exec" in node and node["kind"] == "local":
+                from cloudmesh.cc.job.localhost.Job import Job
+                print ("NNNN", node)
+                job = Job.create(filename=node['script'], exec=node["exec"])
+                print (job)
+
+
         for edge in graph["workflow"]["dependencies"]:
             self.add_dependencies(edge)
 
@@ -559,14 +568,13 @@ class Workflow:
                 status="ready",
                 progress=0,
                 script=None,
+                exec=None,
                 pid=None,
                 **kwargs
                 ):
 
-
-
         label = label or name
-        user = user or self.user
+        user = user or self.user or Shell.sys_user()
         host = host or self.host
         defined = True
         if name is None:
@@ -596,6 +604,7 @@ class Workflow:
             created=now,
             modified=now,
             script=script,
+            exec=exec,
             instance=None
         )
         self.save(self.filename)

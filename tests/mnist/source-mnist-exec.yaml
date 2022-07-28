@@ -12,8 +12,8 @@ workflow:
       exec: "echo mnist"
     end:
       label: stop
-      kind: ssh
+      kind:  local
       host: local
-      script: "echo end"
+      exec: "echo end"
   dependencies:
     - start,mlp_mnist,end
