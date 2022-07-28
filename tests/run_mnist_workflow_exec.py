@@ -45,6 +45,7 @@ class TestMnist:
         w = Workflow(filename=filename)
         w.load(filename=filename)
         print (w)
+        w.save(filename=filename)
         #w.load(filename=filename)
-        #w.display(name='mnist')
+        w.display(name='mnist')
         # w.run_topo(show=True)

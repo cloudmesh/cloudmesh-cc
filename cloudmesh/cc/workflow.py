@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import networkx as nx
 import yaml
 from matplotlib import pyplot as plt
-
+from pprint import pprint
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.parameter import Parameter
@@ -79,31 +79,34 @@ g.show()
 class Graph:
     # this is pseudocode
 
-    def __init__(self, name="graph", filename=None):
+    def __init__(self, name="graph", filename=None, clear=True):
         self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
-        self.load(filename=filename)
-        self.colors = {}
+        self.colors = None
         self.set_status_colors()
         self.name = name
+        self.filename = filename
+
+        if filename is not None and not clear:
+            self.load(filename=filename)
         #
         # maybe
         # config:
         #    name:
         #    colors:
 
-    def __getitem__(self, name):
-        #return self.nodes[name]  this is the super basic implementation
-        n_under = name.split('_')
-        n_comma = name.split(',')
-        n_under_length = len(n_under)
-        n_comma_length = len(n_comma)
-        if n_comma_length == 2 or n_under_length == 2:
-            return self.edges[name]
-        else:
-            return self.nodes[name]
+    def clear(self):
+        self.sep = "-"
+        self.edges = dotdict()
+        self.nodes = dotdict()
+        self.colors = None
+        self.set_status_colors()
+        self.name = None
+        self.filename = None
 
+    def __getitem__(self, name):
+        return self.nodes[name]
 
     def set_status_colors(self):
         # self.add_color("status",
@@ -133,8 +136,10 @@ class Graph:
             "dependencies": dict(self.edges),
         }
         workflow = {'workflow': data}
-        if self.colors:
+
+        if self.colors is not None:
             workflow["colors"] = dict(self.colors)
+
         return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
@@ -142,7 +147,36 @@ class Graph:
         #    raise NotImplementedError
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
-        Console.warning("please graph load")
+
+        with open(filename, 'r') as stream:
+             graph = yaml.safe_load(stream)
+
+        pprint (graph)
+
+        dependencies = graph["workflow"]["dependencies"]
+        nodes = graph["workflow"]["nodes"].items()
+
+        #
+        # # for name, node in graph["workflow"]["nodes"].items():
+        for name, node in nodes:
+            if "name" not in node:
+                node["name"] = name
+            print("GGGGGGGGGGGGGGGG", name, node)
+            self.add_node(**node)
+
+        print (self)
+        #
+        # for edge in dependencies:
+        #     self.add_dependencies(edge)
+
+
+        # loops can not be combined
+        # for name, node in graph["workflow"]["nodes"].items():
+        #     if "exec" in node and node["kind"] == "local":
+        #         from cloudmesh.cc.job.localhost.Job import Job
+        #         print ("NNNN", node)
+        #         job = Job.create(filename=node['script'], exec=node["exec"])
+        #         print (job)
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -495,7 +529,7 @@ class Workflow:
         if "colors" in data:
             self.graph.colors = data['colors']
 
-    def load(self, filename):
+    def load(self, filename, clear=True):
         """
         Loads a workflow graph from file. However the file is still stored in
         the filename that was used when the Workflow was created. This allows to
@@ -531,26 +565,32 @@ class Workflow:
             - a,b
         """
 
-        with open(filename, 'r') as stream:
-            graph = yaml.safe_load(stream)
+        self.graph = Graph()
+        self.graph.load(filename=filename)
 
-        # for name, node in graph["workflow"]["nodes"].items():
-        for name, node in graph["workflow"]["nodes"].items():
-            if "name" not in node:
-                node["name"] = name
-            self.add_job(**node)
+        # with open(filename, 'r') as stream:
+        #     graph = yaml.safe_load(stream)
+        #
+        # dependencies = graph["workflow"]
+        # nodes = graph["workflow"]["nodes"].items()
+        #
+        # # for name, node in graph["workflow"]["nodes"].items():
+        # for name, node in nodes:
+        #     if "name" not in node:
+        #         node["name"] = name
+        #     self.add_job(**node)
+        #
+        # for edge in dependencies:
+        #     self.add_dependencies(edge)
+
 
         # loops can not be combined
-        for name, node in graph["workflow"]["nodes"].items():
-            if "exec" in node and node["kind"] == "local":
-                from cloudmesh.cc.job.localhost.Job import Job
-                print ("NNNN", node)
-                job = Job.create(filename=node['script'], exec=node["exec"])
-                print (job)
-
-
-        for edge in graph["workflow"]["dependencies"]:
-            self.add_dependencies(edge)
+        # for name, node in graph["workflow"]["nodes"].items():
+        #     if "exec" in node and node["kind"] == "local":
+        #         from cloudmesh.cc.job.localhost.Job import Job
+        #         print ("NNNN", node)
+        #         job = Job.create(filename=node['script'], exec=node["exec"])
+        #         print (job)
 
     def save(self, filename):
         if os_is_windows():

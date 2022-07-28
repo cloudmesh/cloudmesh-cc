@@ -77,13 +77,11 @@ class TestGraph:
         HEADING()
         global g
         Benchmark.Start()
-        edge = g['a_b']
         e = g.edges['a_b']
         another_edge = g.edges['a_b']
         Benchmark.Stop()
         print('First Edge: ', e)
-        assert edge == e == another_edge
-
+        assert e == another_edge
 
     def test_str(self):
         HEADING()
@@ -150,6 +148,15 @@ class TestGraph:
         Shell.open('dest/test-dot.svg')
 
         Benchmark.Stop()
+
+    def test_load(self):
+        HEADING()
+        g.clear()
+        print (g)
+        assert g.nodes == {}
+        assert g.edges == {}
+
+class a:
 
     def test_benchmark(self):
         HEADING()
