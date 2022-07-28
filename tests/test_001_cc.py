@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_cc.py
-# pytest -v  tests/test_cc.py
-# pytest -v --capture=no  tests/test_cc.py::Test_cc::<METHODNAME>
+# pytest -v --capture=no tests/test_001_cc.py
+# pytest -v  tests/test_001_cc.py
+# pytest -v --capture=no  tests/test_001_cc.py::Test_cc::<METHODNAME>
 ###############################################################
 import pytest
 from cloudmesh.common.Benchmark import Benchmark

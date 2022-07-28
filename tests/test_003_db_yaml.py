@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_db_yaml.py
-# pytest -v  tests/test_db_yaml.py
-# pytest -v --capture=no  tests/test_db_yaml.py::TestDbYaml::<METHODNAME>
+# pytest -v --capture=no tests/test_003_db_yaml.py
+# pytest -v  tests/test_003_db_yaml.py
+# pytest -v --capture=no  tests/test_003_db_yaml.py::TestDbYaml::<METHODNAME>
 ###############################################################
 import os.path
 
@@ -12,8 +12,14 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.util import HEADING
 from pathlib import Path
 from cloudmesh.common.util import banner
+from cloudmesh.common.Shell import Shell
 
 banner(Path(__file__).name, c = "#", color="RED")
+
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
+
 
 @pytest.mark.incremental
 class TestDbYaml:

@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v -x --capture=no tests/test_job_localhost.py
-# pytest -v  tests/test_job_localhost.py
-# pytest -v --capture=no  tests/test_job_localhost.py::TestJobLocalhost::<METHODNAME>
+# pytest -v -x --capture=no tests/test_010_job_localhost.py
+# pytest -v  tests/test_010_job_localhost.py
+# pytest -v --capture=no  tests/test_010_job_localhost.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
 #
@@ -51,7 +51,7 @@ class TestJobLocalhost:
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
+            os.system(f"cp ../tests/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 

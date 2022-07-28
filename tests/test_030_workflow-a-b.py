@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow-a-b.py
-# pytest -v  tests/test_workflow.py
-# pytest -v --capture=no  tests/workflow.py::TestWorkflow::<METHODNAME>
+# pytest -v -x --capture=no tests/test_030_workflow-a-b.py
+# pytest -v  tests/test_030_workflow.py
+# pytest -v --capture=no  tests/test_030_workflow.py::TestWorkflow::<METHODNAME>
 # ##############################################################
 import os.path
 from pathlib import Path
@@ -30,9 +30,19 @@ banner(Path(__file__).name, c = "#", color="RED")
     was created with a bunch of jobs. 
 """
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
+
+
 variables = Variables()
 
 name = "run"
+
+variables["user"] = Shell.user()
+variables["host"] = Shell.host()
+
+print(variables["host"])
 
 
 w = None
@@ -46,10 +56,9 @@ class TestWorkflowAB:
         global w
         Benchmark.Start()
         w = Workflow()
-        w.load("tests/workflow-a-b.yaml")
+        w.load("../tests/workflows/workflow-a-b.yaml")
         Benchmark.Stop()
         print(w.graph)
-
 
 
     def test_show(self):
@@ -114,7 +123,7 @@ class TestWorkflowAB:
     def test_save(self):
         HEADING()
         global w
-        dest = "./dest/workflow-a-b.yaml"
+        dest = "workflow-a-b.yaml"
         Benchmark.Start()
         w.save(filename=dest)
         Benchmark.Stop()
@@ -124,7 +133,7 @@ class TestWorkflowAB:
     def test_save_with_state(self):
         HEADING()
         global w
-        dest = "./dest/workflow-a-b-state.yaml"
+        dest = "workflow-a-b-state.yaml"
         Benchmark.Start()
         w.save_with_state(filename=dest)
         Benchmark.Stop()
@@ -135,7 +144,7 @@ class TestWorkflowAB:
     def test_read_with_state(self):
         HEADING()
         global w
-        dest = "./dest/workflow-a-b-state.yaml"
+        dest = "workflow-a-b-state.yaml"
         Benchmark.Start()
         d = w.save_with_state(filename=dest,stdout=True).strip()
         w.load_with_state(filename=dest)
@@ -147,7 +156,7 @@ class TestWorkflowAB:
 
     def test_new_workflow(self):
         HEADING()
-        dest = "./dest/workflow-a-b-state.yaml"
+        dest = "workflow-a-b-state.yaml"
         w = Workflow()
         w.load_with_state(filename=dest)
         content = readfile(dest).strip()

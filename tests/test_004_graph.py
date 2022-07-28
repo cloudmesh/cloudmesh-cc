@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_graph.py
-# pytest -v  tests/test_graph.py
-# pytest -v --capture=no  tests/test_graph.py::TestGraph::<METHODNAME>
+# pytest -v --capture=no tests/test_004_graph.py
+# pytest -v  tests/test_004_graph.py
+# pytest -v --capture=no  tests/test_004_graph.py::TestGraph::<METHODNAME>
 ###############################################################
 
 from pathlib import Path
@@ -14,8 +14,17 @@ from cloudmesh.common.Benchmark import Benchmark, StopWatch
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
+import os
 
 banner(Path(__file__).name, c = "#", color="RED")
+
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+
+Shell.copy("tests/workflows/workflow-a-b.yaml", "dest")
+
+os.chdir("dest")
+
 
 g = Graph()
 
@@ -132,19 +141,18 @@ class TestGraph:
         Benchmark.Start()
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
-        Shell.mkdir("dest")
 
-        g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
-        g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-        g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        g.save(filename="test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+        g.save(filename="test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+        g.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
 
-        r = Shell.cat("dest/test-dot.dot")
+        r = Shell.cat("test-dot.dot")
         print(r)
 
-        print ("display dest/test-graphviz.svg")
-        Shell.open('dest/test-graphviz.svg')
-        print ("display dest/test-dot.svg")
-        Shell.open('dest/test-dot.svg')
+        print ("display test-graphviz.svg")
+        Shell.open('test-graphviz.svg')
+        print ("display test-dot.svg")
+        Shell.open('test-dot.svg')
 
         Benchmark.Stop()
 
@@ -163,8 +171,8 @@ class TestGraph:
         HEADING()
         g = Graph()
         g.clear()
-        banner("load tests/workflow-a-b.yaml")
-        g.load(filename="tests/workflow-a-b.yaml")
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
         print (g)
         assert g.nodes != {}
         assert g.edges != {}
@@ -175,8 +183,8 @@ class TestGraph:
         HEADING()
         g = Graph()
         g.clear()
-        banner("load tests/workflow-a-b.yaml")
-        g.load(filename="tests/workflow-a-b.yaml")
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
         # save
         Shell.rm("tmp-a.yaml")
         g.save_to_file("tmp-a.yaml")
@@ -192,8 +200,8 @@ class TestGraph:
         HEADING()
         g = Graph()
         g.clear()
-        banner("load tests/workflow-a-b.yaml")
-        g.load(filename="tests/workflow-a-b.yaml")
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
         # save
         Shell.rm("tmp-a.yaml")
         g.save_to_file("tmp-a.yaml", exclude=None)

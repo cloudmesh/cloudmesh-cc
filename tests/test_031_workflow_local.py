@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow_local.py
-# pytest -v  tests/test_workflow.py
-# pytest -v --capture=no  tests/workflow.py::TestWorkflowLocal::<METHODNAME>
+# pytest -v -x --capture=no tests/test_031_workflow_local.py
+# pytest -v  tests/test_031_workflow_local.py
+# pytest -v --capture=no  tests/test_031_workflow_local.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil

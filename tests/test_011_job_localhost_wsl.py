@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v -x --capture=no tests/test_job_localhost_wsl.py
-# pytest -v  tests/test_job_localhost_wsl.py
-# pytest -v --capture=no  tests/test_job_localhost_wsl.py::TestJobWsl::<METHODNAME>
+# pytest -v -x --capture=no tests/test_011_job_localhost_wsl.py
+# pytest -v  tests/test_011_job_localhost_wsl.py
+# pytest -v --capture=no  tests/test_011_job_localhost_wsl.py::TestJobWsl::<METHODNAME>
 ###############################################################
 
 #

@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_queues.py
-# pytest -v  tests/test_queues.py
-# pytest -v --capture=no  tests/test_queues.py::TestQueues::<METHODNAME>
+# pytest -v --capture=no tests/test_021_queues.py
+# pytest -v  tests/test_021_queues.py
+# pytest -v --capture=no  tests/test_021_queues.py::TestQueues::<METHODNAME>
 ###############################################################
 import os.path
 from pathlib import Path
