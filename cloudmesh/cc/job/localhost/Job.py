@@ -55,7 +55,7 @@ class Job:
             raise ValueError
 
         if self.username is None:
-            self.username = os.environ["USERNAME"]
+            self.username = Shell.sys_user()
 
         if self.host is None:
             self.host = "localhost"
