@@ -150,9 +150,6 @@ class Graph:
         with open(filename, 'r') as stream:
              graph = yaml.safe_load(stream)
 
-        banner("GGGGGG")
-        pprint (graph)
-        banner ("HHHHHH")
         dependencies = graph["workflow"]["dependencies"]
         nodes = graph["workflow"]["nodes"].items()
 
