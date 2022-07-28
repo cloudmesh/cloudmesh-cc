@@ -22,6 +22,9 @@ manage and execute without supervision. We have created a service that
 lets the user run jobs across multiple platforms in a dynamic queue
 with visualization and data storage.
 
+![OpenAPI Description of the REST Interface to the Workflow](images/fastapi-service.png){#fig:fastapi-service width=50%}
+
+
 ## Current Work
 
 This software was developed using Cloudmesh, a repository
@@ -50,6 +53,8 @@ tested on various local and remote machines These cases include
 Multilayer Perceptron, LSTM (Long short-term
 memory), Auto-Encoder, Convolutional and Recurrent Neural
 Networks, Distributed Training, and PyTorch training
+
+![Design for the workflow.](images/workflow-uml.png){#fig:workflow-uml}
 
 ## Design
 
@@ -80,8 +85,9 @@ the order that was specified. This allows the user to interact with
 each of the previous objects. Finally, the service itself is a FastAPI
 implementation of the workflow. Users can access this through their
 own devices, they can add, remove jobs, and run jobs through a
-graphical user interface. This interface can be run through command
-line commands as created in the `cloudmesh-cc` repository.
+graphical user interface. This can be seen in the @fig:workflow-uml.
+This interface can be run through command line commands as created in
+the `cloudmesh-cc` repository.
 
 ### Summary
 
