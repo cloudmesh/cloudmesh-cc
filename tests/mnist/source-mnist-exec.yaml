@@ -9,7 +9,7 @@ workflow:
       label: mlp_mnist
       kind: local
       host: local
-      exec: mlp_mnist.ipynb
+      exec: "echo mnist"
     end:
       label: stop
       kind: ssh

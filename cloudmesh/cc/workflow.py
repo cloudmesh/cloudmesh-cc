@@ -138,13 +138,11 @@ class Graph:
         return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
-
         # if filename is not None:
         #    raise NotImplementedError
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
-
-        pass
+        raise NotImplementedError(" please implement load")
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -424,6 +422,7 @@ class Workflow:
 
         # self.label = None
 
+
     def __str__(self):
         return str(self.graph)
 
@@ -537,6 +536,8 @@ class Workflow:
 
         # for name, node in graph["workflow"]["nodes"].items():
         for name, node in graph["workflow"]["nodes"].items():
+            if "name" not in node:
+                node["name"] = name
             self.add_job(**node)
 
         for edge in graph["workflow"]["dependencies"]:
@@ -562,6 +563,8 @@ class Workflow:
                 **kwargs
                 ):
 
+
+
         label = label or name
         user = user or self.user
         host = host or self.host
@@ -578,6 +581,9 @@ class Workflow:
         if not defined:
             raise ValueError("user or host not specified")
 
+        if script is None:
+            script = f"{name}.sh"
+
         now = str(DateTime.now())
         self.graph.add_node(
             name=name,
@@ -593,6 +599,8 @@ class Workflow:
             instance=None
         )
         self.save(self.filename)
+
+
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)

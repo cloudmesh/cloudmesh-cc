@@ -3,37 +3,17 @@ workflow:
     start:
       label: start
       kind: local
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 22:02:14.416819'
-      modified: '2022-07-27 22:02:14.416819'
-      script: prepare.sh
-      instance: null
-      name: start
-    example_mlp_mnist:
-      label: example_mlp_mnist
-      kind: slurm
-      user: dje5dj
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 22:02:14.424116'
-      modified: '2022-07-27 22:02:14.424116'
-      script: example_mlp_mnist.sh
-      instance: null
-      name: example_mlp_mnist
+      host: local
+      exec: "echo start"
+    mlp_mnist:
+      label: mlp_mnist
+      kind: local
+      host: local
+      exec: "echo mnist"
     end:
-      label: start
+      label: stop
       kind: ssh
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 22:02:14.431157'
-      modified: '2022-07-27 22:02:14.431157'
-      script: end.sh
-      instance: null
-      name: end
-  dependencies: {}
+      host: local
+      script: "echo end"
+  dependencies:
+    - start,mlp_mnist,end
