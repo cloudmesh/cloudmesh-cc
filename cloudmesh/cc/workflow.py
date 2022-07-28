@@ -303,8 +303,6 @@ class Graph:
                 dot.node(name, color='white', label=msg)
                 color_map.append('white')
             else:
-                pprint ("EEEE")
-                pprint (e)
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
                 if name in ["start", "end"]:
