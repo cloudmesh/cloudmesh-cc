@@ -51,7 +51,7 @@ class Job:
         self.filetype = self.script_type(self.name)
 
         if self.script is None and self.exec is not None:
-            self.create_script(self.exec)
+            self.script = self.create_script(self.exec)
 
         #if self.exec is None and self.script is None:
         #    Console.warning("either exec or script must be set")
@@ -302,6 +302,7 @@ class Job:
         creates a template
         for the slurm sbatch
         """
+        filename = f"{self.name}.sh"
         if self.filetype == 'ipynb':
             output = exec.replace(".ipynb", "-output.ipynb")
             exec = f"papermill {exec} {output}"
@@ -321,8 +322,9 @@ class Job:
             #
             """).strip()
         script = template.format(exec=exec)
-        writefile(filename=f"{self.name}.sh", content=script)
-        return script
+        writefile(filename=filename, content=script)
+        os.system(f"chmod a+x {filename}")
+        return filename
 
 
     @staticmethod
