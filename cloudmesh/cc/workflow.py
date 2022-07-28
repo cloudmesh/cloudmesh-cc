@@ -151,32 +151,19 @@ class Graph:
         with open(filename, 'r') as stream:
              graph = yaml.safe_load(stream)
 
+        banner("GGGGGG")
         pprint (graph)
-
+        banner ("HHHHHH")
         dependencies = graph["workflow"]["dependencies"]
         nodes = graph["workflow"]["nodes"].items()
 
-        #
-        # # for name, node in graph["workflow"]["nodes"].items():
         for name, node in nodes:
             if "name" not in node:
                 node["name"] = name
-            print("GGGGGGGGGGGGGGGG", name, node)
             self.add_node(**node)
 
-        print (self)
-        #
-        # for edge in dependencies:
-        #     self.add_dependencies(edge)
-
-
-        # loops can not be combined
-        # for name, node in graph["workflow"]["nodes"].items():
-        #     if "exec" in node and node["kind"] == "local":
-        #         from cloudmesh.cc.job.localhost.Job import Job
-        #         print ("NNNN", node)
-        #         job = Job.create(filename=node['script'], exec=node["exec"])
-        #         print (job)
+        for edge in dependencies:
+             self.add_dependencies(edge)
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -264,26 +251,9 @@ class Graph:
             else:
                 self.add_edge(source, destination, **edgedata)
 
-    # could benefit from get_dependencies, gat_parents, get_children
-
-    def rename(self, source, destination):
-        """
-        renames a name with the name source to destination. The destination
-        must not exist. All edges will be renamed accordingly.
-
-        :param source:
-        :type source:
-        :param destination:
-        :type destination:
-        :return:
-        :rtype:
-        """
-        pass
-
     def export(self, filename="show,a.png,a.svg,a.pdf"):
         # comma separated list of output files in one command
         # if show is included show() is used
-        pass
 
         output = Parameter.expand(filename)
         for filename in output:
@@ -294,18 +264,12 @@ class Graph:
             # and so on
 
     def save_to_file(self, filename):
-        data = {
-            'workflow':
-                {
-                    'nodes': dict(self.nodes),
-                    'dependencies': dict(self.edges),
-                }
-        }
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, 'w') as outfile:
-            yaml.dump(data, outfile, default_flow_style=False)
-
-        outfile.close()
+        location = os.path.dirname(filename)
+        print ("LLLLL", location)
+        if len(location) > 0:
+            os.makedirs(location, exist_ok=True)
+        content = str(self)
+        writefile(filename=filename, content=content)
 
     def save(self,
              filename="test.svg",

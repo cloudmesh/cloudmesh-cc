@@ -18,7 +18,6 @@ from cloudmesh.common.util import banner
 banner(Path(__file__).name, c = "#", color="RED")
 
 g = Graph()
-g.sep = "_"
 
 
 @pytest.mark.incremental
@@ -77,8 +76,8 @@ class TestGraph:
         HEADING()
         global g
         Benchmark.Start()
-        e = g.edges['a_b']
-        another_edge = g.edges['a_b']
+        e = g.edges['a-b']
+        another_edge = g.edges['a-b']
         Benchmark.Stop()
         print('First Edge: ', e)
         assert e == another_edge
@@ -91,12 +90,12 @@ class TestGraph:
         output = str(g)
         print(g.nodes.a["status"])
         print(g.nodes["a"]["status"])
-        print(g.edges["a_b"]["status"])
+        print(g.edges["a-b"]["status"])
         Benchmark.Stop()
         assert g.nodes.a["status"] == "ready"
         assert g.nodes["a"]["status"] == "ready"
-        assert g.edges["a_b"]["status"] == "ready"
-        print(g.edges.a_b["status"])
+        assert g.edges["a-b"]["status"] == "ready"
+        print(g.edges["a-b"]["status"])
         assert ":" in output
         assert "ready" in output
 
@@ -149,15 +148,47 @@ class TestGraph:
 
         Benchmark.Stop()
 
-    def test_load(self):
+    def test_clear(self):
         HEADING()
+        g = Graph()
+        assert g.nodes == {}
+        assert g.edges == {}
+
         g.clear()
         print (g)
         assert g.nodes == {}
         assert g.edges == {}
 
-class a:
+    def test_load(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load tests/workflow-a-b.yaml")
+        g.load(filename="tests/workflow-a-b.yaml")
+        print (g)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
 
+    def test_save(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load tests/workflow-a-b.yaml")
+        g.load(filename="tests/workflow-a-b.yaml")
+        # save
+        Shell.rm("tmp-a.yaml")
+        g.save_to_file("tmp-a.yaml")
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print (r)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+class a:
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
