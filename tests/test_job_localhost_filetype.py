@@ -120,11 +120,10 @@ class TestJobLocalhost:
         location = path_expand("../tests/mnist/source-mnist-exec.yaml")
 
         r = Shell.cat(location)
-        print (r)
         w.load(filename=location, clear=True)
 
-        print (w)
-        print ("OOOOOOOOOOOO")
+        w.display()
+
+        w.run_topo()
 
         w.display()
-        # w.run_topo()

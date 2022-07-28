@@ -147,6 +147,10 @@ class Graph:
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
 
+        try:
+            self.name = os.path.basename(filename).split(".")[0]
+        except:
+            self.name = "workflow"
         with open(filename, 'r') as stream:
              graph = yaml.safe_load(stream)
 
@@ -395,7 +399,16 @@ class Workflow:
         # gvl reimplemented but did not test
         # The workflow is run in experiment/workflow
 
-        self.name = name or 'workflow'
+        #
+        # name may not be defined properly
+        #
+        try:
+            if name is None and filename is not None:
+                self.name = os.path.basename(filename).split(".")[0]
+            else:
+                self.name = name or 'workflow'
+        except:
+            self,name = 'workflow'
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
         if not filename:
@@ -404,6 +417,16 @@ class Workflow:
             self.filename = filename
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
+
+
+        try:
+            self.name = os.path.basename(filename).split(".")[0]
+        except:
+            self.name = "workflow"
+
+
+
+
 
         self.user = user
         self.host = host
@@ -821,9 +844,9 @@ class Workflow:
 
         if os_is_windows() and filename is None:
             Shell.mkdir("./tmp")
-            filename = filename or "tmp/workflow.svg"
+            filename = filename or f"tmp/{self.name}.svg"
         else:
-            filename = filename or "/tmp/workflow.svg"
+            filename = filename or f"/tmp/{self.name}.svg"
 
         first = True
         for name in order():
