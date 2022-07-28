@@ -263,7 +263,8 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename, exclude=["parent"]):
+    def save_to_file(self, filename, exclude=None):
+        # exclude parent
         location = os.path.dirname(filename)
         if len(location) > 0:
             os.makedirs(location, exist_ok=True)
@@ -583,6 +584,8 @@ class Workflow:
 
         # expand script and exec and save shell scripts
         for name, node in self.graph.nodes.items():
+            if node['exec'] is None and node['script'] is not None:
+                del node['exec']
             if "exec" in node and node["kind"] == "local":
                 from cloudmesh.cc.job.localhost.Job import Job
                 print ("NNNN", node)

@@ -33,6 +33,8 @@ class Job:
         self.name = name
         self.directory = directory
         self.label = label
+        self.exec = None
+        self.script = None
 
         # print("self.data", self.data)
         for key, value in self.data.items():
@@ -55,7 +57,7 @@ class Job:
             raise ValueError
 
         if self.username is None:
-            self.username = Shell.sys_user()
+            self.username = Shell.user()
 
         if self.host is None:
             self.host = "localhost"
