@@ -100,28 +100,13 @@ class Job:
         os.system(command)
 
     def run(self):
-        # TODO: allow execution of different job/filetypes.
-        # currently only sh is being done.
-        # if self.script is None:
-        #     self.filetype = 'os'
-        # elif '.ipynb' in self.script:
-        #     self.filetype = 'ipynb'
-        # elif '.sh' in self.script:
-        #     self.filetype = 'sh'
-        # elif '.py' in self.script:
-        #     self.filetype = 'python'
-        # else:
-        #     self.filetype = 'os'
         self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
-            # command = fr'''"\"%ProgramFiles%/Git/bin/bash.exe\" -c \"cd {self.directory} && sh ./{self.name}.sh > {self.name}.log 2>&1\""'''
-            # command = f'''cmd.exe /c start "" "%ProgramFiles%\"/Git/bin/bash.exe\" -c \"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'''
             state = None
             try:
-                #r = Shell.run(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"')
                 r = subprocess.Popen(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"', shell=True)
                 state = 0
             except Exception as e:
