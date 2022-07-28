@@ -188,6 +188,25 @@ class TestGraph:
         assert "a-b" in g.edges
         assert "b-c" in g.edges
 
+    def test_save_full(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load tests/workflow-a-b.yaml")
+        g.load(filename="tests/workflow-a-b.yaml")
+        # save
+        Shell.rm("tmp-a.yaml")
+        g.save_to_file("tmp-a.yaml", exclude=None)
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print (r)
+        assert "parent" in r
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+
 class a:
     def test_benchmark(self):
         HEADING()

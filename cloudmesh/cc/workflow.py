@@ -130,7 +130,6 @@ class Graph:
 
 
     def __str__(self):
-
         data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
@@ -263,12 +262,25 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename):
+    def save_to_file(self, filename, exclude=["parent"]):
         location = os.path.dirname(filename)
-        print ("LLLLL", location)
         if len(location) > 0:
             os.makedirs(location, exist_ok=True)
-        content = str(self)
+
+        if exclude is not None:
+            g = Graph()
+            g.nodes = self.nodes
+            g.edges = self.edges
+            for name, node in g.nodes.items():
+                try:
+                    for attribute in exclude:
+                        del node[attribute]
+                except:
+                    pass
+            content = str(g)
+        else:
+            content = str(self)
+
         writefile(filename=filename, content=content)
 
     def save(self,
