@@ -1,0 +1,19 @@
+workflow:
+  nodes:
+    start:
+      label: start
+      kind: local
+      host: local
+      exec: "echo start"
+    mlp_mnist:
+      label: mlp_mnist
+      kind: local
+      host: local
+      exec: mlp_mnist.ipynb
+    end:
+      label: stop
+      kind: ssh
+      host: local
+      script: "echo end"
+  dependencies:
+    - start,mlp_mnist,end
