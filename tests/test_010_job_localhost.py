@@ -27,8 +27,13 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.util import readfile
 
 banner(Path(__file__).name, c = "#", color="RED")
+
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
 
 variables = Variables()
 
@@ -51,7 +56,7 @@ class TestJobLocalhost:
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         for script in [run_job, wait_job]:
-            os.system(f"cp ../tests/{script}.sh .")
+            os.system(f"cp ../tests/scripts/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -211,3 +216,46 @@ class TestJobLocalhost:
         assert f"{parent}" not in ps
         assert f"{child}" not in ps
         assert status == "running"
+
+    def test_create_exec(self):
+        HEADING()
+        global job
+        global username
+        global host
+
+        Benchmark.Start()
+        name = f"run"
+
+        job = Job(name="os", host=host, username=username, exec="echo hallo")
+        print(job)
+        content = readfile("os.sh")
+        assert "echo hallo" in content
+        assert job.name == "os"
+        assert job.host == host
+        assert job.username == username
+
+
+        job = Job(name="python", host=host, username=username, exec="run.py")
+        print(job)
+        content = readfile("python.sh")
+        assert "run.py" in content
+        assert job.name == "python"
+        assert job.host == host
+        assert job.username == username
+
+        job = Job(name="notebook", host=host, username=username, exec="run.ipynb")
+        print(job)
+        content = readfile("notebook.sh")
+        assert job.name == "notebook"
+        assert job.host == host
+        assert job.username == username
+
+        job = Job(name="run-other", host=host, username=username, exec="other.sh")
+        print(job)
+        content = readfile("run-other.sh")
+        assert "other.sh" in content
+        assert job.name == "run-other"
+        assert job.host == host
+        assert job.username == username
+
+        Benchmark.Stop()
