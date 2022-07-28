@@ -299,6 +299,8 @@ class Graph:
                 dot.node(name, color='white', label=msg)
                 color_map.append('white')
             else:
+                pprint ("EEEE")
+                pprint (e)
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
                 if name in ["start", "end"]:
@@ -539,31 +541,35 @@ class Workflow:
         """
 
         self.graph = Graph()
+        # if not clear:
         self.graph.load(filename=filename)
 
         # with open(filename, 'r') as stream:
         #     graph = yaml.safe_load(stream)
         #
         # dependencies = graph["workflow"]
-        # nodes = graph["workflow"]["nodes"].items()
+        #nodes = graph["workflow"]["nodes"].items()
         #
         # # for name, node in graph["workflow"]["nodes"].items():
-        # for name, node in nodes:
-        #     if "name" not in node:
-        #         node["name"] = name
-        #     self.add_job(**node)
+        for name, node in self.graph.nodes.items():
+             if "name" not in node:
+                 node["name"] = name
+             self.add_job(**node)
         #
         # for edge in dependencies:
         #     self.add_dependencies(edge)
 
 
-        # loops can not be combined
-        # for name, node in graph["workflow"]["nodes"].items():
-        #     if "exec" in node and node["kind"] == "local":
-        #         from cloudmesh.cc.job.localhost.Job import Job
-        #         print ("NNNN", node)
-        #         job = Job.create(filename=node['script'], exec=node["exec"])
-        #         print (job)
+        # expand script and exec and save shell scripts
+        for name, node in self.graph.nodes.items():
+            if "exec" in node and node["kind"] == "local":
+                from cloudmesh.cc.job.localhost.Job import Job
+                print ("NNNN", node)
+                if "script" not in node:
+                    node["script"] = f"{name}.sh"
+                pprint (node)
+                job = Job.create(filename=node['script'], exec=node["exec"])
+                print (job)
 
     def save(self, filename):
         if os_is_windows():

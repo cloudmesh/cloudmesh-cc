@@ -27,9 +27,13 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
+from cloudmesh.cc.workflow import Workflow
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
 
 @pytest.mark.incremental
 class TestJobLocalhost:
@@ -109,3 +113,18 @@ class TestJobLocalhost:
         assert a == script
         assert a == b
 
+    def test_mnist(self):
+        HEADING()
+
+        w = Workflow()
+        location = path_expand("../tests/mnist/source-mnist-exec.yaml")
+
+        r = Shell.cat(location)
+        print (r)
+        w.load(filename=location, clear=True)
+
+        print (w)
+        print ("OOOOOOOOOOOO")
+
+        w.display()
+        # w.run_topo()
