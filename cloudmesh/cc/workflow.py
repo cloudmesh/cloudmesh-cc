@@ -617,21 +617,9 @@ class Workflow:
                 ):
 
         label = label or name
-        user = user or self.user or Shell.sys_user()
-        host = host or self.host
-        defined = True
-        if name is None:
-            defined = False
-            Console.error("name is None")
-        if user is None:
-            defined = False
-            Console.error("user is None")
-        if host is None:
-            defined = False
-            Console.error("host is None")
-        if not defined:
-            raise ValueError("user or host not specified")
-
+        user = user or self.user or Shell.user()
+        host = host or self.host or Shell.host()
+        
         if script is None:
             script = f"{name}.sh"
 

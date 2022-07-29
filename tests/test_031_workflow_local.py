@@ -31,6 +31,10 @@ banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
+
 name = "run"
 
 # host, username = set_host_user()
@@ -109,7 +113,7 @@ def create_workflow(filename='tests/workflow.yaml'):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
-def remove_workflow(filename="tests/workflow.yaml"):
+def remove_workflow(filename="workflow.yaml"):
     # Remove workflow source yaml filr
     Shell.rm(filename)
 
@@ -169,7 +173,7 @@ def remove_workflow(filename="tests/workflow.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            'tests/workflow.yaml',
+            'tests/scripts/workflow.yaml',
             '~/experiment',
             "~/.cloudmesh/workflow/workflow",
             "~/.cloudmesh/workflow/workflow/workflow.yaml"
@@ -190,13 +194,13 @@ class TestWorkflowLocal:
 
 
         Benchmark.Start()
-        remove_workflow(filename="tests/workflow.yaml")
+        remove_workflow(filename="workflow.yaml")
 
         w0 = create_workflow()
-        w0.save('tests/workflow.yaml')
+        w0.save('workflow.yaml')
 
         w = Workflow()
-        w.load(filename='tests/workflow.yaml')
+        w.load(filename='workflow.yaml')
 
         Benchmark.Stop()
         g = str(w.graph)
@@ -211,7 +215,7 @@ class TestWorkflowLocal:
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
-        os.system('cp tests/workflow-sh/*.sh .')
+        os.system('cp ../tests/workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
 
     def test_set_up(self):
@@ -223,7 +227,7 @@ class TestWorkflowLocal:
         global w
 
         Benchmark.Start()
-        remove_workflow(filename="tests/workflow.yaml")
+        remove_workflow(filename="workflow.yaml")
         w = create_workflow()
         Benchmark.Stop()
         g = str(w.graph)
@@ -240,12 +244,12 @@ class TestWorkflowLocal:
             except Exception as e:
                 print(e)
         else:
-            w.graph.save(filename="/tmp/test-dot.svg", colors="status", engine="dot")
-        # Shell.browser("/tmp/test-dot.svg")
+            w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
+        # Shell.browser("test-dot.svg")
         if os_is_windows():
             os.path.exists("test-dot.svg")
         else:
-            os.path.exists("/tmp/test-dot.svg")
+            os.path.exists("test-dot.svg")
 
     def test_get_node(self):
         HEADING()

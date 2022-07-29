@@ -326,7 +326,7 @@ class Job:
         os.system(f"chmod a+x {filename}")
         return filename
 
-
+    # this method is deprecated ....
     @staticmethod
     def create(filename=None, script=None, exec=None):
         """
