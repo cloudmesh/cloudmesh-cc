@@ -20,10 +20,11 @@ banner(Path(__file__).name, c = "#", color="RED")
 
 Shell.rmdir("dest")
 Shell.mkdir("dest")
-
-Shell.copy("tests/workflows/workflow-a-b.yaml", "dest")
-
 os.chdir("dest")
+
+
+Shell.copy("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
+
 
 
 g = Graph()
