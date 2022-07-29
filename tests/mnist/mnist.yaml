@@ -2,146 +2,20 @@ workflow:
   nodes:
     start:
       label: start
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.509169'
-      modified: '2022-07-27 20:13:09.509169'
-      script: prepare.sh
-      instance: null
+      kind: local
+      host: local
+      exec: echo start
       name: start
-    example_mlp_mnist:
-      label: example_mlp_mnist
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.510279'
-      modified: '2022-07-27 20:13:09.510279'
-      script: example_mlp_mnist.sh
-      instance: null
-      name: example_mlp_mnist
-    google_colab_mnist_example:
-      label: google_colab_mnist_example
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.511898'
-      modified: '2022-07-27 20:13:09.511898'
-      script: google_colab_mnist_example.sh
-      instance: null
-      name: google_colab_mnist_example
     mlp_mnist:
       label: mlp_mnist
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.514009'
-      modified: '2022-07-27 20:13:09.514009'
-      script: mlp_mnist.sh
-      instance: null
+      kind: local
+      host: local
+      exec: echo mnist
       name: mlp_mnist
-    mnist_autoencoder:
-      label: mnist_autoencoder
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.517213'
-      modified: '2022-07-27 20:13:09.517213'
-      script: mnist_autoencoder.sh
-      instance: null
-      name: mnist_autoencoder
-    mnist_cnn:
-      label: mnist_cnn
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.520361'
-      modified: '2022-07-27 20:13:09.520361'
-      script: mnist_cnn.sh
-      instance: null
-      name: mnist_cnn
-    mnist_lstm:
-      label: mnist_lstm
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.524996'
-      modified: '2022-07-27 20:13:09.524996'
-      script: mnist_lstm
-      instance: null
-      name: mnist_lstm
-    mnist_mlp_with_lstm:
-      label: mnist_mlp_with_lstm
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.529574'
-      modified: '2022-07-27 20:13:09.529574'
-      script: mnist_mlp_with_lstm
-      instance: null
-      name: mnist_mlp_with_lstm
-    mnist_rnn:
-      label: mnist_rnn
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.535455'
-      modified: '2022-07-27 20:13:09.535455'
-      script: mnist_rnn.sh
-      instance: null
-      name: mnist_rnn
-    mnist_with_distributed_training:
-      label: mnist_with_distributed_training
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.541355'
-      modified: '2022-07-27 20:13:09.541355'
-      script: mnist_with_distributed_training.sh
-      instance: null
-      name: mnist_with_distributed_training
-    mnist_with_pytorch:
-      label: mnist_with_pytorch
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.547882'
-      modified: '2022-07-27 20:13:09.547882'
-      script: mnist_with_pytorch.sh
-      instance: null
-      name: mnist_with_pytorch
     end:
-      label: start
-      kind: slurm
-      user: the_crew
-      host: rivanna
-      status: ready
-      progress: 0
-      created: '2022-07-27 20:13:09.554328'
-      modified: '2022-07-27 20:13:09.554328'
-      script: prepare.sh
-      instance: null
+      label: stop
+      kind: local
+      host: local
+      exec: echo end
       name: end
   dependencies: {}

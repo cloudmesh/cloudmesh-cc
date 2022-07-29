@@ -1,0 +1,19 @@
+workflow:
+  nodes:
+    start:
+      label: start
+      kind: local
+      host: local
+      exec: "echo start"
+    mlp_mnist:
+      label: mlp_mnist
+      kind: local
+      host: local
+      exec: "echo mnist"
+    end:
+      label: stop
+      kind:  local
+      host: local
+      exec: "echo end"
+  dependencies:
+    - start,mlp_mnist,end

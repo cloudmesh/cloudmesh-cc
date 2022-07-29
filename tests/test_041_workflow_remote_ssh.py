@@ -34,11 +34,7 @@ variables = Variables()
 
 name = "run"
 
-if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
-else:
-    host = variables["host"]
-
+host = "rivanna.hpc.virginia.edu"
 username = variables["username"]
 
 if username is None:

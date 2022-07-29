@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_slurm.py
-# pytest -v  tests/test_job_slurm.py
-# pytest -v --capture=no  tests/test_job_slurm.py::TestJobSlurm::<METHODNAME>
+# pytest -v --capture=no tests/test_job_remote_ssh.py
+# pytest -v  tests/test_job_remote_ssh.py
+# pytest -v --capture=no  tests/test_job_remote_ssh.py::TestJobsSsh::<METHODNAME>
 ###############################################################
 import os
 import shutil
@@ -11,27 +11,27 @@ from subprocess import STDOUT, check_output
 import pytest
 import time
 
-from cloudmesh.cc.job.slurm.Job import Job
+from cloudmesh.cc.job.ssh.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Console
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
-from cloudmesh.common.Shell import Shell
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
+
 variables = Variables()
 
-name = "run-slurm"
+name = "run"
 
-if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
-else:
-    host = variables["host"]
-
+host = "rivanna.hpc.virginia.edu"
 username = variables["username"]
 
 if username is None:
@@ -39,7 +39,6 @@ if username is None:
     quit()
 
 job = None
-job_id = None
 
 try:
     if not Vpn.enabled():
@@ -52,18 +51,55 @@ except Exception as e:  # noqa: E722
     print (e)
     login_success = False
 
-run_job = f"run-slurm"
-wait_job = f"wait-slurm"
 
+run_job = f"run"
+wait_job = f"run-killme"
+
+
+@pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
 @pytest.mark.incremental
-class TestJobsSlurm:
+class TestJobsSsh:
+
+    # def test_python(self):
+    #     pyname = "hello-world"
+    #
+    #     HEADING()
+    #     Benchmark.Start()
+    #     os.system(f"cp ../tests/scripts/{pyname}.py .")
+    #     job = Job(name=pyname, host=host, username=username, type="python")
+    #     print(job)
+    #     job.sync()
+    #     assert job.exists(f"{pyname}.py")
+    #
+    #     s, l = job.run()
+    #     # give it some time to complete
+    #     time.sleep(5)
+    #     print(l)
+    #     # print(e)
+    #
+    #     # log = job.get_log()
+    #     # print(log)
+    #     Benchmark.Stop()
+    #
+    #
+    #     # progress and status not supported yet
+    #     # progress = job.get_progress()
+    #     # print("Progress:", progress)
+    #     # status = job.get_status(refresh=True)
+    #     # print("Status:", status)
+    #     assert l is not None
+    #     assert s == 0
+    #     # assert progress == 100
+    #     # assert status == "done"
+    #     assert job.exists(f"./{pyname}.py")
+
 
     def test_create_run(self):
         os.system("rm -r ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
+            os.system(f"cp ../tests/scripts/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -73,7 +109,7 @@ class TestJobsSlurm:
         global username
         global host
         Benchmark.Start()
-        name = f"run-slurm"
+        name = f"run"
         job = Job(name=name, host=host, username=username)
         Benchmark.Stop()
         print(job)
@@ -81,7 +117,6 @@ class TestJobsSlurm:
         assert job.host == host
         assert job.username == username
 
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_sync(self):
         HEADING()
         global job
@@ -89,26 +124,24 @@ class TestJobsSlurm:
         Benchmark.Start()
         job.sync()
         Benchmark.Stop()
-        assert job.exists("run-slurm.sh")
+        assert job.exists("run.sh")
 
         # potentially wrong
 
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run_fast(self):
         HEADING()
 
         Benchmark.Start()
         global job
-        global job_id
-        job = Job(name=f"run-slurm", host=host, username=username)
+        job = Job(name=f"run", host=host, username=username)
         job.sync()
 
-        s, job_id = job.run()
+        s, l = job.run()
         # give it some time to complete
-        # time.sleep(7)
-        job.watch(period=0.5)
-
+        time.sleep(5)
         print("State:", s)
+        print(l)
+        # print(e)
 
         log = job.get_log()
         if log is None:
@@ -127,18 +160,16 @@ class TestJobsSlurm:
         Benchmark.Stop()
 
     # will fail if previous test fails
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_exists_run(self):
         HEADING()
         global job
-        name = f"run-slurm"
+        name = f"run"
         Benchmark.Start()
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
         assert correct
 
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_run_wait(self):
         HEADING()
         global run_job
@@ -147,8 +178,7 @@ class TestJobsSlurm:
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
         jobWait.sync()
-        # problem
-        s, j = jobWait.run()
+        s, l = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
@@ -164,18 +194,16 @@ class TestJobsSlurm:
 
         # will fail if previous test fails
 
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_exists_wait(self):
         HEADING()
         global job
-        name = f"run-slurm"
+        name = f"run"
         Benchmark.Start()
         correct = job.exists(f"{name}.sh")
         Benchmark.Stop()
 
         assert correct
 
-    @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     def test_kill(self):
         """
         Creates a job from run-killme.sh, which includes wait of 1 hour
@@ -187,7 +215,6 @@ class TestJobsSlurm:
         global username
         global host
         global wait_job
-        global job_id
 
         Benchmark.Start()
         job_kill = Job(name=f"{wait_job}", host=host, username=username)
@@ -201,19 +228,18 @@ class TestJobsSlurm:
         time.sleep(3)
 
         banner("Kill the Job")
-        r = job_kill.kill(period=2, job_id=job_id)
-        assert job_id not in r
-        banner(f"Job kill is done")
+        parent, child = job_kill.kill(period=2)
+        time.sleep(2)
+        banner(f"Job kill is done: {parent} {child}")
 
         Benchmark.Stop()
 
-        # child = job_kill.get_pid()
-        # status = job_kill.get_status()
-        # print("Status", status)
+        child = job_kill.get_pid()
+        status = job_kill.get_status()
+        print("Status", status)
         Benchmark.Stop()
-        # ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
-        # banner(f"{ps}")
-        # assert 'sleep 3600' not in ps
-        # assert f" {parent} " not in ps
-        # assert f" {child} " not in ps
-        # assert status == "running"
+        ps = Shell.run(f'ssh {username}@{host} ps -eo pid').strip().replace(" ", "").splitlines()
+        banner(f"{ps}")
+        assert f"{parent}" not in ps
+        assert f"{child}" not in ps
+        assert status == "running"

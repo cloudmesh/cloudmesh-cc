@@ -1,17 +1,19 @@
 import os
 import subprocess
 import time
+import textwrap
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import writefile
 from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
+    def __init__(self, **argv):
         """
         cms set username=abc123
 
@@ -23,31 +25,46 @@ class Job:
         :return:
         :rtype:
         """
-
-        self.data = argv
-
-        self.username = username
-        self.host = host
-        self.name = name
-        self.directory = directory
-        self.label = label
+        self.name = None
+        self.username = None
+        self.host = None
+        self.label = None
+        self.directory = None
+        self.exec = None
+        self.script = None
 
         # print("self.data", self.data)
+        self.data = argv
         for key, value in self.data.items():
             setattr(self, key, value)
 
         if self.name is None:
-            Console.error("Name is not defined")
-            raise ValueError
+            Console.error("Name is not defined", traceflag=True)
 
-        if self.username is None:
-            self.username = os.environ["USERNAME"]
 
-        if self.host is None:
-            self.host = "localhost"
+        self.username = self.username or Shell.user()
+        self.host = self.host or "localhost"
+        self.directory = self.directory or f'~/experiment/{self.name}'
 
-        if self.directory is None:
-            self.directory = f'~/experiment/{self.name}'
+        self.kind = "local"
+        self.label = self.label or self.name
+        self.filetype = self.script_type(self.name)
+
+        if self.script is None and self.exec is not None:
+            self.script = self.create_script(self.exec)
+
+        #if self.exec is None and self.script is None:
+        #    Console.warning("either exec or script must be set")
+
+    def script_type(self, name):
+        kind = "sh"
+        if name is None:
+            return kind
+        for kind in ["sh", "ipynb", "sh", "py"]:
+            if name.endswith(f".{kind}"):
+                return kind
+        return "os"
+
 
     def __str__(self):
         msg = [
@@ -56,6 +73,9 @@ class Job:
             f"name:      {self.name}",
             f"label:     {self.label}",
             f"directory: {self.directory}",
+            f"filetype:  {self.filetype}",
+            f"script:    {self.script}",
+            f"exec:      {self.exec}",
             f"data:      {self.data}",
             f"locals     {locals()}"
         ]
@@ -85,12 +105,11 @@ class Job:
         command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
-            # command = fr'''"\"%ProgramFiles%/Git/bin/bash.exe\" -c \"cd {self.directory} && sh ./{self.name}.sh > {self.name}.log 2>&1\""'''
-            # command = f'''cmd.exe /c start "" "%ProgramFiles%\"/Git/bin/bash.exe\" -c \"cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'''
             state = None
             try:
-                #r = Shell.run(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"')
-                r = subprocess.Popen(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"', shell=True)
+                command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
+                print(command)
+                r = subprocess.Popen(command, shell=True)
                 state = 0
             except Exception as e:
                 print(e)
@@ -101,12 +120,11 @@ class Job:
             state = os.system(f'{command} &')
 
         logfile = path_expand(f"{self.directory}/{self.name}.sh")
-        errorfile = path_expand(f"{self.directory}/{self.name}.sh")
 
         started = False
         while started:
             os.system("sync")
-            started = os.path.exists(logfile) and os.path.exists(errorfile)
+            started = os.path.exists(logfile)
             print("STARTED")
             if not started:
                 time.sleep(0.1)
@@ -169,11 +187,20 @@ class Job:
 
     def sync(self):
         self.mkdir_experimentdir()
-        Shell.run(f"chmod ug+rx ./{self.name}.sh")
+        self.chmod()
         command = f"cp {self.name}.sh {self.directory}/."
         print(command)
         Shell.run(command)
         os.system("sync")
+        r = os.system(command)
+        return r
+
+    def chmod(self):
+        if self.filetype == "python":
+            command = f"chmod ug+rx ./{self.name}.py"
+        else:
+            command = f"chmod ug+rx ./{self.name}.sh"
+        print(command)
         r = os.system(command)
         return r
 
@@ -270,19 +297,67 @@ class Job:
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
 
-    def create(self, command, ntasks=1):
+    def create_script(self, exec=None):
         """
         creates a template
         for the slurm sbatch
         """
-        template = \
+        filename = f"{self.name}.sh"
+        if self.filetype == 'ipynb':
+            output = exec.replace(".ipynb", "-output.ipynb")
+            exec = f"papermill {exec} {output}"
+        elif self.filetype == 'sh':
+            pass
+        elif self.filetype == 'py':
+            exec = f'python {exec}'
+        else:
+            pass
+
+        template = textwrap.dedent(
             f"""
-        #!/bin/bash
-        #
-        #SBATCH --job-name=test
-        #SBATCH --output=result.out
-        #
-        #SBATCH --ntasks={ntasks}
-        #
+            #!/bin/sh
+            echo "# cloudmesh status=running progress=1 pid=$$"
+            {exec}
+            echo "# cloudmesh status=running progress=100 pid=$$"
+            #
+            """).strip()
+        script = template.format(exec=exec)
+        writefile(filename=filename, content=script)
+        os.system(f"chmod a+x {filename}")
+        return filename
+
+    # this method is deprecated ....
+    @staticmethod
+    def create(filename=None, script=None, exec=None):
         """
-        template += f"\n{command}"
+        creates a template
+        for the slurm sbatch
+        """
+
+        if script is None and exec is None:
+            Console.error("Script and executable can not be used at the same time.")
+
+        if script is not None:
+            exec = script
+        elif '.ipynb' in exec:
+            output = exec.replace(".ipynb", "-output.ipynb")
+            exec = f"papermill {exec} {output}"
+        elif '.sh' in exec:
+            pass
+        elif '.py' in exec:
+            exec = f'python {exec}'
+        else:
+            pass
+
+
+        template = textwrap.dedent(
+            f"""
+            #!/bin/sh
+            echo "# cloudmesh status=running progress=1 pid=$$"
+            {exec}
+            echo "# cloudmesh status=running progress=100 pid=$$"
+            #
+            """).strip()
+        script = template.format(exec=exec)
+        writefile(filename=filename, content=script)
+        return script

@@ -32,10 +32,22 @@ class Job:
         self.name = name
         self.directory = directory
         self.label = label
+        self.script = None
 
         # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
+
+        if self.script is None:
+            self.filetype = 'os'
+        elif '.ipynb' in self.script:
+            self.filetype = 'ipynb'
+        elif '.sh' in self.script:
+            self.filetype = 'sh'
+        elif '.py' in self.script:
+            self.filetype = 'python'
+        else:
+            self.filetype = 'os'
 
         if self.name is None:
             Console.error("Name is not defined")
@@ -76,6 +88,7 @@ class Job:
     # move from current directory to remote
     def sync(self):
         print(self)
+        self.chmod()
         self.mkdir_experimentdir()
         home = Path.home()
         cwd = Path.cwd()
@@ -84,6 +97,17 @@ class Job:
         source = Path(f"{cwd}/{self.name}.sh")
         Shell.copy(source, destination)
         return self.exists(f"{self.name}.sh")
+
+    def chmod(self):
+        cwd = Path.cwd()
+        source = Path(f"{cwd}/{self.name}")
+        if self.filetype == "python":
+            command = f"chmod ug+rx {source}.py"
+        else:
+            command = f"chmod ug+rx {source}.sh"
+        print(command)
+        r = os.system(command)
+        return r
 
     def exists(self, filename):
         home = Path.home()

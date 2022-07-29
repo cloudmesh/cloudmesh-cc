@@ -1,11 +1,12 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/mnist/test_run_mnist_workflow.py
+# pytest -v -x --capture=no tests/mnist/run_mnist_workflow.py
 # pytest -v  tests/test_workflow.py
 # pytest -v --capture=no  tests/workflow.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil
 from pathlib import Path
+import pytest
 
 import networkx as nx
 
@@ -25,6 +26,20 @@ from cloudmesh.common.variables import Variables
 This is a python file to test the implementation of workflow in running the 
 mnist files. 
 """
-filename = path_expand("~/cm/cloudmesh-cc/tests/mnist/mnist.yaml")
-w = Workflow(filename=filename)
-w.run_topo(show=True, filename='mnist.svg')
+
+location = Shell.map_filename("./tests/mnist").path
+os.chdir(location)
+
+
+@pytest.mark.incremental
+class TestMnist:
+
+    def test_mnist(self):
+        Shell.copy_file('./source-mnist.yaml', 'mnist.yaml')
+        filename = Shell.map_filename("./mnist.yaml").path
+        r = Shell.ls()
+        print(r)
+        w = Workflow(filename=filename, load=True)
+        w.load(filename=filename)
+        w.display(name='mnist')
+        w.run_topo(show=True)

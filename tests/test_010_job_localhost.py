@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v -x --capture=no tests/test_job_localhost_wsl.py
-# pytest -v  tests/test_job_localhost_wsl.py
-# pytest -v --capture=no  tests/test_job_localhost_wsl.py::TestJobWsl::<METHODNAME>
+# pytest -v -x --capture=no tests/test_010_job_localhost.py
+# pytest -v  tests/test_010_job_localhost.py
+# pytest -v --capture=no  tests/test_010_job_localhost.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
 #
@@ -17,25 +17,28 @@ from pathlib import Path
 import pytest
 import time
 
-from cloudmesh.cc.job.wsl.Job import Job
+from cloudmesh.cc.job.localhost.Job import Job
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.console import Console
+from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.util import readfile
 
 banner(Path(__file__).name, c = "#", color="RED")
 
-if not os_is_windows():
-    Console.error("This test can only be run on windows")
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
 
 variables = Variables()
 
 host = "localhost"
-if os_is_windows():
-    username = os.environ["USERNAME"]
+username = Shell.sys_user()
 
 job = None
 
@@ -43,16 +46,17 @@ run_job = f"run"
 wait_job = f"run-killme"
 
 
-@pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")
+# @pytest.mark.skipif(os_is_windows(), reason="Test can not be run on Windows")
 @pytest.mark.incremental
-class TestJobWsl:
+class TestJobLocalhost:
 
     def test_create_run(self):
+        HEADING()
         os.system("rm -r ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
+            os.system(f"cp ../tests/scripts/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -61,10 +65,10 @@ class TestJobWsl:
         global job
         global username
         global host
+
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)
-        job.clear()
         Benchmark.Stop()
         print(job)
         assert job.name == name
@@ -88,12 +92,13 @@ class TestJobWsl:
         Benchmark.Start()
         global job
         job = Job(name=f"run", host=host, username=username)
-        job.clear()
+
         banner("create experiment")
         job.sync()
 
         banner("run job")
-        s, l = job.run()
+        s = job.run()
+        job.watch(period=0.5)
         print("State:", s)
 
         banner("check")
@@ -103,7 +108,7 @@ class TestJobWsl:
         while not finished:
             log = job.get_log()
             if log is not None:
-                progress = job.get_progress(refresh=True)
+                progress = job.get_progress()
                 finished = progress == 100
                 print("Progress:", progress)
             if not finished:
@@ -141,8 +146,7 @@ class TestJobWsl:
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
         jobWait.sync()
-        # problem
-        s, l = jobWait.run()
+        s = jobWait.run()
         jobWait.watch(period=0.5)
         log = jobWait.get_log()
         progress = jobWait.get_progress()
@@ -203,9 +207,55 @@ class TestJobWsl:
         status = job_kill.get_status()
         print("Status", status)
         Benchmark.Stop()
-        ps = subprocess.check_output(f'wsl ps -aux', shell=True, text=True).strip()
+        ps = subprocess.check_output('ps', shell=True, text=True)
+        if not os_is_windows():
+            ps = subprocess.check_output(f'ps -ax', shell=True, text=True).strip()
+            assert 'sleep 3600' not in ps
+
         banner(f"{ps}")
-        assert 'sleep 3600' not in ps
-        assert f" {parent} " not in ps
-        assert f" {child} " not in ps
+        assert f"{parent}" not in ps
+        assert f"{child}" not in ps
         assert status == "running"
+
+    def test_create_exec(self):
+        HEADING()
+        global job
+        global username
+        global host
+
+        Benchmark.Start()
+        name = f"run"
+
+        job = Job(name="os", host=host, username=username, exec="echo hallo")
+        print(job)
+        content = readfile("os.sh")
+        assert "echo hallo" in content
+        assert job.name == "os"
+        assert job.host == host
+        assert job.username == username
+
+
+        job = Job(name="python", host=host, username=username, exec="run.py")
+        print(job)
+        content = readfile("python.sh")
+        assert "run.py" in content
+        assert job.name == "python"
+        assert job.host == host
+        assert job.username == username
+
+        job = Job(name="notebook", host=host, username=username, exec="run.ipynb")
+        print(job)
+        content = readfile("notebook.sh")
+        assert job.name == "notebook"
+        assert job.host == host
+        assert job.username == username
+
+        job = Job(name="run-other", host=host, username=username, exec="other.sh")
+        print(job)
+        content = readfile("run-other.sh")
+        assert "other.sh" in content
+        assert job.name == "run-other"
+        assert job.host == host
+        assert job.username == username
+
+        Benchmark.Stop()

@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_queue.py
-# pytest -v  tests/test_queue.py
-# pytest -v --capture=no  tests/test_queue.py::TestQueue::<METHODNAME>
+# pytest -v --capture=no tests/test_020_queue.py
+# pytest -v  tests/test_020_queue.py
+# pytest -v --capture=no  tests/test_020_queue.py::TestQueue::<METHODNAME>
 ###############################################################
 
 import pytest

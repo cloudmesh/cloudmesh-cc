@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import networkx as nx
 import yaml
 from matplotlib import pyplot as plt
-
+from pprint import pprint
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.dotdict import dotdict
 from cloudmesh.common.parameter import Parameter
@@ -79,31 +79,34 @@ g.show()
 class Graph:
     # this is pseudocode
 
-    def __init__(self, name="graph", filename=None):
+    def __init__(self, name="graph", filename=None, clear=True):
         self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
-        self.load(filename=filename)
-        self.colors = {}
+        self.colors = None
         self.set_status_colors()
         self.name = name
+        self.filename = filename
+
+        if filename is not None and not clear:
+            self.load(filename=filename)
         #
         # maybe
         # config:
         #    name:
         #    colors:
 
-    def __getitem__(self, name):
-        #return self.nodes[name]  this is the super basic implementation
-        n_under = name.split('_')
-        n_comma = name.split(',')
-        n_under_length = len(n_under)
-        n_comma_length = len(n_comma)
-        if n_comma_length == 2 or n_under_length == 2:
-            return self.edges[name]
-        else:
-            return self.nodes[name]
+    def clear(self):
+        self.sep = "-"
+        self.edges = dotdict()
+        self.nodes = dotdict()
+        self.colors = None
+        self.set_status_colors()
+        self.name = None
+        self.filename = None
 
+    def __getitem__(self, name):
+        return self.nodes[name]
 
     def set_status_colors(self):
         # self.add_color("status",
@@ -127,24 +130,40 @@ class Graph:
 
 
     def __str__(self):
-
         data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
         }
-        if self.colors:
-            data["colors"] = dict(self.colors)
         workflow = {'workflow': data}
+
+        if self.colors is not None:
+            workflow["colors"] = dict(self.colors)
+
         return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
-
         # if filename is not None:
         #    raise NotImplementedError
         # should read from file the graph, but as we do Queues yaml dic
         # we do not need filename read right now
 
-        pass
+        try:
+            self.name = os.path.basename(filename).split(".")[0]
+        except:
+            self.name = "workflow"
+        with open(filename, 'r') as stream:
+             graph = yaml.safe_load(stream)
+
+        dependencies = graph["workflow"]["dependencies"]
+        nodes = graph["workflow"]["nodes"].items()
+
+        for name, node in nodes:
+            if "name" not in node:
+                node["name"] = name
+            self.add_node(**node)
+
+        for edge in dependencies:
+             self.add_dependencies(edge)
 
     def add_node(self, name, **data):
         if name not in self.nodes:
@@ -232,26 +251,9 @@ class Graph:
             else:
                 self.add_edge(source, destination, **edgedata)
 
-    # could benefit from get_dependencies, gat_parents, get_children
-
-    def rename(self, source, destination):
-        """
-        renames a name with the name source to destination. The destination
-        must not exist. All edges will be renamed accordingly.
-
-        :param source:
-        :type source:
-        :param destination:
-        :type destination:
-        :return:
-        :rtype:
-        """
-        pass
-
     def export(self, filename="show,a.png,a.svg,a.pdf"):
         # comma separated list of output files in one command
         # if show is included show() is used
-        pass
 
         output = Parameter.expand(filename)
         for filename in output:
@@ -261,19 +263,27 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename):
-        data = {
-            'workflow':
-                {
-                    'nodes': dict(self.nodes),
-                    'dependencies': dict(self.edges),
-                }
-        }
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, 'w') as outfile:
-            yaml.dump(data, outfile, default_flow_style=False)
+    def save_to_file(self, filename, exclude=None):
+        # exclude parent
+        location = os.path.dirname(filename)
+        if len(location) > 0:
+            os.makedirs(location, exist_ok=True)
 
-        outfile.close()
+        if exclude is not None:
+            g = Graph()
+            g.nodes = self.nodes
+            g.edges = self.edges
+            for name, node in g.nodes.items():
+                try:
+                    for attribute in exclude:
+                        del node[attribute]
+                except:
+                    pass
+            content = str(g)
+        else:
+            content = str(self)
+
+        writefile(filename=filename, content=content)
 
     def save(self,
              filename="test.svg",
@@ -388,7 +398,16 @@ class Workflow:
         # gvl reimplemented but did not test
         # The workflow is run in experiment/workflow
 
-        self.name = name or 'workflow'
+        #
+        # name may not be defined properly
+        #
+        try:
+            if name is None and filename is not None:
+                self.name = os.path.basename(filename).split(".")[0]
+            else:
+                self.name = name or 'workflow'
+        except:
+            self,name = 'workflow'
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
         if not filename:
@@ -397,6 +416,16 @@ class Workflow:
             self.filename = filename
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
+
+
+        try:
+            self.name = os.path.basename(filename).split(".")[0]
+        except:
+            self.name = "workflow"
+
+
+
+
 
         self.user = user
         self.host = host
@@ -423,6 +452,7 @@ class Workflow:
         # self.workflow = {}  # the overall workflow dictionary will have both jobs and dependencies
 
         # self.label = None
+
 
     def __str__(self):
         return str(self.graph)
@@ -496,7 +526,7 @@ class Workflow:
         if "colors" in data:
             self.graph.colors = data['colors']
 
-    def load(self, filename):
+    def load(self, filename, clear=True):
         """
         Loads a workflow graph from file. However the file is still stored in
         the filename that was used when the Workflow was created. This allows to
@@ -532,15 +562,38 @@ class Workflow:
             - a,b
         """
 
-        with open(filename, 'r') as stream:
-            graph = yaml.safe_load(stream)
+        self.graph = Graph()
+        # if not clear:
+        self.graph.load(filename=filename)
 
-        # for name, node in graph["workflow"]["nodes"].items():
-        for name, node in graph["workflow"]["nodes"].items():
-            self.add_job(**node)
+        # with open(filename, 'r') as stream:
+        #     graph = yaml.safe_load(stream)
+        #
+        # dependencies = graph["workflow"]
+        #nodes = graph["workflow"]["nodes"].items()
+        #
+        # # for name, node in graph["workflow"]["nodes"].items():
+        for name, node in self.graph.nodes.items():
+             if "name" not in node:
+                 node["name"] = name
+             self.add_job(**node)
+        #
+        # for edge in dependencies:
+        #     self.add_dependencies(edge)
 
-        for edge in graph["workflow"]["dependencies"]:
-            self.add_dependencies(edge)
+
+        # expand script and exec and save shell scripts
+        for name, node in self.graph.nodes.items():
+            if node['exec'] is None and node['script'] is not None:
+                del node['exec']
+            if "exec" in node and node["kind"] == "local":
+                from cloudmesh.cc.job.localhost.Job import Job
+                print ("NNNN", node)
+                if "script" not in node:
+                    node["script"] = f"{name}.sh"
+                pprint (node)
+                job = Job.create(filename=node['script'], exec=node["exec"])
+                print (job)
 
     def save(self, filename):
         if os_is_windows():
@@ -558,25 +611,17 @@ class Workflow:
                 status="ready",
                 progress=0,
                 script=None,
+                exec=None,
                 pid=None,
                 **kwargs
                 ):
 
         label = label or name
-        user = user or self.user
-        host = host or self.host
-        defined = True
-        if name is None:
-            defined = False
-            Console.error("name is None")
-        if user is None:
-            defined = False
-            Console.error("user is None")
-        if host is None:
-            defined = False
-            Console.error("host is None")
-        if not defined:
-            raise ValueError("user or host not specified")
+        user = user or self.user or Shell.user()
+        host = host or self.host or Shell.host()
+
+        if script is None:
+            script = f"{name}.sh"
 
         now = str(DateTime.now())
         self.graph.add_node(
@@ -590,9 +635,12 @@ class Workflow:
             created=now,
             modified=now,
             script=script,
+            exec=exec,
             instance=None
         )
         self.save(self.filename)
+
+
 
     def add_dependency(self, source, destination):
         self.graph.add_dependency(source, destination)
@@ -785,9 +833,9 @@ class Workflow:
 
         if os_is_windows() and filename is None:
             Shell.mkdir("./tmp")
-            filename = filename or "tmp/workflow.svg"
+            filename = filename or f"tmp/{self.name}.svg"
         else:
-            filename = filename or "/tmp/workflow.svg"
+            filename = filename or f"/tmp/{self.name}.svg"
 
         first = True
         for name in order():
@@ -862,6 +910,22 @@ class Workflow:
                 else:
                     cwd = os.getcwd()
                     os.system(f'start chrome {cwd}\\{filename}')
+
+    def display(self, filename=None, name='workflow', first=True):
+        if os_is_windows():
+            Shell.mkdir("./tmp")
+            filename = filename or f"tmp/{name}.svg"
+        else:
+            filename = filename or f"/tmp/{name}.svg"
+        self.graph.save(filename=filename, colors="status", engine="dot")
+        if first and os_is_mac():
+            os.system(f'open {filename}')
+            first = False
+        elif first and os_is_linux():
+            os.system(f'gopen {filename}')
+        else:
+            cwd = os.getcwd()
+            os.system(f'start chrome {cwd}\\{filename}')
 
     def sequential_order(self):
         tuples = []

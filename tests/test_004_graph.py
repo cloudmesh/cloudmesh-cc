@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_graph.py
-# pytest -v  tests/test_graph.py
-# pytest -v --capture=no  tests/test_graph.py::TestGraph::<METHODNAME>
+# pytest -v --capture=no tests/test_004_graph.py
+# pytest -v  tests/test_004_graph.py
+# pytest -v --capture=no  tests/test_004_graph.py::TestGraph::<METHODNAME>
 ###############################################################
 
 from pathlib import Path
@@ -14,11 +14,19 @@ from cloudmesh.common.Benchmark import Benchmark, StopWatch
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
+import os
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+
+Shell.copy("tests/workflows/workflow-a-b.yaml", "dest")
+
+os.chdir("dest")
+
+
 g = Graph()
-g.sep = "_"
 
 
 @pytest.mark.incremental
@@ -77,13 +85,11 @@ class TestGraph:
         HEADING()
         global g
         Benchmark.Start()
-        edge = g['a_b']
-        e = g.edges['a_b']
-        another_edge = g.edges['a_b']
+        e = g.edges['a-b']
+        another_edge = g.edges['a-b']
         Benchmark.Stop()
         print('First Edge: ', e)
-        assert edge == e == another_edge
-
+        assert e == another_edge
 
     def test_str(self):
         HEADING()
@@ -93,12 +99,12 @@ class TestGraph:
         output = str(g)
         print(g.nodes.a["status"])
         print(g.nodes["a"]["status"])
-        print(g.edges["a_b"]["status"])
+        print(g.edges["a-b"]["status"])
         Benchmark.Stop()
         assert g.nodes.a["status"] == "ready"
         assert g.nodes["a"]["status"] == "ready"
-        assert g.edges["a_b"]["status"] == "ready"
-        print(g.edges.a_b["status"])
+        assert g.edges["a-b"]["status"] == "ready"
+        print(g.edges["a-b"]["status"])
         assert ":" in output
         assert "ready" in output
 
@@ -135,22 +141,81 @@ class TestGraph:
         Benchmark.Start()
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
-        Shell.mkdir("dest")
 
-        g.save(filename="dest/test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
-        g.save(filename="dest/test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
-        g.save(filename="dest/test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
+        g.save(filename="test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
+        g.save(filename="test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
+        g.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
 
-        r = Shell.cat("dest/test-dot.dot")
+        r = Shell.cat("test-dot.dot")
         print(r)
 
-        print ("display dest/test-graphviz.svg")
-        Shell.open('dest/test-graphviz.svg')
-        print ("display dest/test-dot.svg")
-        Shell.open('dest/test-dot.svg')
+        print ("display test-graphviz.svg")
+        Shell.open('test-graphviz.svg')
+        print ("display test-dot.svg")
+        Shell.open('test-dot.svg')
 
         Benchmark.Stop()
 
+    def test_clear(self):
+        HEADING()
+        g = Graph()
+        assert g.nodes == {}
+        assert g.edges == {}
+
+        g.clear()
+        print (g)
+        assert g.nodes == {}
+        assert g.edges == {}
+
+    def test_load(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        print (g)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+    def test_save(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        Shell.rm("tmp-a.yaml")
+        g.save_to_file("tmp-a.yaml")
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print (r)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+    def test_save_full(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        Shell.rm("tmp-a.yaml")
+        g.save_to_file("tmp-a.yaml", exclude=None)
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print (r)
+        assert "parent" in r
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+
+class a:
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
