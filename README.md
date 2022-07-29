@@ -2,8 +2,8 @@
 
 ## References
 
-* [Poster Presentation (PPTX)](documents/analytics-service.pptx)
-* [Poster Presentation (PDF)](documents/analytics-service.pdf)
+* [Poster Presentation (PPTX)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx)
+* [Poster Presentation (PDF)](https://github.com/cloudmesh/cloudmesh-cc/raw/documents/analytics-service.pdf)
 
 ## Background
 
