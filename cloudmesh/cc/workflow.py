@@ -619,7 +619,7 @@ class Workflow:
         label = label or name
         user = user or self.user or Shell.user()
         host = host or self.host or Shell.host()
-        
+
         if script is None:
             script = f"{name}.sh"
 
