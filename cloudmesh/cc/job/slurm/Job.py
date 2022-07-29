@@ -23,7 +23,7 @@ class Slurm:
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
+    def __init__(self, **argv):
         """
         cms set username=abc123
 
@@ -36,44 +36,44 @@ class Job:
         :rtype:
         """
 
-        self.data = argv
-
-        self.username = username
-        self.host = host
-        self.name = name or "job"
-        self.directory = directory
-
-        if label is None:
-            self.label = name or "job"
-        else:
-            self.label = name
+        self.name = None
+        self.username = None
+        self.host = None
+        self.label = None
+        self.directory = None
+        self.exec = None
+        self.script = None
 
         # print("self.data", self.data)
+        self.data = argv
         for key, value in self.data.items():
             setattr(self, key, value)
 
-        if self.script is None:
-            self.filetype = 'os'
-        elif '.ipynb' in self.script:
-            self.filetype = 'ipynb'
-        elif '.sh' in self.script:
-            self.filetype = 'sh'
-        elif '.py' in self.script:
-            self.filetype = 'python'
-        else:
-            self.filetype = 'os'
+        if self.name is None:
+            Console.error("Name is not defined", traceflag=True)
 
-        if self.username is None:
-            self.username = os.environ["USERNAME"]
+        self.username = self.username or Shell.user()
+        self.host = self.host or "localhost"
+        self.directory = self.directory or f'~/experiment/{self.name}'
 
-        if self.host is None:
-            self.host = "localhost"
+        self.kind = "local"
+        self.label = self.label or self.name
+        self.filetype = self.script_type(self.name)
 
-        if self.directory is None:
-            self.directory = f'~/experiment/{self.name}'
+        if self.script is None and self.exec is not None:
+            self.script = self.create_script(self.exec)
 
         self.slurm = Slurm(self.host)
 
+    def script_type(self, name):
+        kind = "sh"
+        if name is None:
+            return kind
+        for kind in ["sh", "ipynb", "sh", "py"]:
+            if name.endswith(f".{kind}"):
+                return kind
+        return "os"
+    
     def __str__(self):
         msg = [
             f"host:      {self.host}",
@@ -81,6 +81,9 @@ class Job:
             f"name:      {self.name}",
             f"label:     {self.label}",
             f"directory: {self.directory}",
+            f"filetype:  {self.filetype}",
+            f"script:    {self.script}",
+            f"exec:      {self.exec}",
             f"data:      {self.data}",
             f"locals     {locals()}"
         ]
@@ -314,3 +317,35 @@ class Job:
 
         writefile(f"{jobname}.sh", script.format(**data))
         script += f"\n{command}"
+
+
+    def create_script(self, exec=None):
+        # TODO add sbatch pragmas
+        """
+        creates a template
+        for the slurm sbatch
+        """
+        filename = f"{self.name}.sh"
+        if self.filetype == 'ipynb':
+            output = exec.replace(".ipynb", "-output.ipynb")
+            exec = f"papermill {exec} {output}"
+        elif self.filetype == 'sh':
+            pass
+        elif self.filetype == 'py':
+            exec = f'python {exec}'
+        else:
+            pass
+
+        template = textwrap.dedent(
+            f"""
+            #!/bin/sh
+            echo "# cloudmesh status=running progress=1 pid=$$"
+            {exec}
+            echo "# cloudmesh status=running progress=100 pid=$$"
+            #
+            """).strip()
+        script = template.format(exec=exec)
+        writefile(filename=filename, content=script)
+        os.system(f"chmod a+x {filename}")
+        return filename
+

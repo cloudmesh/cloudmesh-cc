@@ -2,16 +2,18 @@ import os
 
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 import time
+import textwrap
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import readfile
+from cloudmesh.common.util import writefile
 
 
 class Job:
 
-    def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
+    def __init__(self, **argv):
         """
         cms set username=abc123
 
@@ -26,41 +28,42 @@ class Job:
         :param argv:
         """
 
-        self.data = argv
-
-        self.username = username
-        self.host = host
-        self.name = name
-        self.directory = directory
-        self.label = label
+        self.name = None
+        self.username = None
+        self.host = None
+        self.label = None
+        self.directory = None
+        self.exec = None
+        self.script = None
 
         # print("self.data", self.data)
+        self.data = argv
         for key, value in self.data.items():
             setattr(self, key, value)
 
-        if self.script is None:
-            self.filetype = 'os'
-        elif '.ipynb' in self.script:
-            self.filetype = 'ipynb'
-        elif '.sh' in self.script:
-            self.filetype = 'sh'
-        elif '.py' in self.script:
-            self.filetype = 'python'
-        else:
-            self.filetype = 'os'
-
         if self.name is None:
-            Console.error("Name is not defined")
-            raise ValueError
+            Console.error("Name is not defined", traceflag=True)
 
-        if self.username is None:
-            self.username = os.environ["USERNAME"]
 
-        if self.host is None:
-            self.host = "localhost"
+        self.username = self.username or Shell.user()
+        self.host = self.host or "localhost"
+        self.directory = self.directory or f'~/experiment/{self.name}'
 
-        if self.directory is None:
-            self.directory = f'~/experiment/{self.name}'
+        self.kind = "local"
+        self.label = self.label or self.name
+        self.filetype = self.script_type(self.name)
+
+        if self.script is None and self.exec is not None:
+            self.script = self.create_script(self.exec)
+
+    def script_type(self, name):
+        kind = "sh"
+        if name is None:
+            return kind
+        for kind in ["sh", "ipynb", "sh", "py"]:
+            if name.endswith(f".{kind}"):
+                return kind
+        return "os"
 
     def __str__(self):
         msg = [
@@ -69,6 +72,9 @@ class Job:
             f"name:      {self.name}",
             f"label:     {self.label}",
             f"directory: {self.directory}",
+            f"filetype:  {self.filetype}",
+            f"script:    {self.script}",
+            f"exec:      {self.exec}",
             f"data:      {self.data}",
             f"locals     {locals()}"
         ]
@@ -86,28 +92,13 @@ class Job:
     def run(self):
         self.mkdir_experimentdir()
 
-        if self.filetype == "python":
-            command = f'chmod ug+x {self.name}.py'
-        else:
-            command = f'chmod ug+x ./{self.name}.sh'
+        command = f'chmod ug+x ./{self.name}.sh'
         os.system(command)
         if os_is_windows():
 
-            if self.filetype == "python":
-                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup python {self.name}.py > {self.name}.log 2>&1 &"'
-            else:
-                command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
+            command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
             print(command)
             state = os.system(command)
-            # ps = subprocess.Popen(('bash', '-c', f'"{command} ; exit 0" &'), stdout=subprocess.PIPE)
-            # print(ps)
-            # print(type(ps))
-            # output = subprocess.check_output(stdin=ps.stdout)
-            # ps.wait()
-            # state = subprocess.check_output(['bash', '-c', f'"{command} ; exit 0" &'])
-            # state = state.decode('utf-8')
-            # if state == '':
-            #    state = 0
 
         else:
             command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
@@ -181,27 +172,22 @@ class Job:
         self.mkdir_experimentdir()
         self.chmod()
 
-        if self.filetype == "python":
-            command = f"scp ./{self.name}.py {self.username}@{self.host}:{self.directory}/."
-        else:
-            command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
 
     def chmod(self):
-        if self.filetype == "python":
-            command = f"chmod ug+rx ./{self.name}.py"
-        else:
-            command = f"chmod ug+rx ./{self.name}.sh"
+        command = f"chmod ug+rx ./{self.name}.sh"
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
-        print(command)
+        print("CCCC", command)
         r = Shell.run(command)
+        print ("RRRR", r)
         if "cannot access" in r:
             return False
         return True
@@ -276,19 +262,32 @@ class Job:
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child
 
-    def create(self, command, ntasks=1):
+    def create_script(self, exec=None):
         """
         creates a template
         for the slurm sbatch
         """
-        template = \
+        filename = f"{self.name}.sh"
+        if self.filetype == 'ipynb':
+            output = exec.replace(".ipynb", "-output.ipynb")
+            exec = f"papermill {exec} {output}"
+        elif self.filetype == 'sh':
+            pass
+        elif self.filetype == 'py':
+            exec = f'python {exec}'
+        else:
+            pass
+
+        template = textwrap.dedent(
             f"""
-        #!/bin/bash
-        #
-        #SBATCH --job-name=test
-        #SBATCH --output=result.out
-        #
-        #SBATCH --ntasks={ntasks}
-        #
-        """
-        template += f"\n{command}"
+            #!/bin/sh
+            echo "# cloudmesh status=running progress=1 pid=$$"
+            {exec}
+            echo "# cloudmesh status=running progress=100 pid=$$"
+            #
+            """).strip()
+        script = template.format(exec=exec)
+        writefile(filename=filename, content=script)
+        os.system(f"chmod a+x {filename}")
+        return filename
+
