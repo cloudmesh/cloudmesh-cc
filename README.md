@@ -3,12 +3,12 @@
 Cloudmesh Controlled Computing through Workflows
 
 Gregor von Laszewski (laszewski@gmail.com)$^*$,
-Jaques Fleisher,
+Jaques Fleischer,
 Jakson Miskill,
 Alision Liu,
 Alex Beck
 
-$^*$ Corresponding author
+$^*$ Corresponding author, University of Virginia
 
 ## References
 
