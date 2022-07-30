@@ -1,5 +1,13 @@
 # Hybrid Multi-Cloud Analytics Services Framework
 
+Cloudmesh Controlled Computing through Workflows
+
+Gregor von Laszewski (laszewski@gmail.com),
+Jaques Fleisher,
+Jakson Miskill,
+Alision Liu,
+Alex Beck,
+
 ## References
 
 * [Poster Presentation (PPTX)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx)
