@@ -2,13 +2,17 @@
 
 Cloudmesh Controlled Computing through Workflows
 
-Gregor von Laszewski (laszewski@gmail.com),
+Gregor von Laszewski (laszewski@gmail.com)$^*$,
 Jaques Fleisher,
 Jakson Miskill,
 Alision Liu,
-Alex Beck,
+Alex Beck
+
+$^*$ Corresponding author
 
 ## References
+
+An older version of the poster is avalable as pptx and PDF file. However, that version is no longer valid and is superseeded by this document.
 
 * [Poster Presentation (PPTX)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx)
 * [Poster Presentation (PDF)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf)
