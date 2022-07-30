@@ -81,26 +81,14 @@ local job on Linux, macOS, Windows 10, WIndows 11, jobs running in WSL on Window
 
 In addition we leveraged the exiting Networkx Graph framework to allow dependencies between jobs. This greatly reduced the complexity of the implementation while being able to leverage graohical displays of the workflow, as well as using scheduling jobs with for example topological sort available in Networkx. Custom schedulers chan be designed easily based on a the dependencies and job types managed through this straight forward interface. The status of the jobs are stored in a database that can be monitored during program execution. The creation of the jobs is done on the fly, e.g. when the job is needed determined on the dependencies when all its parents are resolved. THis is especially important as it allows dynamic workflow patterns to be implemented while results from previous calculations can be used in later stages of the workflow. 
 
-We have developed a simpel to use API for this so programs can be formulated using the API in pythin. HOwever, we embedded this API also in a prototype REST service to showcase that integration into language independent frameworks is possible. The obvious functions to manage workflows are supported including graph specification throug configuration files, upload of workflows, export, adding jobs and dependencies, visualizing the workflow during the execution. AN important feature that we added is the monitoring of the jobs while using progress reports through automated log file minining. This way each job reports the progress during the execution. THis is esppecially of importance when we run very complex and long running jobs.
+We have developed a simpel to use API for this so programs can be formulated using the API in pythin. HOwever, we embedded this API also in a prototype REST service to showcase that integration into language independent frameworks is possible. The obvious functions to manage workflows are supported including graph specification throug configuration files, upload of workflows, export, adding jobs and dependencies, visualizing the workflow during the execution. AN important feature that we added is the monitoring of the jobs while using progress reports through automated log file minining. This way each job reports the progress during the execution. This is esppecially of importance when we run very complex and long running jobs.
 
 
+The REST ervice was implemented in FastAPI to leverage a small but fast serfvice which features a much smaller footprint for implementation and setup in contrast to other similar REST service frameworks using python.
 
-
-When a workflow is created, there is an
-internal structure that identifies the type of machine that is being
-operated on and creates the correct job based on that machine. After
-the job, a graph class was created to mesh with the workflow. The
-graph creates a node and edge graph with a corresponding visual
-representation of the graph. This was to allow the user to visualize
-where they are in the workflow. Next the workflow itself allows users
-to add jobs, remove jobs, add edges, and then run each of the jobs in
-the order that was specified. This allows the user to interact with
-each of the previous objects. Finally, the service itself is a FastAPI
-implementation of the workflow. Users can access this through their
-own devices, they can add, remove jobs, and run jobs through a
-graphical user interface. This can be seen in the @fig:workflow-uml.
-This interface can be run through command line commands as created in
-the `cloudmesh-cc` repository.
+This architectural componenst building thid framework ars depicted  @fig:workflow-uml.
+The code is availabe in this repository and manual pages are provided how to install it:
+[cloudmesh-cc](https://github.com/cloudmesh/cloudmesh-c).
 
 ## Summary
 
@@ -114,15 +102,5 @@ graphical user interface to manage
 workflows between jobs. They can be uploaded as yaml files or individually 
 added through the build in debug framework.
 
-## Possible Future Work
-
-There are a few aspects of the service that can be improved. For
-instance, the FastAPI section of the service can be improved to have
-a more user-friendly graphical interface. This could be accomplished
-by integrating what we learned through FastAPI with a different
-frontend framework, such integration of a javascript based framework or 
-adding form based html pages.
-
-Regarding the workflow, time was too short to develop a proper 
-documentation and adding docstrings to the program. 
+Improvements to this project will include code cleanup and manaul development.
 
