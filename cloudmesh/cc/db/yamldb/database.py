@@ -7,6 +7,17 @@ from cloudmesh.common.util import path_expand
 
 
 class Database:
+    """
+    This class creates an abstract database that should
+    be used as part of the state changing mechanism in the
+    workflow management.
+
+    It supports the basic finctionality that it autosaves the
+    database upon change.
+
+    It includes the functions
+
+    """
 
     def __init__(self, name="queue", filename=None, debug=False):
         self.debug = debug
@@ -37,8 +48,12 @@ class Database:
 
     def save(self, filename=None):
         """
-        save the data to the database
+        Saves the data to the database
+
+        :param filename: The filename of the database
+        :type filename: string
         """
+
         if filename is None:
             self.data.save(filename=self.filename)
         else:
@@ -46,10 +61,10 @@ class Database:
 
     def load(self, filename=None):
         """
-        load the database and return as data
+         Load the database and return as data
 
-        Returns:
-
+        :param filename: The filename of the database
+        :type filename: string
         """
         if filename is None:
             self.data.load(filename=self.filename)
@@ -58,13 +73,18 @@ class Database:
 
     def remove(self):
         """
-        remove the database
-        Returns:
-
+        Remove the database
         """
         os.remove(self.filename)
 
     def get(self, name):
+        """
+        Returns the element with the name form the database.
+
+        :param name: the name
+        :type name: string
+        :return: the value of the name as string
+        """
         return self.data[name]
 
     def get_queue(self, name):
@@ -81,9 +101,18 @@ class Database:
         self.data[key] = value
 
     def __str__(self):
+        """
+        String representation of the database
+
+        :return: the content as string
+        :rtype: string
+        """
         return str(self.data)
 
     def clear(self):
+        """
+        clears the database and removes all entries
+        """
         self.data.clear()
 
     @property
