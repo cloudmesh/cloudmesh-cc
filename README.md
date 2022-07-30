@@ -12,10 +12,12 @@ $^*$ Corresponding author, University of Virginia
 
 ## References
 
-An older version of the poster is available as ppt and PDF file. However, that version is no longer valid and is superseded by this document.
+An older version of the poster is available as ppt and PDF file. However, that version is no longer valid and is superseded by this document. 
 
 * [Poster Presentation (PPTX)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx)
 * [Poster Presentation (PDF)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf)
+
+The listed earlier poster contains inaccurate staements.
 
 ## Background
 
