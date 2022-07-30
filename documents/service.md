@@ -20,6 +20,14 @@ In the URL, type `/docs` in front, which takes you to the GUI.
 From here, you can list your current workflows, delete workflows,
 add workflows and jobs, and run them from this site.
 
+## Nomencalture
+
+* Replace `{WORKFLOW_NAME}` with the name of the Workflow you want to perform
+  the operation on. These Workflows can be viewed as YAML files in your
+  `~/.cloudmesh/workflow` folder.
+
+* Replace `JOB_NAME` with a job name you want to use
+
 ## Using Requests
 
 There are three type of requests that can be used. GET, POST, and
@@ -48,8 +56,8 @@ files = {"file": open("{FILENAME}","rb")} # replace the file with the file name 
 r = requests.post("/upload",files=files)
 
 # GET `/workflow/{name}` Get Workflow
-r = requests.get("/workflow/{WORKFLOW NAME}?job={JOB NAME}") # to access a single job
-r = requests.get("/workflow/{WORKFLOW NAME}") # to acess the entire workflow
+r = requests.get("/workflow/{WORKFLOW_NAME}?job={JOB_NAME}") # to access a single job
+r = requests.get("/workflow/{WORKFLOW_NAME}") # to acess the entire workflow
 
 # POST `/workflow/{name}` Add Job
 job = ''' {"name": "string",
@@ -67,15 +75,12 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-r = requests.post("/workflow/{WORKFLOW NAME}",data=job,headers=headers)
+r = requests.post("/workflow/{WORKFLOW_NAME}",data=job,headers=headers)
 
 # DELETE `/workflow/{name}` Delete Workflow
-r = requests.delete("/workflow/{WORKFLOW NAME}")
+r = requests.delete("/workflow/{WORKFLOW_NAME}")
 
 # GET `/run/{name}` Run Workflow
-r = requests.get("/run/{WORKFLOW NAME}")
+r = requests.get("/run/{WORKFLOW_NAME}")
 ```
 
-Replace `{WORKFLOW NAME}` with the name of the Workflow you want to perform
-the operation on. These Workflows can be viewed as YAML files in your
-`~/.cloudmesh/workflow` folder.
