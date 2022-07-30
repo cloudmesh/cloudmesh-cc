@@ -1,4 +1,4 @@
-# Service
+# Cloudmesh-cc Service Quickstart
 
 To run the service with the GUI, type the following command:
 
