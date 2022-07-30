@@ -1,6 +1,6 @@
 # Hybrid Multi-Cloud Analytics Services Framework
 
-Cloudmesh Controlled Computing through Workflows
+**Cloudmesh Controlled Computing through Workflows**
 
 Gregor von Laszewski (laszewski@gmail.com)$^*$,
 Jaques Fleischer,
