@@ -803,17 +803,14 @@ class Workflow:
             print(self.table2(with_label=True))
 
             if show:
-                self.graph.save(filename=filename,
-                                colors="status",
-                                engine="dot")
+                self.graph.save(filename=filename, colors="status", engine="dot")
                 if first and os_is_mac():
-                    os.system(f'open {filename}')
+                    Shell.open(filename=filename)
                     first = False
                 elif first and os_is_linux():
-                    os.system(f'gopen {filename}')
+                    Shell.open(filename=filename)
                 else:
-                    cwd = os.getcwd()
-                    os.system(f'start chrome {cwd}\\{filename}')
+                    Shell.browser(filename)
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
 
@@ -903,13 +900,12 @@ class Workflow:
                 self.graph.save(filename=filename, colors="status",
                                 layout=nx.circular_layout, engine="dot")
                 if first and os_is_mac():
-                    os.system(f'open {filename}')
+                    Shell.open(filename=filename)
                     first = False
                 elif first and os_is_linux():
-                    os.system(f'gopen {filename}')
+                    Shell.open(filename=filename)
                 else:
-                    cwd = os.getcwd()
-                    os.system(f'start chrome {cwd}\\{filename}')
+                    Shell.browser(filename)
 
     def display(self, filename=None, name='workflow', first=True):
         if os_is_windows():
