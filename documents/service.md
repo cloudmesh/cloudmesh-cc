@@ -20,7 +20,7 @@ In the URL, type `/docs` in front, which takes you to the GUI.
 From here, you can list your current workflows, delete workflows,
 add workflows and jobs, and run them from this site.
 
-## Nomencalture
+## Nomenclature
 
 * Replace `{WORKFLOW_NAME}` with the name of the Workflow you want to perform
   the operation on. These Workflows can be viewed as YAML files in your
