@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_job_slurm.py
-# pytest -v  tests/test_job_slurm.py
-# pytest -v --capture=no  tests/test_job_slurm.py::TestJobSlurm::<METHODNAME>
+# pytest -v --capture=no tests/test_050_job_slurm.py
+# pytest -v  tests/test_050_job_slurm.py
+# pytest -v --capture=no  tests/test_050_job_slurm.py::TestJobSlurm::<METHODNAME>
 ###############################################################
 import os
 import shutil
