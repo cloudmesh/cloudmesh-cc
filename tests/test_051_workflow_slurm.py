@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_workflow_slurm.py
-# pytest -v  tests/test_workflow_slurm.py
-# pytest -v --capture=no  tests/test_workflow_slurm.py::TestWorkflowSlurm::<METHODNAME>
+# pytest -v --capture=no tests/test_051_workflow_slurm.py
+# pytest -v  tests/test_051_workflow_slurm.py
+# pytest -v --capture=no  tests/test_051_workflow_slurm.py::TestWorkflowSlurm::<METHODNAME>
 ###############################################################
 import os
 from pathlib import Path
@@ -56,17 +56,131 @@ wait_job = f"wait-slurm"
 w = None
 
 
+def create_workflow(filename='tests/workflow.yaml'):
+    global w
+    global username
+    w = Workflow(filename=filename, load=False)
+
+    localuser = Shell.sys_user()
+    login = {
+        "localhost": {"user": f"{localuser}", "host": "local"},
+        "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
+        "pi": {"user": f"{localuser}", "host": "red"},
+    }
+
+    n = 0
+
+    user = login["rivanna"]["user"]
+    host = login["rivanna"]["host"]
+
+    jobkind = 'slurm'
+
+    for script in ["start", "end"]:
+        Shell.copy(f"./tests/workflow-slurm/{script}.sh", ".")
+        assert os.path.isfile(f"./{script}.sh")
+        w.add_job(name=script, kind=jobkind, user=user, host=host)
+
+    for host, kind in [("rivanna", "slurm")]:
+        print("HOST:", host)
+        user = login[host]["user"]
+        host = login[host]["host"]
+
+        print(n)
+        w.add_job(name=f"slurm", kind=kind, user=user, host=host)
+        Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
+        # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
+        n = n + 1
+
+        w.add_dependencies(f"slurm,end")
+        w.add_dependencies(f"start,slurm")
+
+    print(len(w.jobs) == n)
+    g = str(w.graph)
+    print(g)
+    w.save(filename=filename)
+    assert "name: start" in g
+    return w
+
+def remove_workflow(filename="workflow.yaml"):
+    # Remove workflow source yaml filr
+    Shell.rm(filename)
+
+    # Remove experiment execution directory
+    full_dir = Shell.map_filename('~/experiment').path
+
+    # TODO:
+    # r = Shell.rmdir(full_dir)
+    r = Shell.run(f"rm -fr {full_dir}")
+
+    # remove locat workflow file, for state notification
+    Shell.run("rm -rf ~/.cloudmesh/workflow")
+
+    # logic
+    # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
+    #     # Remove workflow source yaml filr
+    #     Shell.rm(filename)
+    #
+    #     # Remove experiment execution directory
+    #     full_dir = Shell.map_filename('~/experiment').path
+    #
+    #     # TODO:
+    #     # r = Shell.rmdir(full_dir)
+    #     r = Shell.run(f"rm -fr {full_dir}")
+    #
+    #     # remove locat workflow file, for state notification
+    #     Shell.rm("~/.cloudmesh/workflow")
+    #
+    #     # logic
+    #     # 1. copy tests/workflow.yaml to local dir simulation from where we start the workflow
+    #     # 2. copy the workflow to ~/experiment wher it is executed
+    #     # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     #     we observeve that changes
+    #     # Why do we need the ~/.cloudmesh dir
+    #     # * it simulates a remote computer as it would be have ther, as the execution is done
+    #     #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #     #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    #     # * for ssh slurm and others we simply use ~/experiment
+    #     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+    #
+    #     for filename in [
+    #             'tests/workflow.yaml',
+    #             '~/experiment',
+    #             "~/.cloudmesh/workflow/workflow",
+    #             "~/.cloudmesh/workflow/workflow/workflow.yaml"
+    #         ]:
+    #             where = Shell.map_filename(filename).path
+    #             assert not os.path.exists(where)tests//workflow.yaml to local dir simulation from where we start the workflow
+    # 2. copy the workflow to ~/experiment wher it is executed
+    # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
+    #     we observeve that changes
+    # Why do we need the ~/.cloudmesh dir
+    # * it simulates a remote computer as it would be have ther, as the execution is done
+    #   on the remote computer in a ~/experiment dir. There may be a benefit to have the same
+    #   experiment dir locally, but this can not be done for localhost, so we use .cloudmesh
+    # * for ssh slurm and others we simply use ~/experiment
+    # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
+
+    for filename in [
+            'tests/scripts/workflow.yaml',
+            '~/experiment',
+            "~/.cloudmesh/workflow/workflow",
+            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+        ]:
+            where = Shell.map_filename(filename).path
+            assert not os.path.exists(where)
+
+
 @pytest.mark.incremental
 class TestWorkflowSlurm:
 
-    def test_load_slurm_workflow(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        w = Workflow()
-        w.load("tests/workflow-slurm/slurm-workflow.yaml")
-        Benchmark.Stop()
-        print(w.graph)
+    # def test_load_slurm_workflow(self):
+    #     HEADING()
+    #     global w
+    #     Benchmark.Start()
+    #     w = Workflow()
+    #     w.load("tests/workflow-slurm/slurm-workflow.yaml")
+    #     Benchmark.Stop()
+    #     print(w.graph)
 
     def test_set_up(self):
         """
@@ -77,47 +191,12 @@ class TestWorkflowSlurm:
         global w
         global username
         Benchmark.Start()
-        w = Workflow()
+        # w = Workflow()
 
-        if os_is_windows():
-            localuser = os.environ["USERNAME"]
-        else:
-            localuser = os.environ['USER']
-        login = {
-            "localhost": {"user": f"{localuser}", "host": "local"},
-            "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"},
-            "pi": {"user": f"{localuser}", "host": "red"},
-        }
-
-        n = 0
-
-        user = login["rivanna"]["user"]
-        host = login["rivanna"]["host"]
-
-        jobkind = 'slurm'
-
-        for script in ["start", "end"]:
-            Shell.copy(f"./tests/workflow-slurm/{script}.sh", ".")
-            assert os.path.isfile(f"./{script}.sh")
-            w.add_job(name=script, kind=jobkind, user=user, host=host)
-
-        for host, kind in [("rivanna", "slurm")]:
-            print("HOST:", host)
-            user = login[host]["user"]
-            host = login[host]["host"]
-
-            print(n)
-            w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-            Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
-            # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
-            n = n + 1
-
-            w.add_dependencies(f"slurm,end")
-            w.add_dependencies(f"start,slurm")
-
+        w = create_workflow("dest/workflow-slurm.yaml")
 
         Benchmark.Stop()
-        print(len(w.jobs) == n)
+        # print(len(w.jobs) == n)
 
     def test_show(self):
         HEADING()
@@ -164,6 +243,14 @@ class TestWorkflowSlurm:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+
+    def test_delete_remnants(self):
+        HEADING()
+        Benchmark.Start()
+        remove_workflow("dest/workflow-slurm.yaml")
+
+        Benchmark.Stop()
+
 
     # def test_run(self):
     #     HEADING()
