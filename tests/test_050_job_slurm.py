@@ -23,6 +23,10 @@ from cloudmesh.common.Shell import Shell
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
+
 variables = Variables()
 
 name = "run-slurm"
@@ -61,7 +65,7 @@ class TestJobsSlurm:
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
         for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
+            os.system(f"cp ../tests/scripts/{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 

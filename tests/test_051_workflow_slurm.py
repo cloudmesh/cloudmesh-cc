@@ -22,6 +22,9 @@ from cloudmesh.vpn.vpn import Vpn
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+Shell.rmdir("dest")
+Shell.mkdir("dest")
+os.chdir("dest")
 
 variables = Variables()
 
@@ -76,7 +79,7 @@ def create_workflow(filename='tests/workflow.yaml'):
     jobkind = 'slurm'
 
     for script in ["start", "end"]:
-        Shell.copy(f"./tests/workflow-slurm/{script}.sh", ".")
+        Shell.copy(f"../tests/workflow-slurm/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
         w.add_job(name=script, kind=jobkind, user=user, host=host)
 
@@ -87,7 +90,7 @@ def create_workflow(filename='tests/workflow.yaml'):
 
         print(n)
         w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-        Shell.copy(f"./tests/workflow-slurm/slurm.sh", ".")
+        Shell.copy(f"../tests/workflow-slurm/slurm.sh", ".")
         # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
         n = n + 1
 
@@ -193,7 +196,7 @@ class TestWorkflowSlurm:
         Benchmark.Start()
         # w = Workflow()
 
-        w = create_workflow("dest/workflow-slurm.yaml")
+        w = create_workflow("workflow-slurm.yaml")
 
         Benchmark.Stop()
         # print(len(w.jobs) == n)
@@ -204,7 +207,7 @@ class TestWorkflowSlurm:
         if os_is_windows():
             w.graph.save(filename="test-slurm.svg", colors="status", layout=nx.circular_layout, engine="dot")
         else:
-            w.graph.save(filename="/tmp/test-slurm.svg", colors="status", layout=nx.circular_layout, engine="dot")
+            w.graph.save(filename="test-slurm.svg", colors="status", layout=nx.circular_layout, engine="dot")
         # Shell.browser("/tmp/test-slurm.svg")
         # assert os.path.exists("~/tmp/test-slurm.svg") == True
 
@@ -247,7 +250,7 @@ class TestWorkflowSlurm:
     def test_delete_remnants(self):
         HEADING()
         Benchmark.Start()
-        remove_workflow("dest/workflow-slurm.yaml")
+        remove_workflow("workflow-slurm.yaml")
 
         Benchmark.Stop()
 
