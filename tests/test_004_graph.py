@@ -18,10 +18,11 @@ import os
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+cc_path = Shell.map_filename("~/cm/cloudmesh-cc").path
+os.chdir(cc_path)
 Shell.rmdir("dest")
 Shell.mkdir("dest")
 os.chdir("dest")
-
 
 Shell.copy("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
 
@@ -170,6 +171,8 @@ class TestGraph:
 
     def test_load(self):
         HEADING()
+        cc_path = Shell.map_filename("~/cm/cloudmesh-cc/dest").path
+        os.chdir(cc_path)
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
@@ -182,6 +185,8 @@ class TestGraph:
 
     def test_save(self):
         HEADING()
+        cc_path = Shell.map_filename("~/cm/cloudmesh-cc/dest").path
+        os.chdir(cc_path)
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
@@ -199,6 +204,8 @@ class TestGraph:
 
     def test_save_full(self):
         HEADING()
+        cc_path = Shell.map_filename("~/cm/cloudmesh-cc/dest").path
+        os.chdir(cc_path)
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
