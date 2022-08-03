@@ -60,7 +60,7 @@ wait_job = f"wait-slurm"
 w = None
 
 
-def create_workflow(filename='tests/workflow.yaml'):
+def create_workflow(filename='workflow.yaml'):
     global w
     global username
     w = Workflow(filename=filename, load=False)
@@ -80,7 +80,7 @@ def create_workflow(filename='tests/workflow.yaml'):
     jobkind = 'slurm'
 
     for script in ["start", "end"]:
-        Shell.copy(f"../tests/workflow-slurm/{script}.sh", ".")
+        Shell.copy(f"../workflow-slurm/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
         w.add_job(name=script, kind=jobkind, user=user, host=host)
 
@@ -91,8 +91,8 @@ def create_workflow(filename='tests/workflow.yaml'):
 
         print(n)
         w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-        Shell.copy(f"../tests/workflow-slurm/slurm.sh", ".")
-        # os.system(f"cp ./tests/workflow-slurm/job-{host}-{n}.sh .")
+        Shell.copy(f"../workflow-slurm/slurm.sh", ".")
+        # os.system(f"cp ./workflow-slurm/job-{host}-{n}.sh .")
         n = n + 1
 
         w.add_dependencies(f"slurm,end")
@@ -120,7 +120,7 @@ def remove_workflow(filename="workflow.yaml"):
     Shell.run("rm -rf ~/.cloudmesh/workflow")
 
     # logic
-    # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
+    # 1. copy testsdef remove_workflow(filename="workflow.yaml"):
     #     # Remove workflow source yaml filr
     #     Shell.rm(filename)
     #
@@ -135,7 +135,7 @@ def remove_workflow(filename="workflow.yaml"):
     #     Shell.rm("~/.cloudmesh/workflow")
     #
     #     # logic
-    #     # 1. copy tests/workflow.yaml to local dir simulation from where we start the workflow
+    #     # 1. copy workflow.yaml to local dir simulation from where we start the workflow
     #     # 2. copy the workflow to ~/experiment wher it is executed
     #     # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
     #     #     we observeve that changes
@@ -147,13 +147,13 @@ def remove_workflow(filename="workflow.yaml"):
     #     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
     #
     #     for filename in [
-    #             'tests/workflow.yaml',
+    #             'workflow.yaml',
     #             '~/experiment',
     #             "~/.cloudmesh/workflow/workflow",
     #             "~/.cloudmesh/workflow/workflow/workflow.yaml"
     #         ]:
     #             where = Shell.map_filename(filename).path
-    #             assert not os.path.exists(where)tests//workflow.yaml to local dir simulation from where we start the workflow
+    #             assert not os.path.exists(where)/workflow.yaml to local dir simulation from where we start the workflow
     # 2. copy the workflow to ~/experiment wher it is executed
     # 3. copy the workflow log file to ~/.cloudmesh/workflow/workflow wher the directory is that
     #     we observeve that changes
@@ -165,7 +165,7 @@ def remove_workflow(filename="workflow.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            'tests/scripts/workflow.yaml',
+            'scripts/workflow.yaml',
             '~/experiment',
             "~/.cloudmesh/workflow/workflow",
             "~/.cloudmesh/workflow/workflow/workflow.yaml"
@@ -182,7 +182,7 @@ class TestWorkflowSlurm:
     #     global w
     #     Benchmark.Start()
     #     w = Workflow()
-    #     w.load("tests/workflow-slurm/slurm-workflow.yaml")
+    #     w.load("workflow-slurm/slurm-workflow.yaml")
     #     Benchmark.Stop()
     #     print(w.graph)
 

@@ -52,7 +52,7 @@ except:  # noqa: E722
     login_success = False
 
 
-def create_workflow(filename='tests/workflow.yaml'):
+def create_workflow(filename='workflow.yaml'):
     global w
     global username
     w = Workflow(filename=filename, load=False)
@@ -130,7 +130,7 @@ class TestWorkflowSsh:
         try:
             r = Shell.run(f"rm -rf {full_dir}")
             r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
-            r = Shell.run(f"rm tests/workflow.yaml")
+            r = Shell.run(f"rm workflow.yaml")
             r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow/workflow.yaml")
         except Exception as e:
             print(e.output)

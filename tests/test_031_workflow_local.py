@@ -205,13 +205,16 @@ class TestWorkflowLocal:
         assert "start" in g
         assert "host: local" in g
 
-
     def test_reset_experiment_dir(self):
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
+
         os.system('cp ../workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
+
+        banner("pwd")
+        os.system("pwd")
 
     def test_set_up(self):
         """
@@ -229,6 +232,9 @@ class TestWorkflowLocal:
         print(g)
         assert "name: start" in g
         assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+
+        print (w.filename)
+class d:
 
     def test_show(self):
         HEADING()
