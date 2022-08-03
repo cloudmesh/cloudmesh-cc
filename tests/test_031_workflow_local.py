@@ -234,7 +234,6 @@ class TestWorkflowLocal:
         assert "start-job-rivanna.hpc.virginia.edu-3:" in g
 
         print (w.filename)
-class d:
 
     def test_show(self):
         HEADING()
