@@ -25,12 +25,14 @@ from cloudmesh.common.Shell import Console, Shell
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
+from utilities import set_host_user
 
 banner(Path(__file__).name, c = "#", color="RED")
 
 client = TestClient(app)
 
 variables = Variables()
+
 if "host" not in variables:
     host = "rivanna.hpc.virginia.edu"
 else:
