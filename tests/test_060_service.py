@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_service.py
-# pytest -v  tests/test_service.py
-# pytest -v --capture=no  tests/test_service.py::TestService::<METHODNAME>
+# pytest -v --capture=no tests/test_060_service.py
+# pytest -v  tests/test_060_service.py
+# pytest -v --capture=no  tests/test_060_service.py::TestService::<METHODNAME>
 ###############################################################
 import glob
 from pathlib import Path

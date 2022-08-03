@@ -31,6 +31,8 @@ banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
+cc_dir = Shell.map_filename("~/cm/cloudmesh-cc").path
+os.chdir(cc_dir)
 Shell.rmdir("dest")
 Shell.mkdir("dest")
 os.chdir("dest")

@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_workflow_remote_ssh.py
-# pytest -v  tests/test_workflow_remote_ssh.py
-# pytest -v --capture=no  tests/test_workflow_remote_ssh.py::TestWorkflow::<METHODNAME>
+# pytest -v -x --capture=no tests/test_041_workflow_remote_ssh.py
+# pytest -v  tests/test_041_workflow_remote_ssh.py
+# pytest -v --capture=no  tests/test_041_workflow_remote_ssh.py::TestWorkflow::<METHODNAME>
 # ##############################################################
 import os.path
 from pathlib import Path

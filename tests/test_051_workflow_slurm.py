@@ -22,6 +22,8 @@ from cloudmesh.vpn.vpn import Vpn
 
 banner(Path(__file__).name, c = "#", color="RED")
 
+cc_dir = Shell.map_filename("~/cm/cloudmesh-cc").path
+os.chdir(cc_dir)
 Shell.rmdir("dest")
 Shell.mkdir("dest")
 os.chdir("dest")

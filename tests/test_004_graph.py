@@ -24,10 +24,6 @@ Shell.rmdir("dest")
 Shell.mkdir("dest")
 os.chdir("dest")
 
-Shell.copy("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
-
-
-
 g = Graph()
 
 
@@ -171,8 +167,7 @@ class TestGraph:
 
     def test_load(self):
         HEADING()
-        cc_path = Shell.map_filename("~/cm/cloudmesh-cc/dest").path
-        os.chdir(cc_path)
+        Shell.copy("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
