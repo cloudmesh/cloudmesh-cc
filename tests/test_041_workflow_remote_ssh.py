@@ -69,7 +69,14 @@ def create_workflow(filename='workflow.yaml'):
     user = login["localhost"]["user"]
     host = login["localhost"]["host"]
 
-    jobkind="local"
+    jobkind = "local"
+
+    for script in ["start", "job-local-0", "job-local-1", "job-local-2",
+                   "job-rivanna.hpc.virginia.edu-3",
+                   "job-rivanna.hpc.virginia.edu-4",
+                   "job-rivanna.hpc.virginia.edu-5", "end"]:
+        Shell.copy(f"../workflow-sh/{script}.sh", ".")
+        assert os.path.isfile(f"./{script}.sh")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
