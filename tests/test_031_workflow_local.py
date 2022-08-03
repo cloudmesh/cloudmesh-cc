@@ -47,7 +47,7 @@ else:
 w = None
 
 
-def create_workflow(filename='tests/workflow.yaml'):
+def create_workflow(filename='./workflow.yaml'):
     global w
     global username
     w = Workflow(filename=filename, load=False)
@@ -168,7 +168,7 @@ def remove_workflow(filename="workflow.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            'tests/scripts/workflow.yaml',
+            './scripts/workflow.yaml',
             '~/experiment',
             "~/.cloudmesh/workflow/workflow",
             "~/.cloudmesh/workflow/workflow/workflow.yaml"
@@ -210,7 +210,7 @@ class TestWorkflowLocal:
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
-        os.system('cp ../tests/workflow-sh/*.sh .')
+        os.system('cp ../workflow-sh/*.sh .')
         assert not os.path.isfile(exp)
 
     def test_set_up(self):
