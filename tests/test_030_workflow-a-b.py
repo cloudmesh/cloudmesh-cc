@@ -48,7 +48,7 @@ class TestWorkflowAB:
         global w
         Benchmark.Start()
         w = Workflow()
-        w.load("../tests/workflows/workflow-a-b.yaml")
+        w.load("../workflows/workflow-a-b.yaml")
         Benchmark.Stop()
         print(w.graph)
         print(w.table)
