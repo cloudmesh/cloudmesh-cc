@@ -117,7 +117,7 @@ class TestJobLocalhost:
         HEADING()
 
         w = Workflow()
-        location = path_expand("../tests/mnist/source-mnist-exec.yaml")
+        location = path_expand("../mnist/source-mnist-exec.yaml")
 
         r = Shell.cat(location)
         w.load(filename=location, clear=True)
