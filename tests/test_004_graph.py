@@ -3,7 +3,7 @@
 # pytest -v  tests/test_004_graph.py
 # pytest -v --capture=no  tests/test_004_graph.py::TestGraph::<METHODNAME>
 ###############################################################
-
+import shutil
 from pathlib import Path
 
 import networkx as nx
@@ -18,7 +18,6 @@ import os
 from utilities import create_dest
 
 create_dest()
-
 
 banner(Path(__file__).name, c = "#", color="RED")
 
@@ -166,10 +165,10 @@ class TestGraph:
 
     def test_load(self):
         HEADING()
-        Shell.copy_file("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
+        Shell.copy_file("../workflows/workflow-a-b.yaml", "../dest/workflow-a-b.yaml", verbose=True)
         g.load(filename="workflow-a-b.yaml")
         print (g)
         assert g.nodes != {}
