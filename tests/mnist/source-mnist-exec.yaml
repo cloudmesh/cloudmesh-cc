@@ -11,7 +11,7 @@ workflow:
       host: local
       exec: "echo mnist"
     end:
-      label: stop
+      label: end
       kind:  local
       host: local
       exec: "echo end"

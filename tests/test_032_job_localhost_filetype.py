@@ -127,3 +127,5 @@ class TestJobLocalhost:
         w.run_topo()
 
         w.display()
+        print(w.table)
+        # time.sleep(10)
