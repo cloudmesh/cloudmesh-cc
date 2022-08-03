@@ -50,10 +50,10 @@ if username is None:
 
 w = None
 
-def create_workflow():
+def create_workflow(filename="workflow-service.yaml"):
     global w
     global username
-    w = Workflow(filename=Shell.map_filename("workflow-service.yaml").path)
+    w = Workflow(filename=Shell.map_filename(filename).path)
 
     localuser = Shell.sys_user()
     login = {
@@ -112,20 +112,22 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        yaml_dir = Shell.map_filename('./workflow-service.yaml').path
-        yaml_dir2 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
+        workflow_yaml = Shell.map_filename('./workflow-service.yaml').path
+        workflow_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
         yaml_dir3 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/workflow-service.yaml').path
         try:
-            Shell.run(f'rm -rf {yaml_dir}')
-            Shell.run(f'rm -rf {yaml_dir2}')
+            Shell.run(f'rm -rf {workflow_dir}')
         except Exception as e:
             print(e)
-        assert not os.path.exists(yaml_dir)
-        assert not os.path.exists(yaml_dir2)
-        w = create_workflow()
-        w.save_with_state(filename=yaml_dir)
-        w.save_with_state(filename=yaml_dir3)
-        Benchmark.Stop()
+        assert not os.path.exists(workflow_dir)
+        w = create_workflow(filename="workflow-service.yaml")
+
+        print (w.filename)
+        os.system("pwd")
+
+        #w.save_with_state(filename=yaml_dir)
+        #w.save_with_state(filename=yaml_dir3)
+        #Benchmark.Stop()
 
     @pytest.mark.anyio
     async def test_home(self):
