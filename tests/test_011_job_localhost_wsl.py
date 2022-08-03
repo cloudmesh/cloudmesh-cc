@@ -30,6 +30,7 @@ banner(Path(__file__).name, c = "#", color="RED")
 
 if not os_is_windows():
     Console.error("This test can only be run on windows")
+    print()
 
 variables = Variables()
 
