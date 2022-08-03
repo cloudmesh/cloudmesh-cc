@@ -8,7 +8,10 @@ from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.util import HEADING
+import os
+from utilities import create_dest
 
+create_dest()
 
 @pytest.mark.incremental
 class TestConfig:

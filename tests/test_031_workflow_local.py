@@ -18,22 +18,17 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
+from utilities import create_dest
+
+create_dest()
 
 # from utilities import set_host_user
 
-"""
-    This is a python file to test to make sure the workflow class works.
-    It will draw upon the the test_queues file, because there is a file that
-    was created with a bunch of jobs. 
-"""
-
 banner(Path(__file__).name, c="#", color="RED")
+
 
 variables = Variables()
 
-Shell.rmdir("dest")
-Shell.mkdir("dest")
-os.chdir("dest")
 
 name = "run"
 

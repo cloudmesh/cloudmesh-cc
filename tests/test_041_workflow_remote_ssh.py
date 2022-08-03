@@ -24,11 +24,9 @@ from cloudmesh.common.util import path_expand
 
 banner(Path(__file__).name, c = "#", color="RED")
 
-"""
-    This is a python file to test to make sure the workflow class works.
-    It will draw upon the the test_queues file, because there is a file that
-    was created with a bunch of jobs. 
-"""
+from utilities import create_dest
+
+create_dest()
 
 variables = Variables()
 

@@ -26,8 +26,12 @@ from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
 from utilities import set_host_user
+from utilities import create_dest
+
+create_dest()
 
 banner(Path(__file__).name, c = "#", color="RED")
+
 
 client = TestClient(app)
 

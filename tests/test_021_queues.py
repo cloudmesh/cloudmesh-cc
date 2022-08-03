@@ -15,6 +15,11 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+import os
+from cloudmesh.common.Shell import Shell
+from utilities import create_dest
+
+create_dest()
 
 banner(Path(__file__).name, c = "#", color="RED")
 

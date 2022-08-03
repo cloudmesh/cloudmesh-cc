@@ -1,4 +1,5 @@
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.Shell import Shell
 import os
 
 def set_host_user():
@@ -14,3 +15,10 @@ def set_host_user():
         username = os.path.basename(os.environ["HOME"])
 
     return host, username
+
+def create_dest():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+    Shell.rmdir("dest")
+    Shell.mkdir("dest")
+    os.chdir("dest")

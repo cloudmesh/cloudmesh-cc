@@ -20,12 +20,12 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
+from utilities import create_dest
+
+create_dest()
 
 banner(Path(__file__).name, c = "#", color="RED")
 
-Shell.rmdir("dest")
-Shell.mkdir("dest")
-os.chdir("dest")
 
 variables = Variables()
 

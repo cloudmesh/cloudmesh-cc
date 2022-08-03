@@ -21,19 +21,11 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
 from cloudmesh.common.util import readfile
+from utilities import create_dest
+
+create_dest()
 
 banner(Path(__file__).name, c = "#", color="RED")
-
-"""
-    This is a python file to test to make sure the workflow class works.
-    It will draw upon the the test_queues file, because there is a file that
-    was created with a bunch of jobs. 
-"""
-
-Shell.rmdir("dest")
-Shell.mkdir("dest")
-os.chdir("dest")
-
 
 variables = Variables()
 

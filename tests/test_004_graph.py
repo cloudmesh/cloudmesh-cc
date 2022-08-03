@@ -15,13 +15,13 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.util import HEADING
 from cloudmesh.common.util import banner
 import os
+from utilities import create_dest
+
+create_dest()
+
 
 banner(Path(__file__).name, c = "#", color="RED")
 
-
-Shell.rmdir("dest")
-Shell.mkdir("dest")
-os.chdir("dest")
 
 g = Graph()
 
@@ -166,7 +166,7 @@ class TestGraph:
 
     def test_load(self):
         HEADING()
-        Shell.copy("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
+        Shell.copy_file("../tests/workflows/workflow-a-b.yaml", "workflow-a-b.yaml")
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")

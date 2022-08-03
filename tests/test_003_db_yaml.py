@@ -13,12 +13,11 @@ from cloudmesh.common.util import HEADING
 from pathlib import Path
 from cloudmesh.common.util import banner
 from cloudmesh.common.Shell import Shell
+from utilities import create_dest
+
+create_dest()
 
 banner(Path(__file__).name, c = "#", color="RED")
-
-Shell.rmdir("dest")
-Shell.mkdir("dest")
-os.chdir("dest")
 
 
 @pytest.mark.incremental
