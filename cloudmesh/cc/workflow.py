@@ -881,8 +881,6 @@ class Workflow:
                 log = _job.get_log()
                 status = _job.get_status()
                 progress = _job.get_progress()
-                banner(name)
-                print(str(job))
                 if progress == 100:
                     status = "done"
                 print('Status: ', status)
