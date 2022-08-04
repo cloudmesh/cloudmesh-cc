@@ -1,3 +1,5 @@
+"""Submit a job to the local host."""
+
 import os
 import subprocess
 import time
@@ -12,6 +14,13 @@ from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job:
+    """
+    Class to submit a job to the local host. Supported operating systems:
+
+    * Linux
+    * MacOS
+    * Windows.
+    """
 
     def __init__(self, **argv):
         """

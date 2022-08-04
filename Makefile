@@ -140,3 +140,16 @@ log:
 #	bumpversion --no-tag patch
 #	git push origin main --tags
 
+
+######################################################################
+# SPHINX
+######################################################################
+
+doc:
+	cd api; sphinx-apidoc ../cloudmesh -o source
+	# cd api/source; sphinx-autogen -o generated *.rst
+	cd api; make html
+
+
+b:
+	firefox api/build/html/index.html
