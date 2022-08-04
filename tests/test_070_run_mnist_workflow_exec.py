@@ -38,8 +38,6 @@ class TestMnist:
 
     def test_mnist(self):
         HEADING()
-        if os.path.exists("mnist.yaml"):
-            Shell.rm("mnist.yaml")
         Shell.copy_file("../mnist/source-mnist-exec.yaml", "source-mnist-exec.yaml")
         filename = Shell.map_filename("./source-mnist-exec.yaml").path
         r = Shell.ls()
