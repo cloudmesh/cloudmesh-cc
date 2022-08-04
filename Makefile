@@ -4,6 +4,15 @@ VERSION=`head -1 VERSION`
 
 .PHONY: conda
 
+ifeq ($(OS),Windows_NT)
+detected_OS := Windows
+else
+detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
+
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir := $(dir $(mkfile_path))
+
 define banner
 	@echo
 	@echo "############################################################"
@@ -152,4 +161,14 @@ doc:
 
 
 b:
-	firefox api/build/html/index.html
+
+ifeq ($(detected_OS),Windows)
+	cmd //C "start firefox file://$(mkfile_dir)api/build/html/index.html"
+endif
+ifeq ($(detected_OS),Darwin)        # Mac OS X
+	$(shell firefox api/build/html/index.html)
+endif
+ifeq ($(detected_OS),Linux)
+	$(shell firefox api/build/html/index.html)
+endif
+
