@@ -196,23 +196,21 @@ class TestService:
         assert result.status_code == 200
         assert type(result.json()) == dict
 
-class c:
-    def test_list_workflows(self):
+    def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        response = client.get("/workflows")
-        assert response.status_code == 200
-        print(Shell.run("ls ~/.cloudmesh/workflow"))
-        # assert response.json() == {"workflows":list}
+        from cloudmesh.cc.workflowrest import RESTWorkflow
+        rest = RESTWorkflow()
+        result = rest.get_workflow('workflow')
+        from pprint import pprint
+        pprint(result.__dict__)
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
         Benchmark.Stop()
 
-    def test_upload_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        files = {"file": open("./workflow-service.yaml","rb")}
-        response = client.post("/upload",files=files)
-        Benchmark.Stop()
-        assert response.status_code == 200
+class c:
+
 
     def test_get_workflow(self):
         HEADING()
