@@ -31,14 +31,47 @@ import requests
 class RESTWorkflow:
 
     def __init__(self):
-        self.address = "http:127.0.0.1:8000"
+        self.address = "http://127.0.0.1:8000"
 
     # @app.get("/workflows")
     def list_workflows(self):
-        content = request.get(f"{address}/worflows") return as json string
+        """
+        This command returns a list of workflows that is found within the server.
+
+        You can invoke this function also with a curl command:
+
+        curl -X 'GET' 'http://127.0.0.1:8000/workflows' -H 'accept: application/json'
+
+        :return: list of workflow names
+        :rtype: dict
+        """
+        content = requests.get(f"{self.address}/workflows") # return as json string
         return content  # liely a dict
 
+    def add_job(self, workflow_name: str, **kwargs):
+        """
 
+        :return:
+        """
+        jobname = kwargs['jobname']
+        user = kwargs['user']
+        host = kwargs['host']
+        kind = kwargs['kind']
+        url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
+        if 'status' in kwargs:
+            status = kwargs['status']
+        else:
+            status = 'undefined'
+        if 'script' in kwargs:
+            script = kwargs['script']
+            url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}&status={status}&script={script}'''
+        elif 'exec' in kwargs:
+            exec = kwargs['exec']
+            url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}&status={status}&exec={exec}'''
+        content = requests.post(url)
+        return content
+
+'''
 class Workflow:
     """
     Workflow documentation
@@ -722,3 +755,4 @@ class Workflow:
         #         s = "failed"
         # _status["workflow"] = s
         # return _status
+'''

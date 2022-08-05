@@ -118,15 +118,10 @@ def load_workflow(name: str) -> Workflow:
 @app.get("/workflows")
 def list_workflows():
     """
-    this command reacts dependent on which options we specify
-                If we do not specify anything the workflows will be listed.
-                If we specify a workflow name only that workflow will be listed
-                If we also specify a job the job will be listed.
-                If we only specif the job name, all jobs with that name from all
-                workflows will be returned.
-    :param name:
-    :param job:
-    :return:
+    This command returns a list of workflows that is found within
+    the server.
+    
+    :return: list of workflow names
     """
 
     try:
