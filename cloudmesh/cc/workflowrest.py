@@ -62,13 +62,27 @@ class RESTWorkflow:
             status = kwargs['status']
         else:
             status = 'undefined'
+        url += f'&status={status}'
         if 'script' in kwargs:
             script = kwargs['script']
-            url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}&status={status}&script={script}'''
+            url += f'&script={script}'
         elif 'exec' in kwargs:
             exec = kwargs['exec']
-            url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}&status={status}&exec={exec}'''
-        content = requests.post(url)
+            url += f'&exec={exec}'
+        my_dict = {
+            "name": jobname,
+            "user": user,
+            "host": host,
+            "kind": kind,
+            "status": status,
+            "script": script
+        }
+        # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
+        # try:
+        #     r = os.system(f'''curl -X 'POST' {url} -H 'accept: application/json'/''')
+        # except Exception as e:
+        #     print(e.output)
+        content = requests.post(url, json=my_dict)
         return content
 
 '''

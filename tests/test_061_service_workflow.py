@@ -170,10 +170,9 @@ class TestService:
         HEADING()
         from cloudmesh.cc.workflowrest import RESTWorkflow
         rest = RESTWorkflow()
-        result = rest.add_job(workflow_name='workflow', jobname='my_new_job', user='jp', host='local', kind='local')
+        result = rest.add_job(workflow_name='workflow', jobname='job01', user='jp', host='localhost', kind='local', script='c.sh')
         from pprint import pprint
         pprint(result.__dict__)
-
 
 
 class c:
