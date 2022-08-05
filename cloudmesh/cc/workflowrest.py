@@ -26,7 +26,17 @@ from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.systeminfo import os_is_windows
 import json
 from cloudmesh.cc.labelmaker import Labelmaker
+import requests
 
+class RESTWorkflow:
+
+    def __init__(self):
+        self.address = "http:127.0.0.1:8000"
+
+    # @app.get("/workflows")
+    def list_workflows(self):
+        content = request.get(f"{address}/worflows") return as json string
+        return content  # liely a dict
 
 
 class Workflow:
