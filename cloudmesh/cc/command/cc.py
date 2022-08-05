@@ -297,11 +297,11 @@ class CcCommand(PluginCommand):
                         reload_dirs=[cloudmesh_cc, cloudmesh_cc + "/service"])
 
         elif arguments.doc:
-            url = "http://{host}:{port}}/docs"
+            url = f"http://{host}:{port}/docs"
             Shell.browser(url)
         elif arguments.test:
             import requests
-            url = "http://{host}:{port}}/docs"
+            url = f"http://{host}:{port}/docs"
             r = requests.get(url)
             pprint(r)
             print(r.text)
@@ -411,7 +411,7 @@ class CcCommand(PluginCommand):
             manager = WorkflowCLIManager(name)
             manager.list_job(job=arguments.job)
 
-        # list a workflow, all it's jobs and all their characteristics
+        # list a workflow, all its jobs and all their characteristics
         # DONE
         elif arguments.workflow and arguments.list and arguments.filename:
             # cc workflow list [--name=NAME] [--job=JOB]
