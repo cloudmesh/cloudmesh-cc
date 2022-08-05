@@ -50,8 +50,11 @@ class RESTWorkflow:
 
     def add_job(self, workflow_name: str, **kwargs):
         """
+        This command adds a job to a workflow that is specified in the
+        provided workflow_name string.
 
-        :return:
+        :return: all jobs within workflow
+        :rtype: dict
         """
         jobname = kwargs['jobname']
         user = kwargs['user']
@@ -84,6 +87,22 @@ class RESTWorkflow:
         #     print(e.output)
         content = requests.post(url, json=my_dict)
         return content
+
+    def upload_workflow(self, file_path: str):
+        """
+
+        :return:
+        """
+        url = 'http://127.0.0.1:8000/upload'
+        files = {'file': open(file_path, 'rb')}
+
+        r = requests.post(url, files=files)
+        print(r)
+        print('that was r')
+        print(r.text)
+        print('that was r.text')
+        return r
+
 
 '''
 class Workflow:

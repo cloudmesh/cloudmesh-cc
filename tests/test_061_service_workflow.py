@@ -148,6 +148,7 @@ class TestService:
 
     def test_list_workflows(self):
         HEADING()
+        Benchmark.Start()
         #  'headers': {'date': 'Fri, 05 Aug 2022 18:18:50 GMT', 'server': 'uvicorn', 'content-length': '65', 'content-type': 'application/json'},
         from cloudmesh.cc.workflowrest import RESTWorkflow
         rest = RESTWorkflow()
@@ -165,15 +166,35 @@ class TestService:
         assert 'workflows' in content
         assert type(content) == dict
         # assert
+        Benchmark.Stop()
 
     def test_add_node(self):
         HEADING()
+        Benchmark.Start()
         from cloudmesh.cc.workflowrest import RESTWorkflow
         rest = RESTWorkflow()
         result = rest.add_job(workflow_name='workflow', jobname='job01', user='jp', host='localhost', kind='local', script='c.sh')
         from pprint import pprint
         pprint(result.__dict__)
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
+        Benchmark.Stop()
 
+    def test_upload_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        from cloudmesh.cc.workflowrest import RESTWorkflow
+        rest = RESTWorkflow()
+        expanded_yaml_path = Shell.map_filename('./workflow-service.yaml').path
+        result = rest.upload_workflow(file_path=expanded_yaml_path)
+        from pprint import pprint
+        print('here is pprint')
+        pprint(result.__dict__)
+        assert 'There was an error' not in result.text
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
 
 class c:
     def test_list_workflows(self):
