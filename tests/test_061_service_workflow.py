@@ -207,6 +207,11 @@ class TestService:
         assert result.headers['content-type'] == 'application/json'
         assert result.status_code == 200
         assert type(result.json()) == dict
+        result = rest.get_workflow(workflow_name='workflow', job_name='start')
+        pprint(result.__dict__)
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
         Benchmark.Stop()
 
 class c:

@@ -100,13 +100,15 @@ class RESTWorkflow:
         return r
 
 
-    def get_workflow(self, workflow_name: str):
+    def get_workflow(self, workflow_name: str, job_name: str=None):
         """
 
         :param workflow_name:
         :return:
         """
         url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
+        if job_name:
+            url += f'?job={job_name}'
         r = requests.get(url)
         return r
 
