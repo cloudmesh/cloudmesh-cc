@@ -19,7 +19,7 @@ workflow:
       label: c.sh
       kind: local
       host: local
-      script: c.sh
+      exec: c.sh
     end:
       label: end
       kind:  local
