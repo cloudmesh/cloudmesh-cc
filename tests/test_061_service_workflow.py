@@ -154,9 +154,6 @@ class TestService:
         rest = RESTWorkflow()
         result = rest.list_workflows()
         content = result.json()
-        print('here is result')
-        print(str(result))
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         from pprint import pprint
         pprint(result.__dict__)
         print('that was result')
@@ -214,24 +211,41 @@ class TestService:
         assert type(result.json()) == dict
         Benchmark.Stop()
 
+    def test_run_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        from cloudmesh.cc.workflowrest import RESTWorkflow
+        rest = RESTWorkflow()
+        result = rest.run_workflow('workflow-service')
+        from pprint import pprint
+        pprint(result.__dict__)
+        assert 'Workflow ran successfully' in result.text
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
+
+    def test_delete_workflow(self):
+        HEADING()
+        Benchmark.Start()
+        from cloudmesh.cc.workflowrest import RESTWorkflow
+        rest = RESTWorkflow()
+        result = rest.delete_workflow(workflow_name='workflow-service', job_name='start')
+        from pprint import pprint
+        pprint(result.__dict__)
+        assert 'was deleted' in result.text
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
+        result = rest.delete_workflow(workflow_name='workflow-service')
+        from pprint import pprint
+        pprint(result.__dict__)
+        assert 'was deleted' in result.text
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
+
+
 class c:
-
-
-    def test_get_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        responsejob = client.get("/workflow/workflow-service?job=start")
-        response = client.get("/workflow/workflow-service")
-        Benchmark.Stop()
-        assert response.status_code == 200
-        assert responsejob.ok
-
-    def test_run(self):
-        HEADING()
-        Benchmark.Start()
-        response = client.get("/run/workflow-service")
-        Benchmark.Stop()
-        assert response.status_code == 200
 
     def test_add_job(self):
         HEADING()
@@ -245,13 +259,6 @@ class c:
         response = client.post("/workflow/workflow-service",data=job,headers=headers)
         assert response.ok
         Benchmark.Stop()
-
-    def test_delete_workflow(self):
-        HEADING()
-        Benchmark.Start()
-        response = client.delete("/workflow/workflow-service")
-        Benchmark.Stop()
-        assert response.status_code == 200
 
     def test_benchmark(self):
         HEADING()

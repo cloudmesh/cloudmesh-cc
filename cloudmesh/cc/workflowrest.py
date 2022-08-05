@@ -112,6 +112,22 @@ class RESTWorkflow:
         r = requests.get(url)
         return r
 
+    def run_workflow(self, workflow_name: str, run_type: str='topo'):
+        """
+
+        :return:
+        """
+        url = f'http://127.0.0.1:8000/run/{workflow_name}?type={run_type}'
+        r = requests.get(url)
+        return r
+
+    def delete_workflow(self, workflow_name: str, job_name: str=None):
+        url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
+        if job_name:
+            url += f'?job={job_name}'
+        r = requests.delete(url)
+        return r
+
 
 '''
 class Workflow:
