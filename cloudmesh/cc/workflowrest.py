@@ -97,10 +97,6 @@ class RESTWorkflow:
         files = {'file': open(file_path, 'rb')}
 
         r = requests.post(url, files=files)
-        print(r)
-        print('that was r')
-        print(r.text)
-        print('that was r.text')
         return r
 
 
