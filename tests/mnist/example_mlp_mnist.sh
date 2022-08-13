@@ -4,7 +4,7 @@
 #SBATCH --error=example_mlp_mnist.error
 #SBATCH --partition=bii
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=4GB
+#SBATCH --mem=8GB
 #SBATCH --time=15:00
 
 echo "# cloudmesh status=running progress=1 pid=$$"
