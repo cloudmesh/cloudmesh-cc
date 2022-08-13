@@ -1,9 +1,9 @@
 workflow:
   nodes:
-    start:
-      label: start
-      kind: local
-      user: the_crew
+    prepare:
+      label: prepare
+      kind: ssh
+      user: dje5dj
       host: rivanna
       status: ready
       progress: 0
@@ -11,7 +11,7 @@ workflow:
       modified: '2022-07-27 22:00:24.833250'
       script: prepare.sh
       instance: null
-      name: start
+      name: prepare
     example_mlp_mnist:
       label: example_mlp_mnist
       kind: slurm
@@ -27,7 +27,7 @@ workflow:
     end:
       label: start
       kind: ssh
-      user: the_crew
+      user: dje5dj
       host: rivanna
       status: ready
       progress: 0
@@ -37,4 +37,4 @@ workflow:
       instance: null
       name: end
   dependencies:
-    - start,example_mlp_mnist,end
+    - prepare,example_mlp_mnist,end

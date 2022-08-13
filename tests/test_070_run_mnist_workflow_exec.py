@@ -38,14 +38,18 @@ class TestMnist:
 
     def test_mnist(self):
         HEADING()
-        Shell.copy_file("../mnist/source-mnist-exec.yaml", "source-mnist-exec.yaml")
-        filename = Shell.map_filename("./source-mnist-exec.yaml").path
+        for script in ["start", "prepare", "mlp_mnist", "example_mlp_mnist",
+                       "end"]:
+            Shell.copy(f"../mnist/{script}.sh", ".")
+            assert os.path.isfile(f"./{script}.sh")
+        Shell.copy_file("../mnist/source-mnist.yaml", "source-mnist.yaml")
+        filename = Shell.map_filename("./source-mnist.yaml").path
         r = Shell.ls()
         pprint(r)
 
         w = Workflow()
         w.load(filename=filename)
-        print (w)
+        print(w)
         w.save(filename=filename)
         #w.load(filename=filename)
         w.display(name='mnist')
