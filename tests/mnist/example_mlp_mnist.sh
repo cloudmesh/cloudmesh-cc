@@ -14,6 +14,7 @@ conda create -f -y -n ENV3 -c conda-forge python=3.10.5
 source activate ENV3
 echo "# cloudmesh status=running progress=50 pid=$$"
 cd ~/reu2022/code/deeplearning/
+git pull
 pip install -r requirements.txt
 conda install pytorch torchvision -c pytorch
 conda install py-cpuinfo
