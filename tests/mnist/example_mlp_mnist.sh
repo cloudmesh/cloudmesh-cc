@@ -30,6 +30,5 @@ cms set host=rivanna
 cms set cpu=IntelXeonE5-2630
 cms set device=rivanna
 python run_all_rivanna.py
-# python example_mlp_mnist.py
-
 echo "# cloudmesh status=done progress=100 pid=$$"
+# python example_mlp_mnist.py
