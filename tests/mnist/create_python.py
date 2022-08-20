@@ -10,7 +10,7 @@ except:
     env = "ENV3"
     version = "3.10.5"
 
-```
+"""
 conda env list
 # conda environments:
 #
@@ -22,7 +22,7 @@ base                  *  /sw/summit/python/3.8/anaconda3/2020.07-rhel8
 
 $ conda env list
 -bash: conda: command not found
-```
+"""
 
 
 if env in Shell.run("conda env list"):
