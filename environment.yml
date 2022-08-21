@@ -1,0 +1,15 @@
+name: cloudmesh-cc
+dependencies:
+  - cloudmesh-cmd5
+  - cloudmesh-sys
+  - cloudmesh-inventory
+  - cloudmesh-configuration
+  - yamldb
+  - docker-compose
+  - networkx[default]
+  - pydot
+  - graphviz
+  - pexpect
+  - fastapi[all]
+  - httpx
+  - trio
