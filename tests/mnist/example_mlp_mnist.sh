@@ -5,12 +5,12 @@
 #SBATCH --partition=bii
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8GB
-#SBATCH --time=15:00
+#SBATCH --time=20:00
 
 echo "# cloudmesh status=running progress=1 pid=$$"
 
 nvidia-smi --list-gpus
-conda create -f -y -n ENV3 -c conda-forge python=3.10.5
+python ~/cloudmesh-cc/tests/mnist/create_python.py
 source activate ENV3
 echo "# cloudmesh status=running progress=50 pid=$$"
 cd ~/reu2022/code/deeplearning/
