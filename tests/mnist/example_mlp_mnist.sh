@@ -5,7 +5,7 @@
 #SBATCH --partition=bii
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8GB
-#SBATCH --time=15:00
+#SBATCH --time=20:00
 
 echo "# cloudmesh status=running progress=1 pid=$$"
 
