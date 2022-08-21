@@ -1023,7 +1023,7 @@ class Workflow:
         # gvl rrewritten
         # TODO: the rm seems wrong
         d = os.path.dirname(self.filename)
-        os.system("rm -r {d}")
+        os.system(f"rm -r {d}")
         self.graph = None
         self.jobs = None
         self.graph.edges = None
