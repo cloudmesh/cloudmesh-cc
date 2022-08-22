@@ -6,72 +6,39 @@ workflow:
       user: green
       host: local
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.583760'
-      modified: '2022-07-29 01:22:04.583760'
       script: start.sh
-      exec: null
-      instance: null
       name: start
-      parent: []
     end:
       label: end
       kind: local
       user: green
       host: local
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.584689'
-      modified: '2022-07-29 01:22:04.584689'
       script: end.sh
-      exec: null
-      instance: null
       name: end
-      parent:
-      - job-local-2
-      - job-rivanna.hpc.virginia.edu-5
     job-local-0:
       label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
       kind: local
       user: green
       host: local
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.585886'
-      modified: '2022-07-29 01:22:04.585886'
       script: job-local-0.sh
-      exec: null
-      instance: null
       name: job-local-0
-      parent:
-      - start
     job-local-1:
       label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
       kind: local
       user: green
       host: local
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.587464'
-      modified: '2022-07-29 01:22:04.587464'
       script: job-local-1.sh
-      exec: null
-      instance: null
       name: job-local-1
-      parent:
-      - job-local-0
     job-local-2:
       label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
       kind: local
       user: green
       host: local
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.589477'
-      modified: '2022-07-29 01:22:04.589477'
       script: job-local-2.sh
-      exec: null
-      instance: null
       name: job-local-2
       parent:
       - job-local-1
@@ -81,78 +48,27 @@ workflow:
       user: thf2bn
       host: rivanna.hpc.virginia.edu
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.591940'
-      modified: '2022-07-29 01:22:04.591940'
       script: job-rivanna.hpc.virginia.edu-3.sh
-      exec: null
-      instance: null
       name: job-rivanna.hpc.virginia.edu-3
-      parent:
-      - start
     job-rivanna.hpc.virginia.edu-4:
       label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
       kind: local
       user: thf2bn
       host: rivanna.hpc.virginia.edu
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.595560'
-      modified: '2022-07-29 01:22:04.595560'
       script: job-rivanna.hpc.virginia.edu-4.sh
-      exec: null
-      instance: null
       name: job-rivanna.hpc.virginia.edu-4
-      parent:
-      - job-rivanna.hpc.virginia.edu-3
     job-rivanna.hpc.virginia.edu-5:
       label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
       kind: local
       user: thf2bn
       host: rivanna.hpc.virginia.edu
       status: ready
-      progress: 0
-      created: '2022-07-29 01:22:04.599675'
-      modified: '2022-07-29 01:22:04.599675'
       script: job-rivanna.hpc.virginia.edu-5.sh
-      exec: null
-      instance: null
       name: job-rivanna.hpc.virginia.edu-5
-      parent:
-      - job-rivanna.hpc.virginia.edu-4
   dependencies:
-    job-local-0-job-local-1:
-      source: job-local-0
-      destination: job-local-1
-      name: job-local-0-job-local-1
-    job-local-1-job-local-2:
-      source: job-local-1
-      destination: job-local-2
-      name: job-local-1-job-local-2
-    job-local-2-end:
-      source: job-local-2
-      destination: end
-      name: job-local-2-end
-    start-job-local-0:
-      source: start
-      destination: job-local-0
-      name: start-job-local-0
-    job-rivanna.hpc.virginia.edu-3-job-rivanna.hpc.virginia.edu-4:
-      source: job-rivanna.hpc.virginia.edu-3
-      destination: job-rivanna.hpc.virginia.edu-4
-      name: job-rivanna.hpc.virginia.edu-3-job-rivanna.hpc.virginia.edu-4
-    job-rivanna.hpc.virginia.edu-4-job-rivanna.hpc.virginia.edu-5:
-      source: job-rivanna.hpc.virginia.edu-4
-      destination: job-rivanna.hpc.virginia.edu-5
-      name: job-rivanna.hpc.virginia.edu-4-job-rivanna.hpc.virginia.edu-5
-    job-rivanna.hpc.virginia.edu-5-end:
-      source: job-rivanna.hpc.virginia.edu-5
-      destination: end
-      name: job-rivanna.hpc.virginia.edu-5-end
-    start-job-rivanna.hpc.virginia.edu-3:
-      source: start
-      destination: job-rivanna.hpc.virginia.edu-3
-      name: start-job-rivanna.hpc.virginia.edu-3
+    - start,job-local-0,job-local-1,job-local-2,end
+    - start,job-rivanna.hpc.virginia.edu-3,job-rivanna.hpc.virginia.edu-4,job-rivanna.hpc.virginia.edu-5,end
 colors:
   status:
     ready: white

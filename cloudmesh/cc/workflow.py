@@ -162,6 +162,7 @@ class Graph:
                 node["name"] = name
             self.add_node(**node)
 
+
         for edge in dependencies:
              self.add_dependencies(edge)
 
@@ -171,6 +172,11 @@ class Graph:
         else:
             self.nodes[name].update(**data)
         self.nodes[name]["name"] = name
+        if "label" not in  self.nodes[name]:
+            self.nodes[name]["label"] = self.nodes[name]["name"]
+        if "format" not in self.nodes[name]:
+            self.nodes[name]["format"] = self.nodes[name]["label"]
+
 
     def add_edge(self, source, destination, **data):
         #
@@ -285,6 +291,20 @@ class Graph:
 
         writefile(filename=filename, content=content)
 
+    def create_label(self, name):
+        label = None
+        if "label_format" in self.nodes[name]:
+            label = self.nodes[name]["label_format"]
+            print("A", label)
+        elif "label" in self.nodes[name]:
+            print("B")
+            label = self.nodes[name]["label"]
+        if label is None:
+            label = name
+        replacement = Labelmaker(label)
+        msg = replacement.get(**self.nodes[name])
+        return msg
+
     def save(self,
              filename="test.svg",
              colors=None,
@@ -298,24 +318,20 @@ class Graph:
         for name, e in self.nodes.items():
             if colors is None:
                 graph.add_node(name)
-                label = self.nodes[name]["label"]
-                replacement = Labelmaker(label)
-                msg = replacement.get(**self.nodes[name])
+                msg = self.create_label(name)
                 dot.node(name, color='white', label=msg)
                 color_map.append('white')
             else:
+                print("A2", self.nodes[name])
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
                 if name in ["start", "end"]:
                     shape = "diamond"
                 else:
                     shape = "rounded"
-                try:
-                    label = self.nodes[name]["label"]
-                except:
-                    label = name
-                replacement = Labelmaker(label)
-                msg = replacement.get(**self.nodes[name])
+
+                msg = self.create_label(name)
+                self.nodes[name]["label"] = msg
                 dot.node(name,
                          label=msg,
                          # color=self.colors[colors][value],
@@ -607,6 +623,7 @@ class Workflow:
                 user=None,
                 host=None,
                 label=None,
+                label_format=None,
                 kind="local",
                 status="ready",
                 progress=0,
@@ -616,9 +633,11 @@ class Workflow:
                 **kwargs
                 ):
 
+
         label = label or name
         user = user or self.user or Shell.user()
         host = host or self.host or Shell.host()
+        label_format = label_format or label or name
 
         if script is None:
             script = f"{name}.sh"
@@ -627,6 +646,7 @@ class Workflow:
         self.graph.add_node(
             name=name,
             label=label,
+            label_format=label_format,
             kind=kind,
             user=user,
             host=host,
@@ -897,8 +917,16 @@ class Workflow:
                 Console.msg(f"running {name}")
 
             if show:
-                self.graph.save(filename=filename, colors="status",
-                                layout=nx.circular_layout, engine="dot")
+                for name in self.graph.nodes:
+                    msg = self.graph.create_label(name)
+                    self.graph.nodes[name]["label"] = msg
+
+                # input(f"show {name} {progress}")
+                self.graph.save(filename=filename,
+                                colors="status",
+                                layout=nx.circular_layout,
+                                engine="dot")
+                # input(progress)
                 if first and os_is_mac():
                     Shell.open(filename=filename)
                     first = False
@@ -949,20 +977,19 @@ class Workflow:
     @property
     def table(self):
         # gvl rewritten
-        with_label = False
+        with_label = True
 
         data = dict(self.graph.nodes)
 
         for name in self.graph.nodes:
-            label = self.graph.nodes[name]["label"]
-            replacement = Labelmaker(label)
-            msg = replacement.get(**self.graph.nodes[name])
+            msg = self.graph.create_label(name)
             data[name]["label"] = msg
 
         if with_label:
             order = ['host',
                      'status',
                      'label',
+                     'label_format',
                      'name',
                      'progress',
                      'script',
@@ -990,8 +1017,7 @@ class Workflow:
 
         for name in self.graph.nodes:
             label = self.graph.nodes[name]["label"]
-            replacement = Labelmaker(label)
-            msg = replacement.get(**self.graph.nodes[name])
+            msg = self.graph.create_label(name)
             data[name]["label"] = msg
 
         if with_label:
