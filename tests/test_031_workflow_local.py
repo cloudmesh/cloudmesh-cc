@@ -290,7 +290,7 @@ class TestWorkflowLocal:
         HEADING()
         w = create_workflow()
         Benchmark.Start()
-        w.run_topo(show=True, filename="topo.svg")
+        w.run_topo(show=True, filename="r-topo.svg")
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)

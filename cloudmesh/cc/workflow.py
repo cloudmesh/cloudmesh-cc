@@ -295,9 +295,7 @@ class Graph:
         label = None
         if "label_format" in self.nodes[name]:
             label = self.nodes[name]["label_format"]
-            print("A", label)
         elif "label" in self.nodes[name]:
-            print("B")
             label = self.nodes[name]["label"]
         if label is None:
             label = name
@@ -312,26 +310,27 @@ class Graph:
              engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
         dot.attr('node', shape="rounded")
+
         graph = nx.DiGraph()
 
         color_map = []
+
         for name, e in self.nodes.items():
             if colors is None:
-                graph.add_node(name)
                 msg = self.create_label(name)
+                graph.add_node(name)
                 dot.node(name, color='white', label=msg)
                 color_map.append('white')
             else:
-                print("A2", self.nodes[name])
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
                 if name in ["start", "end"]:
                     shape = "diamond"
                 else:
                     shape = "rounded"
-
                 msg = self.create_label(name)
                 self.nodes[name]["label"] = msg
+
                 dot.node(name,
                          label=msg,
                          # color=self.colors[colors][value],
@@ -344,12 +343,10 @@ class Graph:
             dot.edge(e["source"], e["destination"])
 
         if engine == "dot":
-
             prefix, ending = filename.split(".")
             dot_filename = prefix + ".dot"
             writefile(dot_filename, str(dot.source))
-            if ".dot" not in filename:
-                Shell.run(f"dot -T{ending} {dot_filename} -o {filename}")
+            os.system(f"dot -T{ending} {dot_filename} -o {filename}")
 
         elif engine == "graphviz":
             pos = layout(graph)
@@ -361,7 +358,6 @@ class Graph:
 
             # generate dot graph
             P = nx.nx_pydot.to_pydot(graph)
-            print(P)
 
             # convert from `networkx` to a `pydot` graph
             pydot_graph = nx.drawing.nx_pydot.to_pydot(graph)
@@ -518,7 +514,7 @@ class Workflow:
             return parents
 
     def save_with_state(self, filename, stdout=False):
-        print(self.graph)
+        # print(self.graph)
         data = {}
         data['workflow'] = {
             "nodes": dict(self.graph.nodes),
@@ -604,12 +600,9 @@ class Workflow:
                 del node['exec']
             if "exec" in node and node["kind"] == "local":
                 from cloudmesh.cc.job.localhost.Job import Job
-                print ("NNNN", node)
                 if "script" not in node:
                     node["script"] = f"{name}.sh"
-                pprint (node)
                 job = Job.create(filename=node['script'], exec=node["exec"])
-                print (job)
 
     def save(self, filename):
         if os_is_windows():
@@ -786,7 +779,7 @@ class Workflow:
                 if local or wsl:
                     job["instance"].sync()
                     job["instance"].run()
-                    print(str(job["instance"]))
+                    # print(str(job["instance"]))
                     running.append(name)
                     outstanding.remove(name)
 
@@ -880,13 +873,15 @@ class Workflow:
                 if local or ssh or slurm:
                     job["status"] = "running"
                 name = job['name']
+                label_format = job['label_format']
                 host = job['host']
                 username = job['user']
                 label = name
                 _job = Job(name=name,
-                          host=host,
-                          username=username,
-                          label=label)
+                           host=host,
+                           username=username,
+                           label=label,
+                           label_format=label_format)
                 _job.sync()
                 _job.run()
 
@@ -921,17 +916,20 @@ class Workflow:
                     msg = self.graph.create_label(name)
                     self.graph.nodes[name]["label"] = msg
 
-                # input(f"show {name} {progress}")
                 self.graph.save(filename=filename,
                                 colors="status",
                                 layout=nx.circular_layout,
                                 engine="dot")
-                # input(progress)
+
                 if first and os_is_mac():
                     Shell.open(filename=filename)
                     first = False
-                elif first and os_is_linux():
-                    Shell.open(filename=filename)
+                elif os_is_linux():
+                    #  elif first and os_is_linux():
+                    #Shell.open(filename=filename)  # does not work
+                    os.system(f"chromium {filename}&")
+                    #os.system(f"eog {filename}")
+
                 else:
                     Shell.browser(filename)
 
