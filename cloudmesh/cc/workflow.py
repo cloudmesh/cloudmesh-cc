@@ -309,7 +309,7 @@ class Graph:
              layout=nx.spring_layout,
              engine="networkx"):
         dot = graphviz.Digraph(comment='Dot Graph')
-        dot.attr('node', shape="rounded")
+        dot.attr('node', shape="box")
 
         graph = nx.DiGraph()
 
@@ -327,7 +327,7 @@ class Graph:
                 if name in ["start", "end"]:
                     shape = "diamond"
                 else:
-                    shape = "rounded"
+                    shape = "box"
                 msg = self.create_label(name)
                 self.nodes[name]["label"] = msg
 
