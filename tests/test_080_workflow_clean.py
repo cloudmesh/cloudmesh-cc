@@ -68,15 +68,9 @@ def create_workflow(filename='workflow-clean.yaml'):
         label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
 
         w.add_job(name=f"b.sh", label=label,  kind=kind, user=user, host=host)
-        n = n + 1
         w.add_job(name=f"c.py", label=label, kind=kind, user=user, host=host)
-        n = n + 1
         w.add_job(name=f"d.ipynb", label=label, kind=kind, user=user, host=host)
-        n = n + 1
 
-        first = n - 3
-        second = n - 2
-        third = n - 1
         w.add_dependencies(f"b.sh,c.py")
         w.add_dependencies(f"c.py,d.ipynb")
         w.add_dependencies(f"d.ipynb,end")
@@ -92,6 +86,12 @@ def create_workflow(filename='workflow-clean.yaml'):
 @pytest.mark.incremental
 class TestCleanWorkflow:
 
+    def test_reset_experiment_dir(self):
+        os.system("rm -rf ~/experiment")
+        exp = path_expand("~/experiment")
+        shutil.rmtree(exp, ignore_errors=True)
+
+        assert not os.path.exists(exp)
 
     def test_create_workflow(self):
         HEADING()
@@ -147,20 +147,3 @@ class TestCleanWorkflow:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
-
-class b:
-    def test_workflow(self):
-        HEADING()
-        create_workflow()
-        Shell.copy_file("../mnist/source-mnist.yaml", "source-mnist.yaml")
-        filename = Shell.map_filename("./source-mnist.yaml").path
-        r = Shell.ls()
-        pprint(r)
-
-        w = Workflow()
-        w.load(filename=filename)
-        print(w)
-        w.save(filename=filename)
-        #w.load(filename=filename)
-        w.display(name='mnist')
-        w.run_topo(show=True)
