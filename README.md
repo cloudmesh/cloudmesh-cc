@@ -5,7 +5,7 @@
 Gregor von Laszewski (laszewski@gmail.com)$^*$,
 Jacques Fleischer
 
-$^*$ Corresponding author, University of Virginia
+$^*$ Corresponding author
 
 ## Acknowledgements
 
