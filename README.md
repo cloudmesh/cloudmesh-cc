@@ -67,6 +67,10 @@ pip install -r requirements.txt
 pytest -v -x --capture=no tests/test_080_workflow_clean.py
 ```
 
+This test runs three jobs within a singular workflow: the first job runs a
+local shell script, the second runs a local Python script, and the third
+runs a local Jupyter notebook.
+
 ## Application demonstration using MNIST
 
 The Modified National Institute of Standards and Technology Database
