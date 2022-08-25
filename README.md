@@ -3,12 +3,18 @@
 **Cloudmesh Controlled Computing through Workflows**
 
 Gregor von Laszewski (laszewski@gmail.com)$^*$,
-Jacques Fleischer,
-Jackson Miskill,
-Alison Lu,
-Alex Beck
+Jacques Fleischer
 
 $^*$ Corresponding author, University of Virginia
+
+## Acknowledgements
+
+We like to acknowledge the following contributors for testing out earlier versions of this tool and 
+for their input to developing documentation and testing frameworks:
+
+Jackson Miskill,
+Alison Lu,
+Alex Beck.
 
 ## Background
 
