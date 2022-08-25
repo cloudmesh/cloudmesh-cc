@@ -40,14 +40,32 @@ The goal is to provide numerous methods of specifying the workflows on a local c
 ## Workflow Functionality
 
 A hybrid multi-cloud analytics service framework was created to manage
-heterogeneous and remote workflows, queues, and jobs.  It was designed
+heterogeneous and remote workflows, queues, and jobs. It was designed
 for access through both the command line and REST services
-to simplify the coordination of tasks on remote computers.  In
-addition, this service supports multiple operating systems like MacOS,
+to simplify the coordination of tasks on remote computers. In
+addition, this service supports multiple operating systems like macOS,
 Linux, and Windows 10 and 11, on various hosts: the computer's
 localhost, remote computers, and the Linux-based virtual image WSL.
 Jobs can be visualized and saved as a YAML and SVG data file. This
 workflow was extensively tested for functionality and reproducibility.
+
+## Application demonstration using Simple Workflow
+
+To test the workflow program, prepare a cm directory in your home
+directory by executing the following commands in a terminal:
+
+```bash
+cd ~
+mkdir cm
+cd cm
+pip install cloudmesh-installer -U
+cloudmesh-installer get cc
+git clone https://github.com/cloudmesh/cloudmesh-cc
+cd cloudmesh-cc
+pip install -e .
+pip install -r requirements.txt
+pytest -v -x --capture=no tests/test_080_workflow_clean.py
+```
 
 ## Application demonstration using MNIST
 
