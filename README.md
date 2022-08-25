@@ -49,7 +49,7 @@ localhost, remote computers, and the Linux-based virtual image WSL.
 Jobs can be visualized and saved as a YAML and SVG data file. This
 workflow was extensively tested for functionality and reproducibility.
 
-## Application demonstration using Simple Workflow
+## Quickstart
 
 To test the workflow program, prepare a cm directory in your home
 directory by executing the following commands in a terminal:
