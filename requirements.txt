@@ -17,3 +17,5 @@ pexpect
 fastapi[all]
 httpx
 trio
+papermill
+cloudmesh-progress

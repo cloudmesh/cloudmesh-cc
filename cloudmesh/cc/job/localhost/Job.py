@@ -50,6 +50,17 @@ class Job:
         if self.name is None:
             Console.error("Name is not defined", traceflag=True)
 
+        has_extension = False
+        types = ['.sh', '.py', '.ipynb']
+
+        for file_extension in types:
+            if str(self.name).endswith(file_extension):
+                has_extension = True
+                self.filetype = file_extension
+                self.name = str(self.name).removesuffix(file_extension)
+
+        if not has_extension:
+            self.filetype = '.sh'
 
         self.username = self.username or Shell.user()
         self.host = self.host or "localhost"
@@ -57,7 +68,6 @@ class Job:
 
         self.kind = "local"
         self.label = self.label or self.name
-        self.filetype = self.script_type(self.name)
 
         if self.script is None and self.exec is not None:
             self.script = self.create_script(self.exec)
@@ -141,24 +151,65 @@ class Job:
         """
         self.mkdir_experimentdir()
 
-        command = f'chmod ug+x ./{self.name}.sh'
-        os.system(command)
-        if os_is_windows():
-            state = None
-            try:
-                command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
+        if self.filetype == ".py":
+            command = f'chmod ug+x ./{self.name}.py'
+            os.system(command)
+            if os_is_windows():
+                state = None
+                try:
+                    command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && python ./{self.name}.py > {self.name}.log 2>&1"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
+            else:
+                command = f'cd {self.directory} && python ./{self.name}.py > {self.name}.log 2>&1'
                 print(command)
-                r = subprocess.Popen(command, shell=True)
-                state = 0
-            except Exception as e:
-                print(e)
-                state = 1
-        else:
-            command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1'
-            print(command)
-            state = os.system(f'{command} &')
+                state = os.system(f'{command} &')
 
-        logfile = path_expand(f"{self.directory}/{self.name}.sh")
+            logfile = path_expand(f"{self.directory}/{self.name}.log")
+
+        elif self.filetype == ".ipynb":
+            command = f'chmod ug+x ./{self.name}.ipynb'
+            os.system(command)
+            if os_is_windows():
+                state = None
+                try:
+                    command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && papermill ./{self.name}.ipynb ./{self.name}-output.ipynb"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
+            else:
+                command = f'cd {self.directory} && papermill ./{self.name}.ipynb ./{self.name}-output.ipynb'
+                print(command)
+                state = os.system(f'{command} &')
+
+            logfile = path_expand(f"{self.directory}/{self.name}.log")
+
+        else:
+            command = f'chmod ug+x ./{self.name}.sh'
+            os.system(command)
+            if os_is_windows():
+                state = None
+                try:
+                    command = fr'"%ProgramFiles%\Git\bin\bash.exe" -c "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
+            else:
+                command = f'cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1'
+                print(command)
+                state = os.system(f'{command} &')
+
+            logfile = path_expand(f"{self.directory}/{self.name}.log")
 
         started = False
         while started:
@@ -261,7 +312,7 @@ class Job:
         """
         self.mkdir_experimentdir()
         self.chmod()
-        command = f"cp {self.name}.sh {self.directory}/."
+        command = f"cp {self.name}{self.filetype} {self.directory}/."
         print(command)
         Shell.run(command)
         os.system("sync")
@@ -276,10 +327,11 @@ class Job:
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
-        if self.filetype == "python":
-            command = f"chmod ug+rx ./{self.name}.py"
-        else:
-            command = f"chmod ug+rx ./{self.name}.sh"
+        # if self.filetype == "python":
+        #     command = f"chmod ug+rx ./{self.name}.py"
+        # else:
+        #     command = f"chmod ug+rx ./{self.name}.sh"
+        command = f'chmod ug+rx ./{self.name}{self.filetype}'
         print(command)
         r = os.system(command)
         return r
