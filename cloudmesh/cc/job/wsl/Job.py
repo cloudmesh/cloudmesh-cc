@@ -63,6 +63,12 @@ class Job:
             self.directory = f'/c/Users/{self.username}/experiment/{self.name}'
 
     def __str__(self):
+        """
+        returns pertinent information of job in string format,
+        including host, username, name of job, and other characteristics
+        :return: description and specifications of job in string format
+        :rtype: str
+        """
         msg = [
             f"host:      {self.host}",
             f"username:  {self.username}",
@@ -76,9 +82,22 @@ class Job:
 
     @property
     def status(self):
+        """
+        exactly the same as get_status but duplicated to provide as
+        a shortened-named, alternative call
+        :return: the status of job
+        :rtype: str
+        """
         return self.get_status()
 
     def mkdir_experimentdir(self):
+        """
+        creates experiment directory to contain job files such as
+        yaml file, log file, and pertinent script to be run
+        like sh script or ipynb or py
+        :return: does not return anything
+        :rtype: None
+        """
         try:
             experimentdir = f"~/experiment/{self.name}"
             Shell.mkdir(experimentdir)
@@ -87,6 +106,12 @@ class Job:
 
     # move from current directory to remote
     def sync(self):
+        """
+        changes permissions and makes experiment dir, and then
+        copies the shell script to experiment dir
+        :return: True or False depending on if file exists
+        :rtype: bool
+        """
         print(self)
         self.chmod()
         self.mkdir_experimentdir()
@@ -99,6 +124,13 @@ class Job:
         return self.exists(f"{self.name}.sh")
 
     def chmod(self):
+        """
+        changes the permissions and flags of the script to be
+        run (shell or py file, ipynb not yet supported) so that
+        the system can successfully execute the script
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         cwd = Path.cwd()
         source = Path(f"{cwd}/{self.name}")
         if self.filetype == "python":
@@ -110,11 +142,27 @@ class Job:
         return r
 
     def exists(self, filename):
+        """
+        used to check if the file is existing within the experiment
+        directory
+        :param filename: the name of the script, including file extension
+        :type filename: str
+        :return: True if the file exists and False if it doesnt
+        :rtype: bool
+        """
         home = Path.home()
         path = f'{home}/experiment/{self.name}/{filename}'
         return Path.exists(Path(path))
 
     def run(self):
+        """
+        runs the job by making script executable and running the
+        script within wsl. only works for shell scripts, as .sh is
+        hardcoded within the commands
+        :returns:
+            - state - undefined, running, or done
+            - log - the output of the job
+        """
         self.mkdir_experimentdir()
         # make sure executable is set
         command = f'chmod a+x {self.name}.sh'
@@ -154,6 +202,11 @@ class Job:
         return state, log
 
     def clear(self):
+        """
+        clears all leftover log files from past runs
+        :return: does not return anything
+        :rtype: None
+        """
         content = None
         try:
             source = path_expand(f'~/experiment/{self.name}/{self.name}.log')
@@ -163,6 +216,14 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_log(self, verbose=False):
+        """
+        copy the log file and read the contents of the file to
+        return the contents as a string
+        :param verbose: if True then print contents of log
+        :type verbose: bool
+        :return: the contents of the log file in string format
+        :rtype: str
+        """
         content = None
         try:
             logfile = f'~/experiment/{self.name}/{self.name}.log'
@@ -179,6 +240,14 @@ class Job:
         return content
 
     def get_status(self, refresh=False):
+        """
+        fetches the log file of the job and returns the status of
+        the job, which can be undefined, running, or done
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: returns status, which is the progress of the job
+        :rtype: str
+        """
         status = "undefined"
         if refresh:
             log = self.get_log()
@@ -191,6 +260,14 @@ class Job:
         return status
 
     def get_progress(self, refresh=False):
+        """
+        fetches the log file of the job and reads the log file to check
+        for the current completeness of the job
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: value from 0 to 100 which reflects completeness of job
+        :rtype: int
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -205,15 +282,16 @@ class Job:
                 return 0
         return 0
 
-    # def get_error(self):
-    #     Shell.copy(f"wsl:experiment/{self.name}/{self.name}.err", f"{self.name}.err")
-    #
-    #     content = readfile(f"{self.name}.err")
-    #     print(content)
-    #     return content
-
     def watch(self, period=2):
-        """waits and wathes every seconds in period, till the job has completed"""
+        """
+        waits and watches for progress to reach 100, on interval basis
+        specified in the period in seconds,
+        till the job has completed
+        :param period: time in seconds to check, as an interval
+        :type period: int
+        :return: does not return anything
+        :rtype: None
+        """
         finished = False
         banner("watch progress")
         while not finished:
@@ -227,7 +305,13 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
+        """
+        get the pid that the job is running within
+        :param refresh: whether to retrieve the latest log
+        :type refresh: bool
+        :return: the pid (process identifier)
+        :rtype: str
+        """
         pid = None
         try:
             if refresh:
@@ -246,6 +330,11 @@ class Job:
     def kill(self, period=1):
         """
         kills the job
+        :param period: interval to use for waiting for log/pid
+        :type period: int
+        :returns:
+            - pid - process id of the script
+            - child - child of the script
         """
         #
         # find logfile
@@ -266,10 +355,10 @@ class Job:
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None
-            time.sleep(2)
+            time.sleep(period)
         pid = None
         while pid is None:
-            time.sleep(1)
+            time.sleep(period)
 
             pid = self.get_pid(refresh=True)
 
@@ -280,5 +369,5 @@ class Job:
         Console.msg(f"Killing {pid} {child}")
         if "No such process" in r:
             Console.warning(
-                "Process {pid} not found. It is likely it already completed.")
+                f"Process {pid} not found. It is likely it already completed.")
         return pid, child

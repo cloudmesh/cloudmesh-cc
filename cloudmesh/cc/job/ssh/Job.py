@@ -57,6 +57,15 @@ class Job:
             self.script = self.create_script(self.exec)
 
     def script_type(self, name):
+        """
+        Uses the inputted name of script to return the
+        corresponding file extension that is run, such as
+        shell script, jupyter notebook, or python file
+        :param name: the name of the script
+        :type name: str
+        :return: file extension of script
+        :rtype: str
+        """
         kind = "sh"
         if name is None:
             return kind
@@ -66,6 +75,12 @@ class Job:
         return "os"
 
     def __str__(self):
+        """
+        returns pertinent information of job in string format,
+        including host, username, name of job, and other characteristics
+        :return: description and specifications of job in string format
+        :rtype: str
+        """
         msg = [
             f"host:      {self.host}",
             f"username:  {self.username}",
@@ -82,14 +97,34 @@ class Job:
 
     @property
     def status(self):
+        """
+        exactly the same as get_status but duplicated to provide as
+        a shortened-named, alternative call
+        :return: the status of job
+        :rtype: str
+        """
         return self.get_status()
 
     def mkdir_experimentdir(self):
+        """
+        creates remote experiment directory to contain job files such as
+        yaml file, log file, and pertinent script to be run
+        like sh script or ipynb or py
+        :return: does not return anything
+        :rtype: None
+        """
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
         os.system(command)
 
     def run(self):
+        """
+        runs the job by making script executable and running the
+        job remotely.
+        :returns:
+            - state - undefined, running, or done
+            - log - the output of the job
+        """
         self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
@@ -109,6 +144,11 @@ class Job:
         return state, log
 
     def clear(self):
+        """
+        clears all leftover log files from past runs
+        :return: does not return anything
+        :rtype: None
+        """
         try:
             source = f'~/experiment/{self.name}/{self.name}.log'
             destination = f"{self.name}.log"
@@ -118,6 +158,14 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
+        """
+        fetches the log file of the job and returns the status of
+        the job, which can be undefined, running, or done
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: returns status, which is the progress of the job
+        :rtype: str
+        """
         status = "undefined"
         try:
             log = self.get_log(refresh=refresh)
@@ -131,6 +179,14 @@ class Job:
         return status
 
     def get_progress(self, refresh=False):
+        """
+        fetches the log file of the job and reads the log file to check
+        for the current completeness of the job
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: value from 0 to 100 which reflects completeness of job
+        :rtype: int
+        """
         progress = 0
         try:
             log = self.get_log(refresh=refresh).splitlines()
@@ -147,14 +203,13 @@ class Job:
 
         return int(progress)
 
-    # def get_error(self):
-    #     command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-    #     print(command)
-    #     os.system(command)
-    #     content = readfile(f"{self.name}.error")
-    #     return content
-
     def get_log(self, refresh=True):
+        """
+        copy the remote log file and read the contents of the file to
+        return the contents as a string
+        :return: the contents of the log file in string format
+        :rtype: str
+        """
         content = None
         time.sleep(0.5)
         try:
@@ -169,6 +224,12 @@ class Job:
         return content
 
     def sync(self):
+        """
+        makes experiment dir and changes permissions, and then
+        copies the shell script to remote host
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         self.mkdir_experimentdir()
         self.chmod()
 
@@ -178,22 +239,45 @@ class Job:
         return r
 
     def chmod(self):
+        """
+        changes the permissions and flags of the script to be
+        run (shell or py file, ipynb not yet supported) so that
+        the system can successfully execute the script
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         command = f"chmod ug+rx ./{self.name}.sh"
         print(command)
         r = os.system(command)
         return r
 
     def exists(self, filename):
+        """
+        used to check if the file is existing within the remote experiment
+        directory
+        :param filename: the name of the script, including file extension
+        :type filename: str
+        :return: True if the file exists and False if it doesnt
+        :rtype: bool
+        """
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
-        print("CCCC", command)
+        print(command)
         r = Shell.run(command)
-        print ("RRRR", r)
+        print(r)
         if "cannot access" in r:
             return False
         return True
 
     def watch(self, period=10):
-        """waits and wathes every seconds in period, till the job has completed"""
+        """
+        waits and watches for progress to reach 100, on interval basis
+        specified in the period in seconds,
+        till the job has completed
+        :param period: time in seconds to check, as an interval
+        :type period: int
+        :return: does not return anything
+        :rtype: None
+        """
         finished = False
         while not finished:
             progress = self.get_progress(refresh=True)
@@ -203,7 +287,13 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
+        """
+        get the pid that the job is running within
+        :param refresh: whether to retrieve the latest log
+        :type refresh: bool
+        :return: the pid (process identifier)
+        :rtype: str
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -218,6 +308,11 @@ class Job:
     def kill(self, period=3):
         """
         kills the job
+        :param period: interval to use for waiting for log/pid
+        :type period: int
+        :returns:
+            - pid - process id of the script
+            - child - child of the script
         """
         #
         # find logfile
@@ -265,7 +360,11 @@ class Job:
     def create_script(self, exec=None):
         """
         creates a template
-        for the slurm sbatch
+        for the script
+        :param exec: command to be executed
+        :type exec: str
+        :return: name of script
+        :rtype: str
         """
         filename = f"{self.name}.sh"
         if self.filetype == 'ipynb':

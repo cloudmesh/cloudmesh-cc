@@ -66,6 +66,14 @@ class Job:
         #    Console.warning("either exec or script must be set")
 
     def script_type(self, name):
+        """
+        Uses the inputted name of script to return the
+        corresponding file extension that is run, such as
+        shell script, jupyter notebook, or python file
+        :param name: the name of the script
+        :return: file extension of script
+        :rtype: str
+        """
         kind = "sh"
         if name is None:
             return kind
@@ -76,6 +84,12 @@ class Job:
 
 
     def __str__(self):
+        """
+        returns pertinent information of job in string format,
+        including host, username, name of job, and other characteristics
+        :return: description and specifications of job in string format
+        :rtype: str
+        """
         msg = [
             f"host:      {self.host}",
             f"username:  {self.username}",
@@ -90,15 +104,24 @@ class Job:
         ]
         return "\n".join(msg)
 
-    def mkdir_local(self):
-        command = f'mkdir -p {self.directory}'
-        os.system(command)
-
     @property
     def status(self):
+        """
+        exactly the same as get_status but duplicated to provide as
+        a shortened-named, alternative call
+        :return: the status of job
+        :rtype: str
+        """
         return self.get_status()
 
     def mkdir_experimentdir(self):
+        """
+        creates experiment directory to contain job files such as
+        yaml file, log file, and pertinent script to be run
+        like sh script or ipynb or py
+        :return: does not return anything
+        :rtype: None
+        """
         if os_is_windows():
             win_directory = Shell.map_filename(self.directory).path
             # self.directory = self.directory.replace('~','%homepath%')
@@ -109,6 +132,13 @@ class Job:
         os.system(command)
 
     def run(self):
+        """
+        runs the job by making script executable and running the
+        script locally. only works for shell scripts, as .sh is
+        hardcoded within the commands
+        :return: 0 if successfully run and 1 if failed
+        :rtype: int
+        """
         self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
@@ -141,6 +171,11 @@ class Job:
         return state
 
     def clear(self):
+        """
+        clears all leftover log files from past runs
+        :return: does not return anything
+        :rtype: None
+        """
         content = None
         try:
             source = f'~/experiment/{self.name}/{self.name}.log'
@@ -150,8 +185,15 @@ class Job:
         except Exception as e:
             Console.error(e, traceflag=True)
 
-
     def get_status(self, refresh=False):
+        """
+        fetches the log file of the job and returns the status of
+        the job, which can be undefined, running, or done
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: returns status, which is the progress of the job
+        :rtype: str
+        """
         status = "undefined"
         try:
             log = self.get_log(refresh=refresh)
@@ -165,6 +207,14 @@ class Job:
         return status
 
     def get_progress(self, refresh=False):
+        """
+        fetch the log file of the job and read the log file to check
+        for the current completeness of the job
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: value from 0 to 100 which reflects completeness of job
+        :rtype: int
+        """
         progress = 0
         try:
             log = self.get_log(refresh=refresh).splitlines()
@@ -182,6 +232,14 @@ class Job:
         return int(progress)
 
     def get_log(self, refresh=True):
+        """
+        copy the log file, sync, and read the contents of the file to
+        return the contents as a string
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: the contents of the log file in string format
+        :rtype: str
+        """
         content = None
         try:
             if refresh:
@@ -195,6 +253,12 @@ class Job:
         return content
 
     def sync(self):
+        """
+        copies the shell script to the experiment directory and
+        ensures that the file is copied with the sync command
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         self.mkdir_experimentdir()
         self.chmod()
         command = f"cp {self.name}.sh {self.directory}/."
@@ -205,6 +269,13 @@ class Job:
         return r
 
     def chmod(self):
+        """
+        changes the permissions and flags of the script to be
+        run (shell or py file, ipynb not yet supported) so that
+        the system can successfully execute the script
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         if self.filetype == "python":
             command = f"chmod ug+rx ./{self.name}.py"
         else:
@@ -214,10 +285,26 @@ class Job:
         return r
 
     def exists(self, filename):
+        """
+        used to check if the file is existing within the experiment
+        directory
+        :param filename: the name of the script, including file extension
+        :type filename: str
+        :return: True if the file exists and False if it doesnt
+        :rtype: bool
+        """
         return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
     def watch(self, period=10):
-        """waits and wathes every seconds in period, till the job has completed"""
+        """
+        waits and watches for progress to reach 100, on interval basis
+        specified in the period in seconds,
+        till the job has completed
+        :param period: time in seconds to check, as an interval
+        :type period: int
+        :return: does not return anything
+        :rtype: None
+        """
         finished = False
         while not finished:
             progress = int(self.get_progress(refresh=True))
@@ -227,7 +314,13 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
+        """
+        get the pid that the job is running within
+        :param refresh: whether to retrieve the latest log
+        :type refresh: bool
+        :return: the pid (process identifier)
+        :rtype: str
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -242,6 +335,11 @@ class Job:
     def kill(self, period=1):
         """
         kills the job
+        :param period: interval to use for waiting for log/pid
+        :type period: int
+        :returns:
+            - pid - process identifier as str
+            - child - child process as str
         """
         #
         # find logfile
@@ -264,16 +362,14 @@ class Job:
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None
-            time.sleep(2)
+            time.sleep(period)
         pid = None
         while pid is None:
-            time.sleep(1)
+            time.sleep(period)
             pid = self.get_pid(refresh=True)
 
-        print('IM DOING TESTING HERE')
         print(pid.strip())
         pid = str(pid).strip()
-        print('printed pid ??')
         ps = subprocess.check_output('ps', shell=True, text=True)
         print(ps)
         r = None
@@ -310,6 +406,10 @@ class Job:
         """
         creates a template
         for the slurm sbatch
+        :param exec: command to be executed
+        :type exec: str
+        :return: name of script
+        :rtype: str
         """
         filename = f"{self.name}.sh"
         if self.filetype == 'ipynb':
@@ -341,10 +441,18 @@ class Job:
         """
         creates a template
         for the slurm sbatch
+        :param filename: name of file that the script will be written to
+        :type filename: str
+        :param script: contents of script
+        :type script: str
+        :param exec: command to be executed
+        :type exec: str
+        :return: the contents of the script itself
+        :rtype: str
         """
 
         if script is None and exec is None:
-            Console.error("Script and executable can not be used at the same time.")
+            Console.error("Script and executable cannot be used at the same time.")
 
         if script is not None:
             exec = script

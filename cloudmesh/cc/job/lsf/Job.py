@@ -12,6 +12,11 @@ from cloudmesh.common.util import writefile
 class Lsf:
 
     def __init__(self, host):
+        """
+        sets locations of slurm commands for the job
+        :param host: device that the script will be run on
+        :type host: str
+        """
         if host.startswith("rivanna"):
             self.slurm = "/opt/slurm/current/bin"
             self.squeue = f"{self.slurm}/squeue"
@@ -76,6 +81,12 @@ class Job:
         self.slurm = Slurm(self.host)
 
     def __str__(self):
+        """
+        returns pertinent information of job in string format,
+        including host, username, name of job, and other characteristics
+        :return: description and specifications of job in string format
+        :rtype: str
+        """
         msg = [
             f"host:      {self.host}",
             f"username:  {self.username}",
@@ -89,14 +100,36 @@ class Job:
 
     @property
     def status(self):
+        """
+        exactly the same as get_status but duplicated to provide as
+        a shortened-named, alternative call
+        :return: the status of job
+        :rtype: str
+        """
         return self.get_status()
 
     def mkdir_experimentdir(self):
+        """
+        creates remote experiment directory to contain job files such as
+        yaml file, log file, and pertinent script to be run
+        like sh script or ipynb or py
+        :return: does not return anything
+        :rtype: None
+        """
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
         os.system(command)
 
     def run(self):
+        """
+        runs the job by making script executable and running the
+        script remotely. only works for slurm scripts, as slurm is
+        hardcoded within the commands
+        :returns:
+            - state - undefined, running, or done
+            - log - output of the job
+            - job_id - the slurm job id of the job
+        """
         self.mkdir_experimentdir()
 
         command = f'chmod ug+x ./{self.name}.sh'
@@ -118,6 +151,11 @@ class Job:
         return state, log, job_id
 
     def clear(self):
+        """
+        clears all leftover log files from past runs
+        :return: does not return anything
+        :rtype: None
+        """
         content = None
         try:
             source = f'~/experiment/{self.name}/{self.name}.log'
@@ -128,6 +166,14 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
+        """
+        fetches the log file of the job and returns the status of
+        the job, which can be undefined, running, or done
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: returns status, which is the progress of the job
+        :rtype: str
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -139,6 +185,14 @@ class Job:
             return status
 
     def get_progress(self, refresh=False):
+        """
+        fetches the log file of the job and reads the log file to check
+        for the current completeness of the job
+        :param refresh: whether to copy the log file in case of changes
+        :type refresh: bool
+        :return: value from 0 to 100 which reflects completeness of job
+        :rtype: int
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -153,14 +207,13 @@ class Job:
                 return 0
         return 0
 
-    # def get_error(self):
-    #     command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.error {self.name}.error"
-    #     print(command)
-    #     os.system(command)
-    #     content = readfile(f"{self.name}.error")
-    #     return content
-
     def get_log(self):
+        """
+        copy the remote log file and read the contents of the file to
+        return the contents as a string
+        :return: the contents of the log file in string format
+        :rtype: str
+        """
         command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
         print(command)
         os.system(command)
@@ -168,6 +221,12 @@ class Job:
         return content
 
     def sync(self):
+        """
+        makes experiment dir and changes permissions, and then
+        copies the shell script to remote host
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         self.mkdir_experimentdir()
         self.chmod()
         command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
@@ -176,6 +235,13 @@ class Job:
         return r
 
     def chmod(self):
+        """
+        changes the permissions and flags of the script to be
+        run (shell or py file, ipynb not yet supported) so that
+        the system can successfully execute the script
+        :return: 0 or 1 depending on success of command
+        :rtype: int
+        """
         if self.filetype == "python":
             command = f"chmod ug+rx ./{self.name}.py"
         else:
@@ -185,15 +251,31 @@ class Job:
         return r
 
     def exists(self, filename):
+        """
+        used to check if the file is existing within the remote experiment
+        directory
+        :param filename: the name of the script, including file extension
+        :type filename: str
+        :return: True if the file exists and False if it doesnt
+        :rtype: bool
+        """
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
         r = Shell.run(command)
-        if "cannot acces" in r:
+        if "cannot access" in r:
             return False
         return True
 
     def watch(self, period=10):
-        """waits and wathes every seconds in period, till the job has completed"""
+        """
+        waits and watches for progress to reach 100, on interval basis
+        specified in the period in seconds,
+        till the job has completed
+        :param period: time in seconds to check, as an interval
+        :type period: int
+        :return: does not return anything
+        :rtype: None
+        """
         finished = False
         while not finished:
             progress = int(self.get_progress(refresh=True))
@@ -202,7 +284,13 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """get the pid from the job"""
+        """
+        get the pid that the job is running within
+        :param refresh: whether to retrieve the latest log
+        :type refresh: bool
+        :return: the pid (process identifier)
+        :rtype: str
+        """
         if refresh:
             log = self.get_log()
         else:
@@ -216,7 +304,13 @@ class Job:
 
     def kill(self, period=1, job_id=None):
         """
-        kills the job
+        kills the job, assuming that job is slurm job
+        :param period: interval to use for waiting for log/pid
+        :type period: int
+        :param job_id: id of slurm job
+        :type job_id: str
+        :return: output of squeue command
+        :rtype: str
         """
         if job_id is None:
             Console.error("No job_id supplied")
@@ -242,10 +336,10 @@ class Job:
             except Exception as e:
                 Console.error("no log file yet", traceflag=True)
                 log = None
-            time.sleep(2)
+            time.sleep(period)
         pid = None
         while pid is None:
-            time.sleep(1)
+            time.sleep(period)
             pid = self.get_pid(refresh=True)
 
         command = f'ssh {self.username}@{self.host} "scancel {job_id}"'
@@ -263,6 +357,15 @@ class Job:
         """
         creates a template
         for the slurm sbatch
+        :param command: command to be executed
+        :param file: name of file
+        :param jobname: name of job
+        :param card_name: name of graphics card that job will be run on
+        :param gpu_count: number of gpus
+        :param system_partition: partition on which job will be run
+        :param time: maximum time limit for slurm job
+        :return: nothing
+        :rtype: None
         """
         script = """\
             #!/usr/bin/env bash
