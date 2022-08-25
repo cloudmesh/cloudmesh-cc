@@ -11,7 +11,7 @@ import pytest
 import networkx as nx
 
 from cloudmesh.cc.workflow import Workflow
-from tests import utilities
+import utilities
 from cloudmesh.common.Benchmark import Benchmark
 from cloudmesh.common.StopWatch import StopWatch
 from cloudmesh.common.systeminfo import os_is_windows
