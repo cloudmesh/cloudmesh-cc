@@ -40,6 +40,8 @@ graphviz
 fastapi[all]
 httpx
 trio
+papermill
+cloudmesh-progress
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']

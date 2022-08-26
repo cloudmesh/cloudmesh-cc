@@ -54,7 +54,9 @@ class Jobpy(BaseModel):
 
 q = test_run()
 
-app = FastAPI()
+from cloudmesh.cc.__version__ import version as cm_version
+
+app = FastAPI(title="cloudmesh-cc", version=cm_version)
 
 #
 # REGISTER template and static dir
@@ -96,7 +98,7 @@ templates = Jinja2Templates(directory=template_dir)
 #     return templates.TemplateResponse("templates/table.html",
 #                                       {"request": request})
 
-@app.get("/")
+@app.get("/", tags=['workflow'])
 async def home():
     return {"msg": "cloudmesh.cc is up"}
 
@@ -115,7 +117,7 @@ def load_workflow(name: str) -> Workflow:
     return w
 
 
-@app.get("/workflows")
+@app.get("/workflows", tags=['workflow'])
 def list_workflows():
     """
     This command returns a list of workflows that is found within
@@ -133,7 +135,7 @@ def list_workflows():
         return {"message": f"No workflows found"}
 
 
-@app.post("/upload")
+@app.post("/upload", tags=['workflow'])
 async def upload_workflow(file: UploadFile = File(...)):
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
@@ -167,7 +169,7 @@ async def upload_workflow(file: UploadFile = File(...)):
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.delete("/workflow/{name}")
+@app.delete("/workflow/{name}", tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
     """
     deletes the job in the specified workflow if specified and the workflow otherwise
@@ -196,7 +198,7 @@ def delete_workflow(name: str, job: str = None):
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
 
-@app.get("/workflow/{name}")
+@app.get("/workflow/{name}", tags=['workflow'])
 def get_workflow(name: str, job: str = None):
     if job is not None:
         try:
@@ -215,7 +217,7 @@ def get_workflow(name: str, job: str = None):
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-@app.get("/run/{name}")
+@app.get("/run/{name}", tags=['workflow'])
 def run_workflow(name: str, type: str = "topo"):
     w = load_workflow(name)
     try:
@@ -228,7 +230,7 @@ def run_workflow(name: str, type: str = "topo"):
         print("Exception:", e)
 
 
-@app.post("/workflow/{name}")
+@app.post("/workflow/{name}", tags=['workflow'])
 def add_job(name: str, job: Jobpy):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
     This command adds a node to a workflow. with the specified arguments. A check
