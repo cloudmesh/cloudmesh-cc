@@ -25,6 +25,11 @@ import glob
 
 
 def test_run():
+    """
+    creates a test queue with several different jobs
+    :return: Queues object
+    :rtype: Queues
+    """
     kind = 'yamldb'
     q = Queues(filename='~/.cloudmesh/queue/queuetest1')
     q.create(name='local')
@@ -100,6 +105,11 @@ templates = Jinja2Templates(directory=template_dir)
 
 @app.get("/", tags=['workflow'])
 async def home():
+    """
+    home function that confirms the cloudmesh-cc
+    server is online when user navigates to root page
+    :return: up message
+    """
     return {"msg": "cloudmesh.cc is up"}
 
 
@@ -108,6 +118,13 @@ async def home():
 #
 
 def load_workflow(name: str) -> Workflow:
+    """
+    loads a workflow corresponding to given name
+    :param name:
+    :type name: str
+    :return: loaded workflow
+    :rtype: Workflow
+    """
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
 
     w = Workflow()
@@ -137,6 +154,12 @@ def list_workflows():
 
 @app.post("/upload", tags=['workflow'])
 async def upload_workflow(file: UploadFile = File(...)):
+    """
+    uploads a workflow to the fastapi server
+    :param file: specified file to be uploaded
+    :type file: UploadFile
+    :return: success or failure message
+    """
     try:
         name = os.path.basename(file.filename).replace(".yaml", "")
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
@@ -172,10 +195,13 @@ async def upload_workflow(file: UploadFile = File(...)):
 @app.delete("/workflow/{name}", tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
     """
-    deletes the job in the specified workflow if specified and the workflow otherwise
-    :param name:
-    :param job:
-    :return:
+    deletes the job in the specified workflow if specified;
+    if the job is not specified, then deletes entire workflow
+    :param name: name of the workflow
+    :type name: str
+    :param job: name of the job
+    :type job: str
+    :return: success or failure message
     """
     if job is not None:
         # if we specify to delete the job
@@ -200,6 +226,15 @@ def delete_workflow(name: str, job: str = None):
 
 @app.get("/workflow/{name}", tags=['workflow'])
 def get_workflow(name: str, job: str = None):
+    """
+    retrieves a job in a workflow, if specified. if not specified,
+    retrieves an entire workflow
+    :param name: name of the workflow
+    :type name: str
+    :param job: name of the job
+    :type job: str
+    :return: success or failure message
+    """
     if job is not None:
         try:
             w = load_workflow(name)
@@ -218,10 +253,18 @@ def get_workflow(name: str, job: str = None):
 
 
 @app.get("/run/{name}", tags=['workflow'])
-def run_workflow(name: str, type: str = "topo"):
+def run_workflow(name: str, run_type: str = "topo"):
+    """
+    runs a specified workflow according to provided run type
+    :param name: name of workflow
+    :type name: str
+    :param run_type: type of run, either topo or parallel
+    :type run_type: str
+    :return: success or exception message
+    """
     w = load_workflow(name)
     try:
-        if type == "topo":
+        if run_type == "topo":
             w.run_topo(show=True)
         else:
             w.run_parallel(show=True)
@@ -236,13 +279,15 @@ def add_job(name: str, job: Jobpy):
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
                 arguments are passed in ATTRIBUTE=VALUE fashion.
-                if the name of the workflow is omitted the default workflow is used.
-                If no cob name is specified an automated number that is kept in the
+                if the name of the workflow is omitted, the default workflow is used.
+                If no job name is specified, an automated number that is kept in the
                 config.yaml file will be used and the name will be job-n
 
-    :param workflow: the name of the workflow
-    :param kwargs: the arguments to pass into the job
-    :return:
+    :param name: the name of the workflow
+    :type name: str
+    :param job: the specifications and characteristics of the job
+    :type job: Jobpy
+    :return: returns jobs within the specified workflow
     """
 
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...

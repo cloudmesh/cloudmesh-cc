@@ -32,7 +32,7 @@ class Labelmaker:
         for variable in self.variables:
             if variable.startswith("os_"):
                 key = variable.split("os_", 1)[1]
-                value = os.environ[key]
+                value = str(os.environ[key]).encode('unicode-escape').decode()
                 replacements[variable] = value
             elif variable.startswith("cm_"):
                 key = variable.split("cm_", 1)[1]

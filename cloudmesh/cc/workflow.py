@@ -29,7 +29,7 @@ from cloudmesh.cc.labelmaker import Labelmaker
 
 """
 This class enables to manage dependencies between jobs.
-To specifie dependencies we can use a string that includes comma 
+To specify dependencies we can use a string that includes comma 
 separated names of jobs. The workflow can be stored into a yaml file.
 
 g = Graph()
@@ -80,6 +80,17 @@ class Graph:
     # this is pseudocode
 
     def __init__(self, name="graph", filename=None, clear=True):
+        """
+        initialize the graph with characteristics such as edges, nodes
+        and colors
+        :param name: name of the graph
+        :type name: str
+        :param filename: name of the file of the graph
+        :type filename: str
+        :param clear: whether to reload from scratch
+        :type clear: bool
+        """
+
         self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
@@ -97,6 +108,11 @@ class Graph:
         #    colors:
 
     def clear(self):
+        """
+        resets the graph characteristics to a clean slate
+        :return: nothing
+        :rtype: None
+        """
         self.sep = "-"
         self.edges = dotdict()
         self.nodes = dotdict()
@@ -106,9 +122,21 @@ class Graph:
         self.filename = None
 
     def __getitem__(self, name):
+        """
+        returns the specified variable from the nodes
+        :param name: the variable to be retrieved
+        :type name: str
+        :return: the specified variable
+        """
         return self.nodes[name]
 
     def set_status_colors(self):
+        """
+        adds the ready, undefined, done, failed, and running colors
+        as hex values
+        :return: nothing
+        :rtype: None
+        """
         # self.add_color("status",
         #                ready="white",
         #                done="green",
@@ -122,14 +150,28 @@ class Graph:
                        running='#CCE5FF')
 
     def add_color(self, key, **colors):
+        """
+        adds specified color(s)
+        :param key: the status whose color will be changed
+        :type key: str
+        :param colors: the colors to be added
+        :type colors: kwargs
+        :return: nothing
+        :rtype: None
+        """
         if self.colors is None:
             self.colors = {}
         if key not in self.colors:
             self.colors[key] = {}
         self.colors[key].update(**colors)
 
-
     def __str__(self):
+        """
+        returns the graph in string format with its
+        characteristics and specifications
+        :return: graph in string format
+        :rtype: str
+        """
         data = {
             "nodes": dict(self.nodes),
             "dependencies": dict(self.edges),
@@ -142,6 +184,13 @@ class Graph:
         return yaml.dump(workflow, indent=2)
 
     def load(self, filename=None):
+        """
+        loads a graph for a workflow
+        :param filename: the graph to load
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         # if filename is not None:
         #    raise NotImplementedError
         # should read from file the graph, but as we do Queues yaml dic
@@ -167,6 +216,15 @@ class Graph:
              self.add_dependencies(edge)
 
     def add_node(self, name, **data):
+        """
+        adds node(s) to the graph
+        :param name: the name of the node
+        :type name: str
+        :param data: additional information related to node, like status
+        :type data: kwargs
+        :return: nothing
+        :rtype: None
+        """
         if name not in self.nodes:
             self.nodes[name] = data
         else:
@@ -177,10 +235,20 @@ class Graph:
         if "format" not in self.nodes[name]:
             self.nodes[name]["format"] = self.nodes[name]["label"]
 
-
     def add_edge(self, source, destination, **data):
+        """
+        adds edge(s) to the graph
+        :param source: beginning edge
+        :type source: str
+        :param destination: end edge
+        :type destination: str
+        :param data: additional information
+        :type data: kwargs
+        :return: nothing
+        :rtype: None
+        """
         #
-        # TODO: add dependnecy to attribute in node dependency_in,
+        # TODO: add dependency to attribute in node dependency_in,
         #   dependency_out, we could use a set for that. so multiple
         #   dependencies are ignored
         #
@@ -201,12 +269,10 @@ class Graph:
     def done(self, parent):
         """
         removes from all nodes the names parent
-
-        Args:
-            parent ():
-
-        Returns:
-
+        :param parent: originating node
+        :type parent: str
+        :return: nothing
+        :rtype: None
         """
         for name in self.nodes:
             if "parent" in self.nodes[name]:
@@ -217,8 +283,8 @@ class Graph:
         """
         finds all nodes with no parents and progress != 100
 
-        Returns: list of node names with no parents
-
+        :return: list of node names with no parents
+        :rtype: list
         """
         result = []
         for name in self.nodes:
@@ -231,15 +297,55 @@ class Graph:
         return result
 
     def set_status(self, name, status):
+        """
+        sets the status of a specified node
+        :param name: node whose status will be changed
+        :type name: str
+        :param status: name of status to be set for the node
+        :type status: str
+        :return: nothing
+        :rtype: None
+        """
         self.nodes[name]["status"] = status
 
     def get_status(self, name):
+        """
+        retrieves status of a specified node
+        :param name: node whose status will be retrieved
+        :type name: str
+        :return: the status of the node
+        :rtype: str
+        """
         return self.nodes[name]["status"]
 
     def add_dependency(self, source, destination):
+        """
+        adds a dependency for a node. a dependency enforces
+        the completion of a previous node in order for the
+        next to be run
+        :param source: beginning node
+        :type source: str
+        :param destination: node that cannot run without the source
+        :type destination: str
+        :return: nothing
+        :rtype: None
+        """
         self.add_dependencies(self, f"{source},{destination}")
 
     def add_dependencies(self, dependency, nodedata=None, edgedata=None):
+        """
+        adds dependencies for nodes. a dependency enforces
+        the completion of a previous node in order for the
+        next to be run
+        :param dependency: a comma separated string with names of nodes
+        :type dependency: str
+        :param nodedata: specifications of the node such as status
+        :type nodedata: kwargs
+        :param edgedata: specifications of the edge
+        :type edgedata: kwargs
+        :return: nothing
+        :rtype: None
+        """
         nodes = Parameter.expand(dependency)
         # check if all nodes exists if not create the missing once
         # loop through all node pairs and create adges, as name for adges
@@ -258,6 +364,16 @@ class Graph:
                 self.add_edge(source, destination, **edgedata)
 
     def export(self, filename="show,a.png,a.svg,a.pdf"):
+        """
+        takes the inputted filename, expands it into list
+        if commas and brackets are present, and saves the
+        graph into specified filenames. this function seems
+        to be incomplete
+        :param filename: names to save the graph to. if show, then shows graph
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         # comma separated list of output files in one command
         # if show is included show() is used
 
@@ -270,6 +386,16 @@ class Graph:
             # and so on
 
     def save_to_file(self, filename, exclude=None):
+        """
+        saves the graph to a specified filename and
+        excludes nodes if exclude is specified
+        :param filename: name of file to save graph to
+        :type filename: str
+        :param exclude: nodes to exclude from the saved file
+        :type exclude: str
+        :return: nothing
+        :rtype: None
+        """
         # exclude parent
         location = os.path.dirname(filename)
         if len(location) > 0:
@@ -292,6 +418,13 @@ class Graph:
         writefile(filename=filename, content=content)
 
     def create_label(self, name):
+        """
+        creates the text to appear on a node in the graph
+        :param name: name of node to add text to
+        :type name: str
+        :return: the text that will appear on node in string format
+        :rtype: str
+        """
         label = None
         if "label_format" in self.nodes[name]:
             label = self.nodes[name]["label_format"]
@@ -308,6 +441,19 @@ class Graph:
              colors=None,
              layout=nx.spring_layout,
              engine="networkx"):
+        """
+        generates and saves the graph
+        :param filename: file to save the graph to
+        :type filename: str
+        :param colors: colors to use for the graph
+        :type colors:
+        :param layout: layout of the graph
+        :type layout:
+        :param engine: name of engine to use to draw graph
+        :type engine: str
+        :return: nothing
+        :rtype: None
+        """
         dot = graphviz.Digraph(comment='Dot Graph')
         dot.attr('node', shape="box")
 
@@ -400,10 +546,22 @@ class Workflow:
 
     w.run()
 
-
     """
 
     def __init__(self, name=None, filename=None, user=None, host=None, load=True):
+        """
+        initializes workflow with specified characteristics
+        :param name: name of workflow
+        :type name: str
+        :param filename: location of yaml file to load workflow from
+        :type filename: str
+        :param user: name of user
+        :type user: str
+        :param host: location of where the workflow will be run
+        :type host: str
+        :param load: whether to load the workflow
+        :type load: bool
+        """
         # name, label, user, host, status, progress, command
         # if filename exists, load filename
         # if graph is not None, overwrite the graph potentially read from filename
@@ -419,7 +577,7 @@ class Workflow:
             else:
                 self.name = name or 'workflow'
         except:
-            self,name = 'workflow'
+            self.name = 'workflow'
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
         if not filename:
@@ -429,15 +587,10 @@ class Workflow:
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
 
-
         try:
             self.name = os.path.basename(filename).split(".")[0]
         except:
             self.name = "workflow"
-
-
-
-
 
         self.user = user
         self.host = host
@@ -445,7 +598,7 @@ class Workflow:
         try:
             print("Workflow Filename:", self.filename)
             self.graph = Graph(name=name, filename=filename)
-            # gvl addded load but not tested
+            # gvl added load but not tested
             if load:
                 self.load(self.filename)
         except Exception as e:  # noqa: E722
@@ -467,24 +620,61 @@ class Workflow:
 
 
     def __str__(self):
+        """
+        returns workflow and its characteristics in string format
+        :return: string format of workflow
+        :rtype: str
+        """
         return str(self.graph)
 
     @property
     def jobs(self):
+        """
+        retrieves the jobs of the workflow
+        :return: the jobs that belong to the workflow
+        :rtype: dotdict
+        """
         return self.graph.nodes  # [name]
 
     def __getitem__(self, name):
+        """
+        returns the details of an item within the workflow
+        :param name: name of item
+        :type name: str
+        :return: details of an item within the workflow
+        :rtype: dict
+        """
         return self.jobs[name]
 
     def job(self, name):
+        """
+        returns the details of a job within the workflow
+        :param name: name of job
+        :type name: str
+        :return: details of a job within the workflow
+        :rtype: dict
+        """
         return self.jobs[name]
 
     @property
     def dependencies(self):
+        """
+        retrieves the dependencies of the workflow
+        :return: the dependencies of the workflow
+        :rtype: dotdict
+        """
         # gvl implemented but not tested
         return self.graph.edges  # [name]
 
     def predecessor(self, name):
+        """
+        retrieves the jobs that must be run before the specified job
+        (the pre-requisites)
+        :param name: name of a job
+        :type name: str
+        :return: list of preceding jobs
+        :rtype: list
+        """
         # GVL reimplemented but not tested
         predecessors = []
         edges = self.dependencies
@@ -496,16 +686,19 @@ class Workflow:
 
     def get_predecessors(self, name):
         """
-        figure out all of the dependencies of the name node
+        figure out all the dependencies of the name node
         then test if each node in front (parent) has progress of 100
         if the parent has progress 100, remove those nodes
-        :return:
+        :param name: name of a job
+        :type name: str
+        :return: list of preceding jobs
+        :rtype: list
         """
         parents = []
-        candidates = self.predecessors(name)
-        print(candidates)
+        candidates = self.predecessor(name)
         for candidate in candidates:
-            if candidate['progress'] != 100:
+
+            if self.job(candidate)['progress'] != 100:
                 parents.append(candidate)
 
         if parents == []:
@@ -514,6 +707,15 @@ class Workflow:
             return parents
 
     def save_with_state(self, filename, stdout=False):
+        """
+        save the workflow with state
+        :param filename: which file to save the workflow
+        :type filename: str
+        :param stdout: if True then return the output
+        :type stdout: bool
+        :return: if stdout is True then returns the string of yaml dump
+        :rtype: None or str
+        """
         # print(self.graph)
         data = {}
         data['workflow'] = {
@@ -529,6 +731,13 @@ class Workflow:
             return d
 
     def load_with_state(self, filename):
+        """
+        load the workflow with state
+        :param filename: which file to load the workflow from
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         s = readfile(filename)
         data = yaml.safe_load(s)
         if "nodes" in data['workflow']:
@@ -545,10 +754,12 @@ class Workflow:
         load in a saved workflow in another file, but continue working on it in
         the file used in init
 
-        :param filename:
-        :type filename:
-        :return:
-        :rtype:
+        :param filename: which file to load the workflow from
+        :type filename: str
+        :param clear: whether to clear workflow. not implemented
+        :type clear: bool
+        :return: nothing
+        :rtype: None
         """
         # self.graph.load(...)
         """ 
@@ -605,6 +816,13 @@ class Workflow:
                 job = Job.create(filename=node['script'], exec=node["exec"])
 
     def save(self, filename):
+        """
+        save the workflow
+        :param filename: where to save the workflow
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         if os_is_windows():
             name = os.path.basename(filename).replace(r".yaml", "")
             dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
@@ -625,7 +843,35 @@ class Workflow:
                 pid=None,
                 **kwargs
                 ):
-
+        """
+        add a job to the workflow
+        :param name: name of job
+        :type name: str
+        :param user: username for job
+        :type user: str
+        :param host: where the job will be run
+        :type host: str
+        :param label: what the node will say on the graph
+        :type label: str
+        :param label_format: how the label will be formatted in the graph
+        :type label_format:
+        :param kind: the type of job, such as local, ssh, slurm
+        :type kind: str
+        :param status: how the job is doing, like ready, failed, done
+        :type status: str
+        :param progress: a number from 0 to 100 that reports job completeness
+        :type progress: int
+        :param script: the script that the job will run
+        :type script: str
+        :param exec: how the job will be executed
+        :type exec: str
+        :param pid: process id of the job
+        :type pid: int or str
+        :param kwargs: any other miscellaneous specifications for the job
+        :type kwargs: kwargs
+        :return: nothing
+        :rtype: None
+        """
 
         label = label or name
         user = user or self.user or Shell.user()
@@ -653,21 +899,60 @@ class Workflow:
         )
         self.save(self.filename)
 
-
-
     def add_dependency(self, source, destination):
+        """
+        add a job dependency to the workflow (and the graph)
+        :param source: job to be completed first
+        :type source: str
+        :param destination: job to be completed after the source
+        :type destination: str
+        :return: nothing
+        :rtype: None
+        """
         self.graph.add_dependency(source, destination)
 
     def add_dependencies(self, dependency):
+        """
+        add a job dependency to the workflow (and the graph)
+        :param dependency: the dependency to be added
+        :type dependency: str
+        :return: nothing
+        :rtype: None
+        """
         self.graph.add_dependencies(dependency=dependency)
 
     def update_status(self, name, status):
+        """
+        manually update a job's status
+        :param name: the job whose status will be updated
+        :type name: str
+        :param status: the new status to be set for the job
+        :type status: str
+        :return: nothing
+        :rtype: None
+        """
         self.graph[name]["status"] = status
 
     def set_progress(self, name, percent):
+        """
+        manually update a job's progress
+        :param name: name of the job
+        :type name: str
+        :param percent: value from 0 to 100 for the progress
+        :type percent: int
+        :return: nothing
+        :rtype: None
+        """
         self.graph[name]["progress"] = percent
 
     def update_progress(self, name):
+        """
+        manually update the progress of a job according to its log file
+        :param name: name of job
+        :type name: str
+        :return: nothing
+        :rtype: None
+        """
         # fetches log file and looks for progress event TBD
         # once progress is fetched set it for the named job
         raise NotImplementedError
@@ -675,30 +960,58 @@ class Workflow:
     def run_parallel(self,
                      directory="~/experiment",
                      order=None,
-                     parallel=False,
                      dryrun=False,
                      show=True,
                      period=0.5,
                      filename=None):
+        """
+        run a workflow in a parallel fashion
+        :param directory: where the workflow should be run
+        :type directory: str
+        :param order: how the jobs should be run chronologically
+        :type order:
+        :param dryrun: if true then the workflow isn't really run. for testing
+        :type dryrun: bool
+        :param show: whether to show graph as workflow is run
+        :type show: bool
+        :param period: how long to wait after showing the graph
+        :type period: float
+        :param filename: where to save the graph
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         finished = False
 
         undefined = []
         completed = []  # list of completed nodes
-        running = []  # list of runiing nodes
+        running = []  # list of running nodes
         outstanding = list(self.jobs)  # list of outstanding nodes
         failed = []  # list of failed nodes
 
         def info():
+            """
+            gives information about the jobs of the workflow
+            :return: nothing
+            :rtype: None
+            """
             print("Undefined:   ", undefined)
             print("Completed:   ", completed)
             print("Running:     ", running)
             print("Outstanding: ", outstanding)
             print("Failed:      ", failed)
             print()
-            print("Todo:       ", self.graph.todo())
+            print("Todo:        ", self.graph.todo())
             print("Dependencies:", len(self.graph.edges))
 
         def update(name):
+            """
+            update the jobs status and progress
+            :param name: name of job
+            :type name: str
+            :return: nothing
+            :rtype: None
+            """
             banner(f"update {name}")
             log = self.jobs[name]["instance"].get_log()
             status = self.jobs[name]["instance"].get_status()
@@ -707,7 +1020,6 @@ class Workflow:
             self.jobs[name]['progress'] = progress
 
             # print("Job data", name, status, progress)
-
 
             if progress == 100:
                 self.graph.done(name)
@@ -728,10 +1040,14 @@ class Workflow:
             # elif status == 'running':
             #    ready.remove(name)
 
-
-
-
         def start(name):
+            """
+            runs the job
+            :param name: name of job
+            :type name: str
+            :return: nothing
+            :rtype: None
+            """
             banner(name)
 
             job = self.job(name=name)
@@ -836,7 +1152,24 @@ class Workflow:
                         colors="status",
                         engine="dot")
 
-    def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):
+    def run_topo(self,
+                 order=None,
+                 dryrun=False,
+                 show=True,
+                 filename=None):
+        """
+        runs the workflow in a topological fashion
+        :param order: how the jobs should be run chronologically
+        :type order:
+        :param dryrun: if true then the workflow isn't really run. for testing
+        :type dryrun: bool
+        :param show: whether to show the graph as workflow is run
+        :type show: bool
+        :param filename: where the graph should be saved
+        :type filename: str
+        :return: nothing
+        :rtype: None
+        """
         # bug the tno file needs to be better handled
         if order is None:
             order = self.sequential_order
@@ -934,6 +1267,17 @@ class Workflow:
                     Shell.browser(filename)
 
     def display(self, filename=None, name='workflow', first=True):
+        """
+        show the graph of the workflow
+        :param filename: location of the graph
+        :type filename: str
+        :param name: name of the workflow to be displayed
+        :type name: str
+        :param first: if True then this is first time graph is displayed
+        :type first: bool
+        :return: nothing
+        :rtype: None
+        """
         if os_is_windows():
             Shell.mkdir("./tmp")
             filename = filename or f"tmp/{name}.svg"
@@ -950,6 +1294,11 @@ class Workflow:
             os.system(f'start chrome {cwd}\\{filename}')
 
     def sequential_order(self):
+        """
+        returns a list of the topological order of the workflow
+        :return: list depicting the workflow
+        :rtype: list
+        """
         tuples = []
         for name, edge in self.graph.edges.items():
             tuples.append((edge["source"], edge["destination"]))
@@ -959,6 +1308,11 @@ class Workflow:
 
     @property
     def yaml(self):
+        """
+        returns a yaml dump of the nodes and dependencies of the workflow
+        :return: yaml dump of workflow as string
+        :rtype: str
+        """
         data = {
             'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
@@ -966,6 +1320,13 @@ class Workflow:
         return yaml.dump(data)
 
     def json(self, filepath=None):
+        """
+        returns the workflow as json string
+        :param filepath: where the file is located
+        :type filepath: str
+        :return: a json string of the workflow
+        :rtype: str
+        """
         data = {
             'nodes: ': dict(self.jobs),
             'dependencies': dict(self.dependencies)
@@ -974,6 +1335,11 @@ class Workflow:
 
     @property
     def table(self):
+        """
+        returns a table of the workflow
+        :return: a table of the workflow
+        :rtype: None or PrettyTable or str or dict
+        """
         # gvl rewritten
         with_label = True
 
@@ -1008,6 +1374,13 @@ class Workflow:
                              order=order)
 
     def table2(self, with_label=False):
+        """
+        returns a table of the workflow
+        :param with_label: whether to include label in table
+        :type with_label: bool
+        :return: a table of the workflow
+        :rtype: None or PrettyTable or str or dict
+        """
         # gvl rewritten
         # with_label = False
 
@@ -1041,10 +1414,13 @@ class Workflow:
         return Printer.write(self.graph.nodes,
                              order=order)
 
-
-
     def remove_workflow(self):
-        # gvl rrewritten
+        """
+        deletes workflow from the local file system
+        :return: nothing
+        :rtype: None
+        """
+        # gvl rewritten
         # TODO: the rm seems wrong
         d = os.path.dirname(self.filename)
         os.system(f"rm -r {d}")
@@ -1053,8 +1429,15 @@ class Workflow:
         self.graph.edges = None
 
     def remove_job(self, name, state=False):
-        # remove job
-
+        """
+        removes a particular job from the workflow
+        :param name: name of job to be removed from workflow
+        :type name: str
+        :param state: whether to save workflow with state after job removal
+        :type state: bool
+        :return: nothing
+        :rtype: None
+        """
         # del self.jobs[name]
         p = self.jobs.pop(name)
         # print("popped:",p)
@@ -1077,14 +1460,19 @@ class Workflow:
             self.save(self.filename)
 
     def status(self):
+        """
+        returns details of the workflow in dict format
+        :return: details of workflow in dict format
+        :rtype: dict
+        """
         # gvl implemented but not tested
         s = "done"
         _status = {"workflow": s,
-                   "job": None}
+                   "jobs": {}}
         for name in self.jobs:
-            state = self.jobs["status"]
-            progress = self.jobs["progress"]
-            _status["job"][name] = {
+            state = self.jobs[name]["status"]
+            progress = self.jobs[name]["progress"]
+            _status["jobs"][name] = {
                 "status": state,
                 "progress": progress
             }
@@ -1092,7 +1480,9 @@ class Workflow:
                 s = "running"
             elif state in ["undefined"]:
                 s = "undefined"
-            elif state in ["filed"]:
+            elif state in ["failed"]:
                 s = "failed"
+            elif state in ["ready"]:
+                s = "ready"
         _status["workflow"] = s
         return _status

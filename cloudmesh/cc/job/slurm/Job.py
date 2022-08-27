@@ -307,7 +307,7 @@ class Job:
         specified in the period in seconds,
         till the job has completed
         :param period: time in seconds to check, as an interval
-        :type period: int
+        :type period: float
         :return: does not return anything
         :rtype: None
         """
@@ -345,7 +345,7 @@ class Job:
         """
         kills the slurm job
         :param period: interval to use for waiting for log/pid
-        :type period: int
+        :type period: float
         :param job_id: id of slurm job
         :type job_id: str
         :return: output of squeue command
