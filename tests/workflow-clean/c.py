@@ -4,8 +4,10 @@ from cloudmesh.common.Shell import Shell
 
 import time
 
+td = 0.1
+
 filename = Shell.map_filename('./c.log').path
 
 for i in [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]:
     progress(progress=i, filename=filename)
-    time.sleep(0.8)
+    time.sleep(td)

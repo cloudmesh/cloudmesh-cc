@@ -29,6 +29,7 @@ class Labelmaker:
         :rtype:
         """
         now = datetime.now()
+        t0 = self.t0 or now
         variables = Variables()
         replacements = {}
 
@@ -47,12 +48,8 @@ class Labelmaker:
                 self.template = self.template.replace(variable, "now")
                 replacements["now"] = now.strftime(value)
             elif variable.startswith("dt_"):
-                value = variable.split("dt_", 1)[1]
-                # t0 = cm_datetime( ....  self.t0) # convert datetime string to datatime object
-                # document here the datetime format we use in cloudmesh also
-                # t1 = DateTime.now()
-                # dt = t1 - t0
-                dt = "TBD"
-                self.template = self.template.replace(variable, "now")
-                replacements["now"] = now.strftime(value)
+                dummy, name, template = variable.split("_", 2)
+                dt = now - t0
+                self.template = self.template.replace(template, "dt")
+                replacements["dt"] = dt.strftime(value)
         return self.template.format(**data, **replacements)
