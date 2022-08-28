@@ -7,13 +7,15 @@ import time
 
 class Labelmaker:
 
-    def __init__(self, template, t0=None):
+    def __init__(self, template, node=None, t0=None):
         self.t0 = t0
         self.template = template\
             .replace("{os.", "{os_")\
             .replace("{cm.", "{cm_")\
             .replace("{now.", "{now_") \
             .replace("{dt.", "{dt_")
+        # .replace("{created.", "{created_") \
+        # .replace("{modified.", "{modified_") \
         self.variables = re.findall(r'{(.*?)}', self.template)
 
 
@@ -33,6 +35,9 @@ class Labelmaker:
         variables = Variables()
         replacements = {}
 
+        print("LABELMAKER", data)
+
+
         for variable in self.variables:
             if variable.startswith("os_"):
                 key = variable.split("os_", 1)[1]
@@ -47,9 +52,22 @@ class Labelmaker:
                 value = variable.split("now_", 1)[1]
                 self.template = self.template.replace(variable, "now")
                 replacements["now"] = now.strftime(value)
-            elif variable.startswith("dt_"):
-                dummy, name, template = variable.split("_", 2)
-                dt = now - t0
-                self.template = self.template.replace(template, "dt")
-                replacements["dt"] = dt.strftime(value)
+            # elif variable.startswith("created_"):
+            #     template = variable.split("created_", 1)[1]
+            #     self.template = self.template.replace(template, "created")
+            #     replacements["created"] = now.strftime(value)
+            #     del data["created"]
+            # elif variable.startswith("modified_"):
+            #     template = variable.split("modified_", 1)[1]
+            #     self.template = self.template.replace(template, "modified")
+            #     replacements["modified"] = now.strftime(value)
+            #     del data["modified"]
+            #     print (data)
+            #     print (replacements)
+            #     print (variables)
+            # elif variable.startswith("dt_"):
+            #    dummy, name, template = variable.split("_", 2)
+            #    dt = now - t0
+            #    self.template = self.template.replace(template, "dt")
+            #    replacements["dt"] = dt.strftime(value)
         return self.template.format(**data, **replacements)

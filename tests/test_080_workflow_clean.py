@@ -68,6 +68,7 @@ def create_workflow(filename='workflow-clean.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
+        #label = "{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\n{modified.%m/%d/%Y, %H:%M:%S}\\n{created.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
         label = "{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
 
         w.add_job(name=f"b.sh", label=label,  kind=kind, user=user, host=host)
