@@ -21,6 +21,7 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
 from pprint import pprint
+from cloudmesh.common.DateTime import DateTime
 # from utilities import set_host_user
 
 """
@@ -58,6 +59,8 @@ def create_workflow(filename='workflow-clean.yaml'):
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
 
+
+    t0 = DateTime.now()
     for host, kind in [("localhost", jobkind)]:
 
         print("HOST:", host)
@@ -65,7 +68,7 @@ def create_workflow(filename='workflow-clean.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+        label = "{name}\\n{now.%H:%M:%S}\\nprogress={progress}"
 
         w.add_job(name=f"b.sh", label=label,  kind=kind, user=user, host=host)
         w.add_job(name=f"c.py", label=label, kind=kind, user=user, host=host)
