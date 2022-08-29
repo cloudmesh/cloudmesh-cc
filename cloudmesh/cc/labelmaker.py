@@ -68,7 +68,7 @@ class Labelmaker:
             elif variable.startswith("dt_"):
                 # template = variable.split("dt_", 1)[1]
                 dummy, name, template = variable.split('_', 2)
-                cms_t0_name = 't0_' + name
+                cms_t0_name = 'created_time_' + name
                 if cms_t0_name not in self.cms_variables:
                     # Console.error(f'workflow {name} not found in cms set',
                     #               traceflag=True)
