@@ -59,6 +59,7 @@ def create_workflow(filename='workflow-clean.yaml'):
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
 
+    created_time = w.created_time
 
     t0 = DateTime.now()
     for host, kind in [("localhost", jobkind)]:
@@ -69,7 +70,8 @@ def create_workflow(filename='workflow-clean.yaml'):
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
         #label = "{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\n{modified.%m/%d/%Y, %H:%M:%S}\\n{created.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
-        label = "{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
+        label = "{{name}}\\nnow={{now.%m/%d/%Y, %H:%M:%S}}\\nprogress={{progress}}\\ncreated={created_time}\\n{{dt.workflow-clean_%H:%M:%S}}"
+        label = label.format(created_time=created_time)
 
         w.add_job(name=f"b.sh", label=label,  kind=kind, user=user, host=host)
         w.add_job(name=f"c.py", label=label, kind=kind, user=user, host=host)

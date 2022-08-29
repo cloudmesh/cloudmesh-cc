@@ -26,6 +26,8 @@ from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.systeminfo import os_is_windows
 import json
 from cloudmesh.cc.labelmaker import Labelmaker
+from datetime import datetime
+from cloudmesh.common.variables import Variables
 
 """
 This class enables to manage dependencies between jobs.
@@ -571,6 +573,7 @@ class Workflow:
         #
         # name may not be defined properly
         #
+        cms_variables = Variables()
         try:
             if name is None and filename is not None:
                 self.name = os.path.basename(filename).split(".")[0]
@@ -604,6 +607,11 @@ class Workflow:
         except Exception as e:  # noqa: E722
             Console.error(e, traceflag=True)
             pass
+
+        self.created_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        cms_created_name = 'created_time_' + self.name
+        cms_variables.__setitem__(
+            cms_created_name, self.created_time)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -749,7 +757,7 @@ class Workflow:
 
     def load(self, filename, clear=True):
         """
-        Loads a workflow graph from file. However the file is still stored in
+        Loads a workflow graph from file. However, the file is still stored in
         the filename that was used when the Workflow was created. This allows to
         load in a saved workflow in another file, but continue working on it in
         the file used in init
