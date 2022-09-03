@@ -1278,8 +1278,8 @@ class Workflow:
                     time.sleep(0.1)
                     if os_is_windows():
 
-                        import win32gui
-                        import win32con
+                        #import win32gui
+                        #import win32con
 
                         #hwnd = win32gui.FindWindowEx(None, None, None,
                         #                             'MINGW64:')
