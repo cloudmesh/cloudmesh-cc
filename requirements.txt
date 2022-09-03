@@ -19,3 +19,4 @@ httpx
 trio
 papermill
 cloudmesh-progress
+pygetwindow
