@@ -132,7 +132,7 @@ Draft posters is available as ppt and PDF file. However, that version is no long
 
 The draft posters contains inaccurate staements and descriptions.
 
-## Acknowledgements
+## Acknowledgments
 
 Continued work was in part funded by the NSF
 CyberTraining: CIC: CyberTraining for Students and Technologies
