@@ -29,7 +29,9 @@ import json
 from cloudmesh.cc.labelmaker import Labelmaker
 from datetime import datetime
 from cloudmesh.common.variables import Variables
-import pygetwindow as gw
+
+if os_is_windows():
+    import pygetwindow as gw
 
 """
 This class enables to manage dependencies between jobs.
@@ -1150,6 +1152,10 @@ class Workflow:
                     Shell.open(filename=filename)
                 else:
                     Shell.browser(filename)
+                    if os_is_windows():
+                        win = gw.getWindowsWithTitle('MINGW64:')
+                        win.activate()
+
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
 
