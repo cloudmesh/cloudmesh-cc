@@ -1,9 +1,11 @@
 import logging
+
+import networkx as nx
+
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common import dotdict
 from cloudmesh.common.Printer import Printer
-from cloudmesh.common.util import readfile
 from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI
@@ -11,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi import File
 from fastapi import UploadFile
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from fastapi.staticfiles import StaticFiles
@@ -20,8 +23,26 @@ import os
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Printer import Printer
+from cloudmesh.common.util import writefile, readfile
 from cloudmesh.common.util import banner
 import glob
+
+"""
+all the URLs.
+@app.get("/", tags=['workflow'])
+@app.get("/workflows", tags=['workflow'])
+    ?json
+    ?yaml
+    ?html
+    ?dict
+    
+@app.post("/upload", tags=['workflow'])
+@app.delete("/workflow/{name}", tags=['workflow'])
+@app.get("/workflow/{name}", tags=['workflow'])
+@app.get("/run/{name}", tags=['workflow'])
+@app.post("/workflow/{name}", tags=['workflow'])
+"""
 
 
 def test_run():
@@ -71,7 +92,7 @@ statis_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
 
 app.mount("/static", StaticFiles(directory=statis_dir), name="static")
 
-template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service")
+template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/templates")
 templates = Jinja2Templates(directory=template_dir)
 
 
@@ -117,7 +138,7 @@ async def home():
 # WORKFLOW
 #
 
-def load_workflow(name: str) -> Workflow:
+def load_workflow(name: str, load_with_graph = False) -> Workflow:
     """
     loads a workflow corresponding to given name
     :param name:
@@ -126,9 +147,14 @@ def load_workflow(name: str) -> Workflow:
     :rtype: Workflow
     """
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-
     w = Workflow()
     w.load_with_state(filename=filename)
+    if load_with_graph:
+        svg_file = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+        w.graph.save(filename=svg_file, colors="status",
+                     layout=nx.circular_layout, engine="dot")
+        #w.graph.save_to_file(filename=f"{name}.svg")
     # w.load(filename)
     # print(w.yaml)
     return w
@@ -225,7 +251,7 @@ def delete_workflow(name: str, job: str = None):
 
 
 @app.get("/workflow/{name}", tags=['workflow'])
-def get_workflow(name: str, job: str = None):
+def get_workflow(request: Request, name: str, job: str = None, output: str = None):
     """
     retrieves a job in a workflow, if specified. if not specified,
     retrieves an entire workflow
@@ -233,8 +259,32 @@ def get_workflow(name: str, job: str = None):
     :type name: str
     :param job: name of the job
     :type job: str
+    :param output: how to print workflow. can be html or table
+    :type output: str
     :return: success or failure message
     """
+    if output == 'html':
+        try:
+            w = load_workflow(name)
+            w_dict = w.dict_of_workflow
+            html_workflow = Printer.write(table=w_dict, output='html')
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            script_dir = os.path.join(script_dir, 'templates')
+            script_dir = os.path.join(script_dir, f'{name}-html.html')
+            writefile(script_dir, html_workflow)
+            return templates.TemplateResponse(f"{name}-html.html", {"request": request})
+        except Exception as e:
+            print(e)
+            return {"message": f"There was an error with getting the workflow '{name}'"}
+    if output == 'graph':
+        try:
+            directory = Shell.map_filename(
+                f'~/.cloudmesh/{name}/{name}/{name}.svg').path
+            w = load_workflow(name=name, load_with_graph=True)
+            return FileResponse(directory)
+        except Exception as e:
+            print(e)
+            return {"message": f"There was an error with getting the workflow '{name}'"}
     if job is not None:
         try:
             w = load_workflow(name)
