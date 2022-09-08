@@ -390,7 +390,8 @@ class Graph:
     def save_to_file(self, filename, exclude=None):
         """
         saves the graph to a specified filename and
-        excludes nodes if exclude is specified
+        excludes nodes if exclude is specified.
+        meant to be used to save as yaml, not svg.
         :param filename: name of file to save graph to
         :type filename: str
         :param exclude: nodes to exclude from the saved file
@@ -491,8 +492,10 @@ class Graph:
             dot.edge(e["source"], e["destination"])
 
         if engine == "dot":
-            prefix, ending = filename.split(".")
+            basefilename = os.path.basename(filename)
+            prefix, ending = basefilename.split(".")
             dot_filename = prefix + ".dot"
+            dot_filename = os.path.join(os.path.dirname(filename), dot_filename)
             writefile(dot_filename, str(dot.source))
             os.system(f"dot -T{ending} {dot_filename} -o {filename}")
 
@@ -1326,6 +1329,19 @@ class Workflow:
             'dependencies': dict(self.dependencies)
         }
         return yaml.dump(data)
+
+    @property
+    def dict_of_workflow(self):
+        """
+        returns a dict of the nodes and dependencies of the workflow
+        :return: dict of workflow
+        :rtype: dict
+        """
+        data = {
+            'nodes: ': dict(self.jobs),
+            'dependencies': dict(self.dependencies)
+        }
+        return data
 
     def json(self, filepath=None):
         """
