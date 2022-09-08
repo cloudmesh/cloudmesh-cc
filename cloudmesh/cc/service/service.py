@@ -148,6 +148,7 @@ def load_workflow(name: str, load_with_graph = False) -> Workflow:
     """
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
     w = Workflow()
+    w.__init__(filename=filename)
     w.load_with_state(filename=filename)
     if load_with_graph:
         svg_file = Shell.map_filename(
@@ -161,19 +162,44 @@ def load_workflow(name: str, load_with_graph = False) -> Workflow:
 
 
 @app.get("/workflows", tags=['workflow'])
-def list_workflows():
+def list_workflows(request: Request, output: str = None):
     """
     This command returns a list of workflows that is found within
     the server.
     
     :return: list of workflow names
     """
-
+    list_of_workflows = []
+    dict_of_workflow_dicts = {}
+    folders = []
+    if output == 'json':
+        try:
+            directory = path_expand(f"~/.cloudmesh/workflow/")
+            result = glob.glob(f"{directory}/*")
+            #result = [os.path.basename(e) for e in result]
+            for possible_folder in result:
+                if os.path.isdir(possible_folder):
+                    folders.append(os.path.basename(possible_folder))
+            for workflow in folders:
+                list_of_workflows.append(load_workflow(name=workflow))
+            for workflow in list_of_workflows:
+                dict_of_workflow_dicts[workflow.name] = workflow.dict_of_workflow
+            json_workflow = json.dumps(dict_of_workflow_dicts)
+            json_filepath = Shell.map_filename(
+                f'~/.cloudmesh/workflow/all-workflows-json.json').path
+            writefile(json_filepath, json_workflow)
+            return FileResponse(json_filepath)
+        except Exception as e:
+            print(e)
+            return {"message": f"No workflows found"}
     try:
         directory = path_expand(f"~/.cloudmesh/workflow/")
         result = glob.glob(f"{directory}/*")
-        result = [os.path.basename(e) for e in result]
-        return {"workflows": result}
+        #result = [os.path.basename(e) for e in result]
+        for possible_folder in result:
+            if os.path.isdir(possible_folder):
+                folders.append(os.path.basename(possible_folder))
+        return {"workflows": folders}
     except Exception as e:
         return {"message": f"No workflows found"}
 

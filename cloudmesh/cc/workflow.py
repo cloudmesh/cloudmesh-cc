@@ -599,7 +599,8 @@ class Workflow:
 
         try:
             self.name = os.path.basename(filename).split(".")[0]
-        except:
+        except Exception as e:
+            print(e)
             self.name = "workflow"
 
         self.user = user
