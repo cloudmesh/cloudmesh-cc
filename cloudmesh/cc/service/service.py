@@ -26,6 +26,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import writefile, readfile
 from cloudmesh.common.util import banner
 import glob
+import json
 
 """
 all the URLs.
@@ -281,6 +282,17 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                 f'~/.cloudmesh/{name}/{name}/{name}.svg').path
             w = load_workflow(name=name, load_with_graph=True)
             return FileResponse(directory)
+        except Exception as e:
+            print(e)
+            return {"message": f"There was an error with getting the workflow '{name}'"}
+    if output == 'json':
+        try:
+            w = load_workflow(name)
+            w_dict = w.dict_of_workflow
+            json_workflow = json.dumps(w_dict)
+            json_filepath = Shell.map_filename(f'~/.cloudmesh/{name}/{name}/{name}-json.json').path
+            writefile(json_filepath, json_workflow)
+            return FileResponse(json_filepath)
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
