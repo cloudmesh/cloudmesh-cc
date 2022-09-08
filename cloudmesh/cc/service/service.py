@@ -5,7 +5,6 @@ import networkx as nx
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common import dotdict
-from cloudmesh.common.Printer import Printer
 from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI
