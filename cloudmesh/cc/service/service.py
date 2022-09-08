@@ -318,13 +318,15 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     """
     if output == 'html':
         try:
-            w = load_workflow(name)
-            w_dict = w.dict_of_workflow
-            html_workflow = Printer.write(table=w_dict, output='html')
+            #result = [os.path.basename(e) for e in result]
+            w = load_workflow(name=name, load_with_graph=True)
+            df = pd.DataFrame(w.dict_of_workflow)
+            df_html = df.to_html()
+            #html_workflow = Printer.write(table=w_dict, output='html')
             script_dir = os.path.dirname(os.path.realpath(__file__))
             script_dir = os.path.join(script_dir, 'templates')
             script_dir = os.path.join(script_dir, f'{name}-html.html')
-            writefile(script_dir, html_workflow)
+            writefile(script_dir, df_html)
             return templates.TemplateResponse(f"{name}-html.html", {"request": request})
         except Exception as e:
             print(e)
