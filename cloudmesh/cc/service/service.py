@@ -12,19 +12,21 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi import File
 from fastapi import UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
 import os
+import io
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.util import writefile, readfile
 from cloudmesh.common.util import banner
+import pandas as pd
 import glob
 import json
 
@@ -189,6 +191,31 @@ def list_workflows(request: Request, output: str = None):
                 f'~/.cloudmesh/workflow/all-workflows-json.json').path
             writefile(json_filepath, json_workflow)
             return FileResponse(json_filepath)
+        except Exception as e:
+            print(e)
+            return {"message": f"No workflows found"}
+    if output == 'csv':
+        try:
+            directory = path_expand(f"~/.cloudmesh/workflow/")
+            result = glob.glob(f"{directory}/*")
+            #result = [os.path.basename(e) for e in result]
+            for possible_folder in result:
+                if os.path.isdir(possible_folder):
+                    folders.append(os.path.basename(possible_folder))
+            for workflow in folders:
+                list_of_workflows.append(load_workflow(name=workflow))
+            for workflow in list_of_workflows:
+                dict_of_workflow_dicts[workflow.name] = workflow.dict_of_workflow
+            df = pd.DataFrame(dict_of_workflow_dicts)
+            csv_filepath = Shell.map_filename(
+                f'~/.cloudmesh/workflow/all-workflows-csv.csv').path
+
+            #stream = io.StringIO()
+            response = StreamingResponse(io.StringIO(df.to_csv()),
+                                         media_type="text/csv")
+
+            response.headers["Content-Disposition"] = f"attachment; filename=all-workflows-csv.csv"
+            return response
         except Exception as e:
             print(e)
             return {"message": f"No workflows found"}

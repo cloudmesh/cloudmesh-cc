@@ -42,7 +42,7 @@ httpx
 trio
 papermill
 cloudmesh-progress
-pygetwindow
+pandas
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
