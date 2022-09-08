@@ -24,10 +24,14 @@ import os
 from cloudmesh.common.systeminfo import os_is_linux
 from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.systeminfo import is_gitbash
 import json
 from cloudmesh.cc.labelmaker import Labelmaker
 from datetime import datetime
 from cloudmesh.common.variables import Variables
+
+if os_is_windows():
+    import pygetwindow as gw
 
 """
 This class enables to manage dependencies between jobs.
@@ -1151,6 +1155,10 @@ class Workflow:
                     Shell.open(filename=filename)
                 else:
                     Shell.browser(filename)
+                    if os_is_windows():
+                        win = gw.getWindowsWithTitle('MINGW64:')
+                        win.activate()
+
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
 
@@ -1276,6 +1284,33 @@ class Workflow:
 
                 else:
                     Shell.browser(filename)
+                    time.sleep(0.1)
+                    if os_is_windows():
+
+                        #import win32gui
+                        #import win32con
+
+                        #hwnd = win32gui.FindWindowEx(None, None, None,
+                        #                             'MINGW64:')
+                        # def getShell():
+                        #     thelist = []
+                        #
+                        #     def findit(hwnd, ctx):
+                        #         if 'MINGW64:' in win32gui.GetWindowText(
+                        #                 hwnd):  # check the title
+                        #             thelist.append(hwnd)
+                        #     win32gui.EnumWindows(findit, None)
+                        #     return thelist
+                        # b = getShell()
+                        # win32gui.SetWindowPos(b[0], win32con.HWND_TOPMOST,
+                        #                       100,
+                        #                       100, 200, 200, 0x0001 | 0x0002)
+                        #the following works
+                        if is_gitbash():
+                            win = gw.getWindowsWithTitle('MINGW64:')[0]
+                            win.activate()
+
+
 
     def display(self, filename=None, name='workflow', first=True):
         """

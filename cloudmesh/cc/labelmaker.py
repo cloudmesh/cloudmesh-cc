@@ -45,6 +45,7 @@ class Labelmaker:
                 replacements[variable] = value
             elif variable.startswith("cm_"):
                 key = variable.split("cm_", 1)[1]
+                value = None
                 if key in variables:
                     value = variables[key]
                 replacements[variable] = value
