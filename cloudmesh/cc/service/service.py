@@ -67,6 +67,22 @@ def test_run():
     return q
 
 
+def get_available_workflows():
+    """
+    returns workflow dirs found in .cloudmesh directory
+    :return: names of workflows found
+    :rtype: list
+    """
+    folders = []
+    directory = path_expand(f"~/.cloudmesh/workflow/")
+    result = glob.glob(f"{directory}/*")
+    # result = [os.path.basename(e) for e in result]
+    for possible_folder in result:
+        if os.path.isdir(possible_folder):
+            folders.append(os.path.basename(possible_folder))
+    return folders
+
+
 class Jobpy(BaseModel):
     name: str
     user: str
@@ -126,14 +142,22 @@ templates = Jinja2Templates(directory=template_dir)
 #     return templates.TemplateResponse("templates/table.html",
 #                                       {"request": request})
 
+#
+# HOME
+#
+
 @app.get("/", tags=['workflow'])
-async def home():
+@app.get("/home", tags=['workflow'])
+async def home_page(request: Request):
     """
-    home function that confirms the cloudmesh-cc
-    server is online when user navigates to root page
+    home function that features html and
+    sidebar
     :return: up message
     """
-    return {"msg": "cloudmesh.cc is up"}
+    folders = get_available_workflows()
+    return templates.TemplateResponse("home.html",
+                                      {"request": request,
+                                       "workflowlist": folders})
 
 
 #
@@ -313,9 +337,6 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     :type output: str
     :return: success or failure message
     """
-    list_of_workflows = []
-    dict_of_workflow_dicts = {}
-    folders = []
     if output == 'html':
         try:
             # #result = [os.path.basename(e) for e in result]
@@ -379,12 +400,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
     if output == 'table':
-        directory = path_expand(f"~/.cloudmesh/workflow/")
-        result = glob.glob(f"{directory}/*")
-        # result = [os.path.basename(e) for e in result]
-        for possible_folder in result:
-            if os.path.isdir(possible_folder):
-                folders.append(os.path.basename(possible_folder))
+        folders = get_available_workflows()
         try:
             w = load_workflow(name)
             test = w.table
