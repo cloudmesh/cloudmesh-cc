@@ -159,6 +159,21 @@ async def home_page(request: Request):
                                       {"request": request,
                                        "workflowlist": folders})
 
+#
+# CONTACT
+#
+
+@app.get("/contact")
+async def contact_page(request: Request):
+    """
+    page that lists contact information
+    :return: up message
+    """
+    folders = get_available_workflows()
+    return templates.TemplateResponse("contact.html",
+                                      {"request": request,
+                                       "workflowlist": folders})
+
 
 #
 # WORKFLOW
