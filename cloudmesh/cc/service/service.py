@@ -318,15 +318,34 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     """
     if output == 'html':
         try:
-            #result = [os.path.basename(e) for e in result]
+            # #result = [os.path.basename(e) for e in result]
+            # w = load_workflow(name=name, load_with_graph=True)
+            # print('hi')
+            # print(w.dict_of_workflow)
+            # df = pd.DataFrame(w.dict_of_workflow)
+            # df_html = df.to_html()
+            # #html_workflow = Printer.write(table=w_dict, output='html')
+            # script_dir = os.path.dirname(os.path.realpath(__file__))
+            # script_dir = os.path.join(script_dir, 'templates')
+            # script_dir = os.path.join(script_dir, f'{name}-html.html')
+            # writefile(script_dir, df_html)
+            # return templates.TemplateResponse(f"{name}-html.html", {"request": request})
             w = load_workflow(name=name, load_with_graph=True)
-            df = pd.DataFrame(w.dict_of_workflow)
-            df_html = df.to_html()
-            #html_workflow = Printer.write(table=w_dict, output='html')
+            test = w.table
+            data = dict(w.graph.nodes)
+            order = ['host',
+                     'status',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+            workflow_html = Printer.dict_html(w.graph.nodes, order=order)
             script_dir = os.path.dirname(os.path.realpath(__file__))
             script_dir = os.path.join(script_dir, 'templates')
             script_dir = os.path.join(script_dir, f'{name}-html.html')
-            writefile(script_dir, df_html)
+            writefile(script_dir, workflow_html)
             return templates.TemplateResponse(f"{name}-html.html", {"request": request})
         except Exception as e:
             print(e)
@@ -348,6 +367,13 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             json_filepath = Shell.map_filename(f'~/.cloudmesh/{name}/{name}/{name}-json.json').path
             writefile(json_filepath, json_workflow)
             return FileResponse(json_filepath)
+        except Exception as e:
+            print(e)
+            return {"message": f"There was an error with getting the workflow '{name}'"}
+    if output == 'table':
+        try:
+            w = load_workflow(name)
+            return templates.TemplateResponse("workflow-table.html", {"request": request})
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}

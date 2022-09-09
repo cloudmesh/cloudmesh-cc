@@ -53,14 +53,13 @@ class TestWorkflowAB:
         print(w.graph)
         print(w.table)
 
-
-class d:
     def test_show(self):
         HEADING()
         global w
         w.graph.save(filename="workflow-a-b.svg",
                      colors="status",
                      layout=nx.circular_layout, engine="dot")
+        Shell.open("workflow-a-b.svg")
 
     def test_get_node(self):
         HEADING()
