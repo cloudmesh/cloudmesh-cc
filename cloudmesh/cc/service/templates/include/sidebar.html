@@ -1,49 +1,51 @@
 <!-- Sidebar  -->
 <nav id="sidebar">
-    <div class="sidebar-header">
-        <h3>cloudmesh-cc</h3>
+    <div class="collapse show" id="navbarcool">
+        <div class="sidebar-header">
+            <h3>cloudmesh-cc</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <p></p>
+            <li class="active">
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudmesh/cloudmesh-cc#readme">About</a>
+            </li>
+            <li>
+                <a href="/contact">Contact</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Workflows</a>
+                <ul class="collapse show list-unstyled" id="pageSubmenu">
+                    {% for workflow in workflowslist %}
+                    <li>
+                        <a href="/workflow/{{workflow}}?output=table">{{workflow}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>
+                <a href="#docSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Doc</a>
+                <ul class="collapse show list-unstyled" id="docSubmenu">
+                    <li>
+                        <a href="/docs">Docs</a>
+                    </li>
+                    <li>
+                        <a href="/redoc">Redoc</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <!-- <li>
+                <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+            </li>
+            <li>
+                <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+            </li> -->
+        </ul>
     </div>
-
-    <ul class="list-unstyled components">
-        <p></p>
-        <li class="active">
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudmesh/cloudmesh-cc#readme">About</a>
-        </li>
-        <li>
-            <a href="/contact">Contact</a>
-        </li>
-        <li>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Workflows</a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                {% for workflow in workflowslist %}
-                <li>
-                    <a href="/workflow/{{workflow}}?output=table">{{workflow}}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li>
-            <a href="#docSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Doc</a>
-            <ul class="collapse list-unstyled" id="docSubmenu">
-                <li>
-                    <a href="/docs">Docs</a>
-                </li>
-                <li>
-                    <a href="/redoc">Redoc</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-
-    <ul class="list-unstyled CTAs">
-        <!-- <li>
-            <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
-        </li>
-        <li>
-            <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
-        </li> -->
-    </ul>
 </nav>
