@@ -19,8 +19,10 @@
     <link href="{{ url_for('static', path='/css/style3.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', path='/css/mystyle.css') }}" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- Your Font Awesome kit -->
-    <script src="https://kit.fontawesome.com/95b141d48c.js" crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
 
 
 
@@ -28,16 +30,22 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        {% include 'include/sidebar.html' %}
-        <!-- Page Content  -->
-        <div id="content">
-            {% include 'include/topnav.html' %}
-            {% block page_content %}
-            {% endblock %}
+    <div class="page-container">
+        <div class="content-wrap">
+            <div class="row">
+                <div class="col-3">
+                    {% include 'include/sidebar.html'%}
+                </div>
+                <div class="col-9">
+                    {% block page_content %}
+                    {% endblock %}
+                </div>
+            </div>
+
         </div>
+
     </div>
-    <div class="overlay"></div>
+
 
     {% block scripts %}
 

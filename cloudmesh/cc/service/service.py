@@ -313,6 +313,9 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     :type output: str
     :return: success or failure message
     """
+    list_of_workflows = []
+    dict_of_workflow_dicts = {}
+    folders = []
     if output == 'html':
         try:
             # #result = [os.path.basename(e) for e in result]
@@ -376,6 +379,12 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
     if output == 'table':
+        directory = path_expand(f"~/.cloudmesh/workflow/")
+        result = glob.glob(f"{directory}/*")
+        # result = [os.path.basename(e) for e in result]
+        for possible_folder in result:
+            if os.path.isdir(possible_folder):
+                folders.append(os.path.basename(possible_folder))
         try:
             w = load_workflow(name)
             test = w.table
@@ -395,7 +404,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,
-                                               "name_of_workflow": name})
+                                               "name_of_workflow": name,
+                                               "workflowlist": folders})
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
