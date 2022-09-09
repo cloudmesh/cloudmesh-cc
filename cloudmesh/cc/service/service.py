@@ -90,9 +90,9 @@ app = FastAPI(title="cloudmesh-cc", version=cm_version)
 # REGISTER template and static dir
 #
 
-statis_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
+static_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
 
-app.mount("/static", StaticFiles(directory=statis_dir), name="static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/templates")
 templates = Jinja2Templates(directory=template_dir)
@@ -151,12 +151,9 @@ def load_workflow(name: str, load_with_graph = False) -> Workflow:
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
     w = Workflow()
     w.__init__(filename=filename)
-    w.load_with_state(filename=filename)
+    w.load(filename=filename)
     if load_with_graph:
-        svg_file = Shell.map_filename(
-            f'~/.cloudmesh/workflow/{name}/{name}.svg').path
-        w.graph.save(filename=svg_file, colors="status",
-                     layout=nx.circular_layout, engine="dot")
+        pass
         #w.graph.save_to_file(filename=f"{name}.svg")
     # w.load(filename)
     # print(w.yaml)
@@ -352,10 +349,18 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return {"message": f"There was an error with getting the workflow '{name}'"}
     if output == 'graph':
         try:
-            directory = Shell.map_filename(
-                f'~/.cloudmesh/{name}/{name}/{name}.svg').path
+            filename = Shell.map_filename(
+                f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
             w = load_workflow(name=name, load_with_graph=True)
-            return FileResponse(directory)
+            w.graph.load(filename=filename)
+            svg_file = Shell.map_filename(
+                f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+            w.graph.save(filename=svg_file, colors="status",
+                         layout=nx.circular_layout, engine="dot")
+            print(w.graph)
+            print(w.table)
+
+            return FileResponse(svg_file)
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
@@ -373,7 +378,21 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     if output == 'table':
         try:
             w = load_workflow(name)
-            return templates.TemplateResponse("workflow-table.html", {"request": request})
+            test = w.table
+            data = dict(w.graph.nodes)
+            order = ['host',
+                     'status',
+                     'name',
+                     'progress',
+                     'script',
+                     'user',
+                     'parent',
+                     'kind']
+            workflow_dict = Printer.dict(w.graph.nodes, order=order)
+            #print(w.graph.nodes)
+            from pprint import pprint
+            pprint(w.graph.nodes)
+            return templates.TemplateResponse("workflow-table.html", {"request": request, "dictionary": w.graph.nodes})
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
