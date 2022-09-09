@@ -12,23 +12,19 @@
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>name</th>
-                    <th>status</th>
-                    <th>host</th>
+                    <th>Workflow</th>
                 </tr>
             </thead>
             <tbody>
-                {% for job, items in dictionary.items() %}
+                {% for job in dictionary %}
                 <tr>
                     <td>{{job}}</td>
-                    <td>{{items['status']}}</td>
-                    <td>{{items['host']}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
-                    <th>{{ name_of_workflow }}</th>
+                    <th>Workflow</th>
                 </tr>
             </tfoot>
         </table>

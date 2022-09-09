@@ -392,7 +392,10 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             #print(w.graph.nodes)
             from pprint import pprint
             pprint(w.graph.nodes)
-            return templates.TemplateResponse("workflow-table.html", {"request": request, "dictionary": w.graph.nodes})
+            return templates.TemplateResponse("workflow-table.html",
+                                              {"request": request,
+                                               "dictionary": w.graph.nodes,
+                                               "name_of_workflow": name})
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
