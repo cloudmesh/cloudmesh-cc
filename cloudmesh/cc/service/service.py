@@ -440,6 +440,19 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
         except Exception as e:
             print(e)
             return {"message": f"There was an error with getting the workflow '{name}'"}
+    if output == 'csv':
+        try:
+            w = load_workflow(name)
+            w_dict = w.dict_of_workflow
+            df = pd.DataFrame(w_dict)
+            response = StreamingResponse(io.StringIO(df.to_csv()),
+                                         media_type="text/csv")
+
+            response.headers["Content-Disposition"] = f"attachment; filename={name}-csv.csv"
+            return response
+        except Exception as e:
+            print(e)
+            return {"message": f"There was an error with getting the workflow '{name}'"}
     if job is not None:
         try:
             w = load_workflow(name)
