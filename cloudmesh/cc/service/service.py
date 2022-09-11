@@ -408,7 +408,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             w = load_workflow(name)
             w_dict = w.dict_of_workflow
             json_workflow = json.dumps(w_dict)
-            json_filepath = Shell.map_filename(f'~/.cloudmesh/{name}/{name}/{name}-json.json').path
+            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
             writefile(json_filepath, json_workflow)
             return FileResponse(json_filepath)
         except Exception as e:
