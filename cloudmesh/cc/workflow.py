@@ -243,8 +243,8 @@ class Graph:
             self.nodes[name]["label"] = self.nodes[name]["name"]
         if "format" not in self.nodes[name]:
             self.nodes[name]["format"] = self.nodes[name]["label"]
-        if "no" not in self.nodes[name]:
-            self.nodes[name]["no"] = self.node_count
+        if "number" not in self.nodes[name]:
+            self.nodes[name]["number"] = self.node_count
             self.node_count += 1
 
     def add_edge(self, source, destination, **data):
@@ -1383,7 +1383,7 @@ class Workflow:
         # detrmon the order based on nodes and edges using toposort
         # itterate through the order (nwmaes, ids), and set the no to thedopological soort
         # for i in self.get_sequential_order():
-        #   node[top[i]]["no"] = i
+        #   node[top[i]]["number"] = i
         pass
 
     def sequential_order(self): #get_sequentil_order
