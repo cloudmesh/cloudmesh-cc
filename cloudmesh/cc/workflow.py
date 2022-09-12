@@ -632,12 +632,6 @@ class Workflow:
 
         # self.filename is the filename wherever it is located
 
-        # self.original = f"~/.cloudmesh/workflow/{name}/{name.yaml}"
-        # if self.filenme != self.original:
-        #   cp self.filename self.original
-
-        self.runtime_dir = runtime_dir or f"~/.cloudmesh/workflow/{name}/runtime"
-        self.runtime_filename = f"{self.runtime_dir}/{name.yaml}"
 
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
@@ -647,13 +641,21 @@ class Workflow:
             self.filename = filename
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
-        # Shell.mkdir(os.path.dirname(self.runtime_dir))
 
         try:
             self.name = os.path.basename(filename).split(".")[0]
         except Exception as e:
             print(e)
             self.name = "workflow"
+
+        self.runtime_dir = runtime_dir or f"~/.cloudmesh/workflow/{self.name}/runtime"
+        Shell.mkdir(os.path.dirname(self.runtime_dir))
+
+        self.original = f"~/.cloudmesh/workflow/{name}/{name}.yaml"
+        self.runtime_filename = f"{self.runtime_dir}/{name.yaml}"
+
+        if self.filename != self.original:
+           Shell.copy(self.filename, self.original)
 
         self.user = user
         self.host = host
@@ -1482,7 +1484,8 @@ class Workflow:
             data[name]["label"] = msg
 
         if with_label:
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'label',
                      'label_format',
@@ -1493,7 +1496,8 @@ class Workflow:
                      'parent',
                      'kind']
         else:
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'name',
                      'progress',
@@ -1524,7 +1528,8 @@ class Workflow:
             data[name]["label"] = msg
 
         if with_label:
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'label',
                      'name',
@@ -1534,7 +1539,8 @@ class Workflow:
                      'parent',
                      'kind']
         else:
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'name',
                      'progress',

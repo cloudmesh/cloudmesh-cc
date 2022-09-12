@@ -288,6 +288,7 @@ async def upload_workflow(file: UploadFile = File(...)):
         w = load_workflow(name)
         print(w.yaml)
     except Exception as e:
+        Console.error(e, traceflag=True)
         return {"message": f"There was an error uploading the file {e}"}
     finally:
         await file.close()
@@ -322,6 +323,7 @@ def delete_workflow(name: str, job: str = None):
             return {"message": f"The job {job} was deleted in the workflow {name}"}
         except Exception as e:
             print(e)
+            Console.error(e, traceflag=True)
             return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
     else:
         # if we specify to delete the workflow
@@ -331,6 +333,7 @@ def delete_workflow(name: str, job: str = None):
             os.system(f"rm -rf {directory}")
             return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
         except Exception as e:
+            Console.error(e, traceflag=True)
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
 
@@ -363,7 +366,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             w = load_workflow(name=name, load_with_graph=True)
             test = w.table
             data = dict(w.graph.nodes)
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'name',
                      'progress',
@@ -408,7 +412,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                 primary_keys.append(w.sequential_order().index(
                     job_to_be_indexed) + 1)
             jobs_and_id = list(zip(w.sequential_order(), primary_keys))
-            order = ['host',
+            order = ['number',
+                     'host',
                      'status',
                      'name',
                      'progress',
@@ -441,6 +446,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
     except Exception as e:
         print(e)
+        Console.error(e, traceflag=True)
         return {"message": f"There was an error with getting the workflow '{name}'"}
 
     if job is not None:
@@ -450,6 +456,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return {name: result}
         except Exception as e:
             print(e)
+            Console.error(e, traceflag=True)
             return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
     else:
         try:
@@ -457,6 +464,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return {name: w}
         except Exception as e:
             print(e)
+            Console.error(e, traceflag=True)
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
