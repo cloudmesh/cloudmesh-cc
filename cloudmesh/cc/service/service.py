@@ -352,8 +352,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     :type output: str
     :return: success or failure message
     """
-    if output == 'html':
-        try:
+    try:
+        if output == 'html':
             # #result = [os.path.basename(e) for e in result]
             # w = load_workflow(name=name, load_with_graph=True)
             # print(w.dict_of_workflow)
@@ -382,11 +382,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             script_dir = os.path.join(script_dir, f'{name}-html.html')
             writefile(script_dir, workflow_html)
             return templates.TemplateResponse(f"{name}-html.html", {"request": request})
-        except Exception as e:
-            print(e)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
-    if output == 'graph':
-        try:
+
+        if output == 'graph':
             filename = Shell.map_filename(
                 f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
             w = load_workflow(name=name, load_with_graph=True)
@@ -399,23 +396,17 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             print(w.table)
 
             return FileResponse(svg_file)
-        except Exception as e:
-            print(e)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
-    if output == 'json':
-        try:
-            w = load_workflow(name)
-            w_dict = w.dict_of_workflow
-            json_workflow = json.dumps(w_dict)
-            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
-            writefile(json_filepath, json_workflow)
-            return FileResponse(json_filepath)
-        except Exception as e:
-            print(e)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
-    if output == 'table':
-        folders = get_available_workflows()
-        try:
+
+        if output == 'json':
+                w = load_workflow(name)
+                w_dict = w.dict_of_workflow
+                json_workflow = json.dumps(w_dict)
+                json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
+                writefile(json_filepath, json_workflow)
+                return FileResponse(json_filepath)
+
+        if output == 'table':
+            folders = get_available_workflows()
             w = load_workflow(name)
             primary_keys = []
             for job_to_be_indexed in w.sequential_order():
@@ -441,11 +432,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                                                "dictionary": w.graph.nodes,
                                                "name_of_workflow": name,
                                                "workflowlist": folders})
-        except Exception as e:
-            print(e)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
-    if output == 'csv':
-        try:
+
+        if output == 'csv':
             w = load_workflow(name)
             w_dict = w.dict_of_workflow
             df = pd.DataFrame(w_dict)
@@ -454,9 +442,11 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
             response.headers["Content-Disposition"] = f"attachment; filename={name}-csv.csv"
             return response
-        except Exception as e:
-            print(e)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
+
+    except Exception as e:
+        print(e)
+        return {"message": f"There was an error with getting the workflow '{name}'"}
+
     if job is not None:
         try:
             w = load_workflow(name)
