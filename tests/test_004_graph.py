@@ -211,6 +211,49 @@ class TestGraph:
         assert "a-b" in g.edges
         assert "b-c" in g.edges
 
+    def test_save_full(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        order = g.get_topological_order()
+        print (order)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+
+    def test_save_full(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        for n in g.nodes:
+            g.nodes[n]["number"] = None
+        g.save_to_file("tmp-a.yaml", exclude=None)
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print(r)
+        order = g.create_topological_order()
+
+
+        g.save_to_file("tmp-a.yaml", exclude=None)
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print(r)
+        print("Order", order)
+
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+        assert order == ['a', 'b', 'c']
+
+
 
 class a:
     def test_benchmark(self):

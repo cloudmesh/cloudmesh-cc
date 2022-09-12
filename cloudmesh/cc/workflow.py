@@ -537,6 +537,32 @@ class Graph:
             plt.axis('off')
             plt.savefig(filename)
 
+    def get_topological_order(self): #get_sequentil_order
+        """
+        returns a list of the topological order of the workflow
+        :return: list depicting the workflow
+        :rtype: list
+        """
+        tuples = []
+        for name, edge in self.edges.items():
+            tuples.append((edge["source"], edge["destination"]))
+        g = nx.DiGraph(tuples)
+        order = list(nx.topological_sort(g))
+        return order
+
+    def create_topological_order(self): #create_sequential_order
+        # or put it in workflow or in both # mey need to be in workflow.
+        """
+        update the graph while each node bget a number determined from get_sequential_order
+        :return: list depicting the workflow
+        :rtype: list
+        """
+        order = self.get_topological_order()
+        i = 0
+        for name in order:
+            self.nodes[name]["number"] = i
+            i = i + 1
+        return order
 
 
 class Workflow:
