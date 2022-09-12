@@ -104,6 +104,7 @@ class Graph:
         self.set_status_colors()
         self.name = name
         self.filename = filename
+        self.node_count = 0
 
         if filename is not None and not clear:
             self.load(filename=filename)
@@ -126,6 +127,7 @@ class Graph:
         self.set_status_colors()
         self.name = None
         self.filename = None
+        self.node_count = 0
 
     def __getitem__(self, name):
         """
@@ -204,7 +206,8 @@ class Graph:
 
         try:
             self.name = os.path.basename(filename).split(".")[0]
-        except:
+        except Exception as e:
+            # Console.error(str(e), traceflag=True)
             self.name = "workflow"
         with open(filename, 'r') as stream:
              graph = yaml.safe_load(stream)
@@ -240,6 +243,9 @@ class Graph:
             self.nodes[name]["label"] = self.nodes[name]["name"]
         if "format" not in self.nodes[name]:
             self.nodes[name]["format"] = self.nodes[name]["label"]
+        if "no" not in self.nodes[name]:
+            self.nodes[name]["no"] = self.node_count
+            self.node_count += 1
 
     def add_edge(self, source, destination, **data):
         """
@@ -530,6 +536,7 @@ class Graph:
             imgplot = plt.imshow(img, aspect='equal')
             plt.axis('off')
             plt.savefig(filename)
+
 
 
 class Workflow:
@@ -1359,7 +1366,27 @@ class Workflow:
             cwd = os.getcwd()
             os.system(f'start chrome {cwd}\\{filename}')
 
-    def sequential_order(self):
+    def create_topological_order(self): #create_sequential_order
+        # or put it in workflow or in both # mey need to be in workflow.
+        """
+        update the graph while each node bget a number determined from get_sequential_order
+        :return: list depicting the workflow
+        :rtype: list
+        """
+        # tuples = []
+        # for name, edge in self.graph.edges.items():
+        #     tuples.append((edge["source"], edge["destination"]))
+        # g = nx.DiGraph(tuples)
+        # order = list(nx.topological_sort(g))
+        # return order
+
+        # detrmon the order based on nodes and edges using toposort
+        # itterate through the order (nwmaes, ids), and set the no to thedopological soort
+        # for i in self.get_sequential_order():
+        #   node[top[i]]["no"] = i
+        pass
+
+    def sequential_order(self): #get_sequentil_order
         """
         returns a list of the topological order of the workflow
         :return: list depicting the workflow
