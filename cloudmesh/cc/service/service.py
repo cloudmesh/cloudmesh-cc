@@ -83,6 +83,30 @@ def get_available_workflows():
     return folders
 
 
+def dict_of_available_workflows():
+    """
+    looks inside ~/.cloudmesh/workflow directory
+    for available workflows and returns them
+    as initialized workflows inside a dict
+    :return: available workflows as dict
+    :rtype: dict
+    """
+    list_of_workflows = []
+    dict_of_workflow_dicts = {}
+    folders = []
+    directory = path_expand(f"~/.cloudmesh/workflow/")
+    result = glob.glob(f"{directory}/*")
+    # result = [os.path.basename(e) for e in result]
+    for possible_folder in result:
+        if os.path.isdir(possible_folder):
+            folders.append(os.path.basename(possible_folder))
+    for workflow in folders:
+        list_of_workflows.append(load_workflow(name=workflow))
+    for workflow in list_of_workflows:
+        dict_of_workflow_dicts[workflow.name] = workflow.dict_of_workflow
+    return dict_of_workflow_dicts
+
+
 class Jobpy(BaseModel):
     name: str
     user: str
@@ -207,41 +231,19 @@ def list_workflows(request: Request, output: str = None):
     
     :return: list of workflow names
     """
-    list_of_workflows = []
-    dict_of_workflow_dicts = {}
-    folders = []
-    if output == 'json':
-        try:
-            directory = path_expand(f"~/.cloudmesh/workflow/")
-            result = glob.glob(f"{directory}/*")
-            #result = [os.path.basename(e) for e in result]
-            for possible_folder in result:
-                if os.path.isdir(possible_folder):
-                    folders.append(os.path.basename(possible_folder))
-            for workflow in folders:
-                list_of_workflows.append(load_workflow(name=workflow))
-            for workflow in list_of_workflows:
-                dict_of_workflow_dicts[workflow.name] = workflow.dict_of_workflow
+
+    dict_of_workflow_dicts = dict_of_available_workflows()
+
+    try:
+
+        if output == 'json':
             json_workflow = json.dumps(dict_of_workflow_dicts)
             json_filepath = Shell.map_filename(
                 f'~/.cloudmesh/workflow/all-workflows-json.json').path
             writefile(json_filepath, json_workflow)
             return FileResponse(json_filepath)
-        except Exception as e:
-            print(e)
-            return {"message": f"No workflows found"}
-    if output == 'csv':
-        try:
-            directory = path_expand(f"~/.cloudmesh/workflow/")
-            result = glob.glob(f"{directory}/*")
-            #result = [os.path.basename(e) for e in result]
-            for possible_folder in result:
-                if os.path.isdir(possible_folder):
-                    folders.append(os.path.basename(possible_folder))
-            for workflow in folders:
-                list_of_workflows.append(load_workflow(name=workflow))
-            for workflow in list_of_workflows:
-                dict_of_workflow_dicts[workflow.name] = workflow.dict_of_workflow
+
+        elif output == 'csv':
             df = pd.DataFrame(dict_of_workflow_dicts)
             csv_filepath = Shell.map_filename(
                 f'~/.cloudmesh/workflow/all-workflows-csv.csv').path
@@ -249,20 +251,13 @@ def list_workflows(request: Request, output: str = None):
             #stream = io.StringIO()
             response = StreamingResponse(io.StringIO(df.to_csv()),
                                          media_type="text/csv")
-
             response.headers["Content-Disposition"] = f"attachment; filename=all-workflows-csv.csv"
             return response
-        except Exception as e:
-            print(e)
-            return {"message": f"No workflows found"}
-    try:
-        directory = path_expand(f"~/.cloudmesh/workflow/")
-        result = glob.glob(f"{directory}/*")
-        #result = [os.path.basename(e) for e in result]
-        for possible_folder in result:
-            if os.path.isdir(possible_folder):
-                folders.append(os.path.basename(possible_folder))
-        return {"workflows": folders}
+
+        else:
+            folders = get_available_workflows()
+            return {"workflows": folders}
+
     except Exception as e:
         return {"message": f"No workflows found"}
 
@@ -383,7 +378,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             writefile(script_dir, workflow_html)
             return templates.TemplateResponse(f"{name}-html.html", {"request": request})
 
-        if output == 'graph':
+        elif output == 'graph':
             filename = Shell.map_filename(
                 f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
             w = load_workflow(name=name, load_with_graph=True)
@@ -397,7 +392,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
             return FileResponse(svg_file)
 
-        if output == 'json':
+        elif output == 'json':
                 w = load_workflow(name)
                 w_dict = w.dict_of_workflow
                 json_workflow = json.dumps(w_dict)
@@ -405,7 +400,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                 writefile(json_filepath, json_workflow)
                 return FileResponse(json_filepath)
 
-        if output == 'table':
+        elif output == 'table':
             folders = get_available_workflows()
             w = load_workflow(name)
             primary_keys = []
@@ -423,8 +418,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                      'kind']
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
 
-            for job_name, primary_key in zip(list(w.graph.nodes.keys()), \
-                                         jobs_and_id):
+            for job_name, primary_key in zip(list(w.graph.nodes.keys()),
+                                             jobs_and_id):
                 current_job = primary_key[0]
                 w.graph.nodes[current_job]['id'] = primary_key[1]
             return templates.TemplateResponse("workflow-table.html",
@@ -433,7 +428,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                                                "name_of_workflow": name,
                                                "workflowlist": folders})
 
-        if output == 'csv':
+        elif output == 'csv':
             w = load_workflow(name)
             w_dict = w.dict_of_workflow
             df = pd.DataFrame(w_dict)
