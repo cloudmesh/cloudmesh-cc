@@ -34,12 +34,12 @@ async def home():
 #         "file": q.db
 #     }
 
-@app.get("/queues/{id}", response=HTMLResponse)
-async def info(request: Request, id: str):
+@app.get("/queues/{no}", response=HTMLResponse)
+async def info(request: Request, no: str):
     global q
     return templates.TemplateResponse('templates/queues.html',
                                       {"request": request,
-                                       "id": id,
+                                       "no": no,
                                        "name": q.name,
                                        "queues": q.queues,
                                        "file": q.db})

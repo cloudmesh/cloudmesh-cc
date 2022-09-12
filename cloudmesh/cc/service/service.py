@@ -421,7 +421,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             for job_name, primary_key in zip(list(w.graph.nodes.keys()),
                                              jobs_and_id):
                 current_job = primary_key[0]
-                w.graph.nodes[current_job]['id'] = primary_key[1]
+                w.graph.nodes[current_job]['no'] = primary_key[1]
+                
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,
@@ -580,7 +581,7 @@ def add_job(name: str, job: Jobpy):
 #
 #     return templates.TemplateResponse("templates/item.html",
 #                                       {"request": request,
-#                                        "id": id,
+#                                        "no": no,
 #                                        "jobs": jobs,
 #                                        "order": order})
 #

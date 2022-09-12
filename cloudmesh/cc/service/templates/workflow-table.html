@@ -14,7 +14,13 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
 
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
 
@@ -41,19 +47,21 @@
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>status</th>
-                    <th>host</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Host</th>
+                    <th>Script</th>
                 </tr>
             </thead>
             <tbody>
                 {% for job, items in dictionary.items() %}
                 <tr>
-                    <td>{{items['id']}}</td>
+                    <td>{{items['no']}}</td>
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>
+                    <td>{{items['script']}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
