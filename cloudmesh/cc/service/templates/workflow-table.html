@@ -41,6 +41,7 @@
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
+                    <th>id</th>
                     <th>name</th>
                     <th>status</th>
                     <th>host</th>
@@ -49,6 +50,7 @@
             <tbody>
                 {% for job, items in dictionary.items() %}
                 <tr>
+                    <td>{{items['id']}}</td>
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>

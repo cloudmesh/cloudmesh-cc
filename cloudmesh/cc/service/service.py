@@ -142,6 +142,25 @@ templates = Jinja2Templates(directory=template_dir)
 #     return templates.TemplateResponse("templates/table.html",
 #                                       {"request": request})
 
+def load_workflow(name: str, load_with_graph = False) -> Workflow:
+    """
+    loads a workflow corresponding to given name
+    :param name:
+    :type name: str
+    :return: loaded workflow
+    :rtype: Workflow
+    """
+    filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+    w = Workflow(filename=filename, load=True)
+    #w.__init__(filename=filename)
+    #w.load(filename=filename)
+    if load_with_graph:
+        pass
+        #w.graph.save_to_file(filename=f"{name}.svg")
+    # w.load(filename)
+    # print(w.yaml)
+    return w
+
 #
 # HOME
 #
@@ -178,25 +197,6 @@ async def contact_page(request: Request):
 #
 # WORKFLOW
 #
-
-def load_workflow(name: str, load_with_graph = False) -> Workflow:
-    """
-    loads a workflow corresponding to given name
-    :param name:
-    :type name: str
-    :return: loaded workflow
-    :rtype: Workflow
-    """
-    filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-    w = Workflow()
-    w.__init__(filename=filename)
-    w.load(filename=filename)
-    if load_with_graph:
-        pass
-        #w.graph.save_to_file(filename=f"{name}.svg")
-    # w.load(filename)
-    # print(w.yaml)
-    return w
 
 
 @app.get("/workflows", tags=['workflow'])
@@ -356,7 +356,6 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
         try:
             # #result = [os.path.basename(e) for e in result]
             # w = load_workflow(name=name, load_with_graph=True)
-            # print('hi')
             # print(w.dict_of_workflow)
             # df = pd.DataFrame(w.dict_of_workflow)
             # df_html = df.to_html()
@@ -418,8 +417,11 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
         folders = get_available_workflows()
         try:
             w = load_workflow(name)
-            test = w.table
-            data = dict(w.graph.nodes)
+            primary_keys = []
+            for job_to_be_indexed in w.sequential_order():
+                primary_keys.append(w.sequential_order().index(
+                    job_to_be_indexed) + 1)
+            jobs_and_id = list(zip(w.sequential_order(), primary_keys))
             order = ['host',
                      'status',
                      'name',
@@ -429,9 +431,11 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                      'parent',
                      'kind']
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
-            #print(w.graph.nodes)
-            from pprint import pprint
-            pprint(w.graph.nodes)
+
+            for job_name, primary_key in zip(list(w.graph.nodes.keys()), \
+                                         jobs_and_id):
+                current_job = primary_key[0]
+                w.graph.nodes[current_job]['id'] = primary_key[1]
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,

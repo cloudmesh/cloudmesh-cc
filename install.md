@@ -33,7 +33,7 @@ Then
 cloudmesh-installer --ssh get cc
 ```
 
-After it is installe, please use 
+After it is installed, please use 
 
 ```bash
 mkdir cm
