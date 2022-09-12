@@ -557,7 +557,13 @@ class Workflow:
 
     """
 
-    def __init__(self, name=None, filename=None, user=None, host=None, load=True):
+    def __init__(self,
+                 name=None,
+                 filename=None, # original workflow
+                 runtime_dir=None, # this is where the images are store, as well as the yml file when we run it
+                 user=None,
+                 host=None,
+                 load=True):
         """
         initializes workflow with specified characteristics
         :param name: name of workflow
@@ -580,6 +586,8 @@ class Workflow:
         #
         # name may not be defined properly
         #
+
+
         cms_variables = Variables()
         try:
             if name is None and filename is not None:
@@ -589,6 +597,16 @@ class Workflow:
         except:
             self.name = 'workflow'
 
+        # self.filename is the filename wherever it is located
+
+        # self.original = f"~/.cloudmesh/workflow/{name}/{name.yaml}"
+        # if self.filenme != self.original:
+        #   cp self.filename self.original
+
+        self.runtime_dir = runtime_dir or f"~/.cloudmesh/workflow/{name}/runtime"
+        self.runtime_filename = f"{self.runtime_dir}/{name.yaml}"
+
+
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
         if not filename:
             self.filename = f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
@@ -596,6 +614,7 @@ class Workflow:
             self.filename = filename
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
+        # Shell.mkdir(os.path.dirname(self.runtime_dir))
 
         try:
             self.name = os.path.basename(filename).split(".")[0]
