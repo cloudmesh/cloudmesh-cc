@@ -206,7 +206,7 @@ async def home_page(request: Request):
     print('aa')
     print(os.getcwd())
     folders = get_available_workflows()
-    return www.TemplateResponse("index.html", {"request": request, "workflowlist": folders})
+    return templates.TemplateResponse("home.html", {"request": request, "workflowlist": folders})
 
 #
 # CONTACT
@@ -230,7 +230,7 @@ async def about_page(request: Request):
     :return: up message
     """
     folders = get_available_workflows()
-    return www.TemplateResponse("about.html",
+    return templates.TemplateResponse("about.html",
                                 {"request": request,
                                 "workflowlist": folders})
 
