@@ -77,9 +77,17 @@ def get_available_workflows():
     directory = path_expand(f"~/.cloudmesh/workflow/")
     result = glob.glob(f"{directory}/*")
     # result = [os.path.basename(e) for e in result]
+
+    def check_if_workflow_has_yaml(folder):
+        if os.path.isdir(folder):
+            for file in os.listdir(folder):
+                if file.endswith('.yaml'):
+                    return True
+
     for possible_folder in result:
-        if os.path.isdir(possible_folder):
+        if check_if_workflow_has_yaml(possible_folder):
             folders.append(os.path.basename(possible_folder))
+
     return folders
 
 
@@ -93,13 +101,8 @@ def dict_of_available_workflows():
     """
     list_of_workflows = []
     dict_of_workflow_dicts = {}
-    folders = []
-    directory = path_expand(f"~/.cloudmesh/workflow/")
-    result = glob.glob(f"{directory}/*")
-    # result = [os.path.basename(e) for e in result]
-    for possible_folder in result:
-        if os.path.isdir(possible_folder):
-            folders.append(os.path.basename(possible_folder))
+    folders = get_available_workflows()
+
     for workflow in folders:
         list_of_workflows.append(load_workflow(name=workflow))
     for workflow in list_of_workflows:

@@ -18,7 +18,7 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
-from utilities import create_dest
+from utilities import create_dest, set_host_user
 
 create_dest()
 
@@ -32,17 +32,7 @@ variables = Variables()
 
 name = "run"
 
-# host, username = set_host_user()
-
-if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
-else:
-    host = variables["host"]
-
-if "username" in variables:
-    username = variables["username"]
-else:
-    username = os.path.basename(os.environ["HOME"])
+host, username = set_host_user()
 
 w = None
 

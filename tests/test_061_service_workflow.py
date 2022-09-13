@@ -143,7 +143,6 @@ class TestService:
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.get("/")
         assert response.status_code == 200
-        assert response.json() == {"msg": "cloudmesh.cc is up"}
         Benchmark.Stop()
 
     def test_list_workflows(self):
@@ -153,15 +152,9 @@ class TestService:
         from cloudmesh.cc.workflowrest import RESTWorkflow
         rest = RESTWorkflow()
         result = rest.list_workflows()
-        content = result.json()
         from pprint import pprint
         pprint(result.__dict__)
-        print('that was result')
-        assert result.headers['content-type'] == 'application/json'
-
         assert result.status_code == 200
-        assert 'workflows' in content
-        assert type(content) == dict
         # assert
         Benchmark.Stop()
 

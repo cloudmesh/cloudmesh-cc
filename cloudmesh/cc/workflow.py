@@ -596,7 +596,7 @@ class Workflow:
                  runtime_dir=None, # this is where the images are store, as well as the yml file when we run it
                  user=None,
                  host=None,
-                 load=True):
+                 load=False):
         """
         initializes workflow with specified characteristics
         :param name: name of workflow
@@ -658,7 +658,8 @@ class Workflow:
 
         self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
 
-        Shell.copy(self.filename, self.runtime_filename)
+        if load:
+            Shell.copy(self.filename, self.runtime_filename)
 
         self.user = user
         self.host = host
@@ -672,6 +673,7 @@ class Workflow:
         except Exception as e:  # noqa: E722
             Console.error(e, traceflag=True)
             pass
+
 
         self.created_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         cms_created_name = 'created_time_' + self.name

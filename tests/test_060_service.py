@@ -132,8 +132,8 @@ class TestService:
         print (w.filename)
         os.system("pwd")
 
-        w.save_with_state(filename=workflow_yaml)
-        #w.save_with_state(filename=yaml_dir3)
+        #w.save_with_state(filename=workflow_yaml)
+        w.save_with_state(filename=yaml_dir3)
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -143,7 +143,6 @@ class TestService:
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.get("/")
         assert response.status_code == 200
-        assert response.json() == {"msg": "cloudmesh.cc is up"}
         Benchmark.Stop()
 
     def test_list_workflows(self):
