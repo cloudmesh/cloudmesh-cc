@@ -229,7 +229,7 @@ async def about_page(request: Request):
     page that lists readme as html
     :return: up message
     """
-    page = "cloudmesh/cc/service/markdown/README.md"
+    page = "cloudmesh/cc/service/markdown/about.md"
     import requests
     import markdown
     about = readfile(page)

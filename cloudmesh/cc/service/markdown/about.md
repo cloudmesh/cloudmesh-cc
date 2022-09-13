@@ -7,15 +7,6 @@ Jacques Fleischer
 
 $^*$ Corresponding author
 
-## Acknowledgements
-
-We like to acknowledge the following contributors for testing out earlier versions of this tool and 
-for their input to developing documentation and testing frameworks:
-
-Jackson Miskill,
-Alison Lu,
-Alex Beck.
-
 ## Background
 
 High-performance computing (HPC) is for decades a very important
