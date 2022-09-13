@@ -133,12 +133,15 @@ app = FastAPI(title="cloudmesh-cc", version=cm_version)
 # REGISTER template and static dir
 #
 
-static_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
+static_dir = pkg_resources.resource_filename("cloudmesh.cc", "www/static")
 
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 template_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/templates")
 templates = Jinja2Templates(directory=template_dir)
+
+www_dir = pkg_resources.resource_filename("cloudmesh.cc", "www")
+www = Jinja2Templates(directory=www_dir)
 
 
 #
@@ -200,10 +203,10 @@ async def home_page(request: Request):
     sidebar
     :return: up message
     """
+    print('aa')
+    print(os.getcwd())
     folders = get_available_workflows()
-    return templates.TemplateResponse("home.html",
-                                      {"request": request,
-                                       "workflowlist": folders})
+    return www.TemplateResponse("index.html", {"request": request, "workflowlist": folders})
 
 #
 # CONTACT
@@ -219,6 +222,17 @@ async def contact_page(request: Request):
     return templates.TemplateResponse("contact.html",
                                       {"request": request,
                                        "workflowlist": folders})
+
+@app.get("/about")
+async def about_page(request: Request):
+    """
+    page that lists readme as html
+    :return: up message
+    """
+    folders = get_available_workflows()
+    return www.TemplateResponse("about.html",
+                                {"request": request,
+                                "workflowlist": folders})
 
 
 #
