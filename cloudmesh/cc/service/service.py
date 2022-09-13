@@ -465,12 +465,14 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
             w.create_topological_order()
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
+            status_dict = w.analyze_states()
                 
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,
                                                "name_of_workflow": name,
-                                               "workflowlist": folders})
+                                               "workflowlist": folders,
+                                               "status_dict": status_dict})
 
         elif output == 'csv':
             w = load_workflow(name)

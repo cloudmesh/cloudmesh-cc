@@ -1642,3 +1642,22 @@ class Workflow:
                 s = "ready"
         _status["workflow"] = s
         return _status
+
+    def analyze_states(self):
+        """
+        returns a wordcount
+        on status
+        :return: dict of occurrences of each status
+        :rtype: dict
+        """
+        states = []
+        for state in ['completed', 'ready', 'failed', 'submitted', 'running']:
+            states.append(state)
+        for name in self.jobs:
+            states.append(self.jobs[name]["status"])
+
+        from collections import Counter
+        count = Counter(states)
+        for state in ['completed', 'ready', 'failed', 'submitted', 'running']:
+            count[state] = count[state] - 1
+        return count
