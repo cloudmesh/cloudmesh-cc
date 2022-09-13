@@ -133,7 +133,7 @@ app = FastAPI(title="cloudmesh-cc", version=cm_version)
 # REGISTER template and static dir
 #
 
-static_dir = pkg_resources.resource_filename("cloudmesh.cc", "www/static")
+static_dir = pkg_resources.resource_filename("cloudmesh.cc", "service/static")
 
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
