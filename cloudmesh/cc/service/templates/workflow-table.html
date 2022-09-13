@@ -89,7 +89,7 @@ $(document).ready(function () {
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success">
-                                Run
+                                    <a href="/run/{{ name_of_workflow }}">Run</a>
                             </button>
                            </li>
                             &nbsp;
@@ -104,6 +104,16 @@ $(document).ready(function () {
                             <li>
                             <button type="button" class="btn badge-danger">
                                 x Stop
+                            </button>
+                            </li>
+
+                            <!-- reset does stop, then empties out runtime -->
+                            <!-- dir, copies original workflow into runtime -->
+                            <!-- dir, and report back that its done. -->
+                            <!-- popup yes/no choice in bootstrap -->
+                            <li>
+                            <button type="button" class="btn badge-danger">
+                                x Reset
                             </button>
                             </li>
 

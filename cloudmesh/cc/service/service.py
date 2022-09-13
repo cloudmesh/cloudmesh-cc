@@ -203,10 +203,14 @@ async def home_page(request: Request):
     sidebar
     :return: up message
     """
-    print('aa')
-    print(os.getcwd())
     folders = get_available_workflows()
-    return templates.TemplateResponse("home.html", {"request": request, "workflowlist": folders})
+    page = "cloudmesh/cc/service/markdown/home.md"
+    import markdown
+    contact = readfile(page)
+    html = markdown.markdown(contact)
+    return templates.TemplateResponse("home.html", {"request": request,
+                                                    "workflowlist": folders,
+                                                    "html": html})
 
 #
 # CONTACT
@@ -219,9 +223,14 @@ async def contact_page(request: Request):
     :return: up message
     """
     folders = get_available_workflows()
+    page = "cloudmesh/cc/service/markdown/contact.md"
+    import markdown
+    contact = readfile(page)
+    html = markdown.markdown(contact)
     return templates.TemplateResponse("contact.html",
                                       {"request": request,
-                                       "workflowlist": folders})
+                                       "workflowlist": folders,
+                                       "html": html})
 
 @app.get("/about")
 async def about_page(request: Request):
@@ -237,7 +246,7 @@ async def about_page(request: Request):
     folders = get_available_workflows()
     return templates.TemplateResponse("about.html",
                                 {"request": request,
-                                 "about": html,
+                                 "html": html,
                                 "workflowlist": folders})
 
 
@@ -284,7 +293,20 @@ def list_workflows(request: Request, output: str = None):
     except Exception as e:
         return {"message": f"No workflows found"}
 
-
+# we need to be putting in there whatever we need to be updating.
+# 1. upload a.yaml (standalone, doesnt need anything else)
+# 1.1 upload a.yaml?name=d
+# 2. upload b.yaml (contains b.sh, b.ipynb, b.py, and maybe b.data)
+# 2.1 upload b.yaml?name=d
+# 2.1 this needs a second part- upload b.sh, b.ipynb, b.py, b.data
+# 3. upload directory/* (the * represents the yaml and the scripts)
+# 3.1 the name is determined from the yaml file in that directory
+# 3.2 upload directory?name=d
+# the uploaded workflow is called 'd' (placeholder name)
+# 4. upload compressed file (tar) the format is tgz,xz (two different formats)
+# 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
+# 4.2 they are uncompressed just as if they were to do an individual upload.
+# name is optional because the name is determined on what is provided
 @app.post("/upload", tags=['workflow'])
 async def upload_workflow(file: UploadFile = File(...)):
     """
@@ -546,7 +568,9 @@ def run_workflow(name: str, run_type: str = "topo"):
     :type run_type: str
     :return: success or exception message
     """
+
     w = load_workflow(name)
+    os.chdir(w.runtime_dir)
     try:
         if run_type == "topo":
             w.run_topo(show=True)
@@ -555,7 +579,6 @@ def run_workflow(name: str, run_type: str = "topo"):
         return {"Success": "Workflow ran successfully"}
     except Exception as e:
         print("Exception:", e)
-
 
 @app.post("/workflow/{name}", tags=['workflow'])
 def add_job(name: str, job: Jobpy):
