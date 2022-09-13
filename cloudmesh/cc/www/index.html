@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Deep Blue Admin</title>
+    <title>Cloudmesh Dashboard</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
@@ -28,13 +28,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Cloudmesh-cc Panel</a>
+                <a class="navbar-brand" href="index.html">Cloudmesh Compute Cluster Panel</a>
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active"><a href="index.html"><i class="fa fa-bullseye"></i> Dashboard</a></li>
-                    <li><a href="portfolio.html"><i class="fa fa-tasks"></i> Portfolio</a></li>
-                    <li><a href="blog.html"><i class="fa fa-globe"></i> Blog</a></li>
+
+                    <li><br></li>
+                    <li><a href="/docs"><i class="fa fa-tasks"></i> API - OpenAPI </a></li>
+                    <li><a href="/redoc"><i class="fa fa-tasks"></i> API - Redoc </a></li>
+
+                    <li><a href="about.html"><i class="fa fa-tasks"></i> About</a></li>
+                    <li><a href="discord.html"><i class="fa fa-globe"></i> Discord</a></li>
+                    <li><a href="portfolio.html"><i class="fa fa-tasks"></i> Components</a></li>
+                    <li><a href="contact.html"><i class="fa fa-tasks"></i> Contact</a></li>
+
+                    <li><br></li>
+
+
+                    <li><br></li>
+                    <li><br></li>
+
                     <li><a href="signup.html"><i class="fa fa-list-ol"></i> SignUp</a></li>
                     <li><a href="register.html"><i class="fa fa-font"></i> Register</a></li>
                     <li><a href="timeline.html"><i class="fa fa-font"></i> Timeline</a></li>
@@ -42,7 +56,12 @@
                     <li><a href="typography.html"><i class="fa fa-font"></i> Typography</a></li>
                     <li><a href="bootstrap-elements.html"><i class="fa fa-list-ul"></i> Bootstrap Elements</a></li>
                     <li><a href="bootstrap-grid.html"><i class="fa fa-table"></i> Bootstrap Grid</a></li>
+
+
                 </ul>
+
+
+
                 <ul class="nav navbar-nav navbar-right navbar-user">
                     <li class="dropdown messages-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
@@ -66,7 +85,7 @@
                         </ul>
                     </li>
                      <li class="dropdown user-dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Steve Miller<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Gregor von Laszewski<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
                             <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
@@ -81,11 +100,10 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Dashboard <small>Dashboard Home</small></h1>
+                    <h1>Dashboard</h1>
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        Welcome to the admin dashboard! Feel free to review all pages and modify the layout to your needs. 
-                        <br />
+                        Welcome to the cloudmesh dashboard. </br>
                         This theme uses the <a href="https://www.shieldui.com">ShieldUI</a> JavaScript library for the 
                         additional data visualization and presentation functionality illustrated here.
                     </div>
@@ -96,11 +114,11 @@
                     <div class="panel panel-default ">
                         <div class="panel-body alert-info">
                             <div class="col-xs-5">
-                                <i class="fa fa-truck fa-5x"></i>
+                                <i class="fa fa-filter fa-5x"></i>
                             </div>
                             <div class="col-xs-5 text-right">
-                                <p class="alerts-heading">343</p>
-                                <p class="alerts-text">New Orders</p>
+                                <p class="alerts-heading">20</p>
+                                <p class="alerts-text">Submitted</p>
                             </div>
                         </div>
                     </div>
@@ -109,11 +127,11 @@
                     <div class="panel panel-default ">
                         <div class="panel-body alert-info">
                             <div class="col-xs-5">
-                                <i class="fa fa-money fa-5x"></i>
+                                <i class="fa fa-gear fa-5x"></i>
                             </div>
                             <div class="col-xs-5 text-right">
-                                <p class="alerts-heading">17453</p>
-                                <p class="alerts-text">Income</p>
+                                <p class="alerts-heading">10</p>
+                                <p class="alerts-text">Running</p>
                             </div>
                         </div>
                     </div>
@@ -122,11 +140,11 @@
                     <div class="panel panel-default ">
                         <div class="panel-body alert-info">
                             <div class="col-xs-5">
-                                <i class="fa fa-twitter fa-5x"></i>
+                                <i class="fa fa-bolt fa-5x"></i>
                             </div>
                             <div class="col-xs-5 text-right">
-                                <p class="alerts-heading">743</p>
-                                <p class="alerts-text">Mentions</p>
+                                <p class="alerts-heading">0</p>
+                                <p class="alerts-text">Failed</p>
                             </div>
                         </div>
                     </div>
@@ -135,11 +153,11 @@
                     <div class="panel panel-default ">
                         <div class="panel-body alert-info">
                             <div class="col-xs-5">
-                                <i class="fa fa-download fa-5x"></i>
+                                <i class="fa fa-check fa-5x"></i>
                             </div>
                             <div class="col-xs-5 text-right">
-                                <p class="alerts-heading">1453</p>
-                                <p class="alerts-text">Downloads</p>
+                                <p class="alerts-heading">1</p>
+                                <p class="alerts-text">Completed</p>
                             </div>
                         </div>
                     </div>
