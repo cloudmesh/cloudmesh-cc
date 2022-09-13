@@ -5,122 +5,44 @@
 {% block head %}
 {{ super() }}
 
-
 {% endblock %}
 
-
 {% block page_content %}
-
-<script type="text/javascript">
-$(document).ready(function () {
-    $('#example').DataTable({
-        lengthMenu: [
-            [-1, 10, 25, 50],
-            ['All', 10, 25, 50],
-        ],
-    });
-});
-
-
-</script>
         <!-- Page Content  -->
         <div id="content">
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
 
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
-                            <li><b class="btn badge-light"> Jobs </b>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="about.html">About</a>
                             </li>
-                            &nbsp;
-                            <li>
-
-                                <button type="button" class="btn badge-danger">
-                                    Failed <span class="badge badge-light">4</span>
-                                </button>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact</a>
                             </li>
-                            &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-success">
-                                    Completed <span class="badge badge-light">3</span>
-                                </button>
+                            <li class="nav-item">
+                                <a class="nav-link" href="github.html">Github</a>
                             </li>
-                            &nbsp;
-                            <li>
-                            <button type="button" class="btn badge-info">
-                                Running <span class="badge badge-light">3</span>
-                            </button>
-                            </li>
-                            &nbsp;
-
-                            <li>
-                            <button type="button" class="btn badge-warning">
-                                Submitted <span class="badge badge-light">3</span>
-                            </button>
-                            </li>
-                            &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-secondary">
-                                    Add
-                                </button>
-                            </li>
-
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                            <li>
-                             <b class="btn badge-light"> Workflow </b>
-                            </li>
-                            <li>
-                                <button type="button" class="btn badge-secondary">
-                                    <a href="/workflow/workflow?output=graph">Graph</a>
-
-                                </button>
-                            &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-success">
-                                Run
-                            </button>
-                           </li>
-                            &nbsp;
-
-                            <li>
-                            <button type="button" class="btn badge-info">
-                                Update
-                            </button>
-                            </li>
-                            &nbsp;
-
-                            <li>
-                            <button type="button" class="btn badge-danger">
-                                x Stop
-                            </button>
-                            </li>
-
                         </ul>
                     </div>
                 </div>
             </nav>
 
-
-<div class="container col-12">
-{{ about | safe }}
-
+<div class="container">
+    Please send mail to laszewski at gmail.com
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-                
+
+
+
 {% endblock %}
