@@ -82,10 +82,9 @@ $(document).ready(function () {
                              <b class="btn badge-light"> Workflow </b>
                             </li>
                             <li>
-                                <button type="button" class="btn badge-secondary">
-                                    <a href="/workflow-graph/{{ name_of_workflow }}">Graph</a>
-
-                                </button>
+                                <button type="button" class="btn badge-secondary" href="workflow-graph.html">
+                                Graph
+                            </button>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success">
@@ -114,33 +113,9 @@ $(document).ready(function () {
 
 
 <div class="container col-12">
-    <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Host</th>
-                    <th>Script</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for job, items in dictionary.items() %}
-                <tr>
-                    <td>{{items['no']}}</td>
-                    <td>{{job}}</td>
-                    <td>{{items['status']}}</td>
-                    <td>{{items['host']}}</td>
-                    <td>{{items['script']}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>{{ name_of_workflow }}</th>
-                </tr>
-            </tfoot>
-        </table>
+    {{name}} Graph
+    <br>
+    <object data="../../../../images/fastapi-service.png" width="300" height="300"> </object>
 
 </div>
 

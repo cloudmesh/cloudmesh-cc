@@ -229,9 +229,15 @@ async def about_page(request: Request):
     page that lists readme as html
     :return: up message
     """
+    page = "cloudmesh/cc/service/markdown/README.md"
+    import requests
+    import markdown
+    about = readfile(page)
+    html = markdown.markdown(about)
     folders = get_available_workflows()
     return templates.TemplateResponse("about.html",
                                 {"request": request,
+                                 "about": html,
                                 "workflowlist": folders})
 
 
@@ -476,6 +482,58 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             print(e)
             Console.error(e, traceflag=True)
             return {"message": f"There was an error with getting the workflow '{name}'"}
+
+
+@app.get("/workflow-graph/{name}")
+def get_workflow_graph(request: Request, name: str):
+    folders = get_available_workflows()
+    svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
+    import requests
+    r = requests.get(svg)
+    # r = '''
+    # <ul>
+    #     <li>
+    #         hello
+    #     </li>
+    # </ul>
+    # '''
+
+    print(r.text)
+    return templates.TemplateResponse("workflow-graph.html",
+                                      {"request": request,
+                                       "svg": r.text,
+                                       "name_of_workflow": name,
+                                       "workflowlist": folders})
+
+@app.get("/workflow-graph?{name}", tags=['workflow'])
+def retrieve_workflow_graph(request: Request, name: str, job: str = None, output: str = None):
+    """
+    retrieves a workflow graph
+    :param name: name of the workflow
+    :type name: str
+    :param job: name of the job
+    :type job: str
+    :param output: how to print workflow. can be html or table
+    :type output: str
+    :return: success or failure message
+    """
+    folders = get_available_workflows()
+    filename = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
+    w = load_workflow(name=name, load_with_graph=True)
+    w.graph.load(filename=filename)
+    svg_file = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+    w.graph.save(filename=svg_file, colors="status",
+                 layout=nx.circular_layout, engine="dot")
+    print(w.graph)
+    print(w.table)
+
+    return templates.TemplateResponse("workflow-graph.html",
+                                      {"request": request,
+                                       "dictionary": w.graph.nodes,
+                                       "name_of_workflow": name,
+                                       "workflowlist": folders})
 
 
 @app.get("/run/{name}", tags=['workflow'])

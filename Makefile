@@ -73,6 +73,9 @@ clear:
 	-rm -rf dest
 	-rm -f hello-world.py
 
+www:
+	cd cloudmesh/cc/service/markdown ; curl https://raw.githubusercontent.com/cloudmesh/cloudmesh-cc/main/README.md -o README.md
+
 ######################################################################
 # PYPI
 ######################################################################
