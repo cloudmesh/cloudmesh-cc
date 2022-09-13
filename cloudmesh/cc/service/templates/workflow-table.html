@@ -43,7 +43,42 @@
                 </div>
             </nav>
 
-<div class="container">
+            <div class="container col-12">
+            <p>
+                <b class="btn badge-info"> Workflow </b>
+                <button type="button" class="btn badge-info">
+                    Run
+                </button>
+                <button type="button" class="btn badge-info">
+                    Update
+                </button>
+                <button type="button" class="btn badge-info">
+                    x Stop
+                </button>
+
+            </p>
+            <p>
+                <button type="button" class="btn badge-danger">
+                    Failed <span class="badge badge-light">4</span>
+                </button>
+                <button type="button" class="btn badge-success">
+                    Completed <span class="badge badge-light">3</span>
+                </button>
+                <button type="button" class="btn badge-blue">
+                    Running <span class="badge badge-light">3</span>
+                </button>
+                <button type="button" class="btn badge-warning">
+                    Submitted <span class="badge badge-light">3</span>
+                </button>
+
+                |
+
+            </p>
+            <div class="container col-12">
+
+
+
+<div class="container col-12">
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -71,13 +106,28 @@
                 </tr>
             </tfoot>
         </table>
+       <p>
+                    | Jobs
+                <button type="button" class="btn badge-danger">
+                    x Show <span class="badge badge-light">20</span>
+                </button>
+                <button type="button" class="btn badge-danger">
+                    x Show <span class="badge badge-light">All</span>
+                </button>
+
+                <button type="button" class="btn badge-danger">
+                    x Add <span class="badge badge-light">All</span>
+                </button>
+
+                <button type="button" class="btn badge-danger">
+                    x Delete <span class="badge badge-light">All</span>
+                </button>
+       </p>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-
-
+                
 {% endblock %}
