@@ -1416,8 +1416,21 @@ class Workflow:
         # detrmon the order based on nodes and edges using toposort
         # itterate through the order (nwmaes, ids), and set the no to thedopological soort
         # for i in self.get_sequential_order():
-        #   node[top[i]]["number"] = i
-        pass
+        #     node[top[i]]["number"] = i
+        # pass
+
+        numbers = []
+
+        for job_to_be_indexed in self.sequential_order():
+            numbers.append(self.sequential_order().index(
+                job_to_be_indexed))
+
+        jobs_and_id = list(zip(self.sequential_order(), numbers))
+
+        for job_name, primary_key in zip(list(self.graph.nodes.keys()),
+                                         jobs_and_id):
+            current_job = primary_key[0]
+            self.graph.nodes[current_job]['no'] = primary_key[1]
 
     def sequential_order(self): #get_sequentil_order
         """

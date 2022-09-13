@@ -410,11 +410,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
         elif output == 'table':
             folders = get_available_workflows()
             w = load_workflow(name)
-            primary_keys = []
-            for job_to_be_indexed in w.sequential_order():
-                primary_keys.append(w.sequential_order().index(
-                    job_to_be_indexed) + 1)
-            jobs_and_id = list(zip(w.sequential_order(), primary_keys))
+
             order = ['number',
                      'host',
                      'status',
@@ -424,12 +420,9 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                      'user',
                      'parent',
                      'kind']
-            workflow_dict = Printer.dict(w.graph.nodes, order=order)
 
-            for job_name, primary_key in zip(list(w.graph.nodes.keys()),
-                                             jobs_and_id):
-                current_job = primary_key[0]
-                w.graph.nodes[current_job]['no'] = primary_key[1]
+            w.create_topological_order()
+            workflow_dict = Printer.dict(w.graph.nodes, order=order)
                 
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
