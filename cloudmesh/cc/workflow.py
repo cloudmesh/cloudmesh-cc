@@ -603,6 +603,8 @@ class Workflow:
         :type name: str
         :param filename: location of yaml file to load workflow from
         :type filename: str
+        :param runtime_dir: directory of yaml file to be read and written to
+        :type runtime_dir: str
         :param user: name of user
         :type user: str
         :param host: location of where the workflow will be run
@@ -620,7 +622,6 @@ class Workflow:
         # name may not be defined properly
         #
 
-
         cms_variables = Variables()
         try:
             if name is None and filename is not None:
@@ -631,8 +632,6 @@ class Workflow:
             self.name = 'workflow'
 
         # self.filename is the filename wherever it is located
-
-
 
         # self.filename = filename or f"~/.cloudmesh/workflow/{self.name}/{self.name}.yaml"
         if not filename:
@@ -648,24 +647,28 @@ class Workflow:
             print(e)
             self.name = "workflow"
 
-        self.runtime_dir = runtime_dir or f"~/.cloudmesh/workflow/{self.name}/runtime"
-        Shell.mkdir(os.path.dirname(self.runtime_dir))
+        self.runtime_dir = runtime_dir or path_expand(
+            f"~/.cloudmesh/workflow/{self.name}/runtime/")
 
-        self.original = f"~/.cloudmesh/workflow/{name}/{name}.yaml"
-        self.runtime_filename = f"{self.runtime_dir}/{name.yaml}"
+        # reset the runtime dir if it exists.
+        if os.path.isdir(self.runtime_dir):
+            Shell.rmdir(self.runtime_dir)
 
-        if self.filename != self.original:
-           Shell.copy(self.filename, self.original)
+        Shell.mkdir(self.runtime_dir)
+
+        self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
+
+        Shell.copy(self.filename, self.runtime_filename)
 
         self.user = user
         self.host = host
 
         try:
             print("Workflow Filename:", self.filename)
-            self.graph = Graph(name=name, filename=filename)
+            self.graph = Graph(name=name, filename=self.runtime_filename)
             # gvl added load but not tested
             if load:
-                self.load(self.filename)
+                self.load(self.runtime_filename)
         except Exception as e:  # noqa: E722
             Console.error(e, traceflag=True)
             pass
@@ -893,10 +896,10 @@ class Workflow:
         :return: nothing
         :rtype: None
         """
-        if os_is_windows():
-            name = os.path.basename(filename).replace(r".yaml", "")
-            dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-            self.graph.save_to_file(dir)
+        # if os_is_windows():
+        #     name = os.path.basename(filename).replace(r".yaml", "")
+        #     dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
+        #     self.graph.save_to_file(dir)
         self.graph.save_to_file(filename)
 
     def add_job(self,
@@ -967,7 +970,7 @@ class Workflow:
             exec=exec,
             instance=None
         )
-        self.save(self.filename)
+        self.save(self.runtime_filename)
 
     def add_dependency(self, source, destination):
         """
