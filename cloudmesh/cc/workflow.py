@@ -883,17 +883,7 @@ class Workflow:
         #     self.add_dependencies(edge)
 
 
-        # expand script and exec and save shell scripts
-        for name, node in self.graph.nodes.items():
-            if node['exec'] is None and node['script'] is not None:
-                del node['exec']
-            if "exec" in node and node["kind"] == "local":
-                from cloudmesh.cc.job.localhost.Job import Job
-                if "script" not in node:
-                    node["script"] = f"{name}.sh"
-                job = Job.create(filename=node['script'], exec=node["exec"])
-
-    def save(self, filename):
+    def save(self, filename=None):
         """
         save the workflow
         :param filename: where to save the workflow
@@ -905,7 +895,39 @@ class Workflow:
         #     name = os.path.basename(filename).replace(r".yaml", "")
         #     dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
         #     self.graph.save_to_file(dir)
-        self.graph.save_to_file(filename)
+        if filename is None:
+            # do not use runtime dir, use experiment dir
+            # i forgot about exeriment dir
+            # reason experimentdir is noce is that its alos on remote machines
+
+            # we need to be able to set this
+
+            # .cloudmesh/workflow/workflow_a/jobs/workflow_a.yaml
+
+            # cloudmesh:
+            #    workflow:
+            #       localhost:
+            #         name: workflow_a
+            #         source: ~/a.yaml
+            #         runtime_dir: "~/.cloudmesh/workflow/{cloudmesh.workflow.name}/runtime"
+            #         yaml: f"{runtime_dir}/{cloudmesh.workflow.name}.yaml"
+            #       rivanna: ???? eg experiment on remote host must be written somewhere,
+            #                             for now we can yuos use ~
+            #         name: workflow_a
+            #         source: ~/a.yaml
+            #         runtime_dir: "~/.cloudmesh/workflow/{cloudmesh.workflow.name}/runtime"
+            #         yaml: f"{runtime_dir}/{cloudmesh.workflow.name}.yaml"
+
+        # old
+            # experiment/workflow_a/jobs/workflow_a.yaml
+            # experiment/workflow_a/jobs/workflow_a.yaml
+            # experiment is just like runtime
+
+        # saveto = f"{self.runtime_dir}/{self.name}.yaml"
+            # saveto = Shell.map_filename(fr"~/.cloudmesh/workflow/{self.name}/runtime/{self.name}.yaml").path
+        # else:
+        #    saveto = filename
+        self.graph.save_to_file(saveto)
 
     def add_job(self,
                 name=None,
