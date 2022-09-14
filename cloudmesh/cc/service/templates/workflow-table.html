@@ -41,32 +41,32 @@ $(document).ready(function () {
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
-                            <li><b class="btn badge-light"> Jobs </b>
+                            <li><b class="btn badge-light"> Jobs</i> </b>
                             </li>
                             &nbsp;
                             <li>
 
                                 <button type="button" class="btn badge-danger btn-sm">
-                                    <small>Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <small>Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                             <button type="button" class="btn badge-info btn-sm">
-                                <small>Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-warning btn-sm">
-                                <small>Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
                             </button>
                             </li>
                             &nbsp;
@@ -79,7 +79,7 @@ $(document).ready(function () {
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-secondary btn-sm">
-                                    <small>Add</small>
+                                    <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
                                 </button>
                             </li>
 
@@ -90,27 +90,29 @@ $(document).ready(function () {
                             </li>
                             <li>
                                 <button type="button" class="btn badge-secondary btn-sm">
-                                    <a href="/workflow-graph/{{ name_of_workflow }}"><small>Graph</small></a>
+                                    <a href="/workflow-graph/{{ name_of_workflow }}">
+
+                                        <small><i class="fa fa-share-alt" aria-hidden="true"></i> &nbsp; Graph</small></a>
 
                                 </button>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <a href="/run/{{ name_of_workflow }}"><small>Run</small></a>
+                                    <a href="/run/{{ name_of_workflow }}"><small><i class="fa fa-rocket" aria-hidden="true"></i> &nbsp; Run</small></a>
                             </button>
                            </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-info btn-sm">
-                                <small>Update</small>
+                                <small><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp; Update</small>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-danger btn-sm">
-                                <small>x Stop</small>
+                                <small><i class="fa fa-ban" aria-hidden="true"></i> &nbsp; Stop</small>
                             </button>
                             </li>
                             &nbsp;
@@ -121,7 +123,7 @@ $(document).ready(function () {
                             <!-- popup yes/no choice in bootstrap -->
                             <li>
                             <button type="button" class="btn badge-danger btn-sm">
-                                <small>x Reset</small>
+                                <small><i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; Reset</small>
                             </button>
                             </li>
 
