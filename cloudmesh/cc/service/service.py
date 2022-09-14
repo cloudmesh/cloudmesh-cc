@@ -15,6 +15,8 @@ from fastapi import UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
+from cloudmesh.cc.__version__ import version as cm_version
+
 from fastapi.staticfiles import StaticFiles
 import pkg_resources
 from cloudmesh.common.console import Console
@@ -76,6 +78,7 @@ def get_available_workflows():
     folders = []
     directory = path_expand(f"~/.cloudmesh/workflow/")
     result = glob.glob(f"{directory}/*")
+
     # result = [os.path.basename(e) for e in result]
 
     def check_if_workflow_has_yaml(folder):
@@ -125,8 +128,6 @@ class Jobpy(BaseModel):
 
 q = test_run()
 
-from cloudmesh.cc.__version__ import version as cm_version
-
 app = FastAPI(title="cloudmesh-cc", version=cm_version)
 
 #
@@ -172,7 +173,7 @@ www = Jinja2Templates(directory=www_dir)
 #     return templates.TemplateResponse("templates/table.html",
 #                                       {"request": request})
 
-def load_workflow(name: str, load_with_graph = False) -> Workflow:
+def load_workflow(name: str, load_with_graph=False) -> Workflow:
     """
     loads a workflow corresponding to given name
     :param name:
@@ -182,14 +183,15 @@ def load_workflow(name: str, load_with_graph = False) -> Workflow:
     """
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
     w = Workflow(filename=filename, load=True)
-    #w.__init__(filename=filename)
-    #w.load(filename=filename)
+    # w.__init__(filename=filename)
+    # w.load(filename=filename)
     if load_with_graph:
         pass
-        #w.graph.save_to_file(filename=f"{name}.svg")
+        # w.graph.save_to_file(filename=f"{name}.svg")
     # w.load(filename)
     # print(w.yaml)
     return w
+
 
 #
 # HOME
@@ -212,6 +214,7 @@ async def home_page(request: Request):
                                                     "workflowlist": folders,
                                                     "html": html})
 
+
 #
 # CONTACT
 #
@@ -232,6 +235,7 @@ async def contact_page(request: Request):
                                        "workflowlist": folders,
                                        "html": html})
 
+
 @app.get("/about")
 async def about_page(request: Request):
     """
@@ -245,9 +249,9 @@ async def about_page(request: Request):
     html = markdown.markdown(about)
     folders = get_available_workflows()
     return templates.TemplateResponse("about.html",
-                                {"request": request,
-                                 "html": html,
-                                "workflowlist": folders})
+                                      {"request": request,
+                                       "html": html,
+                                       "workflowlist": folders})
 
 
 #
@@ -280,7 +284,7 @@ def list_workflows(request: Request, output: str = None):
             csv_filepath = Shell.map_filename(
                 f'~/.cloudmesh/workflow/all-workflows-csv.csv').path
 
-            #stream = io.StringIO()
+            # stream = io.StringIO()
             response = StreamingResponse(io.StringIO(df.to_csv()),
                                          media_type="text/csv")
             response.headers["Content-Disposition"] = f"attachment; filename=all-workflows-csv.csv"
@@ -293,12 +297,13 @@ def list_workflows(request: Request, output: str = None):
     except Exception as e:
         return {"message": f"No workflows found"}
 
+
 # we need to be putting in there whatever we need to be updating.
 # 1. upload a.yaml (standalone, doesnt need anything else)
 # 1.1 upload a.yaml?name=d
 # 2. upload b.yaml (contains b.sh, b.ipynb, b.py, and maybe b.data)
 # 2.1 upload b.yaml?name=d
-# 2.1 this needs a second part- upload b.sh, b.ipynb, b.py, b.data
+# 2.1 this needs a second part - upload b.sh, b.ipynb, b.py, b.data
 # 3. upload directory/* (the * represents the yaml and the scripts)
 # 3.1 the name is determined from the yaml file in that directory
 # 3.2 upload directory?name=d
@@ -322,8 +327,10 @@ async def upload_workflow(file: List[UploadFile] = File(...)):
         from pathlib import Path
         runtime_directory = Path(runtime_directory).as_posix()
 
-        if file[0].filename.endswith('.tgz') or file[0].filename.endswith('.xz') \
-                or file[0].filename.endswith('.tar.gz') or file[0].filename.endswith('.tar'):
+        if file[0].filename.endswith('.tgz') or \
+                file[0].filename.endswith('.xz') or \
+                file[0].filename.endswith('.tar.gz') or \
+                file[0].filename.endswith('.tar'):
 
             temporary_location = path_expand(f"./{file[0].filename}")
             temporary_location = Path(temporary_location).as_posix()
@@ -346,7 +353,6 @@ async def upload_workflow(file: List[UploadFile] = File(...)):
 
         elif file[0].filename.endswith('.yaml'):
             Shell.mkdir(runtime_directory)
-
 
             print("LOG: Create Workflow at:", yaml_location)
             contents = await file[0].read()
@@ -466,12 +472,12 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return FileResponse(svg_file)
 
         elif output == 'json':
-                w = load_workflow(name)
-                w_dict = w.dict_of_workflow
-                json_workflow = json.dumps(w_dict)
-                json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
-                writefile(json_filepath, json_workflow)
-                return FileResponse(json_filepath)
+            w = load_workflow(name)
+            w_dict = w.dict_of_workflow
+            json_workflow = json.dumps(w_dict)
+            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
+            writefile(json_filepath, json_workflow)
+            return FileResponse(json_filepath)
 
         elif output == 'table':
             folders = get_available_workflows()
@@ -490,7 +496,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             w.create_topological_order()
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
             status_dict = w.analyze_states()
-                
+
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,
@@ -556,8 +562,12 @@ def get_workflow_graph(request: Request, name: str):
                                        "workflowlist": folders,
                                        "status_dict": status_dict})
 
+
 @app.get("/workflow-graph?{name}", tags=['workflow'])
-def retrieve_workflow_graph(request: Request, name: str, job: str = None, output: str = None):
+def retrieve_workflow_graph(request: Request,
+                            name: str,
+                            job: str = None,
+                            output: str = None):
     """
     retrieves a workflow graph
     :param name: name of the workflow
@@ -609,6 +619,7 @@ def run_workflow(name: str, run_type: str = "topo"):
     except Exception as e:
         print("Exception:", e)
 
+
 @app.post("/workflow/{name}", tags=['workflow'])
 def add_job(name: str, job: Jobpy):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
@@ -630,7 +641,6 @@ def add_job(name: str, job: Jobpy):
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
 
-
     w = load_workflow(name)
 
     try:
@@ -645,7 +655,7 @@ def add_job(name: str, job: Jobpy):
         w.add_dependencies(f"{job.parent},{job.name}")
         w.save_with_state(w.filename)
     except Exception as e:
-        print("Exception:",e)
+        print("Exception:", e)
 
     return {"jobs": w.jobs}
 
