@@ -1,6 +1,9 @@
+import yaml
 import logging
+import threading
 from typing import List
 import networkx as nx
+from pathlib import Path
 
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
@@ -12,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi import File
 from fastapi import UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse
 from pydantic import BaseModel
 
 from cloudmesh.cc.__version__ import version as cm_version
@@ -205,6 +208,9 @@ async def home_page(request: Request):
     sidebar
     :return: up message
     """
+    os.path.dirname(__file__)
+    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path('../../..').as_posix())
     folders = get_available_workflows()
     page = "cloudmesh/cc/service/markdown/home.md"
     import markdown
@@ -584,7 +590,7 @@ def retrieve_workflow_graph(request: Request,
     w = load_workflow(name=name, load_with_graph=True)
     w.graph.load(filename=filename)
     svg_file = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+        f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
     w.graph.save(filename=svg_file, colors="status",
                  layout=nx.circular_layout, engine="dot")
     print(w.graph)
@@ -598,7 +604,7 @@ def retrieve_workflow_graph(request: Request,
 
 
 @app.get("/run/{name}", tags=['workflow'])
-def run_workflow(name: str, run_type: str = "topo"):
+def run_workflow(request: Request, name: str, run_type: str = "topo"):
     """
     runs a specified workflow according to provided run type
     :param name: name of workflow
@@ -607,18 +613,44 @@ def run_workflow(name: str, run_type: str = "topo"):
     :type run_type: str
     :return: success or exception message
     """
-
     w = load_workflow(name)
-    os.chdir(w.runtime_dir)
+    os.chdir(os.path.dirname(w.filename))
+
     try:
         if run_type == "topo":
-            w.run_topo(show=True)
+            threading.Thread(target=w.run_topo, kwargs={'show': True}).start()
+            #w.run_topo(show=True)
         else:
-            w.run_parallel(show=True)
-        return {"Success": "Workflow ran successfully"}
+            threading.Thread(target=w.run_parallel, kwargs={'show': True}).start()
+            #w.run_parallel(show=True)
+        #return {"Success": "Workflow ran successfully"}
+        return RedirectResponse(url=f'/workflow-running/{w.name}')
     except Exception as e:
         print("Exception:", e)
 
+@app.get("/workflow-running/{name}")
+def watch_running_workflow(request: Request,
+                            name: str,
+                            job: str = None,
+                            output: str = None):
+    """
+    page for watching a workflow that has been started
+    """
+
+    folders = get_available_workflows()
+    w = load_workflow(name)
+    runtime_yaml_to_read = readfile(w.runtime_filename)
+    yaml_file = yaml.safe_load(runtime_yaml_to_read)
+    progress_and_job = []
+    for node_name, node_items in yaml_file['workflow']['nodes'].items():
+        progress_and_job.append(tuple([node_name, node_items['progress']]))
+    status_dict = w.analyze_states()
+    return templates.TemplateResponse("workflow-running.html",
+                                      {"request": request,
+                                       "dictionary": w.graph.nodes,
+                                       "name_of_workflow": name,
+                                       "workflowlist": folders,
+                                       "status_dict": status_dict})
 
 @app.post("/workflow/{name}", tags=['workflow'])
 def add_job(name: str, job: Jobpy):

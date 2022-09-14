@@ -504,6 +504,7 @@ class Graph:
         if engine == "dot":
             basefilename = os.path.basename(filename)
             prefix, ending = basefilename.split(".")
+
             dot_filename = prefix + ".dot"
             dot_filename = os.path.join(os.path.dirname(filename), dot_filename)
             writefile(dot_filename, str(dot.source))
@@ -925,9 +926,10 @@ class Workflow:
 
         # saveto = f"{self.runtime_dir}/{self.name}.yaml"
             # saveto = Shell.map_filename(fr"~/.cloudmesh/workflow/{self.name}/runtime/{self.name}.yaml").path
+            pass
         # else:
         #    saveto = filename
-        self.graph.save_to_file(saveto)
+        self.graph.save_to_file(self.runtime_filename)
 
     def add_job(self,
                 name=None,
@@ -1278,11 +1280,7 @@ class Workflow:
         if order is None:
             order = self.sequential_order
 
-        if os_is_windows() and filename is None:
-            Shell.mkdir("./tmp")
-            filename = filename or f"tmp/{self.name}.svg"
-        else:
-            filename = filename or f"/tmp/{self.name}.svg"
+        filename = filename or path_expand(f"runtime/{self.name}.svg")
 
         first = True
         for name in order():
@@ -1328,18 +1326,18 @@ class Workflow:
                     _job.watch(period=3)
 
                 self.graph.done(name)
-                print(self.table)
+                #print(self.table)
                 _job.watch(period=1)
                 log = _job.get_log()
                 status = _job.get_status()
                 progress = _job.get_progress()
                 if progress == 100:
                     status = "done"
-                print('Status: ', status)
-                print('Progress: ', progress)
+                #print('Status: ', status)
+                #print('Progress: ', progress)
                 self.jobs[name]['status'] = status
                 self.jobs[name]['progress'] = progress
-
+                self.graph.save_to_file(filename=self.runtime_filename)
                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:
@@ -1352,12 +1350,10 @@ class Workflow:
                 for name in self.graph.nodes:
                     msg = self.graph.create_label(name)
                     self.graph.nodes[name]["label"] = msg
-
                 self.graph.save(filename=filename,
                                 colors="status",
                                 layout=nx.circular_layout,
                                 engine="dot")
-
                 if first and os_is_mac():
                     Shell.open(filename=filename)
                     first = False
@@ -1478,7 +1474,7 @@ class Workflow:
         :rtype: str
         """
         data = {
-            'nodes: ': dict(self.jobs),
+            'nodes': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return yaml.dump(data)
@@ -1491,7 +1487,7 @@ class Workflow:
         :rtype: dict
         """
         data = {
-            'nodes: ': dict(self.jobs),
+            'nodes': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return data
@@ -1505,7 +1501,7 @@ class Workflow:
         :rtype: str
         """
         data = {
-            'nodes: ': dict(self.jobs),
+            'nodes': dict(self.jobs),
             'dependencies': dict(self.dependencies)
         }
         return json.dumps(data, indent=2)

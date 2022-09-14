@@ -152,7 +152,7 @@ class Job:
         self.mkdir_experimentdir()
 
         if self.filetype == ".py":
-            command = f'chmod ug+x ./{self.name}.py'
+            command = f'chmod ug+x ./runtime/{self.name}.py'
             os.system(command)
             if os_is_windows():
                 state = None
@@ -172,7 +172,7 @@ class Job:
             logfile = path_expand(f"{self.directory}/{self.name}.log")
 
         elif self.filetype == ".ipynb":
-            command = f'chmod ug+x ./{self.name}.ipynb'
+            command = f'chmod ug+x ./runtime/{self.name}.ipynb'
             os.system(command)
             if os_is_windows():
                 state = None
@@ -192,7 +192,7 @@ class Job:
             logfile = path_expand(f"{self.directory}/{self.name}.log")
 
         else:
-            command = f'chmod ug+x ./{self.name}.sh'
+            command = f'chmod ug+x ./runtime/{self.name}.sh'
             os.system(command)
             if os_is_windows():
                 state = None
@@ -294,11 +294,11 @@ class Job:
         content = None
         try:
             if refresh:
-                command = f"cp {self.directory}/{self.name}.log {self.name}.log"
+                command = f"cp {self.directory}/{self.name}.log ./runtime/{self.name}.log"
                 print(command)
                 os.system(command)
                 os.system("sync")  # tested and returns 0
-            content = readfile(f"{self.name}.log")
+            content = readfile(f"runtime/{self.name}.log")
         except:  # noqa: E722
             pass
         return content
@@ -312,7 +312,7 @@ class Job:
         """
         self.mkdir_experimentdir()
         self.chmod()
-        command = f"cp {self.name}{self.filetype} {self.directory}/."
+        command = f"cp ./runtime/{self.name}{self.filetype} {self.directory}/."
         print(command)
         Shell.run(command)
         os.system("sync")
@@ -331,7 +331,7 @@ class Job:
         #     command = f"chmod ug+rx ./{self.name}.py"
         # else:
         #     command = f"chmod ug+rx ./{self.name}.sh"
-        command = f'chmod ug+rx ./{self.name}{self.filetype}'
+        command = f'chmod ug+rx ./runtime/{self.name}{self.filetype}'
         print(command)
         r = os.system(command)
         return r
@@ -397,7 +397,7 @@ class Job:
         # find logfile
         #
 
-        logfile = f'{self.name}.log'
+        logfile = f'runtime/{self.name}.log'
         log = None
         while log is None:
             try:
