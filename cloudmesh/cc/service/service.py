@@ -1,5 +1,5 @@
 import logging
-
+from typing import List
 import networkx as nx
 
 from cloudmesh.cc.queue import Queues
@@ -308,7 +308,7 @@ def list_workflows(request: Request, output: str = None):
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
 @app.post("/upload", tags=['workflow'])
-async def upload_workflow(file: UploadFile = File(...)):
+async def upload_workflow(file: List[UploadFile] = File(...)):
     """
     uploads a workflow to the fastapi server
     :param file: specified file to be uploaded
@@ -316,29 +316,53 @@ async def upload_workflow(file: UploadFile = File(...)):
     :return: success or failure message
     """
     try:
-        name = os.path.basename(file.filename).replace(".yaml", "")
-        directory = path_expand(f"~/.cloudmesh/workflow/{name}")
-        location = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-        if os_is_windows():
-            Shell.mkdir(directory)
-            os.system(f"mkdir {directory}")
-        else:
-            os.system(f"mkdir -p {directory}")
-        print("LOG: Create Workflow at:", location)
-        contents = await file.read()
+        name = os.path.basename(file[0].filename).split('.')[0]
+        runtime_directory = path_expand(f"~/.cloudmesh/workflow/{name}/runtime/")
+        yaml_location = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+        from pathlib import Path
+        runtime_directory = Path(runtime_directory).as_posix()
 
-        with open(location, 'wb') as f:
-            f.write(contents)
+        if file[0].filename.endswith('.tgz') or file[0].filename.endswith('.xz') \
+                or file[0].filename.endswith('.tar.gz') or file[0].filename.endswith('.tar'):
 
-        w = load_workflow(name)
-        print(w.yaml)
+            temporary_location = path_expand(f"./{file[0].filename}")
+            temporary_location = Path(temporary_location).as_posix()
+            with open(temporary_location, "wb+") as file_object:
+                file_object.write(file[0].file.read())
+
+            w = Workflow()
+            Shell.mkdir(runtime_directory)
+            if file[0].filename.endswith('.tar'):
+                command = f'tar --strip-components 1 --force-local -xvf {temporary_location} -C {runtime_directory}'
+            else:
+                command = f'tar --strip-components 1 --force-local -xvzf {temporary_location} -C {runtime_directory}'
+            print(command)
+            os.system(command)
+            Shell.rm(f'{temporary_location}')
+            runtime_yaml_location = os.path.join(runtime_directory, f'{name}.yaml')
+            runtime_yaml_location = os.path.normpath(runtime_yaml_location)
+            w.load(filename=runtime_yaml_location)
+            print(w.yaml)
+
+        elif file[0].filename.endswith('.yaml'):
+            Shell.mkdir(runtime_directory)
+
+
+            print("LOG: Create Workflow at:", yaml_location)
+            contents = await file[0].read()
+
+            with open(yaml_location, 'wb') as f:
+                f.write(contents)
+
+            w = load_workflow(name)
+            print(w.yaml)
     except Exception as e:
         Console.error(e, traceflag=True)
         return {"message": f"There was an error uploading the file {e}"}
-    finally:
-        await file.close()
+    # finally:
+    #     await file.close()
 
-    return {"message": f"Successfully uploaded {file.filename}"}
+    return {"message": f"Successfully uploaded {[files.filename for files in file]}"}
 
 
 # import requests

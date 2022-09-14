@@ -596,7 +596,8 @@ class Workflow:
                  runtime_dir=None, # this is where the images are store, as well as the yml file when we run it
                  user=None,
                  host=None,
-                 load=False):
+                 load=False,
+                 clear_runtime_dir=True):
         """
         initializes workflow with specified characteristics
         :param name: name of workflow
@@ -651,10 +652,12 @@ class Workflow:
             f"~/.cloudmesh/workflow/{self.name}/runtime/")
 
         # reset the runtime dir if it exists.
-        if os.path.isdir(self.runtime_dir):
-            Shell.rmdir(self.runtime_dir)
+        # if clear_runtime_dir:
+        #     if os.path.isdir(self.runtime_dir):
+        #         Shell.rmdir(self.runtime_dir)
 
-        Shell.mkdir(self.runtime_dir)
+        if not os.path.isdir(self.runtime_dir):
+            Shell.mkdir(self.runtime_dir)
 
         self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
 
