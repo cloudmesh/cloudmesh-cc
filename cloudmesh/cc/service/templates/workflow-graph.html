@@ -46,64 +46,84 @@ $(document).ready(function () {
                             &nbsp;
                             <li>
 
-                                <button type="button" class="btn badge-danger">
-                                    Failed <span class="badge badge-light">4</span>
+                                <button type="button" class="btn badge-danger btn-sm">
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
-                                <button type="button" class="btn badge-success">
-                                    Completed <span class="badge badge-light">3</span>
+                                <button type="button" class="btn badge-success btn-sm">
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
-                            <button type="button" class="btn badge-info">
-                                Running <span class="badge badge-light">3</span>
+                            <button type="button" class="btn badge-info btn-sm">
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
-                            <button type="button" class="btn badge-warning">
-                                Submitted <span class="badge badge-light">3</span>
+                            <button type="button" class="btn badge-warning btn-sm">
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-light btn-sm">
+                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light">{{ status_dict['ready'] }}</span>
                             </button>
                             </li>
                             &nbsp;
                             <li>
-                                <button type="button" class="btn badge-secondary">
-                                    Add
+                                <button type="button" class="btn badge-secondary btn-sm">
+                                    <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
                                 </button>
                             </li>
 
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <li>
-                             <b class="btn badge-light"> Workflow </b>
+                             <b class="btn badge-light btn-sm"> Workflow </b>
                             </li>
                             <li>
-                                <button type="button" class="btn badge-secondary">
-                                    <a href="/workflow-graph/{{ name_of_workflow }}"> Table </a>
+                                <button type="button" class="btn badge-secondary btn-sm">
+                                    <a href="/workflow/{{ name_of_workflow }}?output=table">
+
+                                        <small><i class="fa fa-table" aria-hidden="true"></i>   Table</small></a>
 
                                 </button>
                             &nbsp;
                             <li>
-                                <button type="button" class="btn badge-success">
-                                Run
+                                <button type="button" class="btn badge-success btn-sm">
+                                    <a href="/run/{{ name_of_workflow }}"><small><i class="fa fa-rocket" aria-hidden="true"></i> &nbsp; Run</small></a>
                             </button>
                            </li>
                             &nbsp;
 
                             <li>
-                            <button type="button" class="btn badge-info">
-                                Update
+                            <button type="button" class="btn badge-info btn-sm">
+                                <small><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp; Update</small>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
-                            <button type="button" class="btn badge-danger">
-                                x Stop
+                            <button type="button" class="btn badge-danger btn-sm">
+                                <small><i class="fa fa-ban" aria-hidden="true"></i> &nbsp; Stop</small>
+                            </button>
+                            </li>
+
+                            &nbsp;
+                            <!-- reset does stop, then empties out runtime -->
+                            <!-- dir, copies original workflow into runtime -->
+                            <!-- dir, and report back that its done. -->
+                            <!-- popup yes/no choice in bootstrap -->
+                            <li>
+                            <button type="button" class="btn badge-danger btn-sm">
+                                <small><i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; Reset</small>
                             </button>
                             </li>
 

@@ -547,11 +547,14 @@ def get_workflow_graph(request: Request, name: str):
     # '''
 
     print(r.text)
+    w = load_workflow(name)
+    status_dict = w.analyze_states()
     return templates.TemplateResponse("workflow-graph.html",
                                       {"request": request,
                                        "svg": r.text,
                                        "name_of_workflow": name,
-                                       "workflowlist": folders})
+                                       "workflowlist": folders,
+                                       "status_dict": status_dict})
 
 @app.get("/workflow-graph?{name}", tags=['workflow'])
 def retrieve_workflow_graph(request: Request, name: str, job: str = None, output: str = None):
