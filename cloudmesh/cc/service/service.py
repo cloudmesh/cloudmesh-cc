@@ -631,8 +631,14 @@ def add_job(name: str, job: Jobpy):
     w = load_workflow(name)
 
     try:
-        w.add_job(name=job.name, user=job.user, host=job.host, label=job.label,
-                  kind=job.kind, status=job.status, progress=job.progress, script=job.script)
+        w.add_job(name=job.name,
+                  user=job.user,
+                  host=job.host,
+                  label=job.label,
+                  kind=job.kind,
+                  status=job.status,
+                  progress=job.progress,
+                  script=job.script)
         w.add_dependencies(f"{job.parent},{job.name}")
         w.save_with_state(w.filename)
     except Exception as e:

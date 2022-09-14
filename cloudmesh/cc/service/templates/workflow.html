@@ -14,9 +14,11 @@
 	<script type="text/javascript" language="javascript" class="init">
 
 $(document).ready(function() {
-	$('#example').DataTable( {
-		"order": [[ 3, "desc" ]]
-	} );
+    $('#example').DataTable({
+        order: [[3, 'desc']],
+        pageLength : 50,
+        lengthMenu: [[-1, 10, 20, 50, -1], ['All', 10, 20, 50]]
+    });
 } );
 
 	</script>
