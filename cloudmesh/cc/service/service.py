@@ -63,6 +63,8 @@ debug = True
 # set if portal routs shoudl be displayed in teh documentation
 #
 include_in_schema_portal_tag=debug
+include_in_schema_portal_tag=False
+
 
 def test_run():
     """
@@ -212,8 +214,8 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
 # HOME
 #
 
-@app.get("/", tags=['portal'])
-@app.get("/home", tags=['portal'])
+@app.get("/", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/home", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 async def home_page(request: Request):
     """
     home function that features html and
