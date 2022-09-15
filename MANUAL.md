@@ -35,15 +35,13 @@ curl -X 'POST' \
 ### Upload via /docs
 
 Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload Workflow Tar method
-
-`http://127.0.0.1:8000/docs/upload_tar`
+the POST Upload method
 
 Please, click `Try it out`
-and then `Add string item` then browse for
-`/tmp/workflow/workflow.tar` and then click Execute
+and then enter `/tmp/workflow/workflow.tar` in the
+`tar` field and then click Execute
 
-Navigate to homepage at `http://127.0.0.1:8000/` and
+To run, navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
 
 TODO: do the same thing here as we do in upload a workflow with
@@ -81,7 +79,7 @@ On the commandline execute:
 
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/upload_dir?dir_path=/tmp/workflow' \
+  'http://127.0.0.1:8000/upload?directory=/tmp/workflow' \
   -H 'accept: application/json' \
   -d ''
 ```
@@ -92,15 +90,12 @@ when using a drive we do /c/ ....
 ### Upload via /docs
 
 Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload Workflow Dir method
+the POST Upload method
 
-`http://127.0.0.1:8000/docs/upload_dir`
+Click `Try it out` and then enter `/tmp/workflow` 
+in the directory field and then click Execute
 
-Click `Try it out`
-and then enter `/tmp/workflow` in the box and then
-click Execute
-
-Navigate to homepage at `http://127.0.0.1:8000/` and
+To run, navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
 
 ### Upload via the Python API
@@ -110,7 +105,7 @@ We will use python requests to demonstrate this
 ```python
 import requests
 
-r = requests.post('http://127.0.0.1:8000/upload_dir?dir_path=/tmp/workflow')
+r = requests.post('http://127.0.0.1:8000/upload?directory=/tmp/workflow')
 print(r)
 print(r.text)
 ```
