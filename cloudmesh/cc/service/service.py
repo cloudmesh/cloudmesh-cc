@@ -640,8 +640,7 @@ def watch_running_workflow(request: Request,
     page for watching a workflow that has been started
     """
 
-    #folders = get_available_workflows()
-    folders = []
+    folders = get_available_workflows()
 
     from pprint import pprint
 
