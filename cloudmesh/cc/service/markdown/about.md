@@ -2,10 +2,10 @@
 
 **Cloudmesh Controlled Computing through Workflows**
 
-Gregor von Laszewski (laszewski@gmail.com)$^*$,
+Gregor von Laszewski (laszewski@gmail.com)*,
 Jacques Fleischer
 
-$^*$ Corresponding author
+Corresponding author
 
 ## Background
 
@@ -116,12 +116,18 @@ Improvements to this project will include code cleanup and manual development.
 
 ## References
 
-Draft posters is available as ppt and PDF file. However, that version is no longer valid and is superseded by this document. 
+A poster based on a pre-alpha version of this code is available 
+as ppt and PDF file. However, that version is no longer valid 
+and is superseded by much improved efforts. The code summarized in 
+the pre-alpha version was mainly used to teach a number of students 
+Python and how to work in a team
 
 * [Poster Presentation (PPTX)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx)
 * [Poster Presentation (PDF)](https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf)
 
-The draft posters contains inaccurate staements and descriptions.
+Please note also that the poster contains inaccurate statements and descriptions 
+and should not be used as a reference to this work.
+
 
 ## Acknowledgments
 

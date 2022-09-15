@@ -39,24 +39,24 @@ and then `Add string item` then browse for
 Navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
 
-TODO: do the same thing here as we do in upload a workflow with scripts but 
-instead use the tar upload
+TODO: do the same thing here as we do in upload a workflow with
+scripts but instead use the tar upload
 
 
 ## Upload a dir that contains workflow yaml and scripts
 
 ### Creating a simple example
 
-First let us create a simple example. We assume you are standing in the 
-cloudmesh-cc directory.  Let us check it out with 
+First let us create a simple example. We assume you are standing in
+the cloudmesh-cc directory.  Let us check it out with
 
 ```bash
 git clone https://github.com/cloudmesh/cloudmesh-cc.git
 cd cloudmesh-cc
 ```
 
-Now let us use one of the default test workflows and copy it into a temporary 
-directory
+Now let us use one of the default test workflows and copy it into a
+temporary directory
 
 
 ```bash
