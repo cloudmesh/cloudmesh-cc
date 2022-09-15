@@ -338,6 +338,7 @@ async def upload_workflow(file: List[UploadFile] = File(...)):
                 file[0].filename.endswith('.tar.gz') or \
                 file[0].filename.endswith('.tar'):
 
+            # we must write the uploaded archive to memory
             temporary_location = path_expand(f"./{file[0].filename}")
             temporary_location = Path(temporary_location).as_posix()
             with open(temporary_location, "wb+") as file_object:
@@ -354,6 +355,7 @@ async def upload_workflow(file: List[UploadFile] = File(...)):
             Shell.rm(f'{temporary_location}')
             runtime_yaml_location = os.path.join(runtime_directory, f'{name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
+            Shell.copy(runtime_yaml_location, yaml_location)
             w.load(filename=runtime_yaml_location)
             print(w.yaml)
 
