@@ -117,5 +117,10 @@ To make things more uniform I suggest the following routes
 * `http://127.0.0.1:8000/upload?tar=/tmp/workflow.tar`
 * `http://127.0.0.1:8000/upload?tgz=/tmp/workflow.tar.gz`
 * `http://127.0.0.1:8000/upload?xz=/tmp/workflow.xz`
+* `http://127.0.0.1:8000/upload?yaml=/tmp/workflow.yaml`
+
+* `http://127.0.0.1:8000/upload?script=/tmp/workflow/a.sh`
+* `http://127.0.0.1:8000/upload?script=/tmp/workflow/b.py`
+* `http://127.0.0.1:8000/upload?script=/tmp/workflow/c.ipynb`
 
 Only one of them can be used at a time.
