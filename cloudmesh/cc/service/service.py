@@ -176,7 +176,7 @@ www = Jinja2Templates(directory=www_dir)
 #     return templates.TemplateResponse("templates/table.html",
 #                                       {"request": request})
 
-def load_workflow(name: str, load_with_graph=False) -> Workflow:
+def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     """
     loads a workflow corresponding to given name
     :param name:
@@ -185,7 +185,7 @@ def load_workflow(name: str, load_with_graph=False) -> Workflow:
     :rtype: Workflow
     """
     filename = Shell.map_filename(f"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-    w = Workflow(filename=filename, load=True)
+    w = Workflow(filename=filename, load=load)
     # w.__init__(filename=filename)
     # w.load(filename=filename)
     if load_with_graph:
@@ -614,6 +614,7 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
     :return: success or exception message
     """
     w = load_workflow(name)
+    w.create_topological_order()
     os.chdir(os.path.dirname(w.filename))
 
     try:
@@ -637,20 +638,55 @@ def watch_running_workflow(request: Request,
     page for watching a workflow that has been started
     """
 
-    folders = get_available_workflows()
-    w = load_workflow(name)
-    runtime_yaml_to_read = readfile(w.runtime_filename)
-    yaml_file = yaml.safe_load(runtime_yaml_to_read)
-    progress_and_job = []
-    for node_name, node_items in yaml_file['workflow']['nodes'].items():
-        progress_and_job.append(tuple([node_name, node_items['progress']]))
-    status_dict = w.analyze_states()
+    #folders = get_available_workflows()
+    folders = []
+
+    from pprint import pprint
+
+    runtime_yaml_filepath = path_expand(
+        f'~/.cloudmesh/workflow/{name}/runtime/{name}.yaml')
+    original_yaml_filepath = path_expand(
+        f'~/.cloudmesh/workflow/{name}/{name}.yaml')
+
+    runtime_yaml_to_read = readfile(runtime_yaml_filepath)
+    original_yaml_to_read = readfile(original_yaml_filepath)
+
+    runtime_yaml_file = yaml.safe_load(runtime_yaml_to_read)
+    original_yaml_file = yaml.safe_load(original_yaml_to_read)
+
+    for job_name in runtime_yaml_file['workflow']['nodes'].keys():
+        #print(node_name)
+        #print(w.graph.nodes.keys())
+        if job_name not in original_yaml_file['workflow']['nodes']:
+            del runtime_yaml_file['workflow']['nodes'][job_name]
+        #else:
+        #    runtime_yaml_file['workflow']['nodes'][job_name]['no'] = dict_with_order['nodes'][job_name]['no']
+      #banner(str(w.graph.nodes[job_name]['progress']))
+    #pprint.pprint(w.graph.nodes)
+
+    # this is copy pasted from analyze_states from workflow.py
+    # because i cant find a better way to call it
+    # (initializing a workflow object would overwrite the
+    # runtime yaml, thats NOT what we want!) so we're stuck with this
+    states = []
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        states.append(state)
+    for job_name in runtime_yaml_file['workflow']['nodes']:
+        states.append(runtime_yaml_file['workflow']['nodes'][job_name]["status"])
+
+    from collections import Counter
+    count = Counter(states)
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        count[state] = count[state] - 1
+
+    pprint(runtime_yaml_file['workflow']['nodes'])
+
     return templates.TemplateResponse("workflow-running.html",
                                       {"request": request,
-                                       "dictionary": w.graph.nodes,
+                                       "dictionary": runtime_yaml_file['workflow']['nodes'],
                                        "name_of_workflow": name,
-                                       "workflowlist": folders,
-                                       "status_dict": status_dict})
+                                       "status_dict": count,
+                                       "workflowlist": folders})
 
 @app.post("/workflow/{name}", tags=['workflow'])
 def add_job(name: str, job: Jobpy):

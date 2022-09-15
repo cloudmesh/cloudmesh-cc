@@ -670,10 +670,13 @@ class Workflow:
 
         try:
             print("Workflow Filename:", self.filename)
-            self.graph = Graph(name=name, filename=self.runtime_filename)
+            if not load:
+                self.graph = Graph(name=name, filename=self.runtime_filename)
+            else:
+                self.graph = Graph(name=name, filename=self.filename)
             # gvl added load but not tested
-            if load:
-                self.load(self.runtime_filename)
+
+            self.load(self.filename)
         except Exception as e:  # noqa: E722
             Console.error(e, traceflag=True)
             pass
@@ -999,7 +1002,7 @@ class Workflow:
             exec=exec,
             instance=None
         )
-        self.save(self.runtime_filename)
+        self.save(self.filename)
 
     def add_dependency(self, source, destination):
         """
@@ -1451,7 +1454,7 @@ class Workflow:
         for job_name, primary_key in zip(list(self.graph.nodes.keys()),
                                          jobs_and_id):
             current_job = primary_key[0]
-            self.graph.nodes[current_job]['no'] = primary_key[1]
+            self.graph.nodes[current_job]['number'] = primary_key[1]
 
     def sequential_order(self): #get_sequentil_order
         """

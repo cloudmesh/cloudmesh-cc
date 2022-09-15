@@ -53,7 +53,7 @@ $(document).ready(function () {
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['done'] }}</span>
                                 </button>
                             </li>
                             &nbsp;
@@ -135,6 +135,7 @@ $(document).ready(function () {
 
 <div class="container col-12">
     Running
+    <meta http-equiv="refresh" content="3" />
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -142,16 +143,18 @@ $(document).ready(function () {
                     <th>Name</th>
                     <th>Status</th>
                     <th>Host</th>
+                    <th>Progress</th>
                     <th>Script</th>
                 </tr>
             </thead>
             <tbody>
                 {% for job, items in dictionary.items() %}
                 <tr>
-                    <td>{{items['no']}}</td>
+                    <td>{{items['number']}}</td>
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>
+                    <td><progress value="{{items['progress']}}" max="100"></progress></td>
                     <td>{{items['script']}}</td>
                 </tr>
                 {% endfor %}
