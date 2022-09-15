@@ -39,7 +39,7 @@ Now we can test various ways on how to interact with the service.
 tar -C /tmp/workflow -cf workflow.tar .
 ```
 
-### Upload via `curl`
+### Option 1: Upload via `curl`
 
 ```bash
 curl -X 'POST' \
@@ -48,7 +48,7 @@ curl -X 'POST' \
   -d ''
 ```
 
-### Upload via `/docs`
+### Option 2: Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload method
@@ -63,10 +63,22 @@ click the workflow on the left side. Then click Run
 TODO: do the same thing here as we do in upload a workflow with
 scripts but instead use the tar upload
 
+### Option 3: Upload via the Python API
+
+We will use python requests to demonstrate this
+
+```python
+import requests
+
+r = requests.post('http://127.0.0.1:8000/upload?archive=workflow.tar')
+print(r)
+print(r.text)
+```
+
 
 ## Upload a dir that contains workflow yaml and scripts
 
-### Upload via `curl`
+### Option 1: Upload via `curl`
 
 A workflow can be uploaded easily with a curl command from the commandline.
 On the commandline execute:
@@ -81,7 +93,7 @@ curl -X 'POST' \
 TODO: on windows it also should work with / and not \ We make explicit note here
 when using a drive we do /c/ ....
 
-### Upload via `/docs`
+### Option 2: Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload method
@@ -92,7 +104,7 @@ in the directory field and then click Execute
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
 
-### Upload via the Python API
+### Option 3: Upload via the Python API
 
 We will use python requests to demonstrate this
 
