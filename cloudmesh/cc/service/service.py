@@ -10,7 +10,7 @@ from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common import dotdict
 from fastapi.responses import HTMLResponse
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi import File
@@ -333,12 +333,18 @@ def list_workflows(request: Request, output: str = None):
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
 @app.post("/upload", tags=['workflow'])
-async def upload(directory: str = None,
-                 tar: str = None,
-                 yaml : str = None):
+async def upload(directory: str = Query(None,
+                                        description='path to workflow dir '
+                                                    'that contains scripts '
+                                                    'and yaml file'),
+                 archive: str = Query(None,
+                                      description='can be tgz, xz, tar.gz, '
+                                                  'or tar'),
+                 yaml : str = Query(None,
+                                    description='yaml file for workflow')):
     from pathlib import Path
 
-    if sum(bool(x) for x in [directory, tar, yaml]) > 1:
+    if sum(bool(x) for x in [directory, archive, yaml]) > 1:
         Console.error(f"Only one upload option can be chosen.")
         return {"message": f"Only one upload option can be chosen."}
 
@@ -350,8 +356,6 @@ async def upload(directory: str = None,
                 return {
                     "message": f"{expanded_dir_path} is not a valid dir path"}
             name = os.path.basename(expanded_dir_path)
-            # star_dir = os.path.join(expanded_dir_path, '*')
-            star_dir = Path(f'{expanded_dir_path}/*').as_posix()
             try:
                 Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
             except Exception as e:
@@ -382,28 +386,28 @@ async def upload(directory: str = None,
             Console.error(e, traceflag=True)
             return {"message": f"There was an error uploading the file {e}"}
 
-    elif tar:
+    elif archive:
         try:
-            name = os.path.basename(tar).split('.')[0]
+            name = os.path.basename(archive).split('.')[0]
             runtime_directory = path_expand(
                 f"~/.cloudmesh/workflow/{name}/runtime/")
             yaml_location = path_expand(
                 f"~/.cloudmesh/workflow/{name}/{name}.yaml")
             from pathlib import Path
             runtime_directory = Path(runtime_directory).as_posix()
-            tar_location = Path(Shell.map_filename(tar).path).as_posix()
+            archive_location = Path(Shell.map_filename(archive).path).as_posix()
 
-            if tar.endswith('.tgz') or \
-                    tar.endswith('.xz') or \
-                    tar.endswith('.tar.gz') or \
-                    tar.endswith('.tar'):
+            if archive.endswith('.tgz') or \
+                    archive.endswith('.xz') or \
+                    archive.endswith('.tar.gz') or \
+                    archive.endswith('.tar'):
 
                 w = Workflow()
                 Shell.mkdir(runtime_directory)
-                if tar.endswith('.tar'):
-                    command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+                if archive.endswith('.tar') or archive.endswith('.xz'):
+                    command = f'tar --strip-components 1 --force-local -xvf {archive_location} -C {runtime_directory}'
                 else:
-                    command = f'tar --strip-components 1 --force-local -xvzf {tar_location} -C {runtime_directory}'
+                    command = f'tar --strip-components 1 --force-local -xvzf {archive_location} -C {runtime_directory}'
                 print(command)
                 os.system(command)
                 runtime_yaml_location = os.path.join(runtime_directory,
@@ -413,7 +417,7 @@ async def upload(directory: str = None,
                 w.load(filename=runtime_yaml_location)
                 print(w.yaml)
 
-                return {"message": f"Successfully uploaded {tar}"}
+                return {"message": f"Successfully uploaded {archive}"}
 
         except Exception as e:
             Console.error(e, traceflag=True)

@@ -43,7 +43,7 @@ tar -C /tmp/workflow -cf workflow.tar .
 
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/upload?tar=workflow.tar' \
+  'http://127.0.0.1:8000/upload?archive=workflow.tar' \
   -H 'accept: application/json' \
   -d ''
 ```
@@ -55,7 +55,7 @@ the POST Upload method
 
 Please, click `Try it out`
 and then enter `/tmp/workflow/workflow.tar` in the
-`tar` field and then click Execute
+`archive` field and then click Execute
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
@@ -109,10 +109,10 @@ print(r.text)
 To make things more uniform I suggest the following routes
 
 * `http://127.0.0.1:8000/upload?directory=/tmp/workflow`
-* `http://127.0.0.1:8000/upload?tar=/tmp/workflow.tar`
-* `http://127.0.0.1:8000/upload?tgz=/tmp/workflow.tar.gz`
-* `http://127.0.0.1:8000/upload?tgz=/tmp/workflow.tgz`
-* `http://127.0.0.1:8000/upload?xz=/tmp/workflow.xz`
+* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tar`
+* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tar.gz`
+* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tgz`
+* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.xz`
 * `http://127.0.0.1:8000/upload?yaml=/tmp/workflow.yaml`
 
 * `http://127.0.0.1:8000/upload?script=/tmp/workflow/a.sh`
