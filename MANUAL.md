@@ -12,7 +12,7 @@ We also assume you start the service with
 cms cc start --reload
 ```
 
-## Upload a workflow embedded in a tar file
+## Upload and run a workflow embedded in a tar file
 
 ```bash
 mkdir /tmp/workflow
@@ -21,14 +21,26 @@ cp tests/workflow-sh/*.sh /tmp/workflow
 tar -C /tmp/workflow -cf workflow.tar .
 ```
 
-## Use API
-
 Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload Workflow method. Click `Try it out`
+the POST Upload Workflow Tar method. Click `Try it out`
 and then `Add string item` then browse for
 `/tmp/workflow/workflow.tar` and then click Execute
 
-## Run workflow
+Navigate to homepage at `http://127.0.0.1:8000/` and
+click the workflow on the left side. Then click Run
+
+## Upload a dir that contains workflow yaml and scripts
+
+```bash
+mkdir /tmp/workflow
+cp tests/workflows/workflow.yaml /tmp/workflow
+cp tests/workflow-sh/*.sh /tmp/workflow
+```
+
+Navigate to `http://127.0.0.1:8000/docs` and use
+the POST Upload Workflow Dir method. Click `Try it out`
+and then enter `/tmp/workflow` in the box and then
+click Execute
 
 Navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run
