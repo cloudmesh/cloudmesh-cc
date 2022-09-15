@@ -1,5 +1,10 @@
 # Workflow Quickstart Menu
 
+The Cloudmesh Compute Cluster service allows you to execute
+analytical, computational workflows which run programs on remote
+compute resources. We specify not only a list of commands to be
+executed, but the commands can also have dependencies between each
+other expressed through a direct, cyclic graph.
 We assume you are standing in
 the cloudmesh-cc directory.  Let us check it out with
 
@@ -33,7 +38,14 @@ Now we can test various ways on how to interact with the service.
 
 ## Upload and run a workflow embedded in a tar file
 
-### Create tar file
+We can upload a singular archive file which contains all the
+workflow files, including the yaml specification file and the
+scripts. Providing an archive file such as a `tar` or `tar.gz`
+may enable the workflow to be better suited towards portability
+and simplicity, where one can share an archive file with another
+user.
+
+### Create tar archive file
 
 ```bash
 tar -C /tmp/workflow -cf workflow.tar .
@@ -78,10 +90,13 @@ print(r.text)
 
 ## Upload a dir that contains workflow yaml and scripts
 
+Additionally, the user can specify a workflow directory which
+contains the yaml specification file and the scripts.
+
 ### Option 1: Upload via `curl`
 
-A workflow can be uploaded easily with a curl command from the commandline.
-On the commandline execute:
+A workflow can be uploaded easily with a curl command from the command
+line. On the command line execute:
 
 ```bash
 curl -X 'POST' \
