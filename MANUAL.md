@@ -18,7 +18,7 @@ cms cc start --reload
 mkdir /tmp/workflow
 cp tests/workflows/workflow.yaml /tmp/workflow
 cp tests/workflow-sh/*.sh /tmp/workflow
-tar -cf workflow.tar /tmp/workflow/*
+tar -C /tmp/workflow -cf workflow.tar .
 ```
 
 ## Use API
