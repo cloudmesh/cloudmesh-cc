@@ -14,11 +14,7 @@ cms cc start --reload
 
 ## Upload and run a workflow embedded in a tar file
 
-### Uploald via `curl`
-
-TBD
-
-### Uploald via /docs
+### Create tar file
 
 ```bash
 mkdir -p /tmp/workflow
@@ -26,6 +22,17 @@ cp tests/workflows/workflow.yaml /tmp/workflow
 cp tests/workflow-sh/*.sh /tmp/workflow
 tar -C /tmp/workflow -cf workflow.tar .
 ```
+
+### Upload via `curl`
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8000/upload?tar=workflow.tar' \
+  -H 'accept: application/json' \
+  -d ''
+```
+
+### Upload via /docs
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload Workflow Tar method
@@ -67,23 +74,22 @@ cp tests/workflow-sh/*.sh /tmp/workflow
 
 Now we can test various ways on how to interact with the service
 
-### Uploald via `curl`
+### Upload via `curl`
 
-A workflow can be uploades easily with a curl command from the commandline.
+A workflow can be uploaded easily with a curl command from the commandline.
 On the commandline execute:
 
-'''bash
+```bash
 curl -X 'POST' \
   'http://127.0.0.1:8000/upload_dir?dir_path=/tmp/workflow' \
   -H 'accept: application/json' \
   -d ''
-'''
+```
 
 TODO: on windows it also should work with / and not \ We make explicit note here
 when using a drive we do /c/ ....
 
-### Uploald via /docs
-
+### Upload via /docs
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload Workflow Dir method
@@ -99,7 +105,7 @@ click the workflow on the left side. Then click Run
 
 ### Upload via the Python API
 
-We will use python requests to demonstarte this
+We will use python requests to demonstrate this
 
 ```python
 import requests
