@@ -20,3 +20,4 @@ trio
 papermill
 cloudmesh-progress
 pandas
+markdown
