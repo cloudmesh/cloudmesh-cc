@@ -1,9 +1,12 @@
 # Workflow Quickstart Menu
 
-It assumes that you have cloudmesh cc installed 
+We assume you are standing in
+the cloudmesh-cc directory.  Let us check it out with
 
 ```bash
-pip install cloudmesh-cc
+git clone https://github.com/cloudmesh/cloudmesh-cc.git
+cd cloudmesh-cc
+pip install -e .
 ```
 
 We also assume you start the service with
@@ -12,14 +15,27 @@ We also assume you start the service with
 cms cc start --reload
 ```
 
-## Upload and run a workflow embedded in a tar file
+## Creating a simple example
 
-### Create tar file
+First let us create a simple example. 
+
+Let us use one of the default test workflows and copy it into a
+temporary directory
+
 
 ```bash
 mkdir -p /tmp/workflow
 cp tests/workflows/workflow.yaml /tmp/workflow
 cp tests/workflow-sh/*.sh /tmp/workflow
+```
+
+Now we can test various ways on how to interact with the service.
+
+## Upload and run a workflow embedded in a tar file
+
+### Create tar file
+
+```bash
 tar -C /tmp/workflow -cf workflow.tar .
 ```
 
@@ -32,7 +48,7 @@ curl -X 'POST' \
   -d ''
 ```
 
-### Upload via /docs
+### Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload method
@@ -50,28 +66,6 @@ scripts but instead use the tar upload
 
 ## Upload a dir that contains workflow yaml and scripts
 
-### Creating a simple example
-
-First let us create a simple example. We assume you are standing in
-the cloudmesh-cc directory.  Let us check it out with
-
-```bash
-git clone https://github.com/cloudmesh/cloudmesh-cc.git
-cd cloudmesh-cc
-```
-
-Now let us use one of the default test workflows and copy it into a
-temporary directory
-
-
-```bash
-mkdir -p /tmp/workflow
-cp tests/workflows/workflow.yaml /tmp/workflow
-cp tests/workflow-sh/*.sh /tmp/workflow
-```
-
-Now we can test various ways on how to interact with the service
-
 ### Upload via `curl`
 
 A workflow can be uploaded easily with a curl command from the commandline.
@@ -87,7 +81,7 @@ curl -X 'POST' \
 TODO: on windows it also should work with / and not \ We make explicit note here
 when using a drive we do /c/ ....
 
-### Upload via /docs
+### Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
 the POST Upload method
