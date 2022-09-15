@@ -212,8 +212,8 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
 # HOME
 #
 
-@app.get("/", tags=['workflow'])
-@app.get("/home", tags=['workflow'])
+@app.get("/", tags=['portal'])
+@app.get("/home", tags=['portal'])
 async def home_page(request: Request):
     """
     home function that features html and
@@ -629,40 +629,6 @@ def get_workflow_graph(request: Request, name: str):
                                        "name_of_workflow": name,
                                        "workflowlist": folders,
                                        "status_dict": status_dict})
-
-
-@app.get("/workflow-graph?{name}", tags=['workflow'])
-def retrieve_workflow_graph(request: Request,
-                            name: str,
-                            job: str = None,
-                            output: str = None):
-    """
-    retrieves a workflow graph
-    :param name: name of the workflow
-    :type name: str
-    :param job: name of the job
-    :type job: str
-    :param output: how to print workflow. can be html or table
-    :type output: str
-    :return: success or failure message
-    """
-    folders = get_available_workflows()
-    filename = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
-    w = load_workflow(name=name, load_with_graph=True)
-    w.graph.load(filename=filename)
-    svg_file = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
-    w.graph.save(filename=svg_file, colors="status",
-                 layout=nx.circular_layout, engine="dot")
-    print(w.graph)
-    print(w.table)
-
-    return templates.TemplateResponse("workflow-graph.html",
-                                      {"request": request,
-                                       "dictionary": w.graph.nodes,
-                                       "name_of_workflow": name,
-                                       "workflowlist": folders})
 
 
 @app.get("/run/{name}", tags=['workflow'])
