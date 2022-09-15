@@ -51,6 +51,18 @@ all the URLs.
 @app.post("/workflow/{name}", tags=['workflow'])
 """
 
+from cloudmesh.common.variables import Variables
+variables = Variables()
+
+debug = variables['debug']
+debug = False
+debug = True
+
+
+#
+# set if portal routs shoudl be displayed in teh documentation
+#
+include_in_schema_portal_tag=debug
 
 def test_run():
     """
@@ -225,7 +237,7 @@ async def home_page(request: Request):
 # CONTACT
 #
 
-@app.get("/contact", tags=['portal'])
+@app.get("/contact", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 async def contact_page(request: Request):
     """
     page that lists contact information
@@ -242,7 +254,7 @@ async def contact_page(request: Request):
                                        "html": html})
 
 
-@app.get("/about", tags=['portal'])
+@app.get("/about", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 async def about_page(request: Request):
     """
     page that lists readme as html
@@ -546,7 +558,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-@app.get("/workflow-graph/{name}", tags=['portal'])
+@app.get("/workflow-graph/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 def get_workflow_graph(request: Request, name: str):
     folders = get_available_workflows()
     svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
@@ -631,7 +643,7 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
     except Exception as e:
         print("Exception:", e)
 
-@app.get("/workflow-running/{name}", tags=['portal'])
+@app.get("/workflow-running/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 def watch_running_workflow(request: Request,
                             name: str,
                             job: str = None,
