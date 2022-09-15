@@ -1,7 +1,7 @@
 import yaml
 import logging
 import threading
-from typing import List
+from typing import List, Optional
 import networkx as nx
 from pathlib import Path
 
@@ -330,14 +330,15 @@ def list_workflows(request: Request, output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/upload", tags=['workflow'])
-async def upload_workflow(file: List[UploadFile] = File(...)):
+@app.post("/upload_tar", tags=['workflow'])
+async def upload_workflow_tar(file: List[UploadFile] = File(...)):
     """
     uploads a workflow to the fastapi server
     :param file: specified file to be uploaded
     :type file: UploadFile
     :return: success or failure message
     """
+
     try:
         name = os.path.basename(file[0].filename).split('.')[0]
         runtime_directory = path_expand(f"~/.cloudmesh/workflow/{name}/runtime/")
@@ -382,13 +383,60 @@ async def upload_workflow(file: List[UploadFile] = File(...)):
 
             w = load_workflow(name)
             print(w.yaml)
+        return {
+            "message": f"Successfully uploaded {[files.filename for files in file]}"}
     except Exception as e:
         Console.error(e, traceflag=True)
         return {"message": f"There was an error uploading the file {e}"}
+
     # finally:
     #     await file.close()
 
-    return {"message": f"Successfully uploaded {[files.filename for files in file]}"}
+@app.post("/upload_dir", tags=['workflow'])
+async def upload_workflow_dir(dir_path : str):
+    """
+    uploads a workflow to the fastapi server
+    :param file: specified file to be uploaded
+    :type file: UploadFile
+    :return: success or failure message
+    """
+
+    try:
+        expanded_dir_path = Path(Shell.map_filename(dir_path).path).as_posix()
+        if not os.path.isdir(expanded_dir_path):
+            Console.error(traceflag=True)
+            return {"message": f"{expanded_dir_path} is not a valid dir path"}
+        name = os.path.basename(expanded_dir_path)
+        #star_dir = os.path.join(expanded_dir_path, '*')
+        star_dir = Path(f'{expanded_dir_path}/*').as_posix()
+        try:
+            Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
+        except Exception as e:
+            print(e.output)
+        tar_location = Path(Shell.map_filename(f'./{name}.tar').path).as_posix()
+
+
+        runtime_directory = Path(path_expand(
+            f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
+        yaml_location = path_expand(
+            f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+        Shell.mkdir(runtime_directory)
+        command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+
+        print(command)
+        os.system(command)
+        Shell.rm(f'{tar_location}')
+        runtime_yaml_location = os.path.join(runtime_directory, f'{name}.yaml')
+        runtime_yaml_location = os.path.normpath(runtime_yaml_location)
+        Shell.copy(runtime_yaml_location, yaml_location)
+        w = Workflow()
+        w.load(filename=runtime_yaml_location)
+        print(w.yaml)
+        return {
+            "message": f"Successfully uploaded {name} dir"}
+    except Exception as e:
+        Console.error(e, traceflag=True)
+        return {"message": f"There was an error uploading the file {e}"}
 
 
 # import requests
