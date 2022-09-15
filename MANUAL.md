@@ -91,7 +91,8 @@ print(r.text)
 ## Upload a dir that contains workflow yaml and scripts
 
 Additionally, the user can specify a workflow directory which
-contains the yaml specification file and the scripts.
+contains the yaml specification file and the scripts. This way,
+pre-archival of the directory is not needed.
 
 ### Option 1: Upload via `curl`
 
