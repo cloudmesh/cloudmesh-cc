@@ -332,114 +332,117 @@ def list_workflows(request: Request, output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/upload_tar", tags=['workflow'])
-async def upload_workflow_tar(file: List[UploadFile] = File(...)):
-    """
-    uploads a workflow to the fastapi server
-    :param file: specified file to be uploaded
-    :type file: UploadFile
-    :return: success or failure message
-    """
+@app.post("/upload", tags=['workflow'])
+async def upload(directory: str = None,
+                 tar: str = None,
+                 yaml : str = None):
+    from pathlib import Path
 
-    try:
-        name = os.path.basename(file[0].filename).split('.')[0]
-        runtime_directory = path_expand(f"~/.cloudmesh/workflow/{name}/runtime/")
-        yaml_location = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-        from pathlib import Path
-        runtime_directory = Path(runtime_directory).as_posix()
+    if sum(bool(x) for x in [directory, tar, yaml]) > 1:
+        Console.error(f"Only one upload option can be chosen.")
+        return {"message": f"Only one upload option can be chosen."}
 
-        if file[0].filename.endswith('.tgz') or \
-                file[0].filename.endswith('.xz') or \
-                file[0].filename.endswith('.tar.gz') or \
-                file[0].filename.endswith('.tar'):
+    elif directory:
+        try:
+            expanded_dir_path = Path(Shell.map_filename(directory).path).as_posix()
+            if not os.path.isdir(expanded_dir_path):
+                Console.error(f"{expanded_dir_path} is not a valid dir path")
+                return {
+                    "message": f"{expanded_dir_path} is not a valid dir path"}
+            name = os.path.basename(expanded_dir_path)
+            # star_dir = os.path.join(expanded_dir_path, '*')
+            star_dir = Path(f'{expanded_dir_path}/*').as_posix()
+            try:
+                Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
+            except Exception as e:
+                print(e.output)
+            tar_location = Path(
+                Shell.map_filename(f'./{name}.tar').path).as_posix()
 
-            # we must write the uploaded archive to memory
-            temporary_location = path_expand(f"./{file[0].filename}")
-            temporary_location = Path(temporary_location).as_posix()
-            with open(temporary_location, "wb+") as file_object:
-                file_object.write(file[0].file.read())
-
-            w = Workflow()
+            runtime_directory = Path(path_expand(
+                f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
+            yaml_location = path_expand(
+                f"~/.cloudmesh/workflow/{name}/{name}.yaml")
             Shell.mkdir(runtime_directory)
-            if file[0].filename.endswith('.tar'):
-                command = f'tar --strip-components 1 --force-local -xvf {temporary_location} -C {runtime_directory}'
-            else:
-                command = f'tar --strip-components 1 --force-local -xvzf {temporary_location} -C {runtime_directory}'
+            command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+
             print(command)
             os.system(command)
-            Shell.rm(f'{temporary_location}')
-            runtime_yaml_location = os.path.join(runtime_directory, f'{name}.yaml')
+            Shell.rm(f'{tar_location}')
+            runtime_yaml_location = os.path.join(runtime_directory,
+                                                 f'{name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
             Shell.copy(runtime_yaml_location, yaml_location)
+            w = Workflow()
             w.load(filename=runtime_yaml_location)
             print(w.yaml)
+            return {
+                "message": f"Successfully uploaded {name} dir"}
+        except Exception as e:
+            Console.error(e, traceflag=True)
+            return {"message": f"There was an error uploading the file {e}"}
 
-        elif file[0].filename.endswith('.yaml'):
+    elif tar:
+        try:
+            name = os.path.basename(tar).split('.')[0]
+            runtime_directory = path_expand(
+                f"~/.cloudmesh/workflow/{name}/runtime/")
+            yaml_location = path_expand(
+                f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+            from pathlib import Path
+            runtime_directory = Path(runtime_directory).as_posix()
+            tar_location = Path(Shell.map_filename(tar).path).as_posix()
+
+            if tar.endswith('.tgz') or \
+                    tar.endswith('.xz') or \
+                    tar.endswith('.tar.gz') or \
+                    tar.endswith('.tar'):
+
+                w = Workflow()
+                Shell.mkdir(runtime_directory)
+                if tar.endswith('.tar'):
+                    command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+                else:
+                    command = f'tar --strip-components 1 --force-local -xvzf {tar_location} -C {runtime_directory}'
+                print(command)
+                os.system(command)
+                runtime_yaml_location = os.path.join(runtime_directory,
+                                                     f'{name}.yaml')
+                runtime_yaml_location = os.path.normpath(runtime_yaml_location)
+                Shell.copy(runtime_yaml_location, yaml_location)
+                w.load(filename=runtime_yaml_location)
+                print(w.yaml)
+
+                return {"message": f"Successfully uploaded {tar}"}
+
+        except Exception as e:
+            Console.error(e, traceflag=True)
+            return {"message": f"There was an error uploading the file {e}"}
+
+        # finally:
+        #     await file.close()
+
+    elif yaml:
+        try:
+            if not yaml.endswith('.yaml'):
+                raise Exception
+            name = os.path.basename(yaml).split('.')[0]
+            original_yaml_location = Path(Shell.map_filename(yaml).path).as_posix()
+            yaml_location = Path(path_expand(
+                f"~/.cloudmesh/workflow/{name}/{name}.yaml")).as_posix()
+            runtime_directory = Path(path_expand(
+                f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
             Shell.mkdir(runtime_directory)
 
             print("LOG: Create Workflow at:", yaml_location)
-            contents = await file[0].read()
-
-            with open(yaml_location, 'wb') as f:
-                f.write(contents)
-
+            Shell.copy(original_yaml_location, yaml_location)
             w = load_workflow(name)
             print(w.yaml)
-        return {
-            "message": f"Successfully uploaded {[files.filename for files in file]}"}
-    except Exception as e:
-        Console.error(e, traceflag=True)
-        return {"message": f"There was an error uploading the file {e}"}
+            return {"message": f"Successfully uploaded {yaml}"}
 
-    # finally:
-    #     await file.close()
-
-@app.post("/upload_dir", tags=['workflow'])
-async def upload_workflow_dir(dir_path : str):
-    """
-    uploads a workflow to the fastapi server
-    :param file: specified file to be uploaded
-    :type file: UploadFile
-    :return: success or failure message
-    """
-
-    try:
-        expanded_dir_path = Path(Shell.map_filename(dir_path).path).as_posix()
-        if not os.path.isdir(expanded_dir_path):
-            Console.error(traceflag=True)
-            return {"message": f"{expanded_dir_path} is not a valid dir path"}
-        name = os.path.basename(expanded_dir_path)
-        #star_dir = os.path.join(expanded_dir_path, '*')
-        star_dir = Path(f'{expanded_dir_path}/*').as_posix()
-        try:
-            Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
         except Exception as e:
-            print(e.output)
-        tar_location = Path(Shell.map_filename(f'./{name}.tar').path).as_posix()
-
-
-        runtime_directory = Path(path_expand(
-            f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
-        yaml_location = path_expand(
-            f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-        Shell.mkdir(runtime_directory)
-        command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
-
-        print(command)
-        os.system(command)
-        Shell.rm(f'{tar_location}')
-        runtime_yaml_location = os.path.join(runtime_directory, f'{name}.yaml')
-        runtime_yaml_location = os.path.normpath(runtime_yaml_location)
-        Shell.copy(runtime_yaml_location, yaml_location)
-        w = Workflow()
-        w.load(filename=runtime_yaml_location)
-        print(w.yaml)
-        return {
-            "message": f"Successfully uploaded {name} dir"}
-    except Exception as e:
-        Console.error(e, traceflag=True)
-        return {"message": f"There was an error uploading the file {e}"}
-
+            Console.error(e, traceflag=True)
+            return {"message": f"There was an error uploading the file {e}"}
 
 # import requests
 #
