@@ -116,6 +116,7 @@ To make things more uniform I suggest the following routes
 * `http://127.0.0.1:8000/upload?directory=/tmp/workflow`
 * `http://127.0.0.1:8000/upload?tar=/tmp/workflow.tar`
 * `http://127.0.0.1:8000/upload?tgz=/tmp/workflow.tar.gz`
+* `http://127.0.0.1:8000/upload?tgz=/tmp/workflow.tgz`
 * `http://127.0.0.1:8000/upload?xz=/tmp/workflow.xz`
 * `http://127.0.0.1:8000/upload?yaml=/tmp/workflow.yaml`
 
