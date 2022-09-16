@@ -4,9 +4,16 @@ The Cloudmesh Compute Cluster service allows you to execute
 analytical, computational workflows which run programs on remote
 compute resources. We specify not only a list of commands to be
 executed, but the commands can also have dependencies between each
-other expressed through a direct, cyclic graph.
-We assume you are standing in
-the cloudmesh-cc directory.  Let us check it out with
+other expressed through a direct, cyclic graph. Here is an example
+workflow to be executed, portrayed by a graph of sequential nodes (jobs).
+
+![A graph of an example workflow](images/workflow-example.svg)
+
+We can execute a similar workflow example by using one of
+our APIs.
+
+To begin, we assume you are standing in
+the cloudmesh-cc directory. Let us check it out with
 
 ```bash
 git clone https://github.com/cloudmesh/cloudmesh-cc.git
@@ -25,7 +32,7 @@ cms cc start --reload
 First let us create a simple example. 
 
 Let us use one of the default test workflows and copy it into a
-temporary directory
+temporary directory:
 
 
 ```bash
