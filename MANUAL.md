@@ -28,11 +28,11 @@ you can enhance to get aquinted with the system.
 
 
 Once a workflow is specified, it can be executed a using one of our interfaces.
-This includes a Python API and a comandline interface without a REST service.
-In addition we, have with the help of the Python API developed a REST service
-so that integration into other frameworsc can be facilitated through REST
+This includes a Python API and a command line interface without a REST service.
+In addition we have, with the help of the Python API, developed a REST service
+so that integration into other frameworks can be facilitated through REST
 calls. The availability of the REST service is important to access it from non
-Pythone frameworks, but also allows the easy interaction trrhough a Web-based
+Python frameworks, but also allows the easy interaction through a Web-based
 Portal.
 
 Let us demonstrate a number of selected features with the help of this quickstart. 

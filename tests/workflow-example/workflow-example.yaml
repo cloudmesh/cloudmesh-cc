@@ -17,7 +17,7 @@ workflow:
       exec: 'echo hello'
       name: end
     fetch-data:
-      label: '{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      label: '{name}\nprogress={progress}'
       kind: local
       user: grey
       host: local
@@ -25,7 +25,7 @@ workflow:
       exec: 'echo hello'
       name: fetch-data
     compute:
-      label: '{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      label: '{name}\nprogress={progress}'
       kind: local
       user: grey
       host: local
@@ -33,7 +33,7 @@ workflow:
       exec: 'echo hello'
       name: compute
     analyze:
-      label: '{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      label: '{name}\nprogress={progress}'
       kind: local
       user: grey
       host: local
