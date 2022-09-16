@@ -8,13 +8,12 @@ other expressed through a direct, cyclic graph. Here is an example
 workflow to be executed, portrayed by a graph of sequential nodes (jobs).
 
 
-![A graph of an example workflow](images/workflow-example.svg)
-
-**Figure:** A graph of an example workflow
-
 | Step 0             |  Step 1  | Step 1  |
 :-------------------------:|:-------------------------:|:-------------------------:|
 | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) |
+
+**Figure:** Execution and display graph of an example workflow over time
+
 
 
 
