@@ -47,11 +47,17 @@ user.
 
 ### Create tar archive file
 
+Before uploading a tar archive file, we must first create it
+using the previous example yaml and scripts that we copied.
+
 ```bash
 tar -C /tmp/workflow -cf workflow.tar .
 ```
 
 ### Option 1: Upload via `curl`
+
+We can upload the archive file by using the `curl` terminal
+command as follows:
 
 ```bash
 curl -X 'POST' \
@@ -63,21 +69,21 @@ curl -X 'POST' \
 ### Option 2: Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload method
+the POST Upload method.
 
-Please, click `Try it out`
+![Browser API GUI for Cloudmesh Compute Cluster](images/upload_api.png)
+
+Please click `Try it out`
 and then enter `/tmp/workflow/workflow.tar` in the
-`archive` field and then click Execute
+`archive` field and then click Execute.
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
-click the workflow on the left side. Then click Run
-
-TODO: do the same thing here as we do in upload a workflow with
-scripts but instead use the tar upload
+click the workflow on the left side. Then click Run.
 
 ### Option 3: Upload via the Python API
 
-We will use python requests to demonstrate this
+We will use Python requests to demonstrate this upload
+feature.
 
 ```python
 import requests
@@ -87,12 +93,20 @@ print(r)
 print(r.text)
 ```
 
+Printing `r` returns the response code from the API (a code of
+200 indicates success). Printing `r.text` returns the message
+from the API, such as a success or error message.
 
 ## Upload a dir that contains workflow yaml and scripts
 
 Additionally, the user can specify a workflow directory which
 contains the yaml specification file and the scripts. This way,
-pre-archival of the directory is not needed.
+pre-archival of the directory is not needed. The program sets up
+the workflow by copying the necessary files from the specified
+directory.
+
+There are three different ways to upload the dir: via `curl` on
+the command line, via the browser GUI, and via the Python API.
 
 ### Option 1: Upload via `curl`
 
@@ -112,17 +126,18 @@ when using a drive we do /c/ ....
 ### Option 2: Upload via `/docs`
 
 Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload method
+the POST Upload method.
 
 Click `Try it out` and then enter `/tmp/workflow` 
-in the directory field and then click Execute
+in the directory field and then click Execute.
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
-click the workflow on the left side. Then click Run
+click the workflow on the left side. Then click Run.
 
 ### Option 3: Upload via the Python API
 
-We will use python requests to demonstrate this
+We will use python requests to demonstrate the upload
+of the workflow.
 
 ```python
 import requests
@@ -132,19 +147,26 @@ print(r)
 print(r.text)
 ```
 
-## Proposal
+Printing `r` returns the response code from the API (a code of
+200 indicates success). Printing `r.text` returns the message
+from the API, such as a success or error message.
 
-To make things more uniform I suggest the following routes
+## Parameters to the Upload File
 
-* `http://127.0.0.1:8000/upload?directory=/tmp/workflow`
-* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tar`
-* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tar.gz`
-* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.tgz`
-* `http://127.0.0.1:8000/upload?archive=/tmp/workflow.xz`
-* `http://127.0.0.1:8000/upload?yaml=/tmp/workflow.yaml`
+The upload URL can take different parameters, such as
+directory, archive, and yaml. Only one of them can be
+used at a time.
 
-* `http://127.0.0.1:8000/upload?script=/tmp/workflow/a.sh`
-* `http://127.0.0.1:8000/upload?script=/tmp/workflow/b.py`
-* `http://127.0.0.1:8000/upload?script=/tmp/workflow/c.ipynb`
+The directory parameter indicates that the contents of
+a specified directory will be transferred into a workflow.
 
-Only one of them can be used at a time.
+The archive parameter indicates that an archive file, such
+as a `tar` file, will be extracted and its contents will
+be transferred into a workflow.
+
+The yaml parameter indicates that only a yaml file will be
+uploaded without any corresponding scripts. Uploading a yaml
+file by itself allows for a script specified by the yaml 
+to be uploaded later. The yaml can even work without scripts
+by using the `exec` specification within the yaml.
+
