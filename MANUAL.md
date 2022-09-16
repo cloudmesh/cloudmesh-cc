@@ -15,10 +15,10 @@ The status of the execution can be displayead as table or as graph.
 In Figure 1, we showcase how the graph changes its apparence over time.
 
 
-| Step 0             |  Step 1  | Step 2  | Step 3  |
-:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-| Definition             |  Running first Task  | Running second Task  | Completed Workflow  |
-| ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) |
+| Step 0             |                        Step 1                         |                         Step 2                          |                           Step 3                           |
+:-------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|
+| Definition             |                  Running first Task                   |                   Running second Task                   |                     Completed Workflow                     |
+| ![A graph of an example workflow](images/workflow-example.svg) | ![fetch-data finished](images/workflow-example-2.svg) | ![compute node finished](images/workflow-example-3.svg) | ![Entire workflow finished](images/workflow-example-5.svg) |
 
 **Figure 1:** Execution and display graph of an example workflow over time
 

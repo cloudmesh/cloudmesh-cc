@@ -11,16 +11,16 @@
 <!-- start -->
 <g id="node1" class="node">
 <title>start</title>
-<path fill="white" stroke="black" d="M55.16,-369.85C55.16,-369.85 38.97,-362.15 38.97,-362.15 33.55,-359.58 33.55,-354.42 38.97,-351.85 38.97,-351.85 55.16,-344.15 55.16,-344.15 60.58,-341.58 71.42,-341.58 76.84,-344.15 76.84,-344.15 93.03,-351.85 93.03,-351.85 98.45,-354.42 98.45,-359.58 93.03,-362.15 93.03,-362.15 76.84,-369.85 76.84,-369.85 71.42,-372.42 60.58,-372.42 55.16,-369.85"/>
+<path fill="#ccffcc" stroke="black" d="M55.16,-369.85C55.16,-369.85 38.97,-362.15 38.97,-362.15 33.55,-359.58 33.55,-354.42 38.97,-351.85 38.97,-351.85 55.16,-344.15 55.16,-344.15 60.58,-341.58 71.42,-341.58 76.84,-344.15 76.84,-344.15 93.03,-351.85 93.03,-351.85 98.45,-354.42 98.45,-359.58 93.03,-362.15 93.03,-362.15 76.84,-369.85 76.84,-369.85 71.42,-372.42 60.58,-372.42 55.16,-369.85"/>
 <text text-anchor="middle" x="66" y="-353.3" font-family="Times New Roman,serif" font-size="14.00">start</text>
 </g>
 <!-- fetch&#45;data -->
 <g id="node3" class="node">
 <title>fetch&#45;data</title>
-<path fill="white" stroke="black" d="M120,-303C120,-303 12,-303 12,-303 6,-303 0,-297 0,-291 0,-291 0,-262 0,-262 0,-256 6,-250 12,-250 12,-250 120,-250 120,-250 126,-250 132,-256 132,-262 132,-262 132,-291 132,-291 132,-297 126,-303 120,-303"/>
+<path fill="#ccffcc" stroke="black" d="M120,-303C120,-303 12,-303 12,-303 6,-303 0,-297 0,-291 0,-291 0,-262 0,-262 0,-256 6,-250 12,-250 12,-250 120,-250 120,-250 126,-250 132,-256 132,-262 132,-262 132,-291 132,-291 132,-297 126,-303 120,-303"/>
 <text text-anchor="middle" x="66" y="-287.8" font-family="Times New Roman,serif" font-size="14.00">fetch&#45;data</text>
-<text text-anchor="middle" x="66" y="-272.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:01:14</text>
-<text text-anchor="middle" x="66" y="-257.8" font-family="Times New Roman,serif" font-size="14.00">progress=0</text>
+<text text-anchor="middle" x="66" y="-272.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:02:10</text>
+<text text-anchor="middle" x="66" y="-257.8" font-family="Times New Roman,serif" font-size="14.00">progress=100</text>
 </g>
 <!-- start&#45;&gt;fetch&#45;data -->
 <g id="edge1" class="edge">
@@ -37,10 +37,10 @@
 <!-- compute -->
 <g id="node4" class="node">
 <title>compute</title>
-<path fill="white" stroke="black" d="M120,-214C120,-214 12,-214 12,-214 6,-214 0,-208 0,-202 0,-202 0,-173 0,-173 0,-167 6,-161 12,-161 12,-161 120,-161 120,-161 126,-161 132,-167 132,-173 132,-173 132,-202 132,-202 132,-208 126,-214 120,-214"/>
+<path fill="#ccffcc" stroke="black" d="M120,-214C120,-214 12,-214 12,-214 6,-214 0,-208 0,-202 0,-202 0,-173 0,-173 0,-167 6,-161 12,-161 12,-161 120,-161 120,-161 126,-161 132,-167 132,-173 132,-173 132,-202 132,-202 132,-208 126,-214 120,-214"/>
 <text text-anchor="middle" x="66" y="-198.8" font-family="Times New Roman,serif" font-size="14.00">compute</text>
-<text text-anchor="middle" x="66" y="-183.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:01:14</text>
-<text text-anchor="middle" x="66" y="-168.8" font-family="Times New Roman,serif" font-size="14.00">progress=0</text>
+<text text-anchor="middle" x="66" y="-183.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:02:10</text>
+<text text-anchor="middle" x="66" y="-168.8" font-family="Times New Roman,serif" font-size="14.00">progress=100</text>
 </g>
 <!-- fetch&#45;data&#45;&gt;compute -->
 <g id="edge2" class="edge">
@@ -51,10 +51,10 @@
 <!-- analyze -->
 <g id="node5" class="node">
 <title>analyze</title>
-<path fill="white" stroke="black" d="M120,-125C120,-125 12,-125 12,-125 6,-125 0,-119 0,-113 0,-113 0,-84 0,-84 0,-78 6,-72 12,-72 12,-72 120,-72 120,-72 126,-72 132,-78 132,-84 132,-84 132,-113 132,-113 132,-119 126,-125 120,-125"/>
+<path fill="#ccffcc" stroke="black" d="M120,-125C120,-125 12,-125 12,-125 6,-125 0,-119 0,-113 0,-113 0,-84 0,-84 0,-78 6,-72 12,-72 12,-72 120,-72 120,-72 126,-72 132,-78 132,-84 132,-84 132,-113 132,-113 132,-119 126,-125 120,-125"/>
 <text text-anchor="middle" x="66" y="-109.8" font-family="Times New Roman,serif" font-size="14.00">analyze</text>
-<text text-anchor="middle" x="66" y="-94.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:01:14</text>
-<text text-anchor="middle" x="66" y="-79.8" font-family="Times New Roman,serif" font-size="14.00">progress=0</text>
+<text text-anchor="middle" x="66" y="-94.8" font-family="Times New Roman,serif" font-size="14.00">09/16/2022, 12:02:10</text>
+<text text-anchor="middle" x="66" y="-79.8" font-family="Times New Roman,serif" font-size="14.00">progress=100</text>
 </g>
 <!-- compute&#45;&gt;analyze -->
 <g id="edge3" class="edge">
