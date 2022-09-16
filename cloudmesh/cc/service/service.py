@@ -338,7 +338,7 @@ async def upload(directory: str = Query(None,
                                                     'that contains scripts '
                                                     'and yaml file'),
                  archive: str = Query(None,
-                                      description='can be tgz, xz, tar.gz, '
+                                      description='can be tgx, xz, tar.gz, '
                                                   'or tar'),
                  yaml : str = Query(None,
                                     description='yaml file for workflow')):
