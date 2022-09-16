@@ -1,4 +1,4 @@
-# Workflow Quickstart Menu
+# Cloudmesh Compute Cluster Workflow (Quickstart)
 
 The Cloudmesh Compute Cluster service allows you to execute
 analytical, computational workflows which run programs on remote
@@ -22,16 +22,26 @@ In Figure 1, we showcase how the graph changes its apparence over time.
 
 **Figure 1:** Execution and display graph of an example workflow over time
 
-We can specify such workflows in a YAML file makeing it very easy to create and manage them.
-To get you started, we have developed a quickstart example that you can enhance to get aquinted with the system.
+We can specify such workflows in a YAML file makeing it very easy to create and
+manage them. To get you started, we have developed a quickstart example that
+you can enhance to get aquinted with the system.
 
 
-Once a workflow is specified, it can be executed a using one of
-our interfaces. THis includes the comandline, or the use of a REST service. The availability of the REST service is important 
-as it allows
+Once a workflow is specified, it can be executed a using one of our interfaces.
+This includes a Python API and a comandline interface without a REST service.
+In addition we, have with the help of the Python API developed a REST service
+so that integration into other frameworsc can be facilitated through REST
+calls. The availability of the REST service is important to access it from non
+Pythone frameworks, but also allows the easy interaction trrhough a Web-based
+Portal.
 
-To begin, we assume you are standing in
-the cloudmesh-cc directory. Let us check it out with
+Let us demonstrate a number of selected features with the help of this quickstart. 
+We will only focus on using the REST service.
+
+## Setup
+
+To start, the code is needed and we assume you are standing in
+the cloudmesh-cc directory. Use the following commands
 
 ```bash
 git clone https://github.com/cloudmesh/cloudmesh-cc.git
@@ -47,10 +57,9 @@ cms cc start --reload
 
 ## Creating a simple example
 
-First let us create a simple example. 
-
-Let us use one of the default test workflows and copy it into a
-temporary directory:
+First let us create a simple workflow example, tht we already have included for
+you in our source code. We will use this workflow and copy it into a temporary
+directory:
 
 
 ```bash
@@ -59,20 +68,34 @@ cp tests/workflows/workflow.yaml /tmp/workflow
 cp tests/workflow-sh/*.sh /tmp/workflow
 ```
 
-Now we can test various ways on how to interact with the service.
+We like you to inspect the example so you get an overview of how to define a workflow:
 
-## Upload and run a workflow embedded in a tar file
+* workflow.yaml (link TBD)
+* fetsh-data (link TBD)
+* compute (link TBD)
+* analyse (link TBD)
 
-We can upload a singular archive file which contains all the
+Now we can test a selected number of ways on how to interact with the service.
+We showcase here how to 
+
+* A. upload worklfows as tar/xz file of a self containing
+directory, 
+* B. upload all files in a directory recursively, or 
+* C. upload the workflow
+and the scripts refreed to in the workflow individually.
+
+## A. Upload and run a workflow embedded in an archive file
+
+We can upload an archive file which contains all the
 workflow files, including the yaml specification file and the
-scripts. Providing an archive file such as a `tar` or `tar.gz`
+scripts. Providing an archive file such as a `.tar`, `.tar.gz`, or `.xz`.
 may enable the workflow to be better suited towards portability
 and simplicity, where one can share an archive file with another
-user.
+user. We will chose here a tar file as example.
 
 ### Create tar archive file
 
-Before uploading a tar archive file, we must first create it
+Before uploading a `tar` archive file, we must first create it
 using the previous example yaml and scripts that we copied.
 
 ```bash
@@ -93,8 +116,9 @@ curl -X 'POST' \
 
 ### Option 2: Upload via `/docs`
 
-Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload method.
+As the service is using also an OpenAPI 2.0 specification the workflow can also
+be uploaded implicitly through the specification GUI. Navigate to
+`http://127.0.0.1:8000/docs` and use the POST Upload method.
 
 ![Browser API GUI for Cloudmesh Compute Cluster](images/upload_api.png)
 
@@ -107,8 +131,9 @@ click the workflow on the left side. Then click Run.
 
 ### Option 3: Upload via the Python API
 
-We will use Python requests to demonstrate this upload
-feature.
+As we use a REST service, we can also easily upload the workflow through a
+Python enabled REST call. qWe will use Python requests to demonstrate this
+upload feature.
 
 ```python
 import requests
@@ -122,13 +147,19 @@ Printing `r` returns the response code from the API (a code of
 200 indicates success). Printing `r.text` returns the message
 from the API, such as a success or error message.
 
-## Upload a dir that contains workflow yaml and scripts
+### Option 4: Upload with a thrid party REST framework
 
-Additionally, the user can specify a workflow directory which
-contains the yaml specification file and the scripts. This way,
-pre-archival of the directory is not needed. The program sets up
-the workflow by copying the necessary files from the specified
-directory.
+Naturally if you like to use a different REST API you can do so. YOu can also
+use different programming languages and we leave it upi to you to chose the
+framework of your chouce to interact with the REST service, popular chices are
+javascript, go, C/C++, matlab, and R, toname only a few.
+
+## C. Upload a dir that contains workflow directory 
+
+To increase flexibility abd allow quick experiements users can can specify a
+workflow directory which contains the yaml specification file and the scripts.
+This way, pre-archival of the directory is not needed. The program sets up the
+workflow by copying the necessary files from the specified directory.
 
 There are three different ways to upload the dir: via `curl` on
 the command line, via the browser GUI, and via the Python API.
@@ -145,13 +176,11 @@ curl -X 'POST' \
   -d ''
 ```
 
-TODO: on windows it also should work with / and not \ We make explicit note here
-when using a drive we do /c/ ....
-
 ### Option 2: Upload via `/docs`
 
-Navigate to `http://127.0.0.1:8000/docs` and use
-the POST Upload method.
+Also here one cane upload the needed files with the OpenAPI specification
+interface on the service. Navigate to `http://127.0.0.1:8000/docs` and use the
+POST Upload method.
 
 Click `Try it out` and then enter `/tmp/workflow` 
 in the directory field and then click Execute.
@@ -159,8 +188,10 @@ in the directory field and then click Execute.
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
 click the workflow on the left side. Then click Run.
 
+
 ### Option 3: Upload via the Python API
 
+Accessing the upload from the Pythin API is very easy.
 We will use python requests to demonstrate the upload
 of the workflow.
 
@@ -176,18 +207,26 @@ Printing `r` returns the response code from the API (a code of
 200 indicates success). Printing `r.text` returns the message
 from the API, such as a success or error message.
 
-## Parameters to the Upload File
+## Parameters to the Upload a workflow with a REST call 
 
-The upload URL can take different parameters, such as
-directory, archive, and yaml. Only one of them can be
-used at a time.
+The upload REST URL can take different parameters, such as
+
+* `?directory=name` 
+* `?archive=name.tar.gz`
+* `?archive=name.tgz`
+* `?archive=name.xz`
+* `?yaml=name` 
+
+The semantic of the upload is specified through its parameter. Only one of them
+can be used at a time.
 
 The directory parameter indicates that the contents of
-a specified directory will be transferred into a workflow.
+a specified directory will be transferred into a workflow. 
 
-The archive parameter indicates that an archive file, such
-as a `tar` file, will be extracted and its contents will
-be transferred into a workflow.
+The archive parameter indicates that an archive file, such as a `tar` file,
+will be extracted and its contents will be transferred into a workflow. Please
+note that the `archive` and `directory` parameters can not be used in the same
+REST call.
 
 The yaml parameter indicates that only a yaml file will be
 uploaded without any corresponding scripts. Uploading a yaml
