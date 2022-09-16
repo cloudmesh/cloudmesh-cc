@@ -2,10 +2,17 @@
 
 The Cloudmesh Compute Cluster service allows you to execute
 analytical, computational workflows which run programs on remote
-compute resources. We specify not only a list of commands to be
-executed, but the commands can also have dependencies between each
-other expressed through a direct, cyclic graph. Here is an example
-workflow to be executed, portrayed by a graph of sequential nodes (jobs).
+compute resources. We specify not only a list of tasks to be
+executed, but the tasks can also have dependencies between each
+other expressed through a direct, cyclic graph. Currently, we have 
+predefined task types 
+that can execute shell scripts, Python programs, and Python notebooks, 
+all of which can be executed on local or remote compute resources. 
+
+In Figure 1 we depict a simple example
+workflow to be executed where each task is executed sequentially.
+The status of the execution can be displayead as table or as graph. 
+In Figure 1, we showcase how the graph changes its apparence over time.
 
 
 | Step 0             |  Step 1  | Step 2  | Step 3  |
@@ -13,7 +20,7 @@ workflow to be executed, portrayed by a graph of sequential nodes (jobs).
 | Definition             |  Running first Task  | Running second Task  | Completed Workflow  |
 | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) | ![A graph of an example workflow](images/workflow-example.svg) |
 
-**Figure:** Execution and display graph of an example workflow over time
+**Figure 1:** Execution and display graph of an example workflow over time
 
 
 
