@@ -22,13 +22,13 @@ In Figure 1, we showcase how the graph changes its apparence over time.
 
 **Figure 1:** Execution and display graph of an example workflow over time
 
+We can specify such workflows in a YAML file makeing it very easy to create and manage them.
+To get you started, we have developed a quickstart example that you can enhance to get aquinted with the system.
 
 
-
-
-
-We can execute a similar workflow example by using one of
-our APIs.
+Once a workflow is specified, it can be executed a using one of
+our interfaces. THis includes the comandline, or the use of a REST service. The availability of the REST service is important 
+as it allows
 
 To begin, we assume you are standing in
 the cloudmesh-cc directory. Let us check it out with
