@@ -7,7 +7,11 @@ executed, but the commands can also have dependencies between each
 other expressed through a direct, cyclic graph. Here is an example
 workflow to be executed, portrayed by a graph of sequential nodes (jobs).
 
+
 ![A graph of an example workflow](images/workflow-example.svg)
+
+**Figure:** A graph of an example workflow
+
 
 We can execute a similar workflow example by using one of
 our APIs.
