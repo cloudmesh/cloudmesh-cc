@@ -109,9 +109,6 @@ def remove_workflow():
     # remove locat workflow file, for state notification
     Shell.rmdir(workflow_local_dir)
 
-    import time
-    time.sleep(10)
-
     # logic
     # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
     #     # Remove workflow source yaml filr
