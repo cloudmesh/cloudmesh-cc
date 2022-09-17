@@ -73,7 +73,7 @@ def create_workflow(filename='./workflow-local.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+        label = "debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
         label_format = label
         w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
@@ -195,14 +195,54 @@ class TestWorkflowLocal:
         except Exception as e:
             print(e.output)
 
-
-
         g = str(w.graph)
         print(g)
 
         assert w.filename == path_expand("~/.cloudmesh/workflow/workflow-local/workflow-local.yaml")
         assert "start" in g
         assert "host: local" in g
+
+    def test_show(self):
+        HEADING()
+        global w
+        w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
+        # Shell.browser("test-dot.svg")
+        os.path.exists("test-dot.svg")
+
+    def test_get_node(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        job_start_1 = w["start"]
+        job_start_2 = w.job("start")
+        Benchmark.Stop()
+        print(job_start_1)
+        assert job_start_1 == job_start_2
+        assert job_start_1["name"] == "start"
+
+    def test_table(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        print(w.table)
+        Benchmark.Stop()
+        t = str(w.table)
+        assert "| progress |" in t
+        assert "job-rivanna.hpc.virginia.edu-3" in t
+        assert "job-rivanna.hpc.virginia.edu-3" in t
+
+    def test_order(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        order = w.sequential_order()
+        Benchmark.Stop()
+        print(order)
+        assert len(order) == len(w.jobs)
+        for i in range(1, len(order)):
+            parent = order[i - 1]
+            name = order[i]
+            assert name not in w[parent]['parent']
 
     def test_run_topo(self):
         HEADING()
@@ -218,6 +258,9 @@ class TestWorkflowLocal:
             assert node["parent"] == []
             assert node["status"] == "done"
 
+    def test_benchmark(self):
+        HEADING()
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
 
 
 class b:
@@ -275,71 +318,6 @@ class b:
 
         print (w.filename)
 
-    def test_show(self):
-        HEADING()
-        global w
-        if os_is_windows():
-            try:
-                w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
-            except Exception as e:
-                print(e)
-        else:
-            w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
-        # Shell.browser("test-dot.svg")
-        if os_is_windows():
-            os.path.exists("test-dot.svg")
-        else:
-            os.path.exists("test-dot.svg")
-
-    def test_get_node(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        job_start_1 = w["start"]
-        job_start_2 = w.job("start")
-        Benchmark.Stop()
-        print(job_start_1)
-        assert job_start_1 == job_start_2
-        assert job_start_1["name"] == "start"
-
-    def test_table(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        print(w.table)
-        Benchmark.Stop()
-        t = str(w.table)
-        assert "| progress |" in t
-        assert "job-rivanna.hpc.virginia.edu-3" in t
-        assert "job-rivanna.hpc.virginia.edu-3" in t
-
-    def test_order(self):
-        HEADING()
-        global w
-        Benchmark.Start()
-        order = w.sequential_order()
-        Benchmark.Stop()
-        print(order)
-        assert len(order) == len(w.jobs)
-        for i in range(1, len(order)):
-            parent = order[i - 1]
-            name = order[i]
-            assert name not in w[parent]['parent']
-
-    def test_run_topo(self):
-        HEADING()
-        w = create_workflow()
-        Benchmark.Start()
-        w.run_topo(show=True, filename="r-topo.svg")
-        Benchmark.Stop()
-        banner("Workflow")
-        print(w.graph)
-
-        for name, node in w.jobs.items():
-            assert node["progress"] == 100
-            assert node["parent"] == []
-            assert node["status"] == "done"
-
     # def test_run_parallel(self):
     #     HEADING()
     #     w = create_workflow()
@@ -352,7 +330,3 @@ class b:
     #         assert node["progress"] == 100
     #         assert node["parent"] == []
     #         assert node["status"] == "done"
-
-    def test_benchmark(self):
-        HEADING()
-        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
