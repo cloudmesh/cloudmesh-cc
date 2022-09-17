@@ -397,7 +397,7 @@ class Graph:
                 pass
             # and so on
 
-    def save_to_file(self, filename, exclude=None):
+    def save_to_yaml(self, filename, exclude=None):
         """
         saves the graph to a specified filename and
         excludes nodes if exclude is specified.
@@ -598,7 +598,8 @@ class Workflow:
                  user=None,
                  host=None,
                  load=False,
-                 clear_runtime_dir=True):
+                 clear_runtime_dir=True,
+                 runtime=False):
         """
         initializes workflow with specified characteristics
         :param name: name of workflow
@@ -675,8 +676,10 @@ class Workflow:
             else:
                 self.graph = Graph(name=name, filename=self.filename)
             # gvl added load but not tested
-
-            self.load(self.filename)
+            if runtime:
+                pass
+            if not runtime:
+                self.load(self.filename)
         except Exception as e:  # noqa: E722
             Console.error(e, traceflag=True)
             pass
@@ -881,7 +884,7 @@ class Workflow:
         for name, node in self.graph.nodes.items():
              if "name" not in node:
                  node["name"] = name
-             self.add_job(**node)
+             self.add_job(filename=self.runtime_filename, **node)
         #
         # for edge in dependencies:
         #     self.add_dependencies(edge)
@@ -898,8 +901,8 @@ class Workflow:
         # if os_is_windows():
         #     name = os.path.basename(filename).replace(r".yaml", "")
         #     dir = Shell.map_filename(fr"~/.cloudmesh/workflow/{name}/{name}.yaml").path
-        #     self.graph.save_to_file(dir)
-        if filename is None:
+        #     self.graph.save_to_yaml(dir)
+        if filename:
             # do not use runtime dir, use experiment dir
             # i forgot about exeriment dir
             # reason experimentdir is noce is that its alos on remote machines
@@ -929,12 +932,13 @@ class Workflow:
 
         # saveto = f"{self.runtime_dir}/{self.name}.yaml"
             # saveto = Shell.map_filename(fr"~/.cloudmesh/workflow/{self.name}/runtime/{self.name}.yaml").path
-            pass
+            self.graph.save_to_yaml(filename)
         # else:
         #    saveto = filename
-        self.graph.save_to_file(self.runtime_filename)
+        self.graph.save_to_yaml(self.runtime_filename)
 
     def add_job(self,
+                filename=None,
                 name=None,
                 user=None,
                 host=None,
@@ -1002,7 +1006,7 @@ class Workflow:
             exec=exec,
             instance=None
         )
-        self.save(self.filename)
+        self.save(filename=filename)
 
     def add_dependency(self, source, destination):
         """
@@ -1279,13 +1283,34 @@ class Workflow:
         :return: nothing
         :rtype: None
         """
+        experiment_dir = Path(Shell.map_filename(f'~/experiment').path).as_posix()
+        Shell.rmdir(experiment_dir)
+        graph_file = Path(Shell.map_filename(f'./runtime/{self.name}.svg').path).as_posix()
+        def display_in_browser():
+            for name in self.graph.nodes:
+                msg = self.graph.create_label(name)
+                self.graph.nodes[name]["label"] = msg
+            self.graph.save(filename=graph_file,
+                            colors="status",
+                            layout=nx.circular_layout,
+                            engine="dot")
+            if os_is_mac():
+                Shell.open(filename=graph_file)
+            elif os_is_linux():
+                #  elif first and os_is_linux():
+                # Shell.open(filename=filename)  # does not work
+                os.system(f"chromium {graph_file}&")
+                # os.system(f"eog {filename}")
+
+            else:
+                Shell.browser(graph_file)
+
         # bug the tno file needs to be better handled
         if order is None:
             order = self.sequential_order
 
         filename = filename or path_expand(f"runtime/{self.name}.svg")
 
-        first = True
         for name in order():
             job = self.job(name=name)
 
@@ -1323,25 +1348,52 @@ class Workflow:
                 _job.sync()
                 _job.run()
 
-                if local or wsl or slurm:
-                    _job.watch(period=0.5)
-                elif ssh or slurm:
-                    _job.watch(period=3)
+                wait_interval = 0.5
+                finished = False
+
+                # this is to check if status has changed
+                placeholder_progress = None
+                placeholder_status = None
+
+                while not finished:
+                    status = _job.get_status()
+                    progress = int(_job.get_progress(refresh=True))
+                    print(f"Progress {_job.name}:", progress)
+                    log = _job.get_log()
+                    print(log)
+                    finished = progress == 100
+                    if progress == 100:
+                        status = "done"
+                    elif (progress > 0) and (progress < 100):
+                        status = "running"
+
+                    self.jobs[name]['status'] = status
+                    self.jobs[name]['progress'] = progress
+                    self.graph.save_to_yaml(filename=self.runtime_filename)
+                    if show:
+                        if (progress != placeholder_progress) or (status != placeholder_status):
+                            display_in_browser()
+                            placeholder_status = status
+                            placeholder_progress = progress
+
+                    if not finished:
+                        time.sleep(wait_interval)
+
+
+
+                # if local or wsl or slurm:
+                #     _job.watch(period=0.5)
+                # elif ssh or slurm:
+                #     _job.watch(period=3)
 
                 self.graph.done(name)
                 #print(self.table)
-                _job.watch(period=1)
-                log = _job.get_log()
-                status = _job.get_status()
-                progress = _job.get_progress()
-                if progress == 100:
-                    status = "done"
+                #_job.watch(period=1)
+
+
                 #print('Status: ', status)
                 #print('Progress: ', progress)
-                self.jobs[name]['status'] = status
-                self.jobs[name]['progress'] = progress
-                self.graph.save_to_file(filename=self.runtime_filename)
-                # elif job['kind'] in ["local-slurm"]:
+                 # elif job['kind'] in ["local-slurm"]:
                 #     raise NotImplementedError
                 # elif job['kind'] in ["remote-slurm"]:
                 #     raise NotImplementedError
@@ -1349,50 +1401,8 @@ class Workflow:
                 # banner(f"Job: {name}")
                 Console.msg(f"running {name}")
 
-            if show:
-                for name in self.graph.nodes:
-                    msg = self.graph.create_label(name)
-                    self.graph.nodes[name]["label"] = msg
-                self.graph.save(filename=filename,
-                                colors="status",
-                                layout=nx.circular_layout,
-                                engine="dot")
-                if first and os_is_mac():
-                    Shell.open(filename=filename)
-                    first = False
-                elif os_is_linux():
-                    #  elif first and os_is_linux():
-                    #Shell.open(filename=filename)  # does not work
-                    os.system(f"chromium {filename}&")
-                    #os.system(f"eog {filename}")
 
-                else:
-                    Shell.browser(filename)
-                    time.sleep(0.1)
-                    # if os_is_windows():
-                    #
-                    #     #import win32gui
-                    #     #import win32con
-                    #
-                    #     #hwnd = win32gui.FindWindowEx(None, None, None,
-                    #     #                             'MINGW64:')
-                    #     # def getShell():
-                    #     #     thelist = []
-                    #     #
-                    #     #     def findit(hwnd, ctx):
-                    #     #         if 'MINGW64:' in win32gui.GetWindowText(
-                    #     #                 hwnd):  # check the title
-                    #     #             thelist.append(hwnd)
-                    #     #     win32gui.EnumWindows(findit, None)
-                    #     #     return thelist
-                    #     # b = getShell()
-                    #     # win32gui.SetWindowPos(b[0], win32con.HWND_TOPMOST,
-                    #     #                       100,
-                    #     #                       100, 200, 200, 0x0001 | 0x0002)
-                    #     #the following works
-                    #     if is_gitbash():
-                    #         win = gw.getWindowsWithTitle('MINGW64:')[0]
-                    #         win.activate()
+
 
 
 
