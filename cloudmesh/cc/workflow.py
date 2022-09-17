@@ -643,9 +643,8 @@ class Workflow:
             self.filename = filename
         self.filename = path_expand(self.filename)
         Shell.mkdir(os.path.dirname(self.filename))
-
         try:
-            self.name = os.path.basename(filename).split(".")[0]
+            self.name = os.path.basename(self.filename).split(".")[0]
         except Exception as e:
             print(e)
             self.name = "workflow"
@@ -657,10 +656,8 @@ class Workflow:
         # if clear_runtime_dir:
         #     if os.path.isdir(self.runtime_dir):
         #         Shell.rmdir(self.runtime_dir)
-
         if not os.path.isdir(self.runtime_dir):
             Shell.mkdir(self.runtime_dir)
-
         self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
 
         if load:

@@ -37,10 +37,10 @@ host, username = set_host_user()
 w = None
 
 
-def create_workflow(filename='./workflow.yaml'):
+def create_workflow(filename='./workflow-local.yaml'):
     global w
     global username
-    w = Workflow(filename=filename, load=False)
+    w = Workflow(name='workflow-local', load=False)
 
     localuser = Shell.sys_user()
     login = {
@@ -98,7 +98,7 @@ def create_workflow(filename='./workflow.yaml'):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
-def remove_workflow(filename="workflow.yaml"):
+def remove_workflow(filename="workflow-local.yaml"):
     # Remove workflow source yaml filr
     Shell.rm(filename)
 
@@ -110,7 +110,7 @@ def remove_workflow(filename="workflow.yaml"):
     r = Shell.run(f"rm -fr {full_dir}")
 
     # remove locat workflow file, for state notification
-    Shell.run("rm -rf ~/.cloudmesh/workflow")
+    Shell.run("rm -rf ~/.cloudmesh/workflow/workflow-local")
 
     # logic
     # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
@@ -158,10 +158,10 @@ def remove_workflow(filename="workflow.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            './scripts/workflow.yaml',
+            './scripts/workflow-local.yaml',
             '~/experiment',
-            "~/.cloudmesh/workflow/workflow",
-            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+            "~/.cloudmesh/workflow/workflow-local",
+            "~/.cloudmesh/workflow/workflow-local/workflow-local.yaml"
         ]:
             where = Shell.map_filename(filename).path
             assert not os.path.exists(where)
@@ -171,36 +171,86 @@ banner("TEST START")
 
 
 class TestWorkflowLocal:
+    def test_single_test(self):
+        HEADING()
+        global w
+
+        cloudmesh_workflow_dir = Shell.map_filename('~/.cloudmesh/workflow').path
+
+        #reset
+        Shell.rmdir('./workflow-local')
+
+        Shell.mkdir('./workflow-local')
+        os.chdir('./workflow-local')
+
+        # write a yaml file
+        w = create_workflow()
+
+        # copy shell files
+        shell_files = Path(f'{__file__}').as_posix()
+        runtime_dir = Path(Shell.map_filename(
+            '~/.cloudmesh/workflow/workflow-local/runtime').path).as_posix()
+        try:
+            Shell.run(f'cp {shell_files}/../workflow-sh/*.sh {runtime_dir}')
+        except Exception as e:
+            print(e.output)
 
 
+
+        g = str(w.graph)
+        print(g)
+
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow-local/workflow-local.yaml")
+        assert "start" in g
+        assert "host: local" in g
+
+    def test_run_topo(self):
+        HEADING()
+        global w
+        Benchmark.Start()
+        w.run_topo(show=True)
+        Benchmark.Stop()
+        banner("Workflow")
+        print(w.graph)
+
+        for name, node in w.jobs.items():
+            assert node["progress"] == 100
+            assert node["parent"] == []
+            assert node["status"] == "done"
+
+
+
+class b:
     def test_load_workflow(self):
         HEADING()
         global w
 
 
         Benchmark.Start()
-        remove_workflow(filename="workflow.yaml")
+        remove_workflow(filename="workflow-local.yaml")
 
         w0 = create_workflow()
-        w0.save('workflow.yaml')
+        w0.save('workflow-local.yaml')
 
-        w = Workflow()
-        w.load(filename='workflow.yaml')
+        w = Workflow(name='workflow-local')
+        w.load(filename='workflow-local.yaml')
 
         Benchmark.Stop()
         g = str(w.graph)
         print(g)
 
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow-local/workflow-local.yaml")
         assert "start" in g
         assert "host: local" in g
 
     def test_reset_experiment_dir(self):
+        HEADING()
         os.system("rm -rf ~/experiment")
         exp = path_expand("~/experiment")
         shutil.rmtree(exp, ignore_errors=True)
-
-        os.system('cp ../workflow-sh/*.sh .')
+        shell_files = Path(f'{__file__}').as_posix()
+        runtime_dir = Path(Shell.map_filename('~/.cloudmesh/workflow/workflow-local/runtime').path).as_posix()
+        os.system(f'cp {shell_files}/../workflow-sh/*.sh {runtime_dir}')
         assert not os.path.isfile(exp)
 
         banner("pwd")
@@ -215,7 +265,7 @@ class TestWorkflowLocal:
         global w
 
         Benchmark.Start()
-        remove_workflow(filename="workflow.yaml")
+        remove_workflow(filename="workflow-local.yaml")
         w = create_workflow()
         Benchmark.Stop()
         g = str(w.graph)
