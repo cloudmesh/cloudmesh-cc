@@ -98,19 +98,19 @@ def create_workflow(filename='./workflow-local.yaml'):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
-def remove_workflow(filename="workflow-local.yaml"):
-    # Remove workflow source yaml filr
-    Shell.rm(filename)
+def remove_workflow():
+    workflow_local_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-local').path
 
     # Remove experiment execution directory
     full_dir = Shell.map_filename('~/experiment').path
 
-    # TODO:
-    # r = Shell.rmdir(full_dir)
-    r = Shell.run(f"rm -fr {full_dir}")
+    Shell.rmdir(full_dir)
 
     # remove locat workflow file, for state notification
-    Shell.run("rm -rf ~/.cloudmesh/workflow/workflow-local")
+    Shell.rmdir(workflow_local_dir)
+
+    import time
+    time.sleep(10)
 
     # logic
     # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
@@ -158,7 +158,6 @@ def remove_workflow(filename="workflow-local.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            './scripts/workflow-local.yaml',
             '~/experiment',
             "~/.cloudmesh/workflow/workflow-local",
             "~/.cloudmesh/workflow/workflow-local/workflow-local.yaml"
@@ -175,7 +174,7 @@ class TestWorkflowLocal:
         HEADING()
         global w
 
-        cloudmesh_workflow_dir = Shell.map_filename('~/.cloudmesh/workflow').path
+        remove_workflow()
 
         #reset
         Shell.rmdir('./workflow-local')
