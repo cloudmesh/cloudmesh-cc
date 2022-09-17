@@ -4,11 +4,6 @@
 # pytest -v --capture=no  tests/test_032_job_localhost_filetype.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
-#
-# program needs pip install pywin32 -U in requirements if on the OS is Windows
-# TODO: check if pywin32 is the correct version
-#
-
 import os
 import shutil
 import subprocess
@@ -32,7 +27,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 
 @pytest.mark.incremental
@@ -41,6 +36,10 @@ class TestJobLocalhost:
     def test_sh(self):
         HEADING()
         from cloudmesh.cc.job.localhost.Job import Job
+        Shell.mkdir('job-localhost-filetype')
+        os.chdir('job-localhost-filetype')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         job = Job(name="hallo")
         print(job)
 
@@ -66,7 +65,7 @@ class TestJobLocalhost:
         HEADING()
         from cloudmesh.cc.job.localhost.Job import Job
         job = Job(name="hallo")
-        print (job)
+        print(job)
 
         script = job.create(filename="a.sh",
                             script="python a.py")
@@ -116,11 +115,16 @@ class TestJobLocalhost:
     def test_mnist(self):
         HEADING()
 
-        w = Workflow()
-        location = path_expand("../mnist/source-mnist-exec.yaml")
+        w = Workflow(name='mnist')
+        os.chdir(os.path.dirname(__file__))
+        location = path_expand("./mnist/source-mnist-exec.yaml")
 
         r = Shell.cat(location)
         w.load(filename=location, clear=True)
+        create_dest()
+
+        Shell.mkdir('mnist')
+        os.chdir('mnist')
 
         w.display()
 
