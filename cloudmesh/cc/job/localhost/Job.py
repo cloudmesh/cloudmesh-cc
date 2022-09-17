@@ -132,14 +132,8 @@ class Job:
         :return: does not return anything
         :rtype: None
         """
-        if os_is_windows():
-            win_directory = Shell.map_filename(self.directory).path
-            # self.directory = self.directory.replace('~','%homepath%')
-            command = f'mkdir "{win_directory}"'
-        else:
-            command = f'mkdir -p {self.directory}'
-        print(command)
-        os.system(command)
+        directory = Shell.map_filename(self.directory).path
+        Shell.mkdir(directory)
 
     def run(self):
         """
@@ -327,10 +321,6 @@ class Job:
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
-        # if self.filetype == "python":
-        #     command = f"chmod ug+rx ./{self.name}.py"
-        # else:
-        #     command = f"chmod ug+rx ./{self.name}.sh"
         command = f'chmod ug+rx ./runtime/{self.name}{self.filetype}'
         print(command)
         r = os.system(command)

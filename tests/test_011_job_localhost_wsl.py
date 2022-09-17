@@ -4,11 +4,6 @@
 # pytest -v --capture=no  tests/test_011_job_localhost_wsl.py::TestJobWsl::<METHODNAME>
 ###############################################################
 
-#
-# program needs pip install pywin32 -U in requirements if on the OS is Windows
-# TODO: check if pywin32 is the correct version
-#
-
 import os
 import shutil
 import subprocess
@@ -30,7 +25,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 if not os_is_windows():
     Console.error("This test can only be run on windows")
@@ -53,11 +48,25 @@ wait_job = f"run-killme"
 class TestJobWsl:
 
     def test_create_run(self):
-        os.system("rm -r ~/experiment")
+        HEADING()
+
+        #remove remnants
         exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
+        Shell.rmdir(exp)
+        if os.path.isdir('./job_localhost_wsl'):
+            Shell.rmdir('./job_localhost_wsl')
+
+        #find where this pytest is located
+        pytest_dir = Path(os.path.dirname(Shell.map_filename(__file__).path)).as_posix()
+        scripts_dir = f'{pytest_dir}/scripts/'
+
+        Shell.mkdir('job_localhost_wsl')
+        os.chdir('./job_localhost_wsl')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         for script in [run_job, wait_job]:
-            os.system(f"cp ./tests/{script}.sh .")
+            Shell.copy(f'{scripts_dir}{script}.sh', '.')
+            #os.system(f"cp {scripts_dir}{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -66,6 +75,8 @@ class TestJobWsl:
         global job
         global username
         global host
+
+        os.chdir('..')
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)
@@ -178,7 +189,7 @@ class TestJobWsl:
     def test_kill(self):
         """
         Creates a job from run-killme.sh, which includes wait of 1 hour
-        Deletes this job AND it's children
+        Deletes this job AND its children
         This way, it tests if the job or any of its children
         is found in the ps
         """
