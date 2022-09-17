@@ -11,20 +11,20 @@ all of which can be executed on local or remote compute resources.
 
 In Figure 1 we depict a simple example
 workflow to be executed where each task is executed sequentially.
-The status of the execution can be displayead as table or as graph. 
-In Figure 1, we showcase how the graph changes its apparence over time.
+The status of the execution can be displayed as table or as graph. 
+In Figure 1, we showcase how the graph changes its appearance over time.
 
 
-| Step 0             |                        Step 1                         |                         Step 2                          |                           Step 3                           |
-:-------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|
-| Definition             |                  Running first Task                   |                   Running second Task                   |                     Completed Workflow                     |
-| ![A graph of an example workflow](images/workflow-example.svg) | ![fetch-data finished](images/workflow-example-2.svg) | ![compute node finished](images/workflow-example-3.svg) | ![Entire workflow finished](images/workflow-example-5.svg) |
+| Step 0             |                         Step 1                          |                       Step 1.5                        |                         Step 2                          |                           Step 3                           |
+:-------------------------:|:-------------------------------------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|
+| Definition             |                   Running first Task                    |                  Finished first task                  |                  Finished second task                   |                     Completed workflow                     |
+| ![A graph of an example workflow](images/workflow-example.svg) | ![fetch-data finished](images/workflow-example-1.5.svg) | ![fetch-data finished](images/workflow-example-2.svg) | ![compute node finished](images/workflow-example-3.svg) | ![Entire workflow finished](images/workflow-example-5.svg) |
 
 **Figure 1:** Execution and display graph of an example workflow over time
 
-We can specify such workflows in a YAML file makeing it very easy to create and
+We can specify such workflows in a YAML file making it very easy to create and
 manage them. To get you started, we have developed a quickstart example that
-you can enhance to get aquinted with the system.
+you can enhance to get acquainted with the system.
 
 
 Once a workflow is specified, it can be executed a using one of our interfaces.
@@ -78,11 +78,11 @@ We like you to inspect the example so you get an overview of how to define a wor
 Now we can test a selected number of ways on how to interact with the service.
 We showcase here how to 
 
-* A. upload worklfows as tar/xz file of a self containing
+* A. upload workflows as tar/xz file of a self containing
 directory, 
 * B. upload all files in a directory recursively, or 
 * C. upload the workflow
-and the scripts refreed to in the workflow individually.
+and the scripts referred to in the workflow individually.
 
 ## A. Upload and run a workflow embedded in an archive file
 
@@ -91,7 +91,7 @@ workflow files, including the yaml specification file and the
 scripts. Providing an archive file such as a `.tar`, `.tar.gz`, or `.xz`.
 may enable the workflow to be better suited towards portability
 and simplicity, where one can share an archive file with another
-user. We will chose here a tar file as example.
+user. We will choose here a tar file as example.
 
 ### Create tar archive file
 
