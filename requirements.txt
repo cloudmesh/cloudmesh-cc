@@ -21,3 +21,4 @@ papermill
 cloudmesh-progress
 pandas
 markdown
+pywin32; platform_system == "Windows"

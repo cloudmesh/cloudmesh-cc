@@ -16,6 +16,7 @@
 # ------------------------------------------------------------------------#
 
 from setuptools import find_packages, setup
+from cloudmesh.common.systeminfo import os_is_windows
 import io
 
 def readfile(filename):
@@ -45,6 +46,9 @@ cloudmesh-progress
 pandas
 markdown
 """.split("\n")
+
+if os_is_windows():
+    requiers.append('pywin32')
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 

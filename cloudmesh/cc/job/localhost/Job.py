@@ -376,7 +376,7 @@ class Job:
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log")
+            log = readfile(f"./runtime/{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
