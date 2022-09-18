@@ -35,6 +35,7 @@ class TestJobLocalhost:
 
     def test_sh(self):
         HEADING()
+        create_dest()
         from cloudmesh.cc.job.localhost.Job import Job
         Shell.mkdir('job-localhost-filetype')
         os.chdir('job-localhost-filetype')
