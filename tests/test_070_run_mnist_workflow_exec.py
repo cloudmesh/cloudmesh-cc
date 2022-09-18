@@ -55,8 +55,8 @@ class TestMnist:
             assert os.path.isfile(f"./{script}.sh")
         os.chdir('..')
         Shell.copy_file(f"{shell_files}/../mnist/source-mnist.yaml",
-                        "./source-mnist.yaml")
-        filename = Shell.map_filename("./source-mnist.yaml").path
+                        "./mnist.yaml")
+        filename = Shell.map_filename("./mnist.yaml").path
         r = Shell.ls()
         pprint(r)
 
