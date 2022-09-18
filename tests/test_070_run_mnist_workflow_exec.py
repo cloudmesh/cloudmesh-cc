@@ -38,11 +38,24 @@ class TestMnist:
 
     def test_mnist(self):
         HEADING()
+
+        if os.path.isdir('./mnist'):
+            Shell.rmdir('./mnist')
+        Shell.mkdir('./mnist')
+        os.chdir('./mnist')
+        Shell.mkdir('./runtime')
+        os.chdir('./runtime')
+
+        # copy shell files
+        shell_files = Path(f'{__file__}').as_posix()
+
         for script in ["start", "prepare", "mlp_mnist", "example_mlp_mnist",
                        "end"]:
-            Shell.copy(f"../mnist/{script}.sh", ".")
+            Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
             assert os.path.isfile(f"./{script}.sh")
-        Shell.copy_file("../mnist/source-mnist.yaml", "source-mnist.yaml")
+        os.chdir('..')
+        Shell.copy_file(f"{shell_files}/../mnist/source-mnist.yaml",
+                        "./source-mnist.yaml")
         filename = Shell.map_filename("./source-mnist.yaml").path
         r = Shell.ls()
         pprint(r)
