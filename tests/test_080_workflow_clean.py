@@ -38,6 +38,9 @@ utilities.create_dest()
 def create_workflow(filename='workflow-clean.yaml'):
     global w
     global username
+    utilities.create_dest()
+    if os.path.isdir('./workflow-clean'):
+        Shell.rmdir('./workflow-clean')
     w = Workflow(filename=filename, load=False)
 
     localuser = Shell.sys_user()
@@ -52,8 +55,16 @@ def create_workflow(filename='workflow-clean.yaml'):
 
     jobkind = "local"
 
+    # copy shell files
+    shell_files = Path(f'{__file__}').as_posix()
+    utilities.create_dest()
+    if not os.path.isdir('./workflow-clean'):
+        Shell.mkdir('./workflow-clean')
+    os.chdir('./workflow-clean')
+    Shell.mkdir('./runtime')
+    os.chdir('./runtime')
     for script in ["start.sh", "b.sh", "c.py", "d.ipynb", "end.sh"]:
-        Shell.copy(f"../workflow-clean/{script}", ".")
+        Shell.copy(f"{shell_files}/../workflow-clean/{script}", ".")
         assert os.path.isfile(f"./{script}")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
@@ -93,9 +104,9 @@ def create_workflow(filename='workflow-clean.yaml'):
 class TestCleanWorkflow:
 
     def test_reset_experiment_dir(self):
-        os.system("rm -rf ~/experiment")
+        utilities.create_dest()
         exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
+        Shell.rmdir(exp)
 
         assert not os.path.exists(exp)
 
@@ -114,6 +125,7 @@ class TestCleanWorkflow:
     def test_show(self):
         HEADING()
         global w
+        os.chdir('..')
         w.graph.save(filename="workflow-clean.svg", colors="status",  engine="dot")
         Shell.open("workflow-clean.svg")
         # assert os.path.exists("~/tmp/test-dot.svg") == True
