@@ -1,3 +1,4 @@
+import posixpath
 import yaml
 import logging
 import threading
@@ -356,23 +357,44 @@ async def upload(directory: str = Query(None,
                 return {
                     "message": f"{expanded_dir_path} is not a valid dir path"}
             name = os.path.basename(expanded_dir_path)
-            try:
-                Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
-            except Exception as e:
-                print(e.output)
-            tar_location = Path(
-                Shell.map_filename(f'./{name}.tar').path).as_posix()
-
+            # try:
+            #     Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
+            # except Exception as e:
+            #     print(e.output)
+            # tar_location = Path(
+            #     Shell.map_filename(f'./{name}.tar').path).as_posix()
+            #
             runtime_directory = Path(path_expand(
                 f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
             yaml_location = path_expand(
                 f"~/.cloudmesh/workflow/{name}/{name}.yaml")
             Shell.mkdir(runtime_directory)
-            command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+            # command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+            #
+            # print(command)
+            # os.system(command)
+            # Shell.rm(f'{tar_location}')
+            expanded_dir_path = posixpath.join(expanded_dir_path, '')
+            #expanded_dir_path = Path(expanded_dir_path).as_posix()
 
-            print(command)
-            os.system(command)
-            Shell.rm(f'{tar_location}')
+            # these try excepts are needed in the case of a workflow with
+            # all py files! or all sh files! or all ipynb files!
+            try:
+                Shell.run(f'cp {expanded_dir_path}*.yaml {runtime_directory}')
+            except:
+                pass
+            try:
+                Shell.run(f'cp {expanded_dir_path}*.sh {runtime_directory}')
+            except:
+                pass
+            try:
+                Shell.run(f'cp {expanded_dir_path}*.py {runtime_directory}')
+            except:
+                pass
+            try:
+                Shell.run(f'cp {expanded_dir_path}*.ipynb {runtime_directory}')
+            except:
+                pass
             runtime_yaml_location = os.path.join(runtime_directory,
                                                  f'{name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
@@ -724,8 +746,18 @@ def watch_running_workflow(request: Request,
                                        "status_dict": count,
                                        "workflowlist": folders})
 
-@app.post("/workflow/{name}", tags=['workflow'])
-def add_job(name: str, job: Jobpy):
+@app.post("/add-job/{name}", tags=['workflow'])
+def add_job(name: str,
+            job: str,
+            user: str = None,
+            host: str = None,
+            kind: str = None,
+            status: str = None,
+            script: str = None,
+            exec: str = None,
+            progress: str = None,
+            label: str = None,
+            parent: str = None):
     """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
@@ -744,20 +776,19 @@ def add_job(name: str, job: Jobpy):
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-
-    w = load_workflow(name)
+    w = load_workflow(name=name)
 
     try:
-        w.add_job(name=job.name,
-                  user=job.user,
-                  host=job.host,
-                  label=job.label,
-                  kind=job.kind,
-                  status=job.status,
-                  progress=job.progress,
-                  script=job.script)
-        w.add_dependencies(f"{job.parent},{job.name}")
-        w.save_with_state(w.filename)
+        w.add_job(name=job,
+                  user=user,
+                  host=host,
+                  label=label,
+                  kind=kind,
+                  status=status,
+                  progress=int(progress),
+                  script=script)
+        w.add_dependencies(f"{parent},{job}")
+        w.save_with_state(w.runtime_filename)
     except Exception as e:
         print("Exception:", e)
 

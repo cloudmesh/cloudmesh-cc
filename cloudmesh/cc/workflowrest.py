@@ -1,32 +1,5 @@
-import io
-import time
-
-import graphviz
-import matplotlib.image as mpimg
-import networkx as nx
-import yaml
-from matplotlib import pyplot as plt
-from pprint import pprint
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.dotdict import dotdict
-from cloudmesh.common.parameter import Parameter
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.util import writefile
-from cloudmesh.common.util import readfile
-from pathlib import Path
-from yamldb import YamlDB
-from cloudmesh.cc.queue import Job
-from cloudmesh.common.console import Console
-from cloudmesh.common.DateTime import DateTime
-from cloudmesh.common.Printer import Printer
-from cloudmesh.common.util import banner
-import os
-from cloudmesh.common.systeminfo import os_is_linux
-from cloudmesh.common.systeminfo import os_is_mac
-from cloudmesh.common.systeminfo import os_is_windows
-import json
-from cloudmesh.cc.labelmaker import Labelmaker
 import requests
+
 
 class RESTWorkflow:
 
@@ -60,7 +33,7 @@ class RESTWorkflow:
         user = kwargs['user']
         host = kwargs['host']
         kind = kwargs['kind']
-        url = f'''http://127.0.0.1:8000/workflow/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
+        url = f'''http://127.0.0.1:8000/add-job/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
         if 'status' in kwargs:
             status = kwargs['status']
         else:
@@ -80,6 +53,8 @@ class RESTWorkflow:
             "status": status,
             "script": script
         }
+        print(url)
+
         # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
         # try:
         #     r = os.system(f'''curl -X 'POST' {url} -H 'accept: application/json'/''')
@@ -88,15 +63,22 @@ class RESTWorkflow:
         content = requests.post(url, json=my_dict)
         return content
 
-    def upload_workflow(self, file_path: str):
+    def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):
         """
 
         :return:
         """
         url = 'http://127.0.0.1:8000/upload'
-        files = {'file': open(file_path, 'rb')}
+        if directory:
+            url += f'?directory={directory}'
+        if archive:
+            url += f'?archive={directory}'
+        if yaml:
+            url += f'?yaml={directory}'
 
-        r = requests.post(url, files=files)
+        #files = {'file': open(file_path, 'rb')}
+
+        r = requests.post(url)
         return r
 
 
