@@ -138,6 +138,7 @@ class TestWorkflowSsh:
     #     print(w.graph)
 
     def test_experiment_setup(self):
+        create_dest()
         full_dir = Shell.map_filename('~/experiment').path
         try:
             r = Shell.run(f"rm -rf {full_dir}")

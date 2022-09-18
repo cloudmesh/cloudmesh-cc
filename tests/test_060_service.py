@@ -26,11 +26,11 @@ from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.variables import Variables
 from cloudmesh.common.systeminfo import os_is_windows
 from utilities import set_host_user
-from utilities import create_dest
+from utilities import create_dest, create_workflow_service
 
-create_dest()
+create_workflow_service()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 
 client = TestClient(app)
@@ -53,7 +53,8 @@ w = None
 def create_workflow(filename="workflow-service.yaml"):
     global w
     global username
-    w = Workflow(filename=filename, load=False)
+    create_workflow_service()
+    w = Workflow(name="workflow-service", load=False)
 
     localuser = Shell.sys_user()
     login = {
@@ -69,11 +70,16 @@ def create_workflow(filename="workflow-service.yaml"):
 
     jobkind="local"
 
+    shell_files = Path(f'{__file__}').as_posix()
+    runtime_dir = Path(Shell.map_filename(
+        '~/.cloudmesh/workflow/workflow-service/runtime').path).as_posix()
+    #os.chdir('workflow-service')
+    #Shell.mkdir('runtime')
     for script in ["start", "job-local-0", "job-local-1", "job-local-2",
                    "job-rivanna.hpc.virginia.edu-3",
                    "job-rivanna.hpc.virginia.edu-4",
                    "job-rivanna.hpc.virginia.edu-5", "end"]:
-        Shell.copy(f"../workflow-sh/{script}.sh", ".")
+        Shell.copy(f"{shell_files}/../workflow-sh/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
@@ -119,7 +125,7 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
-        workflow_yaml = Shell.map_filename('./workflow-service.yaml').path
+        #workflow_yaml = Shell.map_filename('./workflow-service.yaml').path
         workflow_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
         yaml_dir3 = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/workflow-service.yaml').path
         try:
@@ -129,11 +135,9 @@ class TestService:
         assert not os.path.exists(workflow_dir)
         w = create_workflow(filename="workflow-service.yaml")
 
-        print (w.filename)
-        os.system("pwd")
-
-        #w.save_with_state(filename=workflow_yaml)
-        w.save_with_state(filename=yaml_dir3)
+        w.save_with_state('workflow-service.yaml')
+        os.system('ls')
+        os.system('pwd')
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -157,8 +161,20 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        files = {"file": open("./workflow-service.yaml","rb")}
-        response = client.post("/upload",files=files)
+        #files = {"file": open("./workflow-service.yaml","rb")}
+        create_workflow()
+        os.chdir('..')
+        workflow_service_dir = path_expand(__file__)
+
+
+        workflow_service_dir = os.path.dirname(workflow_service_dir)
+        os.chdir(workflow_service_dir)
+        os.chdir('./workflow-service')
+        workflow_service_dir = os.getcwd()
+        #workflow_service_dir = Path(workflow_service_dir).as_posix()
+        workflow_service_dir = '~/cm/cloudmesh-cc/tests/workflow-service'
+
+        response = client.post(f"/upload?directory={workflow_service_dir}")
         Benchmark.Stop()
         assert response.status_code == 200
 
@@ -178,6 +194,9 @@ class TestService:
         Benchmark.Stop()
         assert response.status_code == 200
 
+    # this should be fixed since it overwrites the yaml thats supposed to stay
+    # original. in ~/.cloudmesh/workflow/workflow-service/workflow-service.yaml
+    # it changes thanks to this function test_add_job
     def test_add_job(self):
         HEADING()
         Benchmark.Start()

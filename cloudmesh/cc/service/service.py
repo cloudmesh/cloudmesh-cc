@@ -340,7 +340,7 @@ async def upload(directory: str = Query(None,
                  archive: str = Query(None,
                                       description='can be tgx, xz, tar.gz, '
                                                   'or tar'),
-                 yaml : str = Query(None,
+                 yaml: str = Query(None,
                                     description='yaml file for workflow')):
     from pathlib import Path
 
@@ -690,7 +690,7 @@ def watch_running_workflow(request: Request,
     runtime_yaml_file = yaml.safe_load(runtime_yaml_to_read)
     original_yaml_file = yaml.safe_load(original_yaml_to_read)
 
-    for job_name in runtime_yaml_file['workflow']['nodes'].keys():
+    for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
         #print(node_name)
         #print(w.graph.nodes.keys())
         if job_name not in original_yaml_file['workflow']['nodes']:

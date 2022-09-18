@@ -99,6 +99,7 @@ def create_workflow(filename='./workflow-local.yaml'):
     return w
 
 def remove_workflow():
+    create_dest()
     workflow_local_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-local').path
 
     # Remove experiment execution directory
