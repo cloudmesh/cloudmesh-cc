@@ -32,38 +32,64 @@ mnist files.
 #os.chdir(location)
 utilities.create_dest()
 
+name = "run"
+variables = Variables()
+
+host = "rivanna.hpc.virginia.edu"
+username = variables["username"]
+
+def create_workflow(filename='mnist.yaml'):
+    global w
+    global username
+    w = Workflow(filename=filename, load=False)
+
+    localuser = Shell.sys_user()
+    login = {
+        "localhost": {"user": f"{localuser}", "host": "local"},
+        "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"}
+    }
+
+    utilities.create_dest()
+    if os.path.isdir('./mnist'):
+        Shell.rmdir('./mnist')
+    Shell.mkdir('./mnist')
+    os.chdir('./mnist')
+    Shell.mkdir('./runtime')
+    os.chdir('./runtime')
+
+    # copy shell files
+    shell_files = Path(f'{__file__}').as_posix()
+
+    for script in ["prepare", "example_mlp_mnist", "end"]:
+        Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
+        assert os.path.isfile(f"./{script}.sh")
+    os.chdir('..')
+
+    label = "{name}\\nprogress={progress}"
+
+    w.add_job(name=f"prepare", label=label,  kind='ssh', user=username,
+              host=host)
+    w.add_job(name=f"example_mlp_mnist", label=label, kind='ssh', user=username,
+              host=host)
+    w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
+
+    w.add_dependencies(f"prepare,example_mlp_mnist")
+    w.add_dependencies(f"example_mlp_mnist,end")
+    w.graph.save_to_yaml("./mnist.yaml")
+    Shell.copy("./mnist.yaml", "./runtime/mnist.yaml")
+    g = str(w.graph)
+    print(g)
+    return w
 
 @pytest.mark.incremental
 class TestMnist:
 
     def test_mnist(self):
         HEADING()
-        utilities.create_dest()
-        if os.path.isdir('./mnist'):
-            Shell.rmdir('./mnist')
-        Shell.mkdir('./mnist')
-        os.chdir('./mnist')
-        Shell.mkdir('./runtime')
-        os.chdir('./runtime')
 
-        # copy shell files
-        shell_files = Path(f'{__file__}').as_posix()
-
-        for script in ["start", "prepare", "mlp_mnist", "example_mlp_mnist",
-                       "end"]:
-            Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
-            assert os.path.isfile(f"./{script}.sh")
-        os.chdir('..')
-        Shell.copy_file(f"{shell_files}/../mnist/source-mnist.yaml",
-                        "./mnist.yaml")
-        filename = Shell.map_filename("./mnist.yaml").path
-        r = Shell.ls()
-        pprint(r)
-
-        w = Workflow()
-        w.load(filename=filename)
+        w = create_workflow()
         print(w)
-        w.save(filename=filename)
         #w.load(filename=filename)
         w.display(name='mnist')
         w.run_topo(show=True)
+        w.remove_workflow()
