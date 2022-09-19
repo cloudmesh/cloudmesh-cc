@@ -2,12 +2,14 @@ import os
 from pathlib import Path
 
 import time
+import subprocess
 
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.util import readfile
+from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job:
@@ -27,40 +29,62 @@ class Job:
 
         self.data = argv
 
+        self.name = name
         self.username = username
         self.host = host
-        self.name = name
-        self.directory = directory
         self.label = label
+        self.directory = directory
+        self.exec = None
         self.script = None
 
         # print("self.data", self.data)
         for key, value in self.data.items():
             setattr(self, key, value)
 
-        if self.script is None:
-            self.filetype = 'os'
-        elif '.ipynb' in self.script:
-            self.filetype = 'ipynb'
-        elif '.sh' in self.script:
-            self.filetype = 'sh'
-        elif '.py' in self.script:
-            self.filetype = 'python'
-        else:
-            self.filetype = 'os'
-
         if self.name is None:
-            Console.error("Name is not defined")
-            raise ValueError
+            Console.error("Name is not defined", traceflag=True)
 
-        if self.username is None:
-            self.username = os.environ["USERNAME"]
+        has_extension = False
+        types = ['.sh', '.py', '.ipynb']
 
-        if self.host is None:
-            self.host = "localhost"
+        for file_extension in types:
+            if str(self.name).endswith(file_extension):
+                has_extension = True
+                self.filetype = file_extension
+                self.name = str(self.name).removesuffix(file_extension)
 
-        if self.directory is None:
-            self.directory = f'/c/Users/{self.username}/experiment/{self.name}'
+        if not has_extension:
+            self.filetype = '.sh'
+
+        self.username = self.username or Shell.user()
+        self.host = self.host or "localhost"
+        self.directory = self.directory or f'~/experiment/{self.name}'
+
+        self.kind = "local"
+        self.label = self.label or self.name
+
+        if self.script is None and self.exec is not None:
+            self.script = self.create_script(self.exec)
+
+        #if self.exec is None and self.script is None:
+        #    Console.warning("either exec or script must be set")
+
+    def script_type(self, name):
+        """
+        Uses the inputted name of script to return the
+        corresponding file extension that is run, such as
+        shell script, jupyter notebook, or python file
+        :param name: the name of the script
+        :return: file extension of script
+        :rtype: str
+        """
+        kind = "sh"
+        if name is None:
+            return kind
+        for kind in ["sh", "ipynb", "sh", "py"]:
+            if name.endswith(f".{kind}"):
+                return kind
+        return "os"
 
     def __str__(self):
         """
@@ -75,6 +99,9 @@ class Job:
             f"name:      {self.name}",
             f"label:     {self.label}",
             f"directory: {self.directory}",
+            f"filetype:  {self.filetype}",
+            f"script:    {self.script}",
+            f"exec:      {self.exec}",
             f"data:      {self.data}",
             f"locals     {locals()}"
         ]
@@ -98,11 +125,8 @@ class Job:
         :return: does not return anything
         :rtype: None
         """
-        try:
-            experimentdir = f"~/experiment/{self.name}"
-            Shell.mkdir(experimentdir)
-        except Exception as e:
-            Console.error(str(e), traceflag=True)
+        directory = Shell.map_filename(self.directory).path
+        Shell.mkdir(directory)
 
     # move from current directory to remote
     def sync(self):
@@ -112,16 +136,14 @@ class Job:
         :return: True or False depending on if file exists
         :rtype: bool
         """
-        print(self)
-        self.chmod()
         self.mkdir_experimentdir()
-        home = Path.home()
-        cwd = Path.cwd()
-        experimentdir = f"{home}/experiment/{self.name}"
-        destination = Path(f"{experimentdir}/{self.name}.sh")
-        source = Path(f"{cwd}/{self.name}.sh")
-        Shell.copy(source, destination)
-        return self.exists(f"{self.name}.sh")
+        self.chmod()
+        command = f"cp ./runtime/{self.name}{self.filetype} {self.directory}/."
+        print(command)
+        Shell.run(command)
+        os.system("sync")
+        r = os.system(command)
+        return r
 
     def chmod(self):
         """
@@ -131,12 +153,7 @@ class Job:
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
-        cwd = Path.cwd()
-        source = Path(f"{cwd}/{self.name}")
-        if self.filetype == "python":
-            command = f"chmod ug+rx {source}.py"
-        else:
-            command = f"chmod ug+rx {source}.sh"
+        command = f'chmod ug+rx ./runtime/{self.name}{self.filetype}'
         print(command)
         r = os.system(command)
         return r
@@ -150,9 +167,7 @@ class Job:
         :return: True if the file exists and False if it doesnt
         :rtype: bool
         """
-        home = Path.home()
-        path = f'{home}/experiment/{self.name}/{filename}'
-        return Path.exists(Path(path))
+        return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
     def run(self):
         """
@@ -165,7 +180,7 @@ class Job:
         """
         self.mkdir_experimentdir()
         # make sure executable is set
-        command = f'chmod a+x {self.name}.sh'
+        command = f'chmod a+x {self.name}{self.filetype}'
         os.system(command)
 
         home = Path.as_posix(Path.home())
@@ -183,11 +198,11 @@ class Job:
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && ./{self.name}.sh > {self.name}.log 2>&1 &"'
+                  f' && ./{self.name}{self.filetype} > {self.name}.log 2>&1 &"'
 
         command = f'wsl nohup sh -c' \
                   f' ". ~/.profile && cd {wsl_experimentdir}' \
-                  f' && /usr/bin/bash {self.name}.sh > {self.name}.log 2>&1 &"'
+                  f' && /usr/bin/bash {self.name}{self.filetype} > {self.name}.log 2>&1 &"'
 
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &" >&/dev/null'
         # command = f'wsl --cd  {experimentdir} nohup sh -c "./{self.name}.sh > ./{self.name}.log 2>&1 &"'
@@ -209,13 +224,14 @@ class Job:
         """
         content = None
         try:
-            source = path_expand(f'~/experiment/{self.name}/{self.name}.log')
+            source = f'~/experiment/{self.name}/{self.name}.log'
             destination = f"{self.name}.log"
-            Shell.run(f"rm -f {source} {destination}")
+            Shell.run(f"rm -f {destination}")
+            Shell.run(f"rm -f {source}")
         except Exception as e:
             Console.error(e, traceflag=True)
 
-    def get_log(self, verbose=False):
+    def get_log(self, refresh=True):
         """
         copy the log file and read the contents of the file to
         return the contents as a string
@@ -226,17 +242,14 @@ class Job:
         """
         content = None
         try:
-            logfile = f'~/experiment/{self.name}/{self.name}.log'
-            source = path_expand(logfile)
-            destination = f"{self.name}.log"
-            if verbose:
-                print("COPY", source, destination)
-            Shell.copy(source, destination)
-            content = readfile(destination)
-            if verbose:
-                print(content)
-        except Exception as e:
-            Console.error(e, traceflag=True)
+            if refresh:
+                command = f"cp {self.directory}/{self.name}.log ./runtime/{self.name}.log"
+                print(command)
+                os.system(command)
+                os.system("sync")  # tested and returns 0
+            content = readfile(f"runtime/{self.name}.log")
+        except:  # noqa: E722
+            pass
         return content
 
     def get_status(self, refresh=False):
@@ -249,14 +262,15 @@ class Job:
         :rtype: str
         """
         status = "undefined"
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.name}.log")
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            status = lines[-1].split("status=")[1]
-            status = status.split()[0]
+        try:
+            log = self.get_log(refresh=refresh)
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            if len(lines) > 0:
+                status = lines[-1].split("status=")[1]
+                status = status.split(" ")[0]
+        except:  # noqa: E722
+            pass
+
         return status
 
     def get_progress(self, refresh=False):
@@ -268,19 +282,21 @@ class Job:
         :return: value from 0 to 100 which reflects completeness of job
         :rtype: int
         """
-        if refresh:
-            log = self.get_log()
-        else:
-            log = readfile(f"{self.name}.log")
-        lines = Shell.find_lines_with(log, "# cloudmesh")
-        if len(lines) > 0:
-            try:
-                progress = lines[-1].split("progress=")[1]
-                progress = progress.split()[0]
-                return int(progress)
-            except:  # noqa: E722
-                return 0
-        return 0
+        progress = 0
+        try:
+            log = self.get_log(refresh=refresh).splitlines()
+            lines = Shell.find_lines_with(log, "# cloudmesh")
+            for i in range(len(lines)-1, -1, -1):
+                line = lines[i]
+                if "progress=" in line:
+                    progress = line.split("progress=")[1]
+                    progress = progress.split(' ',1)[0]
+                    progress = int(progress)
+                    return int(progress)
+        except Exception as e:  # noqa: E722
+            pass
+
+        return int(progress)
 
     def watch(self, period=2):
         """
@@ -293,14 +309,10 @@ class Job:
         :rtype: None
         """
         finished = False
-        banner("watch progress")
         while not finished:
-            try:
-                progress = int(self.get_progress(refresh=True))
-                print("Progress", progress)
-                finished = progress == 100
-            except:  # noqa: E722
-                print("Progress", "not found")
+            progress = int(self.get_progress(refresh=True))
+            print(f"Progress {self.name}:", progress)
+            finished = progress == 100
             if not finished:
                 time.sleep(period)
 
@@ -312,20 +324,16 @@ class Job:
         :return: the pid (process identifier)
         :rtype: str
         """
-        pid = None
-        try:
-            if refresh:
-                log = self.get_log()
-            else:
-                log = readfile(f"{self.name}.log")
-            lines = Shell.find_lines_with(log, "# cloudmesh")
-            if len(lines) > 0:
-                pid = lines[0].split("pid=")[1]
-                pid = pid.split()[0]
-                return pid
-        except:  # noqa: E722
-            pid = None
-        return pid
+        if refresh:
+            log = self.get_log()
+        else:
+            log = readfile(f"./runtime/{self.name}.log")
+        lines = Shell.find_lines_with(log, "# cloudmesh")
+        if len(lines) > 0:
+            pid = lines[0].split("pid=")[1]
+            pid = pid.split()[0]
+            return pid
+        return None
 
     def kill(self, period=1):
         """
@@ -339,10 +347,11 @@ class Job:
         #
         # find logfile
         #
-        logfile = f'~/experiment/{self.name}/{self.name}.log'
+        logfile = f'runtime/{self.name}.log'
         log = None
         while log is None:
             try:
+                self.get_log()
                 log = readfile(logfile)
                 lines = log.splitlines()
                 found = False
@@ -359,15 +368,39 @@ class Job:
         pid = None
         while pid is None:
             time.sleep(period)
-
             pid = self.get_pid(refresh=True)
 
+        print(pid.strip())
+        pid = str(pid).strip()
+        ps = subprocess.check_output('ps', shell=True, text=True)
+        print(ps)
+        r = None
+        # if os_is_windows():
+        #     rs = []
+        #     child = None
+        #     results = ps.splitlines()
+        #     for result in results:
+        #         rs.append(result.split())
+        #     print(rs)
+        #     for result in rs:
+        #         if result[1] == pid:
+        #             child = result[0]
+        #     try:
+        #         r = subprocess.check_output(fr'"%ProgramFiles%\Git\bin\bash.exe" -c "kill -9 {pid} {child}"', shell=True)
+        #         print(r)
+        #         #r = Shell.run(f'taskkill /PID {pid} /F')
+        #     except Exception as e:
+        #         print(e.output)
+        # else:
         command = f'wsl pgrep -P {pid}'
         child = Shell.run(command).strip()
         command = f'wsl kill -9 {pid} {child}'
-        r = Shell.run(command)
+        r = os.system(command)
+        r = os.system(f'wsl kill -9 {pid}')
+        r = os.system(f'wsl kill -9 {child}')
         Console.msg(f"Killing {pid} {child}")
-        if "No such process" in r:
+        print(r)
+        if "No such process" in str(r):
             Console.warning(
                 f"Process {pid} not found. It is likely it already completed.")
         return pid, child

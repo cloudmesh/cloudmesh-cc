@@ -46,7 +46,7 @@ class TestDbShelve:
         pprint(temperature)
         assert computers['temperature']['red'] == 80
         computers.close()
-        # Alison: note that this is the code for shelve database remove() method
+
         if os_is_windows():
             os.remove("computers.bak")
             os.remove("computers.dat")

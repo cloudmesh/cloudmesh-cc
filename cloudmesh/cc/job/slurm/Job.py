@@ -1,6 +1,5 @@
 import os
 
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
 import time
 import textwrap
 
@@ -152,7 +151,7 @@ class Job:
         """
         self.mkdir_experimentdir()
 
-        command = f'chmod ug+x ./{self.name}.sh'
+        command = f'chmod ug+x ./runtime/{self.name}.sh'
         os.system(command)
         command = f'ssh {self.username}@{self.host} ' \
                   f'"cd {self.directory} && {self.slurm.sbatch} ' \
@@ -160,6 +159,7 @@ class Job:
         print(command)
         state = None
         # state = os.system(f'{command} &')
+        r = None
         try:
             r = Shell.run(f'{command}')
             state = 0
@@ -246,10 +246,10 @@ class Job:
         content = None
         try:
             if refresh:
-                command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+                command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log ./runtime/{self.name}.log"
                 print(command)
                 os.system(command)
-            content = readfile(f"{self.name}.log")
+            content = readfile(f"./runtime/{self.name}.log")
         except:  # noqa: E722
             pass
         return content
@@ -264,7 +264,7 @@ class Job:
         self.clean()
         self.mkdir_experimentdir()
         self.chmod()
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        command = f"scp ./runtime/{self.name}.sh {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
@@ -278,9 +278,9 @@ class Job:
         :rtype: int
         """
         if self.filetype == "python":
-            command = f"chmod ug+rx ./{self.name}.py"
+            command = f"chmod ug+rx ./runtime/{self.name}.py"
         else:
-            command = f"chmod ug+rx ./{self.name}.sh"
+            command = f"chmod ug+rx ./runtime/{self.name}.sh"
         print(command)
         r = os.system(command)
         return r
@@ -358,7 +358,7 @@ class Job:
         # find logfile
         #
 
-        logfile = f'{self.name}.log'
+        logfile = f'runtime/{self.name}.log'
         log = None
         while log is None:
             try:

@@ -20,17 +20,17 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about">About</a>
+                            </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
+                                <a class="nav-link" href="contact">Contact</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
+                                <a class="nav-link" href="github.html">GitHub</a>
                             </li>
                         </ul>
                     </div>
@@ -38,7 +38,7 @@
             </nav>
 
 <div class="container">
-    Please send mail to laszewski at gmail.com
+    {{ html | safe }}
 </div>
 
 {% endblock %}

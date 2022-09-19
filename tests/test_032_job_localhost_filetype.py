@@ -4,11 +4,6 @@
 # pytest -v --capture=no  tests/test_032_job_localhost_filetype.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
-#
-# program needs pip install pywin32 -U in requirements if on the OS is Windows
-# TODO: check if pywin32 is the correct version
-#
-
 import os
 import shutil
 import subprocess
@@ -32,7 +27,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 
 @pytest.mark.incremental
@@ -40,7 +35,12 @@ class TestJobLocalhost:
 
     def test_sh(self):
         HEADING()
+        create_dest()
         from cloudmesh.cc.job.localhost.Job import Job
+        Shell.mkdir('job-localhost-filetype')
+        os.chdir('job-localhost-filetype')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         job = Job(name="hallo")
         print(job)
 
@@ -49,7 +49,7 @@ class TestJobLocalhost:
 
         exec = job.create(filename="c.sh",
                           exec="b.sh")
-        # print (script)
+        # print(script)
 
         banner("a.sh sh")
         a = Shell.cat("a.sh")
@@ -66,14 +66,14 @@ class TestJobLocalhost:
         HEADING()
         from cloudmesh.cc.job.localhost.Job import Job
         job = Job(name="hallo")
-        print (job)
+        print(job)
 
         script = job.create(filename="a.sh",
                             script="python a.py")
         exec = job.create(filename="b.sh",
                           exec="a.py")
 
-        #print (script)
+        #print(script)
 
 
         banner("a.sh python")
@@ -116,11 +116,23 @@ class TestJobLocalhost:
     def test_mnist(self):
         HEADING()
 
-        w = Workflow()
-        location = path_expand("../mnist/source-mnist-exec.yaml")
+        w = Workflow(name='mnist')
+        os.chdir(os.path.dirname(__file__))
+        location = path_expand("./mnist/source-mnist-exec.yaml")
 
         r = Shell.cat(location)
-        w.load(filename=location, clear=True)
+        w.load(filename=location)
+        create_dest()
+
+        Shell.mkdir('mnist')
+        os.chdir('mnist')
+        Shell.mkdir('./runtime')
+        os.chdir('./runtime')
+
+        shell_files = Path(f'{__file__}').as_posix()
+        for script in ["start", "mlp_mnist", "end"]:
+            Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
+        os.chdir('..')
 
         w.display()
 
@@ -128,4 +140,6 @@ class TestJobLocalhost:
 
         w.display()
         print(w.table)
+        create_dest()
+        Shell.rmdir('./job-localhost-filetype')
         # time.sleep(10)

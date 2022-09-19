@@ -1,6 +1,5 @@
 import os
-
-# from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
+import subprocess
 import time
 import textwrap
 
@@ -44,6 +43,17 @@ class Job:
         if self.name is None:
             Console.error("Name is not defined", traceflag=True)
 
+        has_extension = False
+        types = ['.sh', '.py', '.ipynb']
+
+        for file_extension in types:
+            if str(self.name).endswith(file_extension):
+                has_extension = True
+                self.filetype = file_extension
+                self.name = str(self.name).removesuffix(file_extension)
+
+        if not has_extension:
+            self.filetype = '.sh'
 
         self.username = self.username or Shell.user()
         self.host = self.host or "localhost"
@@ -51,7 +61,7 @@ class Job:
 
         self.kind = "local"
         self.label = self.label or self.name
-        self.filetype = self.script_type(self.name)
+        #self.filetype = self.script_type(self.name)
 
         if self.script is None and self.exec is not None:
             self.script = self.create_script(self.exec)
@@ -127,19 +137,57 @@ class Job:
         """
         self.mkdir_experimentdir()
 
-        command = f'chmod ug+x ./{self.name}.sh'
+        command = f'chmod ug+x ./runtime/{self.name}{self.filetype}'
         os.system(command)
         if os_is_windows():
 
-            command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
-            print(command)
-            state = os.system(command)
+            if self.filetype == ".py":
+                try:
+                    command = f'ssh {self.username}@{self.host} "cd {self.directory} ; python ./{self.name}.py > {self.name}.log 2>&1 &"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
+
+            elif self.filetype == ".ipynb":
+                try:
+                    command = f'ssh {self.username}@{self.host} "cd {self.directory} ; papermill ./{self.name}.ipynb > {self.name}.log 2>&1 &"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
+
+            else:
+                try:
+                    command = f'ssh {self.username}@{self.host} "cd {self.directory} ; nohup ./{self.name}.sh > {self.name}.log 2>&1 &"'
+                    print(command)
+                    r = subprocess.Popen(command, shell=True)
+                    state = 0
+                except Exception as e:
+                    print(e)
+                    state = 1
 
         else:
-            command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
-            # time.sleep(1)
-            print(command)
-            state = os.system(f'{command} &')
+
+            if self.filetype == ".py":
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} && python ./{self.name}.py > {self.name}.log 2>&1"'
+                print(command)
+                state = os.system(f'{command} &')
+
+            elif self.filetype == ".ipynb":
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} && papermill ./{self.name}.ipynb > {self.name}.log 2>&1"'
+                print(command)
+                state = os.system(f'{command} &')
+
+            else:
+                command = f'ssh {self.username}@{self.host} "cd {self.directory} && nohup ./{self.name}.sh > {self.name}.log 2>&1"'
+                print(command)
+                state = os.system(f'{command} &')
+
         log = self.get_log()
         return state, log
 
@@ -214,11 +262,11 @@ class Job:
         time.sleep(0.5)
         try:
             if refresh:
-                command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log {self.name}.log"
+                command = f"scp {self.username}@{self.host}:{self.directory}/{self.name}.log ./runtime/{self.name}.log"
                 print(command)
                 os.system(command)
                 os.system("sync")  # tested and returns 0
-            content = readfile(f"{self.name}.log")
+            content = readfile(f"runtime/{self.name}.log")
         except:  # noqa: E722
             pass
         return content
@@ -233,7 +281,7 @@ class Job:
         self.mkdir_experimentdir()
         self.chmod()
 
-        command = f"scp ./{self.name}.sh {self.username}@{self.host}:{self.directory}/."
+        command = f"scp ./runtime/{self.name}{self.filetype} {self.username}@{self.host}:{self.directory}/."
         print(command)
         r = os.system(command)
         return r
@@ -246,7 +294,7 @@ class Job:
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
-        command = f"chmod ug+rx ./{self.name}.sh"
+        command = f"chmod ug+rx ./runtime/{self.name}{self.filetype}"
         print(command)
         r = os.system(command)
         return r
@@ -297,7 +345,7 @@ class Job:
         if refresh:
             log = self.get_log()
         else:
-            log = readfile(f"{self.name}.log")
+            log = readfile(f"./runtime/{self.name}.log")
         lines = Shell.find_lines_with(log, "# cloudmesh")
         if len(lines) > 0:
             pid = lines[0].split("pid=")[1]
@@ -318,7 +366,7 @@ class Job:
         # find logfile
         #
 
-        logfile = f'{self.name}.log'
+        logfile = f'runtime/{self.name}.log'
         log = None
         while log is None:
             try:
