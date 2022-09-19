@@ -49,7 +49,7 @@ class TestJobLocalhost:
 
         exec = job.create(filename="c.sh",
                           exec="b.sh")
-        # print (script)
+        # print(script)
 
         banner("a.sh sh")
         a = Shell.cat("a.sh")
@@ -73,7 +73,7 @@ class TestJobLocalhost:
         exec = job.create(filename="b.sh",
                           exec="a.py")
 
-        #print (script)
+        #print(script)
 
 
         banner("a.sh python")
@@ -121,11 +121,18 @@ class TestJobLocalhost:
         location = path_expand("./mnist/source-mnist-exec.yaml")
 
         r = Shell.cat(location)
-        w.load(filename=location, clear=True)
+        w.load(filename=location)
         create_dest()
 
         Shell.mkdir('mnist')
         os.chdir('mnist')
+        Shell.mkdir('./runtime')
+        os.chdir('./runtime')
+
+        shell_files = Path(f'{__file__}').as_posix()
+        for script in ["start", "mlp_mnist", "end"]:
+            Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
+        os.chdir('..')
 
         w.display()
 

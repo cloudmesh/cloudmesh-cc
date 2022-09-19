@@ -38,7 +38,7 @@ class TestMnist:
 
     def test_mnist(self):
         HEADING()
-
+        utilities.create_dest()
         if os.path.isdir('./mnist'):
             Shell.rmdir('./mnist')
         Shell.mkdir('./mnist')
