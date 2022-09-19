@@ -179,18 +179,18 @@ class TestService:
         assert result.status_code == 200
         assert type(result.json()) == dict
 
-    # def test_add_node(self):
-    #     HEADING()
-    #     Benchmark.Start()
-    #     from cloudmesh.cc.workflowrest import RESTWorkflow
-    #     rest = RESTWorkflow()
-    #     result = rest.add_job(workflow_name='workflow-service', jobname='job01', user='jp', host='localhost', kind='local', script='c.sh')
-    #     from pprint import pprint
-    #     pprint(result.__dict__)
-    #     assert result.headers['content-type'] == 'text/plain; charset=utf-8'
-    #     assert result.status_code == 200
-    #     assert type(result.json()) == dict
-    #     Benchmark.Stop()
+    def test_add_node(self):
+        HEADING()
+        Benchmark.Start()
+        from cloudmesh.cc.workflowrest import RESTWorkflow
+        rest = RESTWorkflow()
+        result = rest.add_job(workflow_name='workflow-service', jobname='job01', user='jp', host='localhost', kind='local', script='c.sh', progress=4, status='ready')
+        from pprint import pprint
+        pprint(result.__dict__)
+        assert result.headers['content-type'] == 'application/json'
+        assert result.status_code == 200
+        assert type(result.json()) == dict
+        Benchmark.Stop()
 
     def test_get_workflow(self):
         HEADING()

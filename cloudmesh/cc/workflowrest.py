@@ -45,6 +45,12 @@ class RESTWorkflow:
         elif 'exec' in kwargs:
             exec = kwargs['exec']
             url += f'&exec={exec}'
+        if 'progress' in kwargs:
+            progress = kwargs['progress']
+            url += f'&progress={progress}'
+        if 'label' in kwargs:
+            label = kwargs['label']
+            url += f'&label={label}'
         my_dict = {
             "name": jobname,
             "user": user,
@@ -60,7 +66,7 @@ class RESTWorkflow:
         #     r = os.system(f'''curl -X 'POST' {url} -H 'accept: application/json'/''')
         # except Exception as e:
         #     print(e.output)
-        content = requests.post(url, json=my_dict)
+        content = requests.get(url)
         return content
 
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):

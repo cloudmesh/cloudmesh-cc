@@ -746,7 +746,7 @@ def watch_running_workflow(request: Request,
                                        "status_dict": count,
                                        "workflowlist": folders})
 
-@app.post("/add-job/{name}", tags=['workflow'])
+@app.get("/add-job/{name}", tags=['workflow'])
 def add_job(name: str,
             job: str,
             user: str = None,
@@ -779,16 +779,21 @@ def add_job(name: str,
     w = load_workflow(name=name)
 
     try:
-        w.add_job(name=job,
+        if type(progress) == str:
+            progress = int(progress)
+        w.add_job(filename=w.filename,
+                  name=job,
                   user=user,
                   host=host,
                   label=label,
                   kind=kind,
                   status=status,
-                  progress=int(progress),
+                  progress=progress,
                   script=script)
-        w.add_dependencies(f"{parent},{job}")
-        w.save_with_state(w.runtime_filename)
+        if parent:
+            w.add_dependencies(f"{parent},{job}")
+        w.save_with_state(w.filename)
+        w.save(w.filename)
     except Exception as e:
         print("Exception:", e)
 

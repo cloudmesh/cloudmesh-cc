@@ -200,13 +200,24 @@ class TestService:
     def test_add_job(self):
         HEADING()
         Benchmark.Start()
-        job = '{"name": "string","user": "string","host": "string","label": "string","kind": "string","status": "string","progress": 0,"script": "string","pid": 0,"parent": "string"}'
+        #job = '{"name": "string","user": "string","host": "string","label": "string","kind": "string","status": "string","progress": 0,"script": "string","pid": 0,"parent": "string"}'
+        job = "string"
+        user = "string"
+        host = "string"
+        label = "string"
+        kind = "string"
+        status = "string"
+        progress = 2
+        script = "string"
+
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/json'
         }
 
-        response = client.post("/workflow/workflow-service",data=job,headers=headers)
+        response = client.get(f"/add-job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
+        print(response)
+        print(response.text)
         assert response.ok
         Benchmark.Stop()
 
