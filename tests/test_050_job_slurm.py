@@ -67,7 +67,7 @@ class TestJobsSlurm:
         #find where this pytest is located
         pytest_dir = Path(os.path.dirname(Shell.map_filename(__file__).path)).as_posix()
         scripts_dir = f'{pytest_dir}/scripts/'
-
+        create_dest()
         Shell.mkdir('job_slurm')
         os.chdir('./job_slurm')
         Shell.mkdir('runtime')
@@ -222,7 +222,8 @@ class TestJobsSlurm:
         # child = job_kill.get_pid()
         # status = job_kill.get_status()
         # print("Status", status)
-        Benchmark.Stop()
+        create_dest()
+        Shell.rmdir('./job_slurm')
         # ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
         # banner(f"{ps}")
         # assert 'sleep 3600' not in ps

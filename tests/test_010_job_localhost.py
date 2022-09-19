@@ -274,5 +274,5 @@ class TestJobLocalhost:
         Benchmark.Stop()
 
     def test_remove_remnants(self):
-        os.chdir('..')
+        create_dest()
         Shell.rmdir('./job_localhost')

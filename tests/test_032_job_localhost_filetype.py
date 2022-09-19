@@ -140,4 +140,6 @@ class TestJobLocalhost:
 
         w.display()
         print(w.table)
+        create_dest()
+        Shell.rmdir('./job-localhost-filetype')
         # time.sleep(10)

@@ -211,6 +211,8 @@ class TestWorkflowSsh:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+        create_dest()
+        Shell.rmdir('./workflow-ssh')
 
     # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     # def test_run_parallel(self):
