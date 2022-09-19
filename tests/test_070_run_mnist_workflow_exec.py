@@ -92,4 +92,5 @@ class TestMnist:
         #w.load(filename=filename)
         w.display(name='mnist')
         w.run_topo(show=True)
-        w.remove_workflow()
+        utilities.create_dest()
+        Shell.rmdir('./mnist')
