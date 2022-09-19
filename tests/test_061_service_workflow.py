@@ -125,6 +125,7 @@ class TestService:
 
     def test_start_over(self):
         HEADING()
+        create_dest()
         Benchmark.Start()
         #workflow_yaml = Shell.map_filename('./workflow-service.yaml').path
         workflow_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-service/').path
