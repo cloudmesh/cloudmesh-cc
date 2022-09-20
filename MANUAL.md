@@ -123,7 +123,7 @@ be uploaded implicitly through the specification GUI. Navigate to
 ![Browser API GUI for Cloudmesh Compute Cluster](images/upload_api.png)
 
 Please click `Try it out`
-and then enter `/tmp/workflow-example/workflow-example.tar` in the
+and then enter `~/cm/cloudmesh-cc/workflow-example.tar` in the
 `archive` field and then click Execute.
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
@@ -132,7 +132,7 @@ click the workflow on the left side. Then click Run.
 ### Option 3: Upload via the Python API
 
 As we use a REST service, we can also easily upload the workflow through a
-Python enabled REST call. qWe will use Python requests to demonstrate this
+Python enabled REST call. We will use Python requests to demonstrate this
 upload feature.
 
 ```python
