@@ -230,4 +230,4 @@ by using the `exec` specification within the yaml.
 ## Run the workflow
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
-click the workflow on the left side. Then click Run.
+click the workflow-example on the left side. Then click Run.
