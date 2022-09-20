@@ -63,9 +63,9 @@ directory:
 
 
 ```bash
-mkdir -p /tmp/workflow
-cp tests/workflow-example/workflow-example.yaml /tmp/workflow
-cp tests/workflow-example/*.sh /tmp/workflow
+mkdir -p /tmp/workflow-example
+cp tests/workflow-example/workflow-example.yaml /tmp/workflow-example
+cp tests/workflow-example/*.sh /tmp/workflow-example
 ```
 
 We like you to inspect the example so you get an overview of how to define a workflow:
@@ -99,7 +99,7 @@ Before uploading a `tar` archive file, we must first create it
 using the previous example yaml and scripts that we copied.
 
 ```bash
-tar -C /tmp/workflow -cf workflow.tar .
+tar -C /tmp/workflow-example -cf workflow-example.tar .
 ```
 
 ### Option 1: Upload via `curl`
@@ -109,7 +109,7 @@ command as follows:
 
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/upload?archive=workflow.tar' \
+  'http://127.0.0.1:8000/upload?archive=workflow-example.tar' \
   -H 'accept: application/json' \
   -d ''
 ```
@@ -123,7 +123,7 @@ be uploaded implicitly through the specification GUI. Navigate to
 ![Browser API GUI for Cloudmesh Compute Cluster](images/upload_api.png)
 
 Please click `Try it out`
-and then enter `/tmp/workflow/workflow.tar` in the
+and then enter `/tmp/workflow-example/workflow-example.tar` in the
 `archive` field and then click Execute.
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
@@ -138,7 +138,7 @@ upload feature.
 ```python
 import requests
 
-r = requests.post('http://127.0.0.1:8000/upload?archive=workflow.tar')
+r = requests.post('http://127.0.0.1:8000/upload?archive=workflow-example.tar')
 print(r)
 print(r.text)
 ```
@@ -149,14 +149,14 @@ from the API, such as a success or error message.
 
 ### Option 4: Upload with a thrid party REST framework
 
-Naturally if you like to use a different REST API you can do so. YOu can also
-use different programming languages and we leave it upi to you to chose the
-framework of your chouce to interact with the REST service, popular chices are
-javascript, go, C/C++, matlab, and R, toname only a few.
+Naturally if you like to use a different REST API you can do so. You can also
+use different programming languages and we leave it up to you to choose the
+framework of your choice to interact with the REST service, popular choices are
+JavaScript, Go, C/C++, matlab, and R, to name a few.
 
 ## C. Upload a dir that contains workflow directory 
 
-To increase flexibility abd allow quick experiements users can can specify a
+To increase flexibility and allow quick experiments, users can specify a
 workflow directory which contains the yaml specification file and the scripts.
 This way, pre-archival of the directory is not needed. The program sets up the
 workflow by copying the necessary files from the specified directory.
@@ -171,7 +171,7 @@ line. On the command line execute:
 
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/upload?directory=/tmp/workflow' \
+  'http://127.0.0.1:8000/upload?directory=/tmp/workflow-example' \
   -H 'accept: application/json' \
   -d ''
 ```
@@ -182,7 +182,7 @@ Also here one cane upload the needed files with the OpenAPI specification
 interface on the service. Navigate to `http://127.0.0.1:8000/docs` and use the
 POST Upload method.
 
-Click `Try it out` and then enter `/tmp/workflow` 
+Click `Try it out` and then enter `/tmp/workflow-example` 
 in the directory field and then click Execute.
 
 To run, navigate to homepage at `http://127.0.0.1:8000/` and
@@ -198,7 +198,7 @@ of the workflow.
 ```python
 import requests
 
-r = requests.post('http://127.0.0.1:8000/upload?directory=/tmp/workflow')
+r = requests.post('http://127.0.0.1:8000/upload?directory=/tmp/workflow-example')
 print(r)
 print(r.text)
 ```
