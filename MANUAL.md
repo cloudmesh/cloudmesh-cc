@@ -144,7 +144,7 @@ Printing `r` returns the response code from the API (a code of
 200 indicates success). Printing `r.text` returns the message
 from the API, such as a success or error message.
 
-### Option 4: Upload with a thrid party REST framework
+### Option 4: Upload with a third party REST framework
 
 Naturally if you like to use a different REST API you can do so. You can also
 use different programming languages and we leave it up to you to choose the
