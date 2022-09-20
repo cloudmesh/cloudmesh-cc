@@ -57,7 +57,7 @@ cms cc start --reload
 
 ## Creating a simple example
 
-First let us create a simple workflow example, tht we already have included for
+First let us create a simple workflow example that we already have included for
 you in our source code. We will use this workflow and copy it into a temporary
 directory:
 
@@ -126,9 +126,6 @@ Please click `Try it out`
 and then enter `~/cm/cloudmesh-cc/workflow-example.tar` in the
 `archive` field and then click Execute.
 
-To run, navigate to homepage at `http://127.0.0.1:8000/` and
-click the workflow on the left side. Then click Run.
-
 ### Option 3: Upload via the Python API
 
 As we use a REST service, we can also easily upload the workflow through a
@@ -185,10 +182,6 @@ POST Upload method.
 Click `Try it out` and then enter `/tmp/workflow-example` 
 in the directory field and then click Execute.
 
-To run, navigate to homepage at `http://127.0.0.1:8000/` and
-click the workflow on the left side. Then click Run.
-
-
 ### Option 3: Upload via the Python API
 
 Accessing the upload from the Pythin API is very easy.
@@ -234,3 +227,7 @@ file by itself allows for a script specified by the yaml
 to be uploaded later. The yaml can even work without scripts
 by using the `exec` specification within the yaml.
 
+## Run the workflow
+
+To run, navigate to homepage at `http://127.0.0.1:8000/` and
+click the workflow on the left side. Then click Run.
