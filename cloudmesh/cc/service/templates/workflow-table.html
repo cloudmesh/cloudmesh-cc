@@ -5,9 +5,33 @@
 {% block head %}
 {{ super() }}
 
+
 {% endblock %}
 
+
 {% block page_content %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+    var table = $('#example').DataTable({
+        lengthMenu: [
+            [-1, 10, 25, 50],
+            ['All', 10, 25, 50],
+        ],
+    });
+        $('a.toggle-vis').on('click', function (e) {
+        e.preventDefault();
+
+        // Get the column API object
+        var column = table.column($(this).attr('data-column'));
+
+        // Toggle the visibility
+        column.visible(!column.visible());
+    });
+});
+
+
+</script>
         <!-- Page Content  -->
         <div id="content">
 
@@ -26,24 +50,106 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
+                            <li><b class="btn badge-light"> Jobs</i> </b>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
+                            &nbsp;
+                            <li>
+
+                                <button type="button" class="btn badge-danger btn-sm">
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
+                                </button>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-success btn-sm">
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
+                                </button>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
+                            &nbsp;
+                            <li>
+                            <button type="button" class="btn badge-info btn-sm">
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
+                            </button>
                             </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-warning btn-sm">
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-light btn-sm">
+                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light">{{ status_dict['ready'] }}</span>
+                            </button>
+                            </li>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-secondary btn-sm">
+                                    <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
+                                </button>
+                            </li>
+
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <li>
+                             <b class="btn badge-light btn-sm"> Workflow </b>
+                            </li>
+                            <li>
+                                <button type="button" class="btn badge-secondary btn-sm">
+                                    <a href="/workflow-graph/{{ name_of_workflow }}">
+
+                                        <small><i class="fa fa-share-alt" aria-hidden="true"></i>   Graph</small></a>
+
+                                </button>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-success btn-sm">
+                                    <a href="/run/{{ name_of_workflow }}"><small><i class="fa fa-rocket" aria-hidden="true"></i> &nbsp; Run</small></a>
+                            </button>
+                           </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-info btn-sm">
+                                <small><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp; Update</small>
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-danger btn-sm">
+                                <small><i class="fa fa-ban" aria-hidden="true"></i> &nbsp; Stop</small>
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <!-- reset does stop, then empties out runtime -->
+                            <!-- dir, copies original workflow into runtime -->
+                            <!-- dir, and report back that its done. -->
+                            <!-- popup yes/no choice in bootstrap -->
+                            <li>
+                            <button type="button" class="btn badge-danger btn-sm">
+                                <small><i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; Reset</small>
+                            </button>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
             </nav>
 
-<div class="container">
+
+<div class="container col-12">
+    <style>
+        a{
+            cursor: pointer;
+        }
+    </style>
+    <h2>{{ name_of_workflow }}</h2>
+    Toggle column: <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> - <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> - <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> - <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> - <a class="toggle-vis" data-column="4"><b style="color:#293C89">Script</b></a>
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -57,7 +163,7 @@
             <tbody>
                 {% for job, items in dictionary.items() %}
                 <tr>
-                    <td>{{items['no']}}</td>
+                    <td>{{items['number']}}</td>
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>
@@ -67,17 +173,16 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>{{ name_of_workflow }}</th>
+
                 </tr>
             </tfoot>
         </table>
+
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-
-
+                
 {% endblock %}
