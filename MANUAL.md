@@ -15,9 +15,9 @@ The status of the execution can be displayed as table or as graph.
 In Figure 1, we showcase how the graph changes its appearance over time.
 
 
-| Step 0             |                        Step 0.5                         |                        Step 1                         |                         Step 2                          |                           Step 3                           |
-:-------------------------:|:-------------------------------------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|
-| Definition             |                   Running first task                    |                  Finished first task                  |                  Finished second task                   |                     Completed workflow                     |
+|                             Step 0                             |                        Step 0.5                         |                        Step 1                         |                         Step 2                          |                           Step 3                           |
+|:--------------------------------------------------------------:|:-------------------------------------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|
+|                           Definition                           |                   Running first task                    |                  Finished first task                  |                  Finished second task                   |                     Completed workflow                     |
 | ![A graph of an example workflow](images/workflow-example.svg) | ![fetch-data finished](images/workflow-example-1.5.svg) | ![fetch-data finished](images/workflow-example-2.svg) | ![compute node finished](images/workflow-example-3.svg) | ![Entire workflow finished](images/workflow-example-5.svg) |
 
 **Figure 1:** Execution and display graph of an example workflow over time
