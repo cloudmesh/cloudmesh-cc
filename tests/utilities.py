@@ -17,8 +17,17 @@ def set_host_user():
     return host, username
 
 def create_dest():
+    # os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    #
+    # Shell.rmdir("dest")
+    # Shell.mkdir("dest")
+    expanded_path = Shell.map_filename('~/.cloudmesh/workflow').path
+    os.chdir(expanded_path)
+
+def create_workflow_service():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-    Shell.rmdir("dest")
-    Shell.mkdir("dest")
-    os.chdir("dest")
+    if os.path.isdir('./workflow-service'):
+        Shell.rmdir("./workflow-service")
+    Shell.mkdir("./workflow-service")
+    os.chdir("./workflow-service")

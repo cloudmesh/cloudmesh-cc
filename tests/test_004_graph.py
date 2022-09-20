@@ -28,6 +28,15 @@ g = Graph()
 @pytest.mark.incremental
 class TestGraph:
 
+    def test_remove_remnants(self):
+        HEADING()
+        global g
+        Benchmark.Start()
+        workflow_ab_dir = Path(Shell.map_filename('./workflow-a-b').path).as_posix()
+        if os.path.isdir(workflow_ab_dir):
+            Shell.rmdir(workflow_ab_dir)
+        Benchmark.Stop()
+
     def test_create(self):
         HEADING()
         global g
@@ -137,7 +146,8 @@ class TestGraph:
         Benchmark.Start()
         print(g.colors)
         # g.show(colors="status", layout=nx.circular_layout, engine="networkx")
-
+        Shell.mkdir('./workflow-a-b')
+        os.chdir('./workflow-a-b')
         g.save(filename="test-graphviz.svg", colors="status", layout=nx.circular_layout, engine="graphviz")
         g.save(filename="test-dot.dot", colors="status", layout=nx.circular_layout, engine="dot")
         g.save(filename="test-dot.svg", colors="status", layout=nx.circular_layout, engine="dot")
@@ -145,9 +155,9 @@ class TestGraph:
         r = Shell.cat("test-dot.dot")
         print(r)
 
-        print ("display test-graphviz.svg")
+        print("display test-graphviz.svg")
         Shell.open('test-graphviz.svg')
-        print ("display test-dot.svg")
+        print("display test-dot.svg")
         Shell.open('test-dot.svg')
 
         Benchmark.Stop()
@@ -168,7 +178,9 @@ class TestGraph:
         g = Graph()
         g.clear()
         banner("load workflow-a-b.yaml")
-        Shell.copy_file("../workflows/workflow-a-b.yaml", "../dest/workflow-a-b.yaml", verbose=True)
+        location_of_ab_yaml = Path(Shell.map_filename(__file__).path).as_posix()
+        location_of_ab_yaml = Path(f"{location_of_ab_yaml}/../workflows/workflow-a-b.yaml").as_posix()
+        Shell.copy_file(location_of_ab_yaml, "workflow-a-b.yaml", verbose=True)
         g.load(filename="workflow-a-b.yaml")
         print (g)
         assert g.nodes != {}
@@ -184,10 +196,10 @@ class TestGraph:
         g.load(filename="workflow-a-b.yaml")
         # save
         Shell.rm("tmp-a.yaml")
-        g.save_to_file("tmp-a.yaml")
+        g.save_to_yaml("tmp-a.yaml")
         banner("load tmp-a.yaml")
         r = Shell.cat("tmp-a.yaml")
-        print (r)
+        print(r)
         assert g.nodes != {}
         assert g.edges != {}
         assert "a-b" in g.edges
@@ -201,18 +213,58 @@ class TestGraph:
         g.load(filename="workflow-a-b.yaml")
         # save
         Shell.rm("tmp-a.yaml")
-        g.save_to_file("tmp-a.yaml", exclude=None)
+        g.save_to_yaml("tmp-a.yaml", exclude=None)
         banner("load tmp-a.yaml")
         r = Shell.cat("tmp-a.yaml")
-        print (r)
+        print(r)
         assert "parent" in r
         assert g.nodes != {}
         assert g.edges != {}
         assert "a-b" in g.edges
         assert "b-c" in g.edges
 
+    def test_save_full(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        order = g.get_topological_order()
+        print(order)
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
 
-class a:
+    def test_save_full_2(self):
+        HEADING()
+        g = Graph()
+        g.clear()
+        banner("load workflow-a-b.yaml")
+        g.load(filename="workflow-a-b.yaml")
+        # save
+        for n in g.nodes:
+            g.nodes[n]["number"] = None
+        g.save_to_yaml("tmp-a.yaml")
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print(r)
+        order = g.create_topological_order()
+
+
+        g.save_to_yaml("tmp-a.yaml")
+        banner("load tmp-a.yaml")
+        r = Shell.cat("tmp-a.yaml")
+        print(r)
+        print("Order", order)
+
+        assert g.nodes != {}
+        assert g.edges != {}
+        assert "a-b" in g.edges
+        assert "b-c" in g.edges
+        assert order == ['a', 'b', 'c']
+
     def test_benchmark(self):
         HEADING()
         StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

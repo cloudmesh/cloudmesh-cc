@@ -1,0 +1,127 @@
+{% set workflowslist = workflowlist %}
+{% extends "base.html" %}
+
+{% block title %}cloudmesh-cc{% endblock %}
+{% block head %}
+{{ super() }}
+
+
+{% endblock %}
+
+
+{% block page_content %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#example').DataTable({
+        lengthMenu: [
+            [-1, 10, 25, 50],
+            ['All', 10, 25, 50],
+        ],
+    });
+});
+
+
+</script>
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li><b class="btn badge-light"> Jobs </b>
+                            </li>
+                            &nbsp;
+                            <li>
+
+                                <button type="button" class="btn badge-danger">
+                                    Failed <span class="badge badge-light">4</span>
+                                </button>
+                            </li>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-success">
+                                    Completed <span class="badge badge-light">3</span>
+                                </button>
+                            </li>
+                            &nbsp;
+                            <li>
+                            <button type="button" class="btn badge-info">
+                                Running <span class="badge badge-light">3</span>
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-warning">
+                                Submitted <span class="badge badge-light">3</span>
+                            </button>
+                            </li>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-secondary">
+                                    Add
+                                </button>
+                            </li>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <li>
+                             <b class="btn badge-light"> Workflow </b>
+                            </li>
+                            <li>
+                                <button type="button" class="btn badge-secondary" href="workflow-graph.html">
+                                Graph
+                            </button>
+                            &nbsp;
+                            <li>
+                                <button type="button" class="btn badge-success">
+                                Run
+                            </button>
+                           </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-info">
+                                Update
+                            </button>
+                            </li>
+                            &nbsp;
+
+                            <li>
+                            <button type="button" class="btn badge-danger">
+                                x Stop
+                            </button>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+<div class="container col-12">
+    {{name}} Graph
+    <br>
+    <object data="../../../../images/fastapi-service.png" width="300" height="300"> </object>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+                
+{% endblock %}

@@ -95,19 +95,30 @@ class TestJobsSsh:
 
 
     def test_create_run(self):
-        os.system("rm -r ~/experiment")
-        exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
+        experiment_dir = path_expand('~/experiment')
+        Shell.rmdir(experiment_dir)
+
+        #find where this pytest is located
+        pytest_dir = Path(os.path.dirname(Shell.map_filename(__file__).path)).as_posix()
+        scripts_dir = f'{pytest_dir}/scripts/'
+
+        Shell.mkdir('job_localhost')
+        os.chdir('./job_localhost')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         for script in [run_job, wait_job]:
-            os.system(f"cp ../scripts/{script}.sh .")
+            Shell.copy(f'{scripts_dir}{script}.sh', '.')
+            #os.system(f"cp {scripts_dir}{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
-        assert not os.path.isfile(exp)
+        assert not os.path.isfile(experiment_dir)
 
     def test_create(self):
         HEADING()
         global job
         global username
         global host
+
+        os.chdir('..')
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)

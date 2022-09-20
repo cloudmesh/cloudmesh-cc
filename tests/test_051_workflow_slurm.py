@@ -4,6 +4,7 @@
 # pytest -v --capture=no  tests/test_051_workflow_slurm.py::TestWorkflowSlurm::<METHODNAME>
 ###############################################################
 import os
+import time
 from pathlib import Path
 from subprocess import STDOUT, check_output
 
@@ -23,7 +24,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 
 
@@ -60,7 +61,7 @@ wait_job = f"wait-slurm"
 w = None
 
 
-def create_workflow(filename='workflow.yaml'):
+def create_workflow(filename='workflow-slurm.yaml'):
     global w
     global username
     w = Workflow(filename=filename, load=False)
@@ -79,9 +80,14 @@ def create_workflow(filename='workflow.yaml'):
 
     jobkind = 'slurm'
 
+    shell_files = Path(f'{__file__}').as_posix()
+    runtime_dir = Path(Shell.map_filename(
+        '~/.cloudmesh/workflow/workflow-slurm/runtime').path).as_posix()
+    os.chdir('workflow-slurm')
+
     for script in ["start", "end"]:
-        Shell.copy(f"../workflow-slurm/{script}.sh", ".")
-        assert os.path.isfile(f"./{script}.sh")
+        Shell.copy(f"{shell_files}/../workflow-slurm/{script}.sh", runtime_dir)
+        assert os.path.isfile(f"./runtime/{script}.sh")
         w.add_job(name=script, kind=jobkind, user=user, host=host)
 
     for host, kind in [("rivanna", "slurm")]:
@@ -91,7 +97,7 @@ def create_workflow(filename='workflow.yaml'):
 
         print(n)
         w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-        Shell.copy(f"../workflow-slurm/slurm.sh", ".")
+        Shell.copy(f"{shell_files}/../workflow-slurm/slurm.sh", runtime_dir)
         # os.system(f"cp ./workflow-slurm/job-{host}-{n}.sh .")
         n = n + 1
 
@@ -105,19 +111,17 @@ def create_workflow(filename='workflow.yaml'):
     assert "name: start" in g
     return w
 
-def remove_workflow(filename="workflow.yaml"):
+def remove_workflow(filename="workflow-slurm.yaml"):
     # Remove workflow source yaml filr
     Shell.rm(filename)
 
     # Remove experiment execution directory
     full_dir = Shell.map_filename('~/experiment').path
 
-    # TODO:
-    # r = Shell.rmdir(full_dir)
-    r = Shell.run(f"rm -fr {full_dir}")
+    Shell.rmdir(full_dir)
 
-    # remove locat workflow file, for state notification
-    Shell.run("rm -rf ~/.cloudmesh/workflow")
+    workflow_slurm_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-slurm').path
+    Shell.rmdir(workflow_slurm_dir)
 
     # logic
     # 1. copy testsdef remove_workflow(filename="workflow.yaml"):
@@ -126,10 +130,6 @@ def remove_workflow(filename="workflow.yaml"):
     #
     #     # Remove experiment execution directory
     #     full_dir = Shell.map_filename('~/experiment').path
-    #
-    #     # TODO:
-    #     # r = Shell.rmdir(full_dir)
-    #     r = Shell.run(f"rm -fr {full_dir}")
     #
     #     # remove locat workflow file, for state notification
     #     Shell.rm("~/.cloudmesh/workflow")
@@ -167,8 +167,6 @@ def remove_workflow(filename="workflow.yaml"):
     for filename in [
             'scripts/workflow.yaml',
             '~/experiment',
-            "~/.cloudmesh/workflow/workflow",
-            "~/.cloudmesh/workflow/workflow/workflow.yaml"
         ]:
             where = Shell.map_filename(filename).path
             assert not os.path.exists(where)
@@ -196,7 +194,7 @@ class TestWorkflowSlurm:
         global username
         Benchmark.Start()
         # w = Workflow()
-
+        create_dest()
         w = create_workflow("workflow-slurm.yaml")
 
         Benchmark.Stop()
@@ -251,6 +249,7 @@ class TestWorkflowSlurm:
     def test_delete_remnants(self):
         HEADING()
         Benchmark.Start()
+        time.sleep(2)
         remove_workflow("workflow-slurm.yaml")
 
         Benchmark.Stop()

@@ -18,7 +18,7 @@ from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.variables import Variables
-from utilities import create_dest
+from utilities import create_dest, set_host_user
 
 create_dest()
 
@@ -32,25 +32,15 @@ variables = Variables()
 
 name = "run"
 
-# host, username = set_host_user()
-
-if "host" not in variables:
-    host = "rivanna.hpc.virginia.edu"
-else:
-    host = variables["host"]
-
-if "username" in variables:
-    username = variables["username"]
-else:
-    username = os.path.basename(os.environ["HOME"])
+host, username = set_host_user()
 
 w = None
 
 
-def create_workflow(filename='./workflow.yaml'):
+def create_workflow(filename='./workflow-local.yaml'):
     global w
     global username
-    w = Workflow(filename=filename, load=False)
+    w = Workflow(name='workflow-local', load=False)
 
     localuser = Shell.sys_user()
     login = {
@@ -83,7 +73,7 @@ def create_workflow(filename='./workflow.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+        label = "debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
         label_format = label
         w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1
@@ -108,19 +98,17 @@ def create_workflow(filename='./workflow.yaml'):
     assert "start-job-rivanna.hpc.virginia.edu-3:" in g
     return w
 
-def remove_workflow(filename="workflow.yaml"):
-    # Remove workflow source yaml filr
-    Shell.rm(filename)
+def remove_workflow():
+    create_dest()
+    workflow_local_dir = Shell.map_filename('~/.cloudmesh/workflow/workflow-local').path
 
     # Remove experiment execution directory
     full_dir = Shell.map_filename('~/experiment').path
 
-    # TODO:
-    # r = Shell.rmdir(full_dir)
-    r = Shell.run(f"rm -fr {full_dir}")
+    Shell.rmdir(full_dir)
 
     # remove locat workflow file, for state notification
-    Shell.run("rm -rf ~/.cloudmesh/workflow")
+    Shell.rmdir(workflow_local_dir)
 
     # logic
     # 1. copy testsdef remove_workflow(filename="tests/workflow.yaml"):
@@ -168,10 +156,9 @@ def remove_workflow(filename="workflow.yaml"):
     # maybe we just simplify and do not copy and keep it in .cloudmesh ... or experiment
 
     for filename in [
-            './scripts/workflow.yaml',
             '~/experiment',
-            "~/.cloudmesh/workflow/workflow",
-            "~/.cloudmesh/workflow/workflow/workflow.yaml"
+            "~/.cloudmesh/workflow/workflow-local",
+            "~/.cloudmesh/workflow/workflow-local/workflow-local.yaml"
         ]:
             where = Shell.map_filename(filename).path
             assert not os.path.exists(where)
@@ -181,75 +168,43 @@ banner("TEST START")
 
 
 class TestWorkflowLocal:
-
-
-    def test_load_workflow(self):
+    def test_single_test(self):
         HEADING()
         global w
 
+        remove_workflow()
 
-        Benchmark.Start()
-        remove_workflow(filename="workflow.yaml")
+        #reset
+        Shell.rmdir('./workflow-local')
 
-        w0 = create_workflow()
-        w0.save('workflow.yaml')
+        Shell.mkdir('./workflow-local')
+        os.chdir('./workflow-local')
 
-        w = Workflow()
-        w.load(filename='workflow.yaml')
+        # write a yaml file
+        w = create_workflow()
 
-        Benchmark.Stop()
+        # copy shell files
+        shell_files = Path(f'{__file__}').as_posix()
+        runtime_dir = Path(Shell.map_filename(
+            '~/.cloudmesh/workflow/workflow-local/runtime').path).as_posix()
+        try:
+            Shell.run(f'cp {shell_files}/../workflow-sh/*.sh {runtime_dir}')
+        except Exception as e:
+            print(e.output)
+
         g = str(w.graph)
         print(g)
 
-        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow/workflow.yaml")
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow-local/workflow-local.yaml")
         assert "start" in g
         assert "host: local" in g
-
-    def test_reset_experiment_dir(self):
-        os.system("rm -rf ~/experiment")
-        exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
-
-        os.system('cp ../workflow-sh/*.sh .')
-        assert not os.path.isfile(exp)
-
-        banner("pwd")
-        os.system("pwd")
-
-    def test_set_up(self):
-        """
-        establishing a queues object, saving 2 queues to it, each with 10 jobs
-        :return: no return
-        """
-        HEADING()
-        global w
-
-        Benchmark.Start()
-        remove_workflow(filename="workflow.yaml")
-        w = create_workflow()
-        Benchmark.Stop()
-        g = str(w.graph)
-        print(g)
-        assert "name: start" in g
-        assert "start-job-rivanna.hpc.virginia.edu-3:" in g
-
-        print (w.filename)
 
     def test_show(self):
         HEADING()
         global w
-        if os_is_windows():
-            try:
-                w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
-            except Exception as e:
-                print(e)
-        else:
-            w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
+        w.graph.save(filename="test-dot.svg", colors="status", engine="dot")
         # Shell.browser("test-dot.svg")
-        if os_is_windows():
-            os.path.exists("test-dot.svg")
-        else:
-            os.path.exists("test-dot.svg")
+        os.path.exists("test-dot.svg")
 
     def test_get_node(self):
         HEADING()
@@ -288,9 +243,9 @@ class TestWorkflowLocal:
 
     def test_run_topo(self):
         HEADING()
-        w = create_workflow()
+        global w
         Benchmark.Start()
-        w.run_topo(show=True, filename="r-topo.svg")
+        w.run_topo(show=True)
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
@@ -299,6 +254,66 @@ class TestWorkflowLocal:
             assert node["progress"] == 100
             assert node["parent"] == []
             assert node["status"] == "done"
+
+    def test_benchmark(self):
+        HEADING()
+        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")
+
+
+class b:
+    def test_load_workflow(self):
+        HEADING()
+        global w
+
+
+        Benchmark.Start()
+        remove_workflow(filename="workflow-local.yaml")
+
+        w0 = create_workflow()
+        w0.save('workflow-local.yaml')
+
+        w = Workflow(name='workflow-local')
+        w.load(filename='workflow-local.yaml')
+
+        Benchmark.Stop()
+        g = str(w.graph)
+        print(g)
+
+        assert w.filename == path_expand("~/.cloudmesh/workflow/workflow-local/workflow-local.yaml")
+        assert "start" in g
+        assert "host: local" in g
+
+    def test_reset_experiment_dir(self):
+        HEADING()
+        os.system("rm -rf ~/experiment")
+        exp = path_expand("~/experiment")
+        shutil.rmtree(exp, ignore_errors=True)
+        shell_files = Path(f'{__file__}').as_posix()
+        runtime_dir = Path(Shell.map_filename('~/.cloudmesh/workflow/workflow-local/runtime').path).as_posix()
+        os.system(f'cp {shell_files}/../workflow-sh/*.sh {runtime_dir}')
+        assert not os.path.isfile(exp)
+
+        banner("pwd")
+        os.system("pwd")
+
+    def test_set_up(self):
+        """
+        establishing a queues object, saving 2 queues to it, each with 10 jobs
+        :return: no return
+        """
+        HEADING()
+        global w
+
+        Benchmark.Start()
+        remove_workflow(filename="workflow-local.yaml")
+        w = create_workflow()
+        Benchmark.Stop()
+        g = str(w.graph)
+        print(g)
+        assert "name: start" in g
+        assert "start-job-rivanna.hpc.virginia.edu-3:" in g
+
+        print (w.filename)
 
     # def test_run_parallel(self):
     #     HEADING()
@@ -312,7 +327,3 @@ class TestWorkflowLocal:
     #         assert node["progress"] == 100
     #         assert node["parent"] == []
     #         assert node["status"] == "done"
-
-    def test_benchmark(self):
-        HEADING()
-        StopWatch.benchmark(sysinfo=False, tag="cc-db", user="test", node="test")

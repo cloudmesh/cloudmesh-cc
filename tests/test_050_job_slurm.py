@@ -24,7 +24,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
@@ -60,11 +60,21 @@ wait_job = f"wait-slurm"
 class TestJobsSlurm:
 
     def test_create_run(self):
-        os.system("rm -r ~/experiment")
+        #remove remnants
         exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
+        Shell.rmdir(exp)
+
+        #find where this pytest is located
+        pytest_dir = Path(os.path.dirname(Shell.map_filename(__file__).path)).as_posix()
+        scripts_dir = f'{pytest_dir}/scripts/'
+        create_dest()
+        Shell.mkdir('job_slurm')
+        os.chdir('./job_slurm')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         for script in [run_job, wait_job]:
-            os.system(f"cp ../scripts/{script}.sh .")
+            Shell.copy(f'{scripts_dir}{script}.sh', '.')
+            #os.system(f"cp {scripts_dir}{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -73,6 +83,8 @@ class TestJobsSlurm:
         global job
         global username
         global host
+
+        os.chdir('..')
         Benchmark.Start()
         name = f"run-slurm"
         job = Job(name=name, host=host, username=username)
@@ -103,7 +115,6 @@ class TestJobsSlurm:
         global job_id
         job = Job(name=f"run-slurm", host=host, username=username)
         job.sync()
-
         s, job_id = job.run()
         # give it some time to complete
         # time.sleep(7)
@@ -211,7 +222,8 @@ class TestJobsSlurm:
         # child = job_kill.get_pid()
         # status = job_kill.get_status()
         # print("Status", status)
-        Benchmark.Stop()
+        create_dest()
+        Shell.rmdir('./job_slurm')
         # ps = subprocess.check_output(f'ps -aux', shell=True, text=True).strip()
         # banner(f"{ps}")
         # assert 'sleep 3600' not in ps

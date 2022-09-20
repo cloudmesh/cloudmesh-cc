@@ -1,0 +1,52 @@
+workflow:
+  nodes:
+    start:
+      label: start
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: start
+    end:
+      label: end
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: end
+    fetch-data:
+      label: '{name}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data
+    compute:
+      label: '{name}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: compute
+    analyze:
+      label: '{name}\nprogress={progress}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: analyze
+  dependencies:
+      - start,fetch-data,compute,analyze,end
+
+colors:
+  status:
+    ready: white
+    undefined: '#DBFF33'
+    done: '#CCFFCC'
+    failed: '#FFCCCC'
+    running: '#CCE5FF'

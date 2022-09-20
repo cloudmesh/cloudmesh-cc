@@ -19,6 +19,8 @@
 $(document).ready(function () {
     $('#example').DataTable({
         order: [[3, 'desc']],
+        pageLength : 50,
+        lengthMenu: [[-1, 10, 20, 50], ['All', 10, 20, 50]]
     });
 });
 

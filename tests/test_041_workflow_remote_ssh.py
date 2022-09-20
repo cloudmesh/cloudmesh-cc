@@ -22,7 +22,7 @@ from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
 from cloudmesh.common.util import path_expand
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 from utilities import create_dest
 
@@ -52,7 +52,7 @@ except:  # noqa: E722
     login_success = False
 
 
-def create_workflow(filename='workflow.yaml'):
+def create_workflow(filename='workflow-ssh.yaml'):
     global w
     global username
     w = Workflow(filename=filename, load=False)
@@ -71,12 +71,17 @@ def create_workflow(filename='workflow.yaml'):
 
     jobkind = "local"
 
+    shell_files = Path(f'{__file__}').as_posix()
+    runtime_dir = Path(Shell.map_filename(
+        '~/.cloudmesh/workflow/workflow-ssh/runtime').path).as_posix()
+    os.chdir('workflow-ssh')
+
     for script in ["start", "job-local-0", "job-local-1", "job-local-2",
                    "job-rivanna.hpc.virginia.edu-3",
                    "job-rivanna.hpc.virginia.edu-4",
                    "job-rivanna.hpc.virginia.edu-5", "end"]:
-        Shell.copy(f"../workflow-sh/{script}.sh", ".")
-        assert os.path.isfile(f"./{script}.sh")
+        Shell.copy(f"{shell_files}/../workflow-sh/{script}.sh", runtime_dir)
+        assert os.path.isfile(f"./runtime/{script}.sh")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)
     w.add_job(name="end", kind=jobkind, user=user, host=host)
@@ -133,12 +138,13 @@ class TestWorkflowSsh:
     #     print(w.graph)
 
     def test_experiment_setup(self):
+        create_dest()
         full_dir = Shell.map_filename('~/experiment').path
         try:
             r = Shell.run(f"rm -rf {full_dir}")
             r = Shell.run(f'ssh {username}@{host} "rm -rf ~/experiment"')
-            r = Shell.run(f"rm workflow.yaml")
-            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow/workflow.yaml")
+            r = Shell.run(f"rm workflow-ssh.yaml")
+            r = Shell.run(f"rm ~/.cloudmesh/workflow/workflow-ssh/workflow-ssh.yaml")
         except Exception as e:
             print(e.output)
         # copy all files needed into experiment
@@ -205,6 +211,8 @@ class TestWorkflowSsh:
         Benchmark.Stop()
         banner("Workflow")
         print(w.graph)
+        create_dest()
+        Shell.rmdir('./workflow-ssh')
 
     # @pytest.mark.skipif(not login_success, reason=f"host {username}@{host} not found or VPN not enabled")
     # def test_run_parallel(self):

@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="FastAPI Starter">
-    <meta name="author" content="Shinichi Okada">
-    {% include 'include/topnav.html' %}
-    <title>{% block title %}{% endblock %} FastAPI Starter</title>
+    <meta name="description" content="Workflow">
+    <meta name="author" content="Gregor von Laszewski, Jacques Fleischer">
+
+    <title>{% block title %}{% endblock %} Workflow</title>
     <!--<link rel="icon" href="{{ url_for('static', path='/images/favicon.png') }}" sizes="32x32" />-->
 
     <!-- Bootstrap CSS CDN -->
@@ -19,10 +19,27 @@
     <link href="{{ url_for('static', path='/css/style3.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', path='/css/mystyle.css') }}" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+            integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+            crossorigin="anonymous"></script>
+
+    <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+            integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+            crossorigin="anonymous"></script>
+    -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"
+            integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
 
 
 
@@ -30,13 +47,16 @@
 </head>
 
 <body>
+
     <div class="page-container">
+
         <div class="content-wrap">
             <div class="row">
-                <div class="col-2">
-                    {% include 'include/sidebar.html'%}
+
+                <div class="col-lg-2">
+                    {% include 'include/sidebar.html' %}
                 </div>
-                <div class="col-10">
+                <div class="col-lg-10">
                     {% block page_content %}
                     {% endblock %}
                 </div>

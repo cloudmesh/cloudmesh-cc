@@ -4,11 +4,6 @@
 # pytest -v --capture=no  tests/test_010_job_localhost.py::TestJobLocalhost::<METHODNAME>
 ###############################################################
 
-#
-# program needs pip install pywin32 -U in requirements if on the OS is Windows
-# TODO: check if pywin32 is the correct version
-#
-
 import os
 import shutil
 import subprocess
@@ -32,7 +27,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 
 variables = Variables()
@@ -52,11 +47,24 @@ class TestJobLocalhost:
 
     def test_create_run(self):
         HEADING()
-        os.system("rm -r ~/experiment")
+
+        #remove remnants
         exp = path_expand("~/experiment")
-        shutil.rmtree(exp, ignore_errors=True)
+        Shell.rmdir(exp)
+        if os.path.isdir('./job_localhost'):
+            Shell.rmdir('./job_localhost')
+
+        #find where this pytest is located
+        pytest_dir = Path(os.path.dirname(Shell.map_filename(__file__).path)).as_posix()
+        scripts_dir = f'{pytest_dir}/scripts/'
+
+        Shell.mkdir('job_localhost')
+        os.chdir('./job_localhost')
+        Shell.mkdir('runtime')
+        os.chdir('runtime')
         for script in [run_job, wait_job]:
-            os.system(f"cp ../scripts/{script}.sh .")
+            Shell.copy(f'{scripts_dir}{script}.sh', '.')
+            #os.system(f"cp {scripts_dir}{script}.sh .")
             assert os.path.isfile(f"./{script}.sh")
         assert not os.path.isfile(exp)
 
@@ -66,6 +74,7 @@ class TestJobLocalhost:
         global username
         global host
 
+        os.chdir('..')
         Benchmark.Start()
         name = f"run"
         job = Job(name=name, host=host, username=username)
@@ -142,6 +151,10 @@ class TestJobLocalhost:
         HEADING()
         global run_job
 
+        log_file = path_expand('~/experiment/run/run.log')
+        Shell.rm(log_file)
+        logfile2 = path_expand('./runtime/run.log')
+        Shell.rm(logfile2)
         Benchmark.Start()
         jobWait = Job(name=f"{run_job}", host=host, username=username)
         jobWait.clear()
@@ -259,3 +272,7 @@ class TestJobLocalhost:
         assert job.username == username
 
         Benchmark.Stop()
+
+    def test_remove_remnants(self):
+        create_dest()
+        Shell.rmdir('./job_localhost')

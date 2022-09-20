@@ -25,7 +25,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 variables = Variables()
 
@@ -48,7 +48,9 @@ class TestWorkflowAB:
         global w
         Benchmark.Start()
         w = Workflow()
-        w.load("../workflows/workflow-a-b.yaml")
+        os.chdir(os.path.dirname(__file__))
+
+        w.load("workflows/workflow-a-b.yaml")
         Benchmark.Stop()
         print(w.graph)
         print(w.table)
@@ -56,6 +58,9 @@ class TestWorkflowAB:
     def test_show(self):
         HEADING()
         global w
+        create_dest()
+        Shell.mkdir('workflow-a-b')
+        os.chdir('workflow-a-b')
         w.graph.save(filename="workflow-a-b.svg",
                      colors="status",
                      layout=nx.circular_layout, engine="dot")
@@ -104,7 +109,7 @@ class h:
 
         w.graph.save(filename="workflow-a-b.svg", colors="status", engine="dot")
         #Shell.browser("/tmp/workflow-a-b.svg")
-        os.system('open workflow-a-b.svg')
+        Shell.open('workflow-a-b.svg')
         #os.path.exists("/tmp/test-dot.svg")
 
     def test_order(self):
