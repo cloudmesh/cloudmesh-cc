@@ -194,7 +194,7 @@ www = Jinja2Templates(directory=www_dir)
 def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     """
     loads a workflow corresponding to given name
-    :param name:
+    :param name: name of workflow
     :type name: str
     :return: loaded workflow
     :rtype: Workflow
@@ -244,7 +244,7 @@ async def home_page(request: Request):
 async def contact_page(request: Request):
     """
     page that lists contact information
-    :return: up message
+    :return: contact page
     """
     folders = get_available_workflows()
     page = "cloudmesh/cc/service/markdown/contact.md"
@@ -261,7 +261,7 @@ async def contact_page(request: Request):
 async def about_page(request: Request):
     """
     page that lists readme as html
-    :return: up message
+    :return: about page
     """
     page = "cloudmesh/cc/service/markdown/about.md"
     import requests
@@ -342,9 +342,20 @@ async def upload(directory: str = Query(None,
                                       description='can be tgx, xz, tar.gz, '
                                                   'or tar'),
                  yaml: str = Query(None,
-                                    description='yaml file for workflow')):
-    from pathlib import Path
+                                   description='yaml file for workflow')):
+    """
+    upload a workflow to the ~/.cloudmesh/workflow directory for running
+    or editing.
+    :param directory: path to directory with workflow files
+    :type directory: str
+    :param archive: tgz, xz, tar.gz, or tar file with workflow files
+    :type archive: str
+    :param yaml: yaml file with workflow specifications
+    :type yaml: str
+    :return: success or failure message
+    """
 
+    from pathlib import Path
     if sum(bool(x) for x in [directory, archive, yaml]) > 1:
         Console.error(f"Only one upload option can be chosen.")
         return {"message": f"Only one upload option can be chosen."}
@@ -639,6 +650,14 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
 @app.get("/workflow-graph/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 def get_workflow_graph(request: Request, name: str):
+    """
+    see the graph embedded within web interface
+    :param request: type of request (api does this automatically in browser)
+    :type request: Request
+    :param name: name of workflow to retrieve the graph for
+    :type name: str
+    :return: html page with graph
+    """
     folders = get_available_workflows()
     svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
     import requests
@@ -690,11 +709,14 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
 
 @app.get("/workflow-running/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 def watch_running_workflow(request: Request,
-                            name: str,
-                            job: str = None,
-                            output: str = None):
+                            name: str):
     """
     page for watching a workflow that has been started
+    :param request: type of request (api does this automatically in browser)
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: html page with updating table
     """
 
     folders = get_available_workflows()
@@ -712,6 +734,7 @@ def watch_running_workflow(request: Request,
     runtime_yaml_file = yaml.safe_load(runtime_yaml_to_read)
     original_yaml_file = yaml.safe_load(original_yaml_to_read)
 
+    # we must delete the job names that are merely expanded dependencies
     for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
         #print(node_name)
         #print(w.graph.nodes.keys())
