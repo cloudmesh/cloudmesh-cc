@@ -13,7 +13,7 @@ from fastapi.responses import HTMLResponse
 import uvicorn
 from fastapi import FastAPI, Query
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
+from fastapi import Request, Form
 from fastapi import File
 from fastapi import UploadFile
 from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse
@@ -857,6 +857,36 @@ def add_job(name_of_workflow: str,
         print("Exception:", e)
 
     return {"jobs": w.jobs}
+
+@app.get('/preferences')
+def preferences_post(request: Request):
+    """
+    preferences page
+    :return: preferences page
+    """
+    folders = get_available_workflows()
+    # read this from configuration file
+    preferences = {'ID': True, 'Name': True, 'Progress': False, 'Status': False}
+    #page = "cloudmesh/cc/service/markdown/contact.md"
+    #import markdown
+    #contact = readfile(page)
+    #html = markdown.markdown(contact)
+    r = templates.TemplateResponse("preferences.html",
+                                      {"request": request,
+                                       "workflowlist": folders,
+                                       "preferences": preferences})
+    from pprint import pprint
+    pprint(r)
+    return r
+
+@app.post('/preferences')
+def preferences_post(request: Request, num: int = Form(...),
+                  preferences: bool = Form(False)):
+    folders = get_available_workflows()
+    print(preferences)
+    return templates.TemplateResponse('preferences.html', context={'request': request,
+                                                                   'preferences': preferences,
+                                                                   "workflowlist": folders})
 
 #
 # QUEUES
