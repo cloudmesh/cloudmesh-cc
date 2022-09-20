@@ -285,7 +285,9 @@ def list_workflows(request: Request, output: str = None):
     """
     This command returns a list of workflows that is found within
     the server.
-    
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/workflows' \
+        -H 'accept: application/json'
     :return: list of workflow names
     """
 
@@ -348,10 +350,22 @@ async def upload(directory: str = Query(None,
     or editing.
     :param directory: path to directory with workflow files
     :type directory: str
+    curl -X 'POST' \
+        'http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
+        -H 'accept: application/json' \
+        -d ''
     :param archive: tgz, xz, tar.gz, or tar file with workflow files
     :type archive: str
+    curl -X 'POST' \
+        'http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile' \
+        -H 'accept: application/json' \
+        -d ''
     :param yaml: yaml file with workflow specifications
     :type yaml: str
+    curl -X 'POST' \
+        'http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
+        -H 'accept: application/json' \
+        -d ''
     :return: success or failure message
     """
 
@@ -493,6 +507,12 @@ def delete_workflow(name: str, job: str = None):
     """
     deletes the job in the specified workflow if specified;
     if the job is not specified, then deletes entire workflow
+
+    example curl:
+    we need to have first uploaded workflow-example for this curl to work!
+    curl -X 'DELETE' \
+        'http://127.0.0.1:8000/workflow/workflow-example' \
+        -H 'accept: application/json'
     :param name: name of the workflow
     :type name: str
     :param job: name of the job
@@ -527,6 +547,11 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     """
     retrieves a job in a workflow, if specified. if not specified,
     retrieves an entire workflow
+
+    you need to have first uploaded the workflow-example for this curl to work!
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/workflow/workflow-example' \
+        -H 'accept: application/json'
     :param name: name of the workflow
     :type name: str
     :param job: name of the job
@@ -685,6 +710,12 @@ def get_workflow_graph(request: Request, name: str):
 def run_workflow(request: Request, name: str, run_type: str = "topo"):
     """
     runs a specified workflow according to provided run type
+
+    example curl:
+    we need to have first uploaded workflow-example for this curl to work!
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/run/workflow-example?run_type=topo' \
+        -H 'accept: application/json'
     :param name: name of workflow
     :type name: str
     :param run_type: type of run, either topo or parallel
@@ -769,8 +800,8 @@ def watch_running_workflow(request: Request,
                                        "status_dict": count,
                                        "workflowlist": folders})
 
-@app.get("/add-job/{name}", tags=['workflow'])
-def add_job(name: str,
+@app.get("/add-job/{name_of_workflow}", tags=['workflow'])
+def add_job(name_of_workflow: str,
             job: str,
             user: str = None,
             host: str = None,
@@ -781,7 +812,7 @@ def add_job(name: str,
             progress: str = None,
             label: str = None,
             parent: str = None):
-    """curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'/
+    """
     This command adds a node to a workflow. with the specified arguments. A check
                 is returned and the user is alerted if arguments are missing
                 arguments are passed in ATTRIBUTE=VALUE fashion.
@@ -789,8 +820,13 @@ def add_job(name: str,
                 If no job name is specified, an automated number that is kept in the
                 config.yaml file will be used and the name will be job-n
 
-    :param name: the name of the workflow
-    :type name: str
+    example curl:
+    we need to have first uploaded workflow-example for this curl to work!
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel' \
+        -H 'accept: application/json'
+    :param name_of_workflow: the name of the workflow
+    :type name_of_workflow: str
     :param job: the specifications and characteristics of the job
     :type job: Jobpy
     :return: returns jobs within the specified workflow
@@ -799,7 +835,7 @@ def add_job(name: str,
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-    w = load_workflow(name=name)
+    w = load_workflow(name=name_of_workflow)
 
     try:
         if type(progress) == str:
