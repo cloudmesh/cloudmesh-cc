@@ -64,16 +64,16 @@ directory:
 
 ```bash
 mkdir -p /tmp/workflow
-cp tests/workflows/workflow.yaml /tmp/workflow
-cp tests/workflow-sh/*.sh /tmp/workflow
+cp tests/workflow-example/workflow-example.yaml /tmp/workflow
+cp tests/workflow-example/*.sh /tmp/workflow
 ```
 
 We like you to inspect the example so you get an overview of how to define a workflow:
 
-* workflow.yaml (link TBD)
-* fetsh-data (link TBD)
-* compute (link TBD)
-* analyse (link TBD)
+* workflow-example.yaml <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml>
+* fetch-data <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/fetch-data.sh>
+* compute <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/compute.sh>
+* analyze <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/analyze.sh>
 
 Now we can test a selected number of ways on how to interact with the service.
 We showcase here how to 
