@@ -195,7 +195,7 @@ class Job:
         :return: returns status, which is the progress of the job
         :rtype: str
         """
-        status = "undefined"
+        status = "ready"
         try:
             log = self.get_log(refresh=refresh)
             lines = Shell.find_lines_with(log, "# cloudmesh")
