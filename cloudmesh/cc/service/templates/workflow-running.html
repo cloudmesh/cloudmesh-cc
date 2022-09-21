@@ -11,18 +11,6 @@
 
 {% block page_content %}
 
-<script type="text/javascript">
-$(document).ready(function () {
-    $('#example').DataTable({
-        lengthMenu: [
-            [-1, 10, 25, 50],
-            ['All', 10, 25, 50],
-        ],
-    });
-});
-
-
-</script>
         <!-- Page Content  -->
         <div id="content">
 
@@ -134,7 +122,14 @@ $(document).ready(function () {
 
 
 <div class="container col-12">
-    Running
+    <h2>Running {{ name_of_workflow }}</h2>
+    <script type="text/javascript">
+        let id_hidden = {{ preferences['id']|tojson|safe }};
+        let name_hidden = {{ preferences['name']|tojson|safe }};
+        let status_hidden = {{ preferences['status']|tojson|safe }};
+        let progress_hidden = {{preferences['progress']|tojson|safe}};
+
+    </script>
     <meta http-equiv="refresh" content="3" />
     <table id="example" class="display" style="width:100%">
             <thead>
@@ -161,7 +156,6 @@ $(document).ready(function () {
             </tbody>
             <tfoot>
                 <tr>
-                    <th>{{ name_of_workflow }}</th>
                 </tr>
             </tfoot>
         </table>

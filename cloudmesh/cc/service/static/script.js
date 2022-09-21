@@ -1,7 +1,11 @@
 $(document).ready(function () {
     var table = $('#example').DataTable({
         "columnDefs": [
-            { "width": "5%", "targets": 0 }
+            { "width": "5%", "targets": 0 },
+            { "targets": 0, visible: id_hidden},
+            { "targets": 1, visible: name_hidden},
+            { "targets": 2, visible: status_hidden},
+            { "targets": 4, visible: progress_hidden}
         ],
         lengthMenu: [
             [-1, 10, 25, 50],
@@ -17,4 +21,5 @@ $(document).ready(function () {
         // Toggle the visibility
         column.visible(!column.visible());
     });
+
 });

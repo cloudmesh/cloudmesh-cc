@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request, Form
 from fastapi import File
 from fastapi import UploadFile
-from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse, Response
 from pydantic import BaseModel
 
 from cloudmesh.cc.__version__ import version as cm_version
@@ -336,7 +336,7 @@ def list_workflows(request: Request, output: str = None):
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
 @app.post("/upload", tags=['workflow'])
-async def upload(directory: str = Query(None,
+def upload(directory: str = Query(None,
                                         description='path to workflow dir '
                                                     'that contains scripts '
                                                     'and yaml file'),
@@ -368,7 +368,6 @@ async def upload(directory: str = Query(None,
         -d ''
     :return: success or failure message
     """
-
     from pathlib import Path
     if sum(bool(x) for x in [directory, archive, yaml]) > 1:
         Console.error(f"Only one upload option can be chosen.")
@@ -632,12 +631,21 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
             status_dict = w.analyze_states()
 
+            configuration_file = Shell.map_filename(
+                '~/.cloudmesh/workflow/table-preferences.yaml').path
+            preferences = {'id': True, 'name': True, 'progress': True,
+                           'status': True}
+            if os.path.isfile(configuration_file):
+                preferences = yaml.safe_load(
+                    Path(configuration_file).read_text())
+
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
                                                "dictionary": w.graph.nodes,
                                                "name_of_workflow": name,
                                                "workflowlist": folders,
-                                               "status_dict": status_dict})
+                                               "status_dict": status_dict,
+                                               "preferences": preferences})
 
         elif output == 'csv':
             w = load_workflow(name)
@@ -793,12 +801,21 @@ def watch_running_workflow(request: Request,
 
     pprint(runtime_yaml_file['workflow']['nodes'])
 
+    configuration_file = Shell.map_filename(
+        '~/.cloudmesh/workflow/table-preferences.yaml').path
+    preferences = {'id': True, 'name': True, 'progress': True,
+                   'status': True}
+    if os.path.isfile(configuration_file):
+        preferences = yaml.safe_load(
+            Path(configuration_file).read_text())
+
     return templates.TemplateResponse("workflow-running.html",
                                       {"request": request,
                                        "dictionary": runtime_yaml_file['workflow']['nodes'],
                                        "name_of_workflow": name,
                                        "status_dict": count,
-                                       "workflowlist": folders})
+                                       "workflowlist": folders,
+                                       "preferences": preferences})
 
 @app.get("/add-job/{name_of_workflow}", tags=['workflow'])
 def add_job(name_of_workflow: str,
@@ -866,7 +883,15 @@ def preferences_post(request: Request):
     """
     folders = get_available_workflows()
     # read this from configuration file
-    preferences = {'ID': True, 'Name': True, 'Progress': False, 'Status': False}
+    configuration_file = Shell.map_filename(
+        '~/.cloudmesh/workflow/table-preferences.yaml').path
+    preferences = {'id': False, 'name': False, 'progress': False,
+                   'status': False}
+    if os.path.isfile(configuration_file):
+        preferences = yaml.safe_load(Path(configuration_file).read_text())
+    #for key, value in preferences.items():
+        #if value:
+            #value = 'checked'
     #page = "cloudmesh/cc/service/markdown/contact.md"
     #import markdown
     #contact = readfile(page)
@@ -879,14 +904,83 @@ def preferences_post(request: Request):
     pprint(r)
     return r
 
-@app.post('/preferences')
-def preferences_post(request: Request, num: int = Form(...),
-                  preferences: bool = Form(False)):
+@app.post('/preferences', status_code=204, response_class=Response)
+def preferences_post(request: Request, id: bool = Form(False),
+                     name: bool = Form(False),
+                     progress: bool = Form(False),
+                     status: bool = Form(False)):
     folders = get_available_workflows()
-    print(preferences)
-    return templates.TemplateResponse('preferences.html', context={'request': request,
-                                                                   'preferences': preferences,
-                                                                   "workflowlist": folders})
+    #print(preferences)
+    print(f'id{id} name{name} progress{progress} status{status}')
+    table_preferences = {
+        'id': id,
+        'name': name,
+        'progress': progress,
+        'status': status
+    }
+    dot_cloudmesh_dir = Shell.map_filename('~/.cloudmesh/workflow').path
+    configuration_file = Shell.map_filename(
+        '~/.cloudmesh/workflow/table-preferences.yaml').path
+    if not os.path.isdir(dot_cloudmesh_dir):
+        Shell.mkdir(dot_cloudmesh_dir)
+    #if not os.path.isfile(configuration_file):
+    with open(configuration_file, 'w') as f:
+        yaml.dump(table_preferences, f, default_flow_style=False,
+                  sort_keys=False)
+
+@app.get('/generate-example', status_code=204, response_class=Response)
+def generate_example_workflow(request: Request):
+    workflow_example_dir = Shell.map_filename(
+        '~/.cloudmesh/workflow/workflow-example').path
+    if os.path.isdir(workflow_example_dir):
+        Shell.rmdir(workflow_example_dir)
+    service_file = Path(f'{__file__}').as_posix()
+    service_dir = Path(os.path.dirname(service_file)).as_posix()
+    cc_dir = Path(os.path.dirname(os.path.dirname(os.path.dirname(service_dir)))).as_posix()
+    test_example_dir = Path(f'{cc_dir}/tests/workflow-example/').as_posix()
+    expanded_dir_path = Path(Shell.map_filename(test_example_dir).path).as_posix()
+    print(expanded_dir_path)
+    if not os.path.isdir(expanded_dir_path):
+        Console.error(f"{expanded_dir_path} is not a valid dir path")
+        return {
+            "message": f"{expanded_dir_path} is not a valid dir path"}
+    name = os.path.basename(expanded_dir_path)
+    # try:
+    #     Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
+    # except Exception as e:
+    #     print(e.output)
+    # tar_location = Path(
+    #     Shell.map_filename(f'./{name}.tar').path).as_posix()
+    #
+    runtime_directory = Path(path_expand(
+        f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
+    yaml_location = path_expand(
+        f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+    Shell.mkdir(runtime_directory)
+    # command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
+    #
+    # print(command)
+    # os.system(command)
+    # Shell.rm(f'{tar_location}')
+    expanded_dir_path = posixpath.join(expanded_dir_path, '')
+    # expanded_dir_path = Path(expanded_dir_path).as_posix()
+
+    # these try excepts are needed in the case of a workflow with
+    # all py files! or all sh files! or all ipynb files!
+    for dirpath, dirnames, filenames in os.walk(expanded_dir_path):
+        for filename in filenames:
+            if filename.endswith('.yaml') or filename.endswith('.sh') or \
+                    filename.endswith('.py') or filename.endswith('.ipynb'):
+                Shell.copy(os.path.join(expanded_dir_path, filename), runtime_directory)
+
+    runtime_yaml_location = os.path.join(runtime_directory,
+                                         f'{name}.yaml')
+    runtime_yaml_location = os.path.normpath(runtime_yaml_location)
+    Shell.copy(runtime_yaml_location, yaml_location)
+    w = Workflow()
+    w.load(filename=runtime_yaml_location)
+    print(w.yaml)
+
 
 #
 # QUEUES

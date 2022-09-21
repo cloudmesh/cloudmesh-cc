@@ -26,7 +26,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="about">About</a>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a class="nav-link" href="contact">Contact</a>
                             </li>
                             <li class="nav-item">
@@ -40,25 +40,30 @@
 <div class="container">
 <form method="post">
     <h1>Table Display</h1>
-    <input type="checkbox" id="idnumber" name="id" value={{preferences['ID']}}>
+    Check the columns to show on the table.
+    <br>
+    <br>
+    <input type="checkbox" id="idnumber" name="id" value="True" {{ "checked" if preferences['id'] == True }}>
     ID
     <br>
-    <input type="checkbox" id="name" name="name" value={{preferences['Name']}}>
+    <input type="checkbox" id="name" name="name" value="True" {{ "checked" if preferences['name'] == True }}>
     Name
     <br>
-    <input type="checkbox" id="progress" name="progress" value={{preferences['Progress']}}>
+    <input type="checkbox" id="progress" name="progress" value="True" {{ "checked" if preferences['progress'] == True }}>
     Progress
     <br>
-    <input type="checkbox" id="status" name="status" value={{preferences['Status']}}>
+    <input type="checkbox" id="status" name="status" value="True" {{ "checked" if preferences['status'] == True }}>
     Status
     <br>
+    <br>
     <h1>Refresh</h1>
-    <input type="checkbox" id="graph" name="id" value={{preferences['graph']}}>
+    <input type="checkbox" id="graph" name="graphrefresh" value={{preferences['graph']}}>
     Graph Refresh Upon Workflow Change
     <!-- default true? -->
     <br>
-    <input type="checkbox" id="table" name="id" value={{preferences['table']}}>
+    <input type="checkbox" id="table" name="tablerefresh" value={{preferences['table']}}>
     Table Refresh Upon Workflow Change
+    <br>
     <br>
     <input type="submit" value="Save">
 </form>
