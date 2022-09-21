@@ -149,7 +149,20 @@ $(document).ready(function () {
         }
     </style>
     <h2>{{ name_of_workflow }}</h2>
-    Toggle column: <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> - <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> - <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> - <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> - <a class="toggle-vis" data-column="4"><b style="color:#293C89">Script</b></a>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> -
+    <script type="text/javascript">
+        let id_hidden = {{ preferences['id']|tojson|safe }};
+        let name_hidden = {{ preferences['name']|tojson|safe }};
+        let status_hidden = {{ preferences['status']|tojson|safe }};
+        let progress_hidden = {{preferences['progress']|tojson|safe}};
+
+    </script>
+    <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> -
+    <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> -
+    <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
+    <a class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
+    <a class="toggle-vis" data-column="5"><b style="color:#293C89">Script</b></a>
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -157,6 +170,7 @@ $(document).ready(function () {
                     <th>Name</th>
                     <th>Status</th>
                     <th>Host</th>
+                    <th>Progress</th>
                     <th>Script</th>
                 </tr>
             </thead>
@@ -167,6 +181,7 @@ $(document).ready(function () {
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>
+                    <td>{{items['progress']}}</td>
                     <td>{{items['script']}}</td>
                 </tr>
                 {% endfor %}
