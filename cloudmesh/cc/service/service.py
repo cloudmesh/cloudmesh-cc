@@ -940,7 +940,7 @@ def preferences_post(request: Request, id: bool = Form(False),
         yaml.dump(table_preferences, f, default_flow_style=False,
                   sort_keys=False)
 
-@app.get('/generate-example', status_code=204, response_class=Response)
+@app.get('/generate-example', status_code=302, response_class=RedirectResponse)
 def generate_example_workflow(request: Request):
     workflow_example_dir = Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-example').path
@@ -992,6 +992,7 @@ def generate_example_workflow(request: Request):
     w = Workflow()
     w.load(filename=runtime_yaml_location)
     print(w.yaml)
+    return RedirectResponse('/home', status_code=302)
 
 
 #
