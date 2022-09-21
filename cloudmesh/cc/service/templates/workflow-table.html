@@ -11,27 +11,6 @@
 
 {% block page_content %}
 
-<script type="text/javascript">
-$(document).ready(function () {
-    var table = $('#example').DataTable({
-        lengthMenu: [
-            [-1, 10, 25, 50],
-            ['All', 10, 25, 50],
-        ],
-    });
-        $('a.toggle-vis').on('click', function (e) {
-        e.preventDefault();
-
-        // Get the column API object
-        var column = table.column($(this).attr('data-column'));
-
-        // Toggle the visibility
-        column.visible(!column.visible());
-    });
-});
-
-
-</script>
         <!-- Page Content  -->
         <div id="content">
 
@@ -149,8 +128,6 @@ $(document).ready(function () {
         }
     </style>
     <h2>{{ name_of_workflow }}</h2>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> -
     <script type="text/javascript">
         let id_hidden = {{ preferences['id']|tojson|safe }};
         let name_hidden = {{ preferences['name']|tojson|safe }};
@@ -158,11 +135,7 @@ $(document).ready(function () {
         let progress_hidden = {{preferences['progress']|tojson|safe}};
 
     </script>
-    <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> -
-    <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> -
-    <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
-    <a class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
-    <a class="toggle-vis" data-column="5"><b style="color:#293C89">Script</b></a>
+    Toggle column: <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> - <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> - <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> - <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> - <a class="toggle-vis" data-column="4"><b style="color:#293C89">Script</b></a>
     <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -170,7 +143,6 @@ $(document).ready(function () {
                     <th>Name</th>
                     <th>Status</th>
                     <th>Host</th>
-                    <th>Progress</th>
                     <th>Script</th>
                 </tr>
             </thead>
@@ -181,7 +153,6 @@ $(document).ready(function () {
                     <td>{{job}}</td>
                     <td>{{items['status']}}</td>
                     <td>{{items['host']}}</td>
-                    <td>{{items['progress']}}</td>
                     <td>{{items['script']}}</td>
                 </tr>
                 {% endfor %}

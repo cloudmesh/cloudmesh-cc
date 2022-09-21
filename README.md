@@ -104,7 +104,7 @@ design for each target type a specific job type so that execution on
 local and remote compute resources including batch operating systems
 can be achieved. The job types supported include: local job on Linux,
 macOS, Windows 10, and Windows 11, jobs running in WSL on Windows
-computers, remote jibs using ssh, and a batch JObs using Slurm.
+computers, remote jobs using ssh, and a batch JObs using Slurm.
 
 
 
