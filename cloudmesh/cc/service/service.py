@@ -615,6 +615,19 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
         elif output == 'table':
             folders = get_available_workflows()
+            # we must initialize preferences in case they dont exist
+            configuration_file = Shell.map_filename(
+                '~/.cloudmesh/workflow/table-preferences.yaml').path
+            if not os.path.isfile(configuration_file):
+                table_preferences = {
+                    'id': True,
+                    'name': True,
+                    'progress': True,
+                    'status': True
+                }
+                with open(configuration_file, 'w') as f:
+                    yaml.dump(table_preferences, f, default_flow_style=False,
+                              sort_keys=False)
             w = load_workflow(name)
 
             order = ['number',
@@ -911,7 +924,6 @@ def preferences_post(request: Request, id: bool = Form(False),
                      status: bool = Form(False)):
     folders = get_available_workflows()
     #print(preferences)
-    print(f'id{id} name{name} progress{progress} status{status}')
     table_preferences = {
         'id': id,
         'name': name,
