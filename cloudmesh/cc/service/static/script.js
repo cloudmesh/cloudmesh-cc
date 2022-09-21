@@ -5,7 +5,9 @@ $(document).ready(function () {
             { "targets": 0, visible: id_hidden},
             { "targets": 1, visible: name_hidden},
             { "targets": 2, visible: status_hidden},
-            { "targets": 4, visible: progress_hidden}
+            { "targets": 3, visible: host_hidden},
+            { "targets": 4, visible: progress_hidden},
+            { "targets": 5, visible: script_hidden}
         ],
         lengthMenu: [
             [-1, 10, 25, 50],

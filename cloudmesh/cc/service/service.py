@@ -622,8 +622,10 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                 table_preferences = {
                     'id': True,
                     'name': True,
+                    'status': True,
+                    'host': True,
                     'progress': True,
-                    'status': True
+                    'script': True
                 }
                 with open(configuration_file, 'w') as f:
                     yaml.dump(table_preferences, f, default_flow_style=False,
@@ -898,8 +900,8 @@ def preferences_post(request: Request):
     # read this from configuration file
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
-    preferences = {'id': False, 'name': False, 'progress': False,
-                   'status': False}
+    preferences = {'id': True, 'name': True, 'status': True, 'host': True,
+                   'progress': True, 'script': True}
     if os.path.isfile(configuration_file):
         preferences = yaml.safe_load(Path(configuration_file).read_text())
     #for key, value in preferences.items():
@@ -918,17 +920,22 @@ def preferences_post(request: Request):
     return r
 
 @app.post('/preferences', status_code=204, response_class=Response)
-def preferences_post(request: Request, id: bool = Form(False),
+def preferences_post(request: Request,
+                     id: bool = Form(False),
                      name: bool = Form(False),
+                     status: bool = Form(False),
+                     host: bool = Form(False),
                      progress: bool = Form(False),
-                     status: bool = Form(False)):
+                     script: bool = Form(False)):
     folders = get_available_workflows()
     #print(preferences)
     table_preferences = {
         'id': id,
         'name': name,
+        'status': status,
+        'host': host,
         'progress': progress,
-        'status': status
+        'script': script
     }
     dot_cloudmesh_dir = Shell.map_filename('~/.cloudmesh/workflow').path
     configuration_file = Shell.map_filename(

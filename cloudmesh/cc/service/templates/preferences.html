@@ -49,11 +49,17 @@
     <input type="checkbox" id="name" name="name" value="True" {{ "checked" if preferences['name'] == True }}>
     Name
     <br>
+    <input type="checkbox" id="status" name="status" value="True" {{ "checked" if preferences['status'] == True }}>
+    Status
+    <br>
+    <input type="checkbox" id="host" name="host" value="True" {{ "checked" if preferences['host'] == True }}>
+    Host
+    <br>
     <input type="checkbox" id="progress" name="progress" value="True" {{ "checked" if preferences['progress'] == True }}>
     Progress
     <br>
-    <input type="checkbox" id="status" name="status" value="True" {{ "checked" if preferences['status'] == True }}>
-    Status
+    <input type="checkbox" id="script" name="script" value="True" {{ "checked" if preferences['script'] == True }}>
+    Script
     <br>
     <br>
     <h1>Refresh</h1>
