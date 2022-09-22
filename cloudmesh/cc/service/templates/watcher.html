@@ -1,0 +1,48 @@
+{% set workflowslist = workflowlist %}
+{% extends "base.html" %}
+
+{% block title %}cloudmesh-cc{% endblock %}
+{% block head %}
+{{ super() }}
+
+
+{% endblock %}
+
+
+{% block page_content %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#example').DataTable({
+        lengthMenu: [
+            [-1, 10, 25, 50],
+            ['All', 10, 25, 50],
+        ],
+    });
+});
+
+
+</script>
+<script>
+    var source = new EventSource("http://127.0.0.1:8000/workflow-graph/{{ name }}");
+    source.onmessage = function(event) {
+        document.getElementById("logs").innerHTML = "<svg>" + event.data + "</svg>"
+    }
+</script>
+        <!-- Page Content  -->
+        <div id="content">
+
+                </div>
+
+<h1>{{ name|safe }}</h1>
+<div id="logs" class="container col-12">
+
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+                
+{% endblock %}
