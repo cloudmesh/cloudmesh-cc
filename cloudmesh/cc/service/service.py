@@ -607,6 +607,17 @@ def delete_workflow(name: str, job: str = None):
             Console.error(e, traceflag=True)
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
+@app.get("/edit/{name}", tags=['workflow'], status_code=204, response_class=Response)
+def edit_workflow_direct_url(name: str):
+    try:
+        # w = load_workflow(name)
+        yaml_file = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+        os.system(f"emacs {yaml_file}")
+    except Exception as e:
+        Console.error(e, traceflag=True)
+        return {
+            "message": f"There was an error deleting the workflow '{name}'"}
+
 
 @app.get("/workflow/{name}", tags=['workflow'])
 def get_workflow(request: Request, name: str, job: str = None, output: str = None):
