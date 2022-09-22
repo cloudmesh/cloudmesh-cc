@@ -122,6 +122,11 @@
 
 
 <div class="container col-12">
+    <style>
+        a{
+            cursor: pointer;
+        }
+    </style>
     <h2>Running {{ name_of_workflow }}</h2>
     <script type="text/javascript">
         let id_hidden = {{ preferences['id']|tojson|safe }};
