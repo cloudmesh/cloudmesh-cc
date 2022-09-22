@@ -745,6 +745,23 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
     :type run_type: str
     :return: success or exception message
     """
+    # reset the yaml and the log files
+    workflow_runtime_dir = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/runtime').path
+    workflow_runtime_star = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/runtime/*').path
+    workflow_dir = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/').path
+    if os.path.isdir(workflow_runtime_dir):
+        files = glob.glob(workflow_runtime_star)
+        for file in files:
+            if file.endswith(".yaml") or file.endswith(".log"):
+                os.remove(file)
+        files2 = glob.glob(workflow_dir)
+        for file in files2:
+            if file.endswith(".yaml"):
+                Shell.copy(file, workflow_runtime_dir)
+
     w = load_workflow(name)
     w.create_topological_order()
     os.chdir(os.path.dirname(w.filename))
