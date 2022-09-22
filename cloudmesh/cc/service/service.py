@@ -835,8 +835,8 @@ def watch_running_workflow(request: Request,
 
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
-    preferences = {'id': True, 'name': True, 'progress': True,
-                   'status': True}
+    preferences = {'id': True, 'name': True, 'status': True, 'host': True,
+                   'progress': True, 'script': True}
     if os.path.isfile(configuration_file):
         preferences = yaml.safe_load(
             Path(configuration_file).read_text())
