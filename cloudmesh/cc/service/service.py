@@ -1,3 +1,4 @@
+import time
 import posixpath
 import yaml
 import logging
@@ -11,6 +12,7 @@ from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common import dotdict
 from fastapi.responses import HTMLResponse
 import uvicorn
+from sse_starlette.sse import EventSourceResponse
 from fastapi import FastAPI, Query
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, Form
@@ -209,6 +211,32 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     # w.load(filename)
     # print(w.yaml)
     return w
+
+async def image_watcher(request, name_of_workflow: str):
+    """
+    watches a file for changes
+    :return:
+    """
+    interval = 0.2
+    graph_file = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.svg'
+    ).path
+    while not os.path.isfile(graph_file):
+        print('graph doesnt exist')
+        time.sleep(interval)
+    placeholder_timestamp = None
+    while True:
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_timestamp = os.stat(graph_file).st_mtime
+        if current_timestamp != placeholder_timestamp:
+            print(f'theres a change!')
+            placeholder_timestamp = current_timestamp
+            yield readfile(graph_file)
+        time.sleep(interval)
+
+
 
 
 #
@@ -598,6 +626,9 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return templates.TemplateResponse(f"{name}-html.html", {"request": request})
 
         elif output == 'graph':
+            runtime_svg = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
+            if os.path.isfile(runtime_svg):
+                return FileResponse(runtime_svg)
             filename = Shell.map_filename(
                 f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
             w = load_workflow(name=name, load_with_graph=True)
@@ -712,27 +743,35 @@ def get_workflow_graph(request: Request, name: str):
     :type name: str
     :return: html page with graph
     """
-    folders = get_available_workflows()
-    svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
-    import requests
-    r = requests.get(svg)
-    # r = '''
-    # <ul>
-    #     <li>
-    #         hello
-    #     </li>
-    # </ul>
-    # '''
+    # folders = get_available_workflows()
+    # svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
+    # import requests
+    # r = requests.get(svg)
+    # # r = '''
+    # # <ul>
+    # #     <li>
+    # #         hello
+    # #     </li>
+    # # </ul>
+    # # '''
+    #
+    # print(r.text)
+    # w = load_workflow(name)
+    # status_dict = w.analyze_states()
+    # return templates.TemplateResponse("workflow-graph.html",
+    #                                   {"request": request,
+    #                                    "svg": r.text,
+    #                                    "name_of_workflow": name,
+    #                                    "workflowlist": folders,
+    #                                    "status_dict": status_dict})
+    event_generator = image_watcher(request, name)
+    return EventSourceResponse(event_generator)
 
-    print(r.text)
-    w = load_workflow(name)
-    status_dict = w.analyze_states()
-    return templates.TemplateResponse("workflow-graph.html",
+@app.get("/watcher/{name}")
+def serve_watcher(request: Request, name: str):
+    return templates.TemplateResponse("watcher.html",
                                       {"request": request,
-                                       "svg": r.text,
-                                       "name_of_workflow": name,
-                                       "workflowlist": folders,
-                                       "status_dict": status_dict})
+                                       "name": name})
 
 
 @app.get("/run/{name}", tags=['workflow'])

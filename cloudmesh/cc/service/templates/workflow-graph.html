@@ -23,6 +23,12 @@ $(document).ready(function () {
 
 
 </script>
+<script>
+    var source = new EventSource("http://127.0.0.1:8000/workflow-graph/{{ name_of_workflow }}");
+    source.onmessage = function(event) {
+        document.getElementById("logs").innerHTML = "<svg>" + event.data + "</svg>"
+    }
+</script>
         <!-- Page Content  -->
         <div id="content">
 
@@ -133,7 +139,7 @@ $(document).ready(function () {
             </nav>
 
 
-<div class="container col-12">
+<div id="logs" class="container col-12">
 <h1>{{ name|safe }}</h1>
 {{ svg|safe }}
 

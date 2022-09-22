@@ -45,6 +45,7 @@ papermill
 cloudmesh-progress
 pandas
 markdown
+sse-starlette
 """.split("\n")
 
 if os_is_windows():
