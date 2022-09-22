@@ -792,11 +792,13 @@ def get_workflow_graph(request: Request, name: str):
 @app.get("/watcher/{name}")
 def serve_watcher(request: Request, name: str):
     folders = get_available_workflows()
-
+    w = load_workflow(name)
+    status_dict = w.analyze_states()
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
                                        "name": name,
-                                       "workflowlist": folders})
+                                       "workflowlist": folders,
+                                       "status_dict": status_dict})
 
 
 @app.get("/run/{name}", tags=['workflow'])
