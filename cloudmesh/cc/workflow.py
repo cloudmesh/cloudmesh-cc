@@ -1283,7 +1283,8 @@ class Workflow:
         experiment_dir = Path(Shell.map_filename(f'~/experiment').path).as_posix()
         Shell.rmdir(experiment_dir)
         graph_file = Path(Shell.map_filename(f'./runtime/{self.name}.svg').path).as_posix()
-        def display_in_browser():
+
+        def save_graph_to_file():
             for name in self.graph.nodes:
                 msg = self.graph.create_label(name)
                 self.graph.nodes[name]["label"] = msg
@@ -1291,6 +1292,8 @@ class Workflow:
                             colors="status",
                             layout=nx.circular_layout,
                             engine="dot")
+        def display_in_browser():
+
             if os_is_mac():
                 Shell.open(filename=graph_file)
             elif os_is_linux():
@@ -1367,11 +1370,12 @@ class Workflow:
                     self.jobs[name]['status'] = status
                     self.jobs[name]['progress'] = progress
                     self.graph.save_to_yaml(filename=self.runtime_filename)
-                    if show:
-                        if (progress != placeholder_progress) or (status != placeholder_status):
+                    if (progress != placeholder_progress) or (status != placeholder_status):
+                        if show:
                             display_in_browser()
-                            placeholder_status = status
-                            placeholder_progress = progress
+                        save_graph_to_file()
+                        placeholder_status = status
+                        placeholder_progress = progress
 
                     if not finished:
                         time.sleep(wait_interval)

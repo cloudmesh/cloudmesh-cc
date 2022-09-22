@@ -838,10 +838,10 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
 
     try:
         if run_type == "topo":
-            threading.Thread(target=w.run_topo, kwargs={'show': True}).start()
+            threading.Thread(target=w.run_topo, kwargs={'show': False}).start()
             #w.run_topo(show=True)
         else:
-            threading.Thread(target=w.run_parallel, kwargs={'show': True}).start()
+            threading.Thread(target=w.run_parallel, kwargs={'show': False}).start()
             #w.run_parallel(show=True)
         #return {"Success": "Workflow ran successfully"}
         return RedirectResponse(url=f'/workflow-running/{w.name}')
