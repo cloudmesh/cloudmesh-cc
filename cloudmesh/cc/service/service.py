@@ -218,27 +218,32 @@ async def image_watcher(request, name_of_workflow: str):
     :return:
     """
     interval = 0.2
-    delete_counter = 10
-    counter = 0
-    graph_file = Shell.map_filename(
+
+    filename = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml').path
+    w = load_workflow(name=name_of_workflow, load_with_graph=True)
+    w.graph.load(filename=filename)
+    svg_file = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.svg').path
+    w.graph.save(filename=svg_file, colors="status",
+                 layout=nx.circular_layout, engine="dot")
+
+    runtime_graph_file = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.svg'
     ).path
-    while not os.path.isfile(graph_file):
-        counter += 1
-        if counter >= delete_counter:
-            break
-        print('graph doesnt exist')
-        time.sleep(interval)
+    if not os.path.isfile(runtime_graph_file):
+        Shell.copy(svg_file, runtime_graph_file)
+
     placeholder_timestamp = None
     while True:
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_timestamp = os.stat(graph_file).st_mtime
+        current_timestamp = os.stat(runtime_graph_file).st_mtime
         if current_timestamp != placeholder_timestamp:
             print(f'theres a change!')
             placeholder_timestamp = current_timestamp
-            yield readfile(graph_file)
+            yield readfile(runtime_graph_file)
         time.sleep(interval)
 
 
@@ -546,8 +551,7 @@ def delete_workflow_direct_url(name: str):
         # w = load_workflow(name)
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
         os.system(f"rm -rf {directory}")
-        return {
-            "message": f"The workflow {name} was deleted and the directory {directory} was removed"}
+        return RedirectResponse(url=f'/home')
     except Exception as e:
         Console.error(e, traceflag=True)
         return {
@@ -787,9 +791,12 @@ def get_workflow_graph(request: Request, name: str):
 
 @app.get("/watcher/{name}")
 def serve_watcher(request: Request, name: str):
+    folders = get_available_workflows()
+
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
-                                       "name": name})
+                                       "name": name,
+                                       "workflowlist": folders})
 
 
 @app.get("/run/{name}", tags=['workflow'])
