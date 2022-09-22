@@ -800,7 +800,7 @@ def get_workflow_graph(request: Request, name: str):
     event_generator = image_watcher(request, name)
     return EventSourceResponse(event_generator)
 
-@app.get("/watcher/{name}")
+@app.get("/watcher/{name}", include_in_schema=include_in_schema_portal_tag)
 def serve_watcher(request: Request, name: str):
     folders = get_available_workflows()
     w = load_workflow(name)
@@ -990,7 +990,7 @@ def add_job(name_of_workflow: str,
 
     return {"jobs": w.jobs}
 
-@app.get('/preferences')
+@app.get('/preferences', include_in_schema=include_in_schema_portal_tag)
 def preferences_post(request: Request):
     """
     preferences page
@@ -1019,7 +1019,8 @@ def preferences_post(request: Request):
     pprint(r)
     return r
 
-@app.post('/preferences', status_code=204, response_class=Response)
+@app.post('/preferences', status_code=204, response_class=Response,
+          include_in_schema=include_in_schema_portal_tag)
 def preferences_post(request: Request,
                      id: bool = Form(False),
                      name: bool = Form(False),
@@ -1047,7 +1048,9 @@ def preferences_post(request: Request,
         yaml.dump(table_preferences, f, default_flow_style=False,
                   sort_keys=False)
 
-@app.get('/generate-example', status_code=302, response_class=RedirectResponse)
+@app.get('/generate-example', status_code=302,
+         response_class=RedirectResponse,
+         include_in_schema=include_in_schema_portal_tag)
 def generate_example_workflow(request: Request):
     workflow_example_dir = Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-example').path
