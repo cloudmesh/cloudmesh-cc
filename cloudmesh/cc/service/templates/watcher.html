@@ -26,7 +26,7 @@ $(document).ready(function () {
 <script>
     var source = new EventSource("http://127.0.0.1:8000/workflow-graph/{{ name }}");
     source.onmessage = function(event) {
-        document.getElementById("logs").innerHTML = "<svg>" + event.data + "</svg>"
+        document.getElementById("logs").innerHTML = event.data
     }
 </script>
         <!-- Page Content  -->

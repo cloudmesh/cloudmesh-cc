@@ -235,6 +235,7 @@ async def image_watcher(request, name_of_workflow: str):
         Shell.copy(svg_file, runtime_graph_file)
 
     placeholder_timestamp = None
+    svg = ''
     while True:
         if await request.is_disconnected():
             print('disconnected')
@@ -243,7 +244,17 @@ async def image_watcher(request, name_of_workflow: str):
         if current_timestamp != placeholder_timestamp:
             print(f'theres a change!')
             placeholder_timestamp = current_timestamp
-            yield readfile(runtime_graph_file)
+            banner('HERE IS EVENT DATA')
+            print(readfile(runtime_graph_file))
+            banner('EVENT DATA DONE')
+            try:
+                svg = '\n'.join(Shell.find_lines_between(readfile(runtime_graph_file).splitlines(), r'<svg', r'</svg>'))
+            except:
+                pass
+            banner('svg')
+            print(svg)
+            banner('DONE------------')
+            yield svg
         time.sleep(interval)
 
 
