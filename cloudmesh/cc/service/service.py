@@ -547,7 +547,8 @@ def upload(directory: str = Query(None,
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.get("/delete/{name}", tags=['workflow'])
+@app.get("/delete/{name}", tags=['workflow'],
+         include_in_schema=include_in_schema_portal_tag)
 def delete_workflow_direct_url(name: str):
     try:
         # w = load_workflow(name)
@@ -598,7 +599,9 @@ def delete_workflow(name: str, job: str = None):
             Console.error(e, traceflag=True)
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
-@app.get("/edit/{name}", tags=['workflow'], status_code=204, response_class=Response)
+@app.get("/edit/{name}", tags=['workflow'], status_code=204,
+         response_class=Response,
+         include_in_schema=include_in_schema_portal_tag)
 def edit_workflow_direct_url(name: str):
     try:
         # w = load_workflow(name)
