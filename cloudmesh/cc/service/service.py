@@ -246,6 +246,9 @@ async def contact_page(request: Request):
     page that lists contact information
     :return: contact page
     """
+    os.path.dirname(__file__)
+    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path('../../..').as_posix())
     folders = get_available_workflows()
     page = "cloudmesh/cc/service/markdown/contact.md"
     import markdown
@@ -263,6 +266,9 @@ async def about_page(request: Request):
     page that lists readme as html
     :return: about page
     """
+    os.path.dirname(__file__)
+    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path('../../..').as_posix())
     page = "cloudmesh/cc/service/markdown/about.md"
     import requests
     import markdown
