@@ -242,18 +242,11 @@ async def image_watcher(request, name_of_workflow: str):
             break
         current_timestamp = os.stat(runtime_graph_file).st_mtime
         if current_timestamp != placeholder_timestamp:
-            print(f'theres a change!')
             placeholder_timestamp = current_timestamp
-            banner('HERE IS EVENT DATA')
-            print(readfile(runtime_graph_file))
-            banner('EVENT DATA DONE')
             try:
                 svg = '\n'.join(Shell.find_lines_between(readfile(runtime_graph_file).splitlines(), r'<svg', r'</svg>'))
             except:
                 pass
-            banner('svg')
-            print(svg)
-            banner('DONE------------')
             yield svg
         time.sleep(interval)
 
