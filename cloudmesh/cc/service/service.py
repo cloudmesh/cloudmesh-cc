@@ -251,8 +251,6 @@ async def image_watcher(request, name_of_workflow: str):
         time.sleep(interval)
 
 
-
-
 #
 # HOME
 #
@@ -817,7 +815,8 @@ def serve_watcher(request: Request, name: str):
 
 
 @app.get("/run/{name}", tags=['workflow'])
-def run_workflow(request: Request, name: str, run_type: str = "topo"):
+def run_workflow(request: Request, name: str, run_type: str = "topo",
+                 redirect: str = None):
     """
     runs a specified workflow according to provided run type
 
@@ -861,6 +860,8 @@ def run_workflow(request: Request, name: str, run_type: str = "topo"):
             threading.Thread(target=w.run_parallel, kwargs={'show': False}).start()
             #w.run_parallel(show=True)
         #return {"Success": "Workflow ran successfully"}
+        if redirect == 'graph':
+            return RedirectResponse(url=f'/watcher/{w.name}')
         return RedirectResponse(url=f'/workflow-running/{w.name}')
     except Exception as e:
         print("Exception:", e)
