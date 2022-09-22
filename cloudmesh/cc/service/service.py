@@ -218,10 +218,15 @@ async def image_watcher(request, name_of_workflow: str):
     :return:
     """
     interval = 0.2
+    delete_counter = 10
+    counter = 0
     graph_file = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.svg'
     ).path
     while not os.path.isfile(graph_file):
+        counter += 1
+        if counter >= delete_counter:
+            break
         print('graph doesnt exist')
         time.sleep(interval)
     placeholder_timestamp = None
@@ -534,6 +539,19 @@ def upload(directory: str = Query(None,
 # file = {'file': open('images/1.png', 'rb')}
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
+
+@app.get("/delete/{name}", tags=['workflow'])
+def delete_workflow_direct_url(name: str):
+    try:
+        # w = load_workflow(name)
+        directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+        os.system(f"rm -rf {directory}")
+        return {
+            "message": f"The workflow {name} was deleted and the directory {directory} was removed"}
+    except Exception as e:
+        Console.error(e, traceflag=True)
+        return {
+            "message": f"There was an error deleting the workflow '{name}'"}
 
 @app.delete("/workflow/{name}", tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
