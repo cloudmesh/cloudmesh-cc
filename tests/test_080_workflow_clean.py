@@ -63,8 +63,9 @@ def create_workflow(filename='workflow-clean.yaml'):
     os.chdir('./workflow-clean')
     Shell.mkdir('./runtime')
     os.chdir('./runtime')
+    shell_files = Path(os.path.dirname(shell_files)).as_posix()
     for script in ["start.sh", "b.sh", "c.py", "d.ipynb", "end.sh"]:
-        Shell.copy(f"{shell_files}/../workflow-clean/{script}", ".")
+        Shell.copy(f"{shell_files}/workflow-clean/{script}", ".")
         assert os.path.isfile(f"./{script}")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)

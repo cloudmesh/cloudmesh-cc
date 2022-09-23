@@ -46,6 +46,8 @@ cloudmesh-progress
 pandas
 markdown
 sse-starlette
+ipython
+ipykernel
 """.split("\n")
 
 if os_is_windows():

@@ -23,3 +23,5 @@ pandas
 markdown
 pywin32; platform_system == "Windows"
 sse-starlette
+ipython
+ipykernel
