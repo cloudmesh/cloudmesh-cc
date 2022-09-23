@@ -291,6 +291,9 @@ async def datatable_server(request, name_of_workflow: str):
     original_yaml_filepath = path_expand(
         f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml')
 
+    #w = load_workflow(name_of_workflow)
+    #w.create_topological_order()
+
     def runtime_dict_getter():
 
         runtime_yaml_to_read = readfile(runtime_yaml_filepath)
@@ -311,8 +314,6 @@ async def datatable_server(request, name_of_workflow: str):
         #pprint.pprint(w.graph.nodes)
 
 
-        #w = load_workflow(name_of_workflow)
-        #w.create_topological_order()
         dictionary = runtime_yaml_file['workflow']['nodes']
         table_html_template = \
             fr"""
@@ -1007,6 +1008,13 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                      'kind']
 
             w.create_topological_order()
+
+            # this following line temporarily causes the web table
+            # view to show incorrect job status values, because the
+            # yaml is completely overwritten. this can be improved
+            # by only writing the number values to runtime filename yaml.
+            # not implemented...
+            w.graph.save_to_yaml(w.runtime_filename)
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
 
             configuration_file = Shell.map_filename(
@@ -1019,7 +1027,6 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
-                                               "dictionary": w.graph.nodes,
                                                "name_of_workflow": name,
                                                "workflowlist": folders,
                                                "preferences": preferences})
