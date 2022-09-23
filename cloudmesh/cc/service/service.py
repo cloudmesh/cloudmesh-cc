@@ -274,6 +274,8 @@ def penultimate_status_watcher(request, name_of_workflow: str):
     states = []
     for state in ['done', 'ready', 'failed', 'submitted', 'running']:
         states.append(state)
+    if runtime_dict is None:
+        return None
     for name in runtime_dict['workflow']['nodes']: # ?
         states.append(runtime_dict['workflow']['nodes'][name]["status"])
 

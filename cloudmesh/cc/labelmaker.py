@@ -35,7 +35,7 @@ class Labelmaker:
         variables = Variables()
         replacements = {}
 
-        print("LABELMAKER", data)
+        #print("LABELMAKER", data)
 
 
         for variable in self.variables:
