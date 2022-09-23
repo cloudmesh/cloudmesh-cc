@@ -1,42 +1,36 @@
-import time
+import glob
+import io
+import json
+import os
 import posixpath
-import yaml
-import logging
 import threading
-from typing import List, Optional
-import networkx as nx
+import time
+from collections import Counter
 from pathlib import Path
+from pprint import pprint
 
-from cloudmesh.cc.queue import Queues
-from cloudmesh.cc.workflow import Workflow
-from cloudmesh.common import dotdict
-from fastapi.responses import HTMLResponse
-import uvicorn
-from sse_starlette.sse import EventSourceResponse
+import markdown
+import networkx as nx
+import pandas as pd
+import pkg_resources
+import yaml
+from cloudmesh.common.Printer import Printer
+from cloudmesh.common.Shell import Shell
+from cloudmesh.common.console import Console
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import writefile, readfile
+from cloudmesh.common.variables import Variables
 from fastapi import FastAPI, Query
-from fastapi.templating import Jinja2Templates
 from fastapi import Request, Form
-from fastapi import File
-from fastapi import UploadFile
 from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse, Response
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+from sse_starlette.sse import EventSourceResponse
 
 from cloudmesh.cc.__version__ import version as cm_version
-
-from fastapi.staticfiles import StaticFiles
-import pkg_resources
-from cloudmesh.common.console import Console
-import os
-import io
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.Printer import Printer
-from cloudmesh.common.util import writefile, readfile
-from cloudmesh.common.util import banner
-import pandas as pd
-import glob
-import json
+from cloudmesh.cc.queue import Queues
+from cloudmesh.cc.workflow import Workflow
 
 """
 all the URLs.
@@ -54,19 +48,17 @@ all the URLs.
 @app.post("/workflow/{name}", tags=['workflow'])
 """
 
-from cloudmesh.common.variables import Variables
 variables = Variables()
 
-debug = variables['debug']
-debug = False
+# debug = variables['debug']
+# debug = False
 debug = True
 
-
 #
-# set if portal routs shoudl be displayed in teh documentation
+# set if portal routs should be displayed in teh documentation
 #
-include_in_schema_portal_tag=debug
-include_in_schema_portal_tag=False
+# include_in_schema_portal_tag = debug
+include_in_schema_portal_tag = False
 
 
 def test_run():
@@ -196,8 +188,13 @@ www = Jinja2Templates(directory=www_dir)
 def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     """
     loads a workflow corresponding to given name
+
     :param name: name of workflow
     :type name: str
+    :param load_with_graph:
+    :type load_with_graph:
+    :param load:
+    :type load:
     :return: loaded workflow
     :rtype: Workflow
     """
@@ -212,9 +209,10 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     # print(w.yaml)
     return w
 
+
 async def image_watcher(request, name_of_workflow: str):
     """
-    watches an svg for changes
+    watches a svg for changes
     :return:
     """
     interval = 0.2
@@ -245,10 +243,11 @@ async def image_watcher(request, name_of_workflow: str):
             placeholder_timestamp = current_timestamp
             try:
                 svg = '\n'.join(Shell.find_lines_between(readfile(runtime_graph_file).splitlines(), r'<svg', r'</svg>'))
-            except:
+            except:  # noqa: E722
                 pass
             yield svg
         time.sleep(interval)
+
 
 def penultimate_status_watcher(request, name_of_workflow: str):
     """
@@ -276,15 +275,14 @@ def penultimate_status_watcher(request, name_of_workflow: str):
         states.append(state)
     if runtime_dict is None:
         return None
-    for name in runtime_dict['workflow']['nodes']: # ?
+    for name in runtime_dict['workflow']['nodes']:  # ?
         states.append(runtime_dict['workflow']['nodes'][name]["status"])
-
-    from collections import Counter
 
     count = Counter(states)
     for state in ['done', 'ready', 'failed', 'submitted', 'running']:
         count[state] = count[state] - 1
     return count
+
 
 async def datatable_server(request, name_of_workflow: str):
     interval = 0.2
@@ -293,8 +291,8 @@ async def datatable_server(request, name_of_workflow: str):
     original_yaml_filepath = path_expand(
         f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml')
 
-    #w = load_workflow(name_of_workflow)
-    #w.create_topological_order()
+    # w = load_workflow(name_of_workflow)
+    # w.create_topological_order()
 
     def runtime_dict_getter():
 
@@ -306,15 +304,14 @@ async def datatable_server(request, name_of_workflow: str):
 
         # we must delete the job names that are merely expanded dependencies
         for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
-            #print(node_name)
-            #print(w.graph.nodes.keys())
+            # print(node_name)
+            # print(w.graph.nodes.keys())
             if job_name not in original_yaml_file['workflow']['nodes']:
                 del runtime_yaml_file['workflow']['nodes'][job_name]
-            #else:
+            # else:
             #    runtime_yaml_file['workflow']['nodes'][job_name]['no'] = dict_with_order['nodes'][job_name]['no']
-          #banner(str(w.graph.nodes[job_name]['progress']))
-        #pprint.pprint(w.graph.nodes)
-
+        # banner(str(w.graph.nodes[job_name]['progress']))
+        # pprint.pprint(w.graph.nodes)
 
         dictionary = runtime_yaml_file['workflow']['nodes']
         table_html_template = \
@@ -345,7 +342,7 @@ async def datatable_server(request, name_of_workflow: str):
                     </tr>
                 """
         table_html_template += \
-        r"""
+            r"""
                 </tbody>
                 <tfoot>
                     <tr>
@@ -354,6 +351,7 @@ async def datatable_server(request, name_of_workflow: str):
             </table>
         """
         return table_html_template
+
     placeholder_dict = None
     while True:
         if await request.is_disconnected():
@@ -365,7 +363,6 @@ async def datatable_server(request, name_of_workflow: str):
             html_to_return = runtime_dict_getter()
             yield html_to_return
         time.sleep(interval)
-
 
 
 async def done_watcher(request, name_of_workflow: str):
@@ -385,6 +382,7 @@ async def done_watcher(request, name_of_workflow: str):
 
         time.sleep(interval)
 
+
 async def ready_watcher(request, name_of_workflow: str):
     interval = 0.05
     placeholder_status_count = None
@@ -401,6 +399,7 @@ async def ready_watcher(request, name_of_workflow: str):
             yield current_ready_count
 
         time.sleep(interval)
+
 
 async def failed_watcher(request, name_of_workflow: str):
     interval = 0.05
@@ -419,6 +418,7 @@ async def failed_watcher(request, name_of_workflow: str):
 
         time.sleep(interval)
 
+
 async def submitted_watcher(request, name_of_workflow: str):
     interval = 0.05
     placeholder_status_count = None
@@ -435,6 +435,7 @@ async def submitted_watcher(request, name_of_workflow: str):
             yield current_submitted_count
 
         time.sleep(interval)
+
 
 async def running_watcher(request, name_of_workflow: str):
     interval = 0.05
@@ -473,15 +474,14 @@ def status_returner(name_of_workflow: str):
     states = []
     for state in ['done', 'ready', 'failed', 'submitted', 'running']:
         states.append(state)
-    for name in runtime_dict['workflow']['nodes']: # ?
+    for name in runtime_dict['workflow']['nodes']:  # ?
         states.append(runtime_dict['workflow']['nodes'][name]["status"])
-
-    from collections import Counter
 
     count = Counter(states)
     for state in ['done', 'ready', 'failed', 'submitted', 'running']:
         count[state] = count[state] - 1
     return count
+
 
 @app.get("/done-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
@@ -489,11 +489,13 @@ def serve_done(request: Request, name: str):
     event_generator = done_watcher(request, name)
     return EventSourceResponse(event_generator)
 
+
 @app.get("/ready-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_ready(request: Request, name: str):
     event_generator = ready_watcher(request, name)
     return EventSourceResponse(event_generator)
+
 
 @app.get("/failed-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
@@ -501,11 +503,13 @@ def serve_failed(request: Request, name: str):
     event_generator = failed_watcher(request, name)
     return EventSourceResponse(event_generator)
 
+
 @app.get("/submitted-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_submitted(request: Request, name: str):
     event_generator = submitted_watcher(request, name)
     return EventSourceResponse(event_generator)
+
 
 @app.get("/running-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
@@ -531,7 +535,6 @@ async def home_page(request: Request):
     os.chdir(Path('../../..').as_posix())
     folders = get_available_workflows()
     page = "cloudmesh/cc/service/markdown/home.md"
-    import markdown
     contact = readfile(page)
     html = markdown.markdown(contact)
     return templates.TemplateResponse("home.html", {"request": request,
@@ -554,7 +557,26 @@ async def contact_page(request: Request):
     os.chdir(Path('../../..').as_posix())
     folders = get_available_workflows()
     page = "cloudmesh/cc/service/markdown/contact.md"
-    import markdown
+    contact = readfile(page)
+    html = markdown.markdown(contact)
+    return templates.TemplateResponse("contact.html",
+                                      {"request": request,
+                                       "workflowlist": folders,
+                                       "html": html})
+
+
+@app.get("/manpage", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+async def man_page(request: Request):
+    """
+    page that lists contact information
+    :return: contact page
+    """
+    os.path.dirname(__file__)
+    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path('../../..').as_posix())
+    folders = get_available_workflows()
+    page = "cloudmesh/cc/service/markdown/contact.md"
+
     contact = readfile(page)
     html = markdown.markdown(contact)
     return templates.TemplateResponse("contact.html",
@@ -573,8 +595,6 @@ async def about_page(request: Request):
     os.chdir(os.path.dirname(__file__))
     os.chdir(Path('../../..').as_posix())
     page = "cloudmesh/cc/service/markdown/about.md"
-    import requests
-    import markdown
     about = readfile(page)
     html = markdown.markdown(about)
     folders = get_available_workflows()
@@ -626,7 +646,7 @@ def list_workflows(request: Request, output: str = None):
             folders = get_available_workflows()
             return {"workflows": folders}
 
-    except Exception as e:
+    except Exception as e:  # noqa: E722
         return {"message": f"No workflows found"}
 
 
@@ -646,14 +666,14 @@ def list_workflows(request: Request, output: str = None):
 # name is optional because the name is determined on what is provided
 @app.post("/upload", tags=['workflow'])
 def upload(directory: str = Query(None,
-                                        description='path to workflow dir '
-                                                    'that contains scripts '
-                                                    'and yaml file'),
-                 archive: str = Query(None,
-                                      description='can be tgx, xz, tar.gz, '
-                                                  'or tar'),
-                 yaml: str = Query(None,
-                                   description='yaml file for workflow')):
+                                  description='path to workflow dir '
+                                              'that contains scripts '
+                                              'and yaml file'),
+           archive: str = Query(None,
+                                description='can be tgx, xz, tar.gz, '
+                                            'or tar'),
+           yaml: str = Query(None,
+                             description='yaml file for workflow')):
     """
     upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
@@ -677,7 +697,6 @@ def upload(directory: str = Query(None,
         -d ''
     :return: success or failure message
     """
-    from pathlib import Path
     if sum(bool(x) for x in [directory, archive, yaml]) > 1:
         Console.error(f"Only one upload option can be chosen.")
         return {"message": f"Only one upload option can be chosen."}
@@ -708,26 +727,15 @@ def upload(directory: str = Query(None,
             # os.system(command)
             # Shell.rm(f'{tar_location}')
             expanded_dir_path = posixpath.join(expanded_dir_path, '')
-            #expanded_dir_path = Path(expanded_dir_path).as_posix()
+            # expanded_dir_path = Path(expanded_dir_path).as_posix()
 
             # these try excepts are needed in the case of a workflow with
             # all py files! or all sh files! or all ipynb files!
-            try:
-                Shell.run(f'cp {expanded_dir_path}*.yaml {runtime_directory}')
-            except:
-                pass
-            try:
-                Shell.run(f'cp {expanded_dir_path}*.sh {runtime_directory}')
-            except:
-                pass
-            try:
-                Shell.run(f'cp {expanded_dir_path}*.py {runtime_directory}')
-            except:
-                pass
-            try:
-                Shell.run(f'cp {expanded_dir_path}*.ipynb {runtime_directory}')
-            except:
-                pass
+            for kind in ["yaml", "sh", "py", "ipynb"]:
+                try:
+                    Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}')
+                except:  # noqa: E722
+                    pass
             runtime_yaml_location = os.path.join(runtime_directory,
                                                  f'{name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
@@ -748,7 +756,6 @@ def upload(directory: str = Query(None,
                 f"~/.cloudmesh/workflow/{name}/runtime/")
             yaml_location = path_expand(
                 f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-            from pathlib import Path
             runtime_directory = Path(runtime_directory).as_posix()
             archive_location = Path(Shell.map_filename(archive).path).as_posix()
 
@@ -803,6 +810,7 @@ def upload(directory: str = Query(None,
             Console.error(e, traceflag=True)
             return {"message": f"There was an error uploading the file {e}"}
 
+
 # import requests
 #
 # url = 'http://127.0.0.1:8000/upload'
@@ -823,11 +831,12 @@ def delete_workflow_direct_url(name: str):
         return {
             "message": f"There was an error deleting the workflow '{name}'"}
 
+
 @app.delete("/workflow/{name}", tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
     """
-    deletes the job in the specified workflow if specified;
-    if the job is not specified, then deletes entire workflow
+    deletes the job in the specified workflow if specified.
+    If the job is not specified, it deletes entire workflow.
 
     example curl:
     we need to have first uploaded workflow-example for this curl to work!
@@ -862,6 +871,7 @@ def delete_workflow(name: str, job: str = None):
             Console.error(e, traceflag=True)
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
+
 @app.get("/edit/{name}", tags=['workflow'], status_code=204,
          response_class=Response,
          include_in_schema=include_in_schema_portal_tag)
@@ -886,6 +896,9 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflow/workflow-example' \
         -H 'accept: application/json'
+
+    :param request:
+    :type request:
     :param name: name of the workflow
     :type name: str
     :param job: name of the job
@@ -893,6 +906,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     :param output: how to print workflow. can be html or table
     :type output: str
     :return: success or failure message
+    :rtype:
+
     """
     try:
         if output == 'html':
@@ -953,7 +968,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
         elif output == 'table':
             folders = get_available_workflows()
-            # we must initialize preferences in case they dont exist
+            # we must initialize preferences in case they do not exist
             configuration_file = Shell.map_filename(
                 '~/.cloudmesh/workflow/table-preferences.yaml').path
             if not os.path.isfile(configuration_file):
@@ -1072,14 +1087,16 @@ def get_workflow_graph(request: Request, name: str):
     event_generator = image_watcher(request, name)
     return EventSourceResponse(event_generator)
 
+
 @app.get("/watcher/{name}", include_in_schema=include_in_schema_portal_tag)
 def serve_watcher(request: Request, name: str):
     folders = get_available_workflows()
-    #w = load_workflow(name)
+    # w = load_workflow(name)
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
                                        "name": name,
                                        "workflowlist": folders})
+
 
 @app.get("/serve-datatable/{name}",
          include_in_schema=include_in_schema_portal_tag)
@@ -1099,11 +1116,17 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
     curl -X 'GET' \
         'http://127.0.0.1:8000/run/workflow-example?run_type=topo' \
         -H 'accept: application/json'
+
+    :param request:
+    :type request:
     :param name: name of workflow
     :type name: str
     :param run_type: type of run, either topo or parallel
     :type run_type: str
+    :param redirect:
+    :type redirect:
     :return: success or exception message
+    :rtype:
     """
     # reset the yaml and the log files
     workflow_runtime_dir = Shell.map_filename(
@@ -1129,20 +1152,21 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
     try:
         if run_type == "topo":
             threading.Thread(target=w.run_topo, kwargs={'show': False}).start()
-            #w.run_topo(show=True)
+            # w.run_topo(show=True)
         else:
             threading.Thread(target=w.run_parallel, kwargs={'show': False}).start()
-            #w.run_parallel(show=True)
-        #return {"Success": "Workflow ran successfully"}
+            # w.run_parallel(show=True)
+        # return {"Success": "Workflow ran successfully"}
         if redirect == 'graph':
             return RedirectResponse(url=f'/watcher/{w.name}')
         return RedirectResponse(url=f'/workflow-running/{w.name}')
     except Exception as e:
         print("Exception:", e)
 
+
 @app.get("/workflow-running/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
 def watch_running_workflow(request: Request,
-                            name: str):
+                           name: str):
     """
     page for watching a workflow that has been started
     :param request: type of request (api does this automatically in browser)
@@ -1153,8 +1177,6 @@ def watch_running_workflow(request: Request,
     """
 
     folders = get_available_workflows()
-
-    from pprint import pprint
 
     runtime_yaml_filepath = path_expand(
         f'~/.cloudmesh/workflow/{name}/runtime/{name}.yaml')
@@ -1169,16 +1191,16 @@ def watch_running_workflow(request: Request,
 
     # we must delete the job names that are merely expanded dependencies
     for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
-        #print(node_name)
-        #print(w.graph.nodes.keys())
+        # print(node_name)
+        # print(w.graph.nodes.keys())
         if job_name not in original_yaml_file['workflow']['nodes']:
             del runtime_yaml_file['workflow']['nodes'][job_name]
-        #else:
+        # else:
         #    runtime_yaml_file['workflow']['nodes'][job_name]['no'] = dict_with_order['nodes'][job_name]['no']
-      #banner(str(w.graph.nodes[job_name]['progress']))
-    #pprint.pprint(w.graph.nodes)
+    # banner(str(w.graph.nodes[job_name]['progress']))
+    # pprint.pprint(w.graph.nodes)
 
-    #pprint(runtime_yaml_file['workflow']['nodes'])
+    # pprint(runtime_yaml_file['workflow']['nodes'])
 
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
@@ -1194,6 +1216,7 @@ def watch_running_workflow(request: Request,
                                        "name_of_workflow": name,
                                        "workflowlist": folders,
                                        "preferences": preferences})
+
 
 @app.get("/add-job/{name_of_workflow}", tags=['workflow'])
 def add_job(name_of_workflow: str,
@@ -1220,11 +1243,31 @@ def add_job(name_of_workflow: str,
     curl -X 'GET' \
         'http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel' \
         -H 'accept: application/json'
+
     :param name_of_workflow: the name of the workflow
     :type name_of_workflow: str
     :param job: the specifications and characteristics of the job
     :type job: Jobpy
+    :param user:
+    :type user:
+    :param host:
+    :type host:
+    :param kind:
+    :type kind:
+    :param status:
+    :type status:
+    :param script:
+    :type script:
+    :param exec:
+    :type exec:
+    :param progress:
+    :type progress:
+    :param label:
+    :type label:
+    :param parent:
+    :type parent:
     :return: returns jobs within the specified workflow
+    :rtype:
     """
 
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
@@ -1253,6 +1296,7 @@ def add_job(name_of_workflow: str,
 
     return {"jobs": w.jobs}
 
+
 @app.get('/preferences', include_in_schema=include_in_schema_portal_tag)
 def preferences_post(request: Request):
     """
@@ -1267,20 +1311,20 @@ def preferences_post(request: Request):
                    'progress': True, 'script': True}
     if os.path.isfile(configuration_file):
         preferences = yaml.safe_load(Path(configuration_file).read_text())
-    #for key, value in preferences.items():
-        #if value:
-            #value = 'checked'
-    #page = "cloudmesh/cc/service/markdown/contact.md"
-    #import markdown
-    #contact = readfile(page)
-    #html = markdown.markdown(contact)
+    # for key, value in preferences.items():
+    # if value:
+    # value = 'checked'
+    # page = "cloudmesh/cc/service/markdown/contact.md"
+    # import markdown
+    # contact = readfile(page)
+    # html = markdown.markdown(contact)
     r = templates.TemplateResponse("preferences.html",
-                                      {"request": request,
-                                       "workflowlist": folders,
-                                       "preferences": preferences})
-    from pprint import pprint
+                                   {"request": request,
+                                    "workflowlist": folders,
+                                    "preferences": preferences})
     pprint(r)
     return r
+
 
 @app.post('/preferences', status_code=204, response_class=Response,
           include_in_schema=include_in_schema_portal_tag)
@@ -1292,7 +1336,7 @@ def preferences_post(request: Request,
                      progress: bool = Form(False),
                      script: bool = Form(False)):
     folders = get_available_workflows()
-    #print(preferences)
+    # print(preferences)
     table_preferences = {
         'id': id,
         'name': name,
@@ -1306,10 +1350,11 @@ def preferences_post(request: Request,
         '~/.cloudmesh/workflow/table-preferences.yaml').path
     if not os.path.isdir(dot_cloudmesh_dir):
         Shell.mkdir(dot_cloudmesh_dir)
-    #if not os.path.isfile(configuration_file):
+    # if not os.path.isfile(configuration_file):
     with open(configuration_file, 'w') as f:
         yaml.dump(table_preferences, f, default_flow_style=False,
                   sort_keys=False)
+
 
 @app.get('/generate-example', status_code=302,
          response_class=RedirectResponse,
@@ -1366,7 +1411,6 @@ def generate_example_workflow(request: Request):
     w.load(filename=runtime_yaml_location)
     print(w.yaml)
     return RedirectResponse('/home', status_code=302)
-
 
 #
 # QUEUES
