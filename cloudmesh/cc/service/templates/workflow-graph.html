@@ -24,9 +24,25 @@ $(document).ready(function () {
 
 </script>
 <script>
-    var source = new EventSource("http://127.0.0.1:8000/workflow-graph/{{ name_of_workflow }}");
+    var source = new EventSource("http://127.0.0.1:8000/done-count/{{ name_of_workflow }}");
     source.onmessage = function(event) {
-        document.getElementById("logs").innerHTML = "<svg>" + event.data + "</svg>"
+        document.getElementById("donenumber").innerHTML = event.data
+    }
+    var source2 = new EventSource("http://127.0.0.1:8000/ready-count/{{ name_of_workflow }}");
+    source2.onmessage = function(event2) {
+        document.getElementById("readynumber").innerHTML = event2.data
+    }
+    var source3 = new EventSource("http://127.0.0.1:8000/failed-count/{{ name_of_workflow }}");
+    source3.onmessage = function(event3) {
+        document.getElementById("failednumber").innerHTML = event3.data
+    }
+    var source4 = new EventSource("http://127.0.0.1:8000/submitted-count/{{ name_of_workflow }}");
+    source4.onmessage = function(event4) {
+        document.getElementById("submittednumber").innerHTML = event4.data
+    }
+    var source5 = new EventSource("http://127.0.0.1:8000/running-count/{{ name_of_workflow }}");
+    source5.onmessage = function(event5) {
+        document.getElementById("runningnumber").innerHTML = event5.data
     }
 </script>
         <!-- Page Content  -->
@@ -53,33 +69,33 @@ $(document).ready(function () {
                             <li>
 
                                 <button type="button" class="btn badge-danger btn-sm">
-                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light"><div id="failednumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light"><div id="donenumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                             <button type="button" class="btn badge-info btn-sm">
-                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light"><div id="runningnumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-warning btn-sm">
-                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light"><div id="submittednumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-light btn-sm">
-                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light">{{ status_dict['ready'] }}</span>
+                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light"><div id="readynumber"></div></span>
                             </button>
                             </li>
                             &nbsp;

@@ -10,7 +10,59 @@
 
 
 {% block page_content %}
+        <script>
+            var source = new EventSource("http://127.0.0.1:8000/done-count/{{ name_of_workflow }}");
+            source.onmessage = function(event) {
+                document.getElementById("donenumber").innerHTML = event.data
+            }
+            var source2 = new EventSource("http://127.0.0.1:8000/ready-count/{{ name_of_workflow }}");
+            source2.onmessage = function(event2) {
+                document.getElementById("readynumber").innerHTML = event2.data
+            }
+            var source3 = new EventSource("http://127.0.0.1:8000/failed-count/{{ name_of_workflow }}");
+            source3.onmessage = function(event3) {
+                document.getElementById("failednumber").innerHTML = event3.data
+            }
+            var source4 = new EventSource("http://127.0.0.1:8000/submitted-count/{{ name_of_workflow }}");
+            source4.onmessage = function(event4) {
+                document.getElementById("submittednumber").innerHTML = event4.data
+            }
+            var source5 = new EventSource("http://127.0.0.1:8000/running-count/{{ name_of_workflow }}");
+            source5.onmessage = function(event5) {
+                document.getElementById("runningnumber").innerHTML = event5.data
+            }
+            var source6 = new EventSource("http://127.0.0.1:8000/serve-datatable/{{ name_of_workflow }}");
+            source6.onmessage = function(event6) {
+                document.getElementById("datatablesubstitute").innerHTML = event6.data
+                $(document).ready(function () {
+    var table = $('#example').DataTable({
+        "columnDefs": [
+            { "width": "5%", "targets": 0 },
+            { "targets": 0, visible: id_hidden},
+            { "targets": 1, visible: name_hidden},
+            { "targets": 2, visible: status_hidden},
+            { "targets": 3, visible: host_hidden},
+            { "targets": 4, visible: progress_hidden},
+            { "targets": 5, visible: script_hidden}
+        ],
+        lengthMenu: [
+            [-1, 10, 25, 50],
+            ['All', 10, 25, 50],
+        ],
+    });
+        $('a.toggle-vis').on('click', function (e) {
+        e.preventDefault();
 
+        // Get the column API object
+        var column = table.column($(this).attr('data-column'));
+
+        // Toggle the visibility
+        column.visible(!column.visible());
+    });
+
+});
+            }
+        </script>
         <!-- Page Content  -->
         <div id="content">
 
@@ -35,33 +87,33 @@
                             <li>
 
                                 <button type="button" class="btn badge-danger btn-sm">
-                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light"><div id="failednumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['done'] }}</span>
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light"><div id="donenumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                             <button type="button" class="btn badge-info btn-sm">
-                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light"><div id="runningnumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-warning btn-sm">
-                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light"><div id="submittednumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-light btn-sm">
-                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light">{{ status_dict['ready'] }}</span>
+                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light"><div id="readynumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
@@ -70,7 +122,6 @@
                                     <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
                                 </button>
                             </li>
-
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <li>
@@ -150,35 +201,8 @@
     <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
     <a class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
     <a class="toggle-vis" data-column="5"><b style="color:#293C89">Script</b></a>
-    <meta http-equiv="refresh" content="3" />
-    <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Host</th>
-                    <th>Progress</th>
-                    <th>Script</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for job, items in dictionary.items() %}
-                <tr>
-                    <td>{{items['number']}}</td>
-                    <td>{{job}}</td>
-                    <td>{{items['status']}}</td>
-                    <td>{{items['host']}}</td>
-                    <td>{{items['progress']}}&nbsp;<progress value="{{items['progress']}}" max="100"></progress></td>
-                    <td>{{items['script']}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                </tr>
-            </tfoot>
-        </table>
+<!--    <meta http-equiv="refresh" content="3" />-->
+    <div id="datatablesubstitute"></div>
 
 </div>
 

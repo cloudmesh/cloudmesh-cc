@@ -28,6 +28,26 @@ $(document).ready(function () {
     source.onmessage = function(event) {
         document.getElementById("logs").innerHTML = event.data
     }
+        var source2 = new EventSource("http://127.0.0.1:8000/done-count/{{ name }}");
+    source2.onmessage = function(event2) {
+        document.getElementById("donenumber").innerHTML = event2.data
+    }
+    var source3 = new EventSource("http://127.0.0.1:8000/ready-count/{{ name }}");
+    source3.onmessage = function(event3) {
+        document.getElementById("readynumber").innerHTML = event3.data
+    }
+    var source4 = new EventSource("http://127.0.0.1:8000/failed-count/{{ name }}");
+    source4.onmessage = function(event4) {
+        document.getElementById("failednumber").innerHTML = event4.data
+    }
+    var source5 = new EventSource("http://127.0.0.1:8000/submitted-count/{{ name }}");
+    source5.onmessage = function(event5) {
+        document.getElementById("submittednumber").innerHTML = event5.data
+    }
+    var source6 = new EventSource("http://127.0.0.1:8000/running-count/{{ name }}");
+    source6.onmessage = function(event6) {
+        document.getElementById("runningnumber").innerHTML = event6.data
+    }
 </script>
         <!-- Page Content  -->
 <div id="content">
@@ -53,33 +73,33 @@ $(document).ready(function () {
                             <li>
 
                                 <button type="button" class="btn badge-danger btn-sm">
-                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light">{{ status_dict['failed'] }}</span>
+                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light"><div id="failednumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                                 <button type="button" class="btn badge-success btn-sm">
-                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light">{{ status_dict['completed'] }}</span>
+                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Completed</small> <span class="badge badge-light"><div id="donenumber"></div></span>
                                 </button>
                             </li>
                             &nbsp;
                             <li>
                             <button type="button" class="btn badge-info btn-sm">
-                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light">{{ status_dict['running'] }}</span>
+                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light"><div id="runningnumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-warning btn-sm">
-                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light">{{ status_dict['submitted'] }}</span>
+                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light"><div id="submittednumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
 
                             <li>
                             <button type="button" class="btn badge-light btn-sm">
-                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light">{{ status_dict['ready'] }}</span>
+                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light"><div id="readynumber"></div></span>
                             </button>
                             </li>
                             &nbsp;
@@ -88,7 +108,6 @@ $(document).ready(function () {
                                     <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
                                 </button>
                             </li>
-
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <li>

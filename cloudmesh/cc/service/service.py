@@ -214,7 +214,7 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
 
 async def image_watcher(request, name_of_workflow: str):
     """
-    watches a file for changes
+    watches an svg for changes
     :return:
     """
     interval = 0.2
@@ -249,6 +249,295 @@ async def image_watcher(request, name_of_workflow: str):
                 pass
             yield svg
         time.sleep(interval)
+
+def penultimate_status_watcher(request, name_of_workflow: str):
+    """
+    watches a runtime yaml for status changes
+    :param request:
+    :type request:
+    :param name_of_workflow:
+    :type name_of_workflow:
+    :return:
+    :rtype:
+    """
+    interval = 0.2
+
+    runtime_yaml = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.yaml').path
+    original_yaml = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml').path
+    if not os.path.isfile(runtime_yaml):
+        print('runtimeyamldidntexist')
+        Shell.copy(original_yaml, runtime_yaml)
+
+    runtime_dict = yaml.safe_load(Path(runtime_yaml).read_text())
+    states = []
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        states.append(state)
+    for name in runtime_dict['workflow']['nodes']: # ?
+        states.append(runtime_dict['workflow']['nodes'][name]["status"])
+
+    from collections import Counter
+
+    count = Counter(states)
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        count[state] = count[state] - 1
+    return count
+
+async def datatable_server(request, name_of_workflow: str):
+    interval = 0.2
+    runtime_yaml_filepath = path_expand(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.yaml')
+    original_yaml_filepath = path_expand(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml')
+
+    def runtime_dict_getter():
+
+        runtime_yaml_to_read = readfile(runtime_yaml_filepath)
+        original_yaml_to_read = readfile(original_yaml_filepath)
+
+        runtime_yaml_file = yaml.safe_load(runtime_yaml_to_read)
+        original_yaml_file = yaml.safe_load(original_yaml_to_read)
+
+        # we must delete the job names that are merely expanded dependencies
+        for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
+            #print(node_name)
+            #print(w.graph.nodes.keys())
+            if job_name not in original_yaml_file['workflow']['nodes']:
+                del runtime_yaml_file['workflow']['nodes'][job_name]
+            #else:
+            #    runtime_yaml_file['workflow']['nodes'][job_name]['no'] = dict_with_order['nodes'][job_name]['no']
+          #banner(str(w.graph.nodes[job_name]['progress']))
+        #pprint.pprint(w.graph.nodes)
+
+
+        #w = load_workflow(name_of_workflow)
+        #w.create_topological_order()
+        dictionary = runtime_yaml_file['workflow']['nodes']
+        table_html_template = \
+            fr"""
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Host</th>
+                        <th>Progress</th>
+                        <th>Script</th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+        for job, items in dictionary.items():
+            table_html_template += \
+                fr"""
+                    <tr>
+                        <td>{items['number']}</td>
+                        <td>{job}</td>
+                        <td>{items['status']}</td>
+                        <td>{items['host']}</td>
+                        <td>{items['progress']}&nbsp;<progress value="{items['progress']}" max="100"></progress></td>
+                        <td>{items['script']}</td>
+                    </tr>
+                """
+        table_html_template += \
+        r"""
+                </tbody>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+            </table>
+            <script type="text/javascript">
+            $(document).ready(function () {
+                var table = $('#example').DataTable({
+                    "columnDefs": [
+                        { "width": "5%", "targets": 0 },
+                        { "targets": 0, visible: id_hidden},
+                        { "targets": 1, visible: name_hidden},
+                        { "targets": 2, visible: status_hidden},
+                        { "targets": 3, visible: host_hidden},
+                        { "targets": 4, visible: progress_hidden},
+                        { "targets": 5, visible: script_hidden}
+                    ],
+                    lengthMenu: [
+                        [-1, 10, 25, 50],
+                        ['All', 10, 25, 50],
+                    ],
+            });
+            $('a.toggle-vis').on('click', function (e) {
+                e.preventDefault();
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+
+            });
+            </script>
+        """
+        return table_html_template
+    placeholder_dict = None
+    while True:
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_workflow_dict = yaml.safe_load(readfile(runtime_yaml_filepath))
+        if current_workflow_dict != placeholder_dict:
+            placeholder_dict = current_workflow_dict
+            html_to_return = runtime_dict_getter()
+            yield html_to_return
+        time.sleep(interval)
+
+
+
+async def done_watcher(request, name_of_workflow: str):
+    interval = 0.05
+    placeholder_status_count = None
+    while True:
+        count = penultimate_status_watcher(request,
+                                           name_of_workflow=name_of_workflow)
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_done_count = count['done']
+        status_dict = count
+        if current_done_count != placeholder_status_count:
+            placeholder_status_count = current_done_count
+            yield current_done_count
+
+        time.sleep(interval)
+
+async def ready_watcher(request, name_of_workflow: str):
+    interval = 0.05
+    placeholder_status_count = None
+    while True:
+        count = penultimate_status_watcher(request,
+                                           name_of_workflow=name_of_workflow)
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_ready_count = count['ready']
+        status_dict = count
+        if current_ready_count != placeholder_status_count:
+            placeholder_status_count = current_ready_count
+            yield current_ready_count
+
+        time.sleep(interval)
+
+async def failed_watcher(request, name_of_workflow: str):
+    interval = 0.05
+    placeholder_status_count = None
+    while True:
+        count = penultimate_status_watcher(request,
+                                           name_of_workflow=name_of_workflow)
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_failed_count = count['failed']
+        status_dict = count
+        if current_failed_count != placeholder_status_count:
+            placeholder_status_count = current_failed_count
+            yield current_failed_count
+
+        time.sleep(interval)
+
+async def submitted_watcher(request, name_of_workflow: str):
+    interval = 0.05
+    placeholder_status_count = None
+    while True:
+        count = penultimate_status_watcher(request,
+                                           name_of_workflow=name_of_workflow)
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_submitted_count = count['submitted']
+        status_dict = count
+        if current_submitted_count != placeholder_status_count:
+            placeholder_status_count = current_submitted_count
+            yield current_submitted_count
+
+        time.sleep(interval)
+
+async def running_watcher(request, name_of_workflow: str):
+    interval = 0.05
+    placeholder_status_count = None
+    while True:
+        count = penultimate_status_watcher(request,
+                                           name_of_workflow=name_of_workflow)
+        if await request.is_disconnected():
+            print('disconnected')
+            break
+        current_running_count = count['running']
+        status_dict = count
+        if current_running_count != placeholder_status_count:
+            placeholder_status_count = current_running_count
+            yield current_running_count
+
+        time.sleep(interval)
+
+
+def status_returner(name_of_workflow: str):
+    """
+    reads a runtime yaml file to return a dict of status of jobs.
+    :param name_of_workflow:
+    :type name_of_workflow:
+    :return:
+    :rtype:
+    """
+    runtime_yaml = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.yaml').path
+    original_yaml = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml').path
+    if not os.path.isfile(runtime_yaml):
+        Shell.copy(original_yaml, runtime_yaml)
+    runtime_dict = yaml.safe_load(Path(runtime_yaml).read_text())
+
+    states = []
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        states.append(state)
+    for name in runtime_dict['workflow']['nodes']: # ?
+        states.append(runtime_dict['workflow']['nodes'][name]["status"])
+
+    from collections import Counter
+
+    count = Counter(states)
+    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
+        count[state] = count[state] - 1
+    return count
+
+@app.get("/done-count/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_done(request: Request, name: str):
+    event_generator = done_watcher(request, name)
+    return EventSourceResponse(event_generator)
+
+@app.get("/ready-count/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_ready(request: Request, name: str):
+    event_generator = ready_watcher(request, name)
+    return EventSourceResponse(event_generator)
+
+@app.get("/failed-count/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_failed(request: Request, name: str):
+    event_generator = failed_watcher(request, name)
+    return EventSourceResponse(event_generator)
+
+@app.get("/submitted-count/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_submitted(request: Request, name: str):
+    event_generator = submitted_watcher(request, name)
+    return EventSourceResponse(event_generator)
+
+@app.get("/running-count/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_running(request: Request, name: str):
+    event_generator = running_watcher(request, name)
+    return EventSourceResponse(event_generator)
 
 
 #
@@ -719,7 +1008,6 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 
             w.create_topological_order()
             workflow_dict = Printer.dict(w.graph.nodes, order=order)
-            status_dict = w.analyze_states()
 
             configuration_file = Shell.map_filename(
                 '~/.cloudmesh/workflow/table-preferences.yaml').path
@@ -734,7 +1022,6 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
                                                "dictionary": w.graph.nodes,
                                                "name_of_workflow": name,
                                                "workflowlist": folders,
-                                               "status_dict": status_dict,
                                                "preferences": preferences})
 
         elif output == 'csv':
@@ -808,13 +1095,17 @@ def get_workflow_graph(request: Request, name: str):
 @app.get("/watcher/{name}", include_in_schema=include_in_schema_portal_tag)
 def serve_watcher(request: Request, name: str):
     folders = get_available_workflows()
-    w = load_workflow(name)
-    status_dict = w.analyze_states()
+    #w = load_workflow(name)
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
                                        "name": name,
-                                       "workflowlist": folders,
-                                       "status_dict": status_dict})
+                                       "workflowlist": folders})
+
+@app.get("/serve-datatable/{name}",
+         include_in_schema=include_in_schema_portal_tag)
+def serve_table(request: Request, name: str):
+    event_generator = datatable_server(request, name)
+    return EventSourceResponse(event_generator)
 
 
 @app.get("/run/{name}", tags=['workflow'])
@@ -907,22 +1198,7 @@ def watch_running_workflow(request: Request,
       #banner(str(w.graph.nodes[job_name]['progress']))
     #pprint.pprint(w.graph.nodes)
 
-    # this is copy pasted from analyze_states from workflow.py
-    # because i cant find a better way to call it
-    # (initializing a workflow object would overwrite the
-    # runtime yaml, thats NOT what we want!) so we're stuck with this
-    states = []
-    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
-        states.append(state)
-    for job_name in runtime_yaml_file['workflow']['nodes']:
-        states.append(runtime_yaml_file['workflow']['nodes'][job_name]["status"])
-
-    from collections import Counter
-    count = Counter(states)
-    for state in ['done', 'ready', 'failed', 'submitted', 'running']:
-        count[state] = count[state] - 1
-
-    pprint(runtime_yaml_file['workflow']['nodes'])
+    #pprint(runtime_yaml_file['workflow']['nodes'])
 
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
@@ -936,7 +1212,6 @@ def watch_running_workflow(request: Request,
                                       {"request": request,
                                        "dictionary": runtime_yaml_file['workflow']['nodes'],
                                        "name_of_workflow": name,
-                                       "status_dict": count,
                                        "workflowlist": folders,
                                        "preferences": preferences})
 
