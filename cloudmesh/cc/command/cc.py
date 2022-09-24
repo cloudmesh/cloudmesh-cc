@@ -345,7 +345,7 @@ class CcCommand(PluginCommand):
                     else:
                         cms_ids.remove(cms_ids[1])
                 try:
-                    r = os.popen(fr'taskkill /PID {cms_ids[0]} /F /T').read()
+                    Shell.run(fr'taskkill /PID {cms_ids[0]} /F /T')
                     Console.ok('Server successfully killed')
                     return True
                 except Exception as e:
