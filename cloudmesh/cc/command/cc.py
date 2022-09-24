@@ -330,16 +330,27 @@ class CcCommand(PluginCommand):
                     Console.error("Please run as admin")
                     return False
 
+                cms_ids = []
                 # Iterate over all running processes
                 for proc in psutil.process_iter():
                     if proc.name() == 'cms.exe':
-                        try:
-                            Shell.run(fr'taskkill /PID {proc.pid} /F /T')
-                            Console.ok('cms successfully killed')
-                            return True
-                        except Exception as e:
-                            Console.error(e.output)
-                            return False
+                        cms_ids.append(proc.pid)
+
+                # this is necessary or else the prg will attempt
+                # to terminate itself. since there are two cms.exe,
+                # we must end the one started earlier
+                if len(cms_ids) != 1:
+                    if psutil.Process(cms_ids[0]).create_time() > psutil.Process(cms_ids[1]).create_time():
+                        cms_ids.remove(cms_ids[0])
+                    else:
+                        cms_ids.remove(cms_ids[1])
+                try:
+                    r = os.popen(fr'taskkill /PID {cms_ids[0]} /F /T').read()
+                    Console.ok('Server successfully killed')
+                    return True
+                except Exception as e:
+                    print(e)
+                    return False
 
             else:
                 Shell.run('kill $(pgrep -f "cms cc start")')

@@ -25,3 +25,4 @@ pywin32; platform_system == "Windows"
 sse-starlette
 ipython
 ipykernel
+psutil; platform_system == "Windows"

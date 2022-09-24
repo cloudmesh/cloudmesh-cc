@@ -52,6 +52,7 @@ ipykernel
 
 if os_is_windows():
     requiers.append('pywin32')
+    requiers.append('psutil')
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 
