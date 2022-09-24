@@ -157,19 +157,26 @@ log:
 # SPHINX
 ######################################################################
 
+man:
+	cms help cc | fgrep -v "# Timer" > man_cc.rst
+	pandoc man_cc.rst -o tmp.md
+	sed 's/^.*====/# cms cc/' tmp.md | \
+           fgrep -v "and patch enabled so applying the patch Applyting" | \
+	   fgrep -v "Alpha Channel fix. Your default Alpha Channel is now" > man_cc.md
+	rsync -av man_cc.md api/source/man_cc.md
+
 doc:
 	cd api; sphinx-apidoc ../cloudmesh -o source
 	# cd api/source; sphinx-autogen -o generated *.rst
 	cd api; make html
 
-
-b:
+view:
 
 ifeq ($(detected_OS),Windows)
 	cmd //C "start firefox file://$(mkfile_dir)api/build/html/index.html"
 endif
 ifeq ($(detected_OS),Darwin)        # Mac OS X
-	$(shell firefox api/build/html/index.html)
+	$(shell open api/build/html/index.html)
 endif
 ifeq ($(detected_OS),Linux)
 	$(shell firefox api/build/html/index.html)
