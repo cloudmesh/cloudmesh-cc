@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 import pkg_resources
 
@@ -302,6 +301,7 @@ class CcCommand(PluginCommand):
             url = f"http://{host}:{port}/docs"
             Shell.browser(url)
         elif arguments.test:
+            from pprint import pprint
             import requests
             url = f"http://{host}:{port}/docs"
             r = requests.get(url)
@@ -323,9 +323,26 @@ class CcCommand(PluginCommand):
             #             # print(command)
             #             Shell.kill_pid(command["pid"])
             if os_is_windows():
-                Console.error("Not implemented for Windows :(")
-                return
-            Shell.run('kill $(pgrep -f "cms cc start")')
+                import psutil
+                import ctypes
+
+                if ctypes.windll.shell32.IsUserAnAdmin() == 0:
+                    Console.error("Please run as admin")
+                    return False
+
+                # Iterate over all running processes
+                for proc in psutil.process_iter():
+                    if proc.name() == 'cms.exe':
+                        try:
+                            Shell.run(fr'taskkill /PID {proc.pid} /F /T')
+                            Console.ok('cms successfully killed')
+                            return True
+                        except Exception as e:
+                            Console.error(e.output)
+                            return False
+
+            else:
+                Shell.run('kill $(pgrep -f "cms cc start")')
 
         elif arguments.create and \
                 arguments.queues and \
@@ -404,7 +421,7 @@ class CcCommand(PluginCommand):
             manager = WorkflowCLIManager(name)
             manager.delete_workflow(filename=arguments.filename)
 
-        # list a job and it's characteristics
+        # list a job and its characteristics
         # DONE
         elif arguments.workflow and arguments.list and arguments.job:
             # cc workflow list [--name=NAME] [--job=JOB]
