@@ -130,8 +130,9 @@ class TestJobLocalhost:
         os.chdir('./runtime')
 
         shell_files = Path(f'{__file__}').as_posix()
+        shell_files_dir = Path(os.path.dirname(shell_files)).as_posix()
         for script in ["start", "mlp_mnist", "end"]:
-            Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
+            Shell.copy(f"{shell_files_dir}/../mnist/{script}.sh", ".")
         os.chdir('..')
 
         w.display()
