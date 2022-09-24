@@ -1293,7 +1293,8 @@ class Workflow:
                             layout=nx.circular_layout,
                             engine="dot")
         def display_in_browser():
-
+            if not os.path.isfile(graph_file):
+                return None
             if os_is_mac():
                 Shell.open(filename=graph_file)
             elif os_is_linux():
