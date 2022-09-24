@@ -6,8 +6,10 @@ import pkg_resources
 # from cloudmesh.cc.hostdata import Data
 from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Shell import Shell
+from cloudmesh.common.Shell import Console
 from cloudmesh.common.parameter import Parameter
 from cloudmesh.common.variables import Variables
+from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
@@ -35,7 +37,7 @@ class CcCommand(PluginCommand):
     # noinspection PyUnusedLocal,PyShadowingNames,HttpUrlsUsage
     @command
     def do_cc(self, args, arguments):
-        """
+        r"""
         ::
 
           Usage:
@@ -306,20 +308,24 @@ class CcCommand(PluginCommand):
             pprint(r)
             print(r.text)
         elif arguments.stop:
-            print("Stop the service")
-            commands = Shell.ps()
-            # pprint(commands)
-            # print(type(commands))
-            for command in commands:
-                # print(command)
-                if command["name"].startswith('python'):
-                    cmdline = command["cmdline"]
-                    if 'cc' in cmdline and 'start' in cmdline:
-                        # print(command)
-                        Shell.kill_pid(command["pid"])
-                    if 'cloudmesh.cc.service.service:queue_app' in cmdline:
-                        # print(command)
-                        Shell.kill_pid(command["pid"])
+            Console.info("Stop the service")
+            # commands = Shell.ps()
+            # # pprint(commands)
+            # # print(type(commands))
+            # for command in commands:
+            #     # print(command)
+            #     if command["name"].startswith('python'):
+            #         cmdline = command["cmdline"]
+            #         if 'cc' in cmdline and 'start' in cmdline:
+            #             # print(command)
+            #             Shell.kill_pid(command["pid"])
+            #         if 'cloudmesh.cc.service.service:queue_app' in cmdline:
+            #             # print(command)
+            #             Shell.kill_pid(command["pid"])
+            if os_is_windows():
+                Console.error("Not implemented for Windows :(")
+                return
+            Shell.run('kill $(pgrep -f "cms cc start")')
 
         elif arguments.create and \
                 arguments.queues and \
