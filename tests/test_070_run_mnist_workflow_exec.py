@@ -60,7 +60,7 @@ def create_workflow(filename='mnist.yaml'):
     # copy shell files
     shell_files = Path(f'{__file__}').as_posix()
 
-    for script in ["prepare", "example_mlp_mnist", "end"]:
+    for script in ["prepare", "mlp_mnist", "end"]:
         Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
     os.chdir('..')
@@ -69,12 +69,12 @@ def create_workflow(filename='mnist.yaml'):
 
     w.add_job(name=f"prepare", label=label,  kind='ssh', user=username,
               host=host)
-    w.add_job(name=f"example_mlp_mnist", label=label, kind='ssh', user=username,
+    w.add_job(name=f"mlp_mnist", label=label, kind='ssh', user=username,
               host=host)
     w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
 
-    w.add_dependencies(f"prepare,example_mlp_mnist")
-    w.add_dependencies(f"example_mlp_mnist,end")
+    w.add_dependencies(f"prepare,mlp_mnist")
+    w.add_dependencies(f"mlp_mnist,end")
     w.graph.save_to_yaml("./mnist.yaml")
     Shell.copy("./mnist.yaml", "./runtime/mnist.yaml")
     g = str(w.graph)
