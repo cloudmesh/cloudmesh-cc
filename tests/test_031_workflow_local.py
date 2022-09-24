@@ -185,10 +185,11 @@ class TestWorkflowLocal:
 
         # copy shell files
         shell_files = Path(f'{__file__}').as_posix()
+        shell_files_dir = Path(os.path.dirname(shell_files)).as_posix()
         runtime_dir = Path(Shell.map_filename(
             '~/.cloudmesh/workflow/workflow-local/runtime').path).as_posix()
         try:
-            Shell.run(f'cp {shell_files}/../workflow-sh/*.sh {runtime_dir}')
+            Shell.run(f'cp {shell_files_dir}/workflow-sh/*.sh {runtime_dir}')
         except Exception as e:
             print(e.output)
 
