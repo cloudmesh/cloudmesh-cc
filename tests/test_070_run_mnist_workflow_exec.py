@@ -74,7 +74,7 @@ def create_workflow(filename='mnist.yaml'):
 
     w.add_job(name=f"prepare", label=label,  kind='ssh', user=username,
               host=host)
-    w.add_job(name=f"run_all_rivanna", label=label, kind='ssh', user=username,
+    w.add_job(name=f"run_all_rivanna.py", label=label, kind='ssh', user=username,
               host=host, script="run_all_rivanna.py")
     w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
 
