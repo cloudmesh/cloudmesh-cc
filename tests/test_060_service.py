@@ -230,6 +230,6 @@ class TestService:
         assert response.status_code == 200
 
     def test_benchmark(self):
-        create_dest()
+        os.chdir(os.path.dirname(__file__))
         HEADING()
         Benchmark.print(csv=True, sysinfo=False, tag="cc")
