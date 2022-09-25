@@ -41,5 +41,12 @@ cms set device=rivanna
 echo "# cloudmesh status=running progress=70 pid=$$"
 #python run_all_rivanna.py
 python mlp_mnist.py
+python mnist_autoencoder.py
+python mnist_cnn.py
+python mnist_lstm.py
+python mnist_mlp_with_lstm.py
+python mnist_rnn.py
+python mnist_with_distributed_training.py
+python mnist_with_pytorch.py
 echo "# cloudmesh status=done progress=100 pid=$$"
 # python mlp_mnist.py
