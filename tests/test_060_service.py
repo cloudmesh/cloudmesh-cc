@@ -230,5 +230,6 @@ class TestService:
         assert response.status_code == 200
 
     def test_benchmark(self):
+        create_dest()
         HEADING()
         Benchmark.print(csv=True, sysinfo=False, tag="cc")
