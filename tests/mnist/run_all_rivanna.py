@@ -118,9 +118,8 @@ for card in gpu:
 
     StopWatch.stop(f'{card}-total')
     StopWatch.benchmark(sysinfo=False, tag=tag, node=host, user=user, filename=f"all-{tag}.log")
-    StopWatch.clear()
 
-StopWatch.benchmark(sysinfo=False, tag="final-results")
+StopWatch.benchmark(sysinfo=False)
 
 StopWatch.progress(100)
 

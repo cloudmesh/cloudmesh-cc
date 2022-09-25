@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_070_run_mnist_workflow_exec.py
-# pytest -v  tests/test_070_run_mnist_workflow_exec.py
-# pytest -v --capture=no  tests/test_070_run_mnist_workflow_exec.py::TestWorkflowLocal::<METHODNAME>
+# pytest -v -x --capture=no examples/example_run_mnist_workflow_exec.py
+# pytest -v  examples/example_run_mnist_workflow_exec.py
+# pytest -v --capture=no  examples/example_run_mnist_workflow_exec.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil
@@ -62,11 +62,11 @@ def create_workflow(filename='mnist.yaml'):
     shell_files_dir = Path(os.path.dirname(shell_files)).as_posix()
 
     for script in ["prepare", "end"]:
-        Shell.copy(f"{shell_files_dir}/mnist/{script}.sh", ".")
+        Shell.copy(f"{shell_files_dir}/../tests/mnist/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
 
     for script in ["run_all_rivanna"]:
-        Shell.copy(f"{shell_files_dir}/mnist/{script}.py", ".")
+        Shell.copy(f"{shell_files_dir}/../tests/mnist/{script}.py", ".")
         assert os.path.isfile(f"./{script}.py")
     os.chdir('..')
 
