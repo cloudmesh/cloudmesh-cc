@@ -43,7 +43,7 @@ w = None
 
 try:
     if not Vpn.enabled():
-        raise Exception('vpn not enabled')
+        Console.error('vpn not enabled')
     command = f"ssh {username}@{host} hostname"
     print(command)
     content = Shell.run(command, timeout=3)
