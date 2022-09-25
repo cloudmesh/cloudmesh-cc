@@ -45,7 +45,7 @@ job_id = None
 
 try:
     if not Vpn.enabled():
-        raise Exception('vpn not enabled')
+        Console.error('vpn not enabled')
     command = f"ssh {username}@{host} hostname"
     print (command)
     content = Shell.run(command, timeout=3)
@@ -81,12 +81,13 @@ def create_workflow(filename='workflow-slurm.yaml'):
     jobkind = 'slurm'
 
     shell_files = Path(f'{__file__}').as_posix()
+    shell_files_dir = Path(os.file.dirname(shell_files)).as_posix()
     runtime_dir = Path(Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-slurm/runtime').path).as_posix()
     os.chdir('workflow-slurm')
 
     for script in ["start", "end"]:
-        Shell.copy(f"{shell_files}/../workflow-slurm/{script}.sh", runtime_dir)
+        Shell.copy(f"{shell_files_dir}/workflow-slurm/{script}.sh", runtime_dir)
         assert os.path.isfile(f"./runtime/{script}.sh")
         w.add_job(name=script, kind=jobkind, user=user, host=host)
 

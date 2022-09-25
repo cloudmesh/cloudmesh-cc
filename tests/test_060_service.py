@@ -71,6 +71,7 @@ def create_workflow(filename="workflow-service.yaml"):
     jobkind="local"
 
     shell_files = Path(f'{__file__}').as_posix()
+    shell_files_dir = Path(os.file.dirname(shell_files)).as_posix()
     runtime_dir = Path(Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-service/runtime').path).as_posix()
     #os.chdir('workflow-service')
@@ -79,7 +80,7 @@ def create_workflow(filename="workflow-service.yaml"):
                    "job-rivanna.hpc.virginia.edu-3",
                    "job-rivanna.hpc.virginia.edu-4",
                    "job-rivanna.hpc.virginia.edu-5", "end"]:
-        Shell.copy(f"{shell_files}/../workflow-sh/{script}.sh", ".")
+        Shell.copy(f"{shell_files_dir}/workflow-sh/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
 
     w.add_job(name="start", kind=jobkind, user=user, host=host)

@@ -59,9 +59,10 @@ def create_workflow(filename='mnist.yaml'):
 
     # copy shell files
     shell_files = Path(f'{__file__}').as_posix()
+    shell_files_dir = Path(os.file.dirname(shell_files)).as_posix()
 
     for script in ["prepare", "mlp_mnist", "end"]:
-        Shell.copy(f"{shell_files}/../mnist/{script}.sh", ".")
+        Shell.copy(f"{shell_files_dir}/mnist/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
     os.chdir('..')
 
