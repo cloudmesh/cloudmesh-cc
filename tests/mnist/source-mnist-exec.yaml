@@ -5,8 +5,8 @@ workflow:
       kind: local
       host: local
       exec: "echo start"
-    mlp_mnist:
-      label: mlp_mnist
+    example_mlp_mnist:
+      label: example_mlp_mnist
       kind: local
       host: local
       exec: "echo mnist"
@@ -16,4 +16,4 @@ workflow:
       host: local
       exec: "echo end"
   dependencies:
-    - start,mlp_mnist,end
+    - start,example_mlp_mnist,end
