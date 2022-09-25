@@ -6,7 +6,6 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8GB
 #SBATCH --time=50:00
-#SBATCH --gres=gpu:v100:1
 
 echo "# cloudmesh status=running progress=1 pid=$$"
 

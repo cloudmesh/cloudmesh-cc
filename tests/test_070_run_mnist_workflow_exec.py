@@ -61,21 +61,25 @@ def create_workflow(filename='mnist.yaml'):
     shell_files = Path(f'{__file__}').as_posix()
     shell_files_dir = Path(os.path.dirname(shell_files)).as_posix()
 
-    for script in ["prepare", "mlp_mnist", "end"]:
+    for script in ["prepare", "end"]:
         Shell.copy(f"{shell_files_dir}/mnist/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
+
+    for script in ["run_all_rivanna.py"]:
+        Shell.copy(f"{shell_files_dir}/mnist/{script}.py", ".")
+        assert os.path.isfile(f"./{script}.py")
     os.chdir('..')
 
     label = "{name}\\nprogress={progress}"
 
     w.add_job(name=f"prepare", label=label,  kind='ssh', user=username,
               host=host)
-    w.add_job(name=f"mlp_mnist", label=label, kind='slurm', user=username,
+    w.add_job(name=f"run_all_rivanna.py", label=label, kind='ssh', user=username,
               host=host)
     w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
 
-    w.add_dependencies(f"prepare,mlp_mnist")
-    w.add_dependencies(f"mlp_mnist,end")
+    w.add_dependencies(f"prepare,run_all_rivanna.py")
+    w.add_dependencies(f"run_all_rivanna.py,end")
     w.graph.save_to_yaml("./mnist.yaml")
     Shell.copy("./mnist.yaml", "./runtime/mnist.yaml")
     g = str(w.graph)
