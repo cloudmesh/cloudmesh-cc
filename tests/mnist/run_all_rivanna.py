@@ -94,7 +94,7 @@ for card in gpu:
             output = f"{script}-output"
             command = f"{exec} {script}.ipynb {output}.ipynb"
         elif exec == 'sbatch':
-            command = f"{exec} --gres=gpu:{card}:1 {script}.sh"
+            command = f"{exec} --wait --gres=gpu:{card}:1 {script}.sh"
         banner(command)
         if not dryrun:
             os.chdir(path)
