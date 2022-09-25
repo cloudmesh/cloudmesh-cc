@@ -78,8 +78,8 @@ def create_workflow(filename='mnist.yaml'):
               host=host, script="run_all_rivanna.py")
     w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
 
-    w.add_dependencies(f"prepare,run_all_rivanna")
-    w.add_dependencies(f"run_all_rivanna,end")
+    w.add_dependencies(f"prepare,run_all_rivanna.py")
+    w.add_dependencies(f"run_all_rivanna.py,end")
     w.graph.save_to_yaml("./mnist.yaml")
     Shell.copy("./mnist.yaml", "./runtime/mnist.yaml")
     g = str(w.graph)
