@@ -98,7 +98,7 @@ def create_workflow(filename='workflow-slurm.yaml'):
 
         print(n)
         w.add_job(name=f"slurm", kind=kind, user=user, host=host)
-        Shell.copy(f"{shell_files}/../workflow-slurm/slurm.sh", runtime_dir)
+        Shell.copy(f"{shell_files_dir}/workflow-slurm/slurm.sh", runtime_dir)
         # os.system(f"cp ./workflow-slurm/job-{host}-{n}.sh .")
         n = n + 1
 
