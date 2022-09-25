@@ -31,7 +31,9 @@ cms set user=dje5dj
 cms set host=rivanna
 cms set cpu=IntelXeonE5-2630
 cms set device=rivanna
+module load singularity tensorflow/2.8.0
 echo "# cloudmesh status=running progress=70 pid=$$"
-python run_all_rivanna.py
+#python run_all_rivanna.py
+singularity run --nv $CONTAINERDIR/tensorflow-2.8.0.sif run_all_rivanna.py
 echo "# cloudmesh status=done progress=100 pid=$$"
 # python mlp_mnist.py
