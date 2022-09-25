@@ -113,9 +113,6 @@ def create_workflow(filename='workflow-slurm.yaml'):
     return w
 
 def remove_workflow(filename="workflow-slurm.yaml"):
-    # Remove workflow source yaml filr
-    Shell.rm(filename)
-
     # Remove experiment execution directory
     full_dir = Shell.map_filename('~/experiment').path
 
@@ -250,6 +247,7 @@ class TestWorkflowSlurm:
     def test_delete_remnants(self):
         HEADING()
         Benchmark.Start()
+        create_dest()
         time.sleep(2)
         remove_workflow("workflow-slurm.yaml")
 
