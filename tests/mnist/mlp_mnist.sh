@@ -26,7 +26,7 @@ cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
 cd ~/reu2022/code/deeplearning/mnist/
-cms set gpu=v100
+cms set gpu=a100
 cms set user=dje5dj
 cms set host=rivanna
 cms set cpu=IntelXeonE5-2630

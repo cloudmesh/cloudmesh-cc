@@ -70,7 +70,7 @@ def create_workflow(filename='mnist.yaml'):
 
     w.add_job(name=f"prepare", label=label,  kind='ssh', user=username,
               host=host)
-    w.add_job(name=f"mlp_mnist", label=label, kind='ssh', user=username,
+    w.add_job(name=f"mlp_mnist", label=label, kind='slurm', user=username,
               host=host)
     w.add_job(name=f"end", label=label, kind='ssh', user=username, host=host)
 
