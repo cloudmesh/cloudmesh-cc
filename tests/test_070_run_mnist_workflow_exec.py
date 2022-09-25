@@ -65,7 +65,7 @@ def create_workflow(filename='mnist.yaml'):
         Shell.copy(f"{shell_files_dir}/mnist/{script}.sh", ".")
         assert os.path.isfile(f"./{script}.sh")
 
-    for script in ["run_all_rivanna.py"]:
+    for script in ["run_all_rivanna"]:
         Shell.copy(f"{shell_files_dir}/mnist/{script}.py", ".")
         assert os.path.isfile(f"./{script}.py")
     os.chdir('..')
