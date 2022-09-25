@@ -71,7 +71,7 @@ def create_workflow(filename="workflow-service.yaml"):
     jobkind="local"
 
     shell_files = Path(f'{__file__}').as_posix()
-    shell_files_dir = Path(os.file.dirname(shell_files)).as_posix()
+    shell_files_dir = Path(os.path.dirname(shell_files)).as_posix()
     runtime_dir = Path(Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-service/runtime').path).as_posix()
     #os.chdir('workflow-service')
