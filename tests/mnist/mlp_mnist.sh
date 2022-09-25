@@ -19,9 +19,9 @@ git pull
 pip install -r requirements.txt
 cd ~/cloudmesh-cc
 pip install -e .
-conda install pytorch torchvision -c pytorch
-conda install py-cpuinfo
-conda install --file requirements.txt
+#conda install pytorch torchvision -c pytorch
+#conda install py-cpuinfo
+#conda install --file requirements.txt
 echo "# cloudmesh status=running progress=60 pid=$$"
 module load singularity tensorflow/2.8.0
 module load cudatoolkit/11.0.3-py3.8
