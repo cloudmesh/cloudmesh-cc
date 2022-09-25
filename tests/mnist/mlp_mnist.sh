@@ -12,7 +12,7 @@ echo "# cloudmesh status=running progress=1 pid=$$"
 
 nvidia-smi --list-gpus
 python ~/cloudmesh-cc/tests/mnist/create_python.py
-conda install pip
+# conda install pip
 echo "# cloudmesh status=running progress=50 pid=$$"
 cd ~/reu2022/code/deeplearning/
 git pull
