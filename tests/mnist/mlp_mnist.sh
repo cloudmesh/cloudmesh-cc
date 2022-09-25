@@ -32,6 +32,10 @@ cms set host=rivanna
 cms set cpu=IntelXeonE5-2630
 cms set device=rivanna
 module load singularity tensorflow/2.8.0
+module load cudatoolkit/11.0.3-py3.8
+module load cuda/11.4.2
+module load cudnn/8.2.4.15
+module load anaconda/2020.11-py3.8
 echo "# cloudmesh status=running progress=70 pid=$$"
 #python run_all_rivanna.py
 singularity run --nv $CONTAINERDIR/tensorflow-2.8.0.sif run_all_rivanna.py
