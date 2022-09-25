@@ -81,7 +81,7 @@ mlp_mnist
 host = 'rivanna'
 
 #if gpu is None:
-gpu = ['v100', 'a100', 'k80', 'p100', 'rtx-2080']
+gpu = ['v100', 'a100', 'k80', 'p100', 'rtx2080']
 #else:
 #    gpu = v['gpu'].split(',')
 path = Shell.map_filename('~/cm/cloudmesh-cc/tests/mnist').path
@@ -119,6 +119,8 @@ for card in gpu:
     StopWatch.stop(f'{card}-total')
     StopWatch.benchmark(sysinfo=False, tag=tag, node=host, user=user, filename=f"all-{tag}.log")
     StopWatch.clear()
+
+StopWatch.benchmark(sysinfo=False, tag="final-results")
 
 StopWatch.progress(100)
 
