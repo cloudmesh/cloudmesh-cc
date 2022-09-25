@@ -81,7 +81,7 @@ mlp_mnist
 host = 'rivanna'
 
 #if gpu is None:
-gpu = ['v100', 'a100', 'k80', 'p100', 'rtx2080']
+gpu = ['v100', 'a100', 'k80', 'p100']
 #else:
 #    gpu = v['gpu'].split(',')
 path = Shell.map_filename('~/cm/cloudmesh-cc/tests/mnist').path
