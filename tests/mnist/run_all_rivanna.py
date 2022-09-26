@@ -104,7 +104,6 @@ for card in gpu:
                 StopWatch.start(f'{card}')
                 Shell.run(command)
                 StopWatch.stop(f'{card}')
-                Shell.run(f'cms set delete currentgpu')
             except Exception as e:
                 print(e.output)
 
@@ -121,7 +120,7 @@ for card in gpu:
     StopWatch.benchmark(sysinfo=False, node=host, user=user)
 
 StopWatch.benchmark(sysinfo=False, filename=f"all-mnist.log")
-
+Shell.run(f'cms set delete currentgpu')
 StopWatch.progress(100)
 
 
