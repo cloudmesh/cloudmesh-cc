@@ -82,6 +82,7 @@ host = 'rivanna'
 
 #if gpu is None:
 gpu = ['v100', 'a100', 'k80', 'p100']
+#gpu = ['a100']
 #else:
 #    gpu = v['gpu'].split(',')
 path = Shell.map_filename('~/cm/cloudmesh-cc/tests/mnist').path
@@ -99,11 +100,11 @@ for card in gpu:
             os.chdir(path)
             banner(command)
             try:
-                Shell.run(f'source activate ENV3 ; cms set currentgpu={gpu}')
+                Shell.run(f'cms set currentgpu={card}')
                 StopWatch.start(f'{card}')
                 Shell.run(command)
                 StopWatch.stop(f'{card}')
-                Shell.run(f'source activate ENV3 ; cms set delete currentgpu')
+                #Shell.run(f'cms set delete currentgpu')
             except Exception as e:
                 print(e.output)
 

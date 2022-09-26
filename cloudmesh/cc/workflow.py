@@ -947,6 +947,7 @@ class Workflow:
                 script=None,
                 exec=None,
                 pid=None,
+                venv=None,
                 **kwargs
                 ):
         """
@@ -1001,6 +1002,7 @@ class Workflow:
             modified=now,
             script=script,
             exec=exec,
+            venv=venv,
             instance=None
         )
         self.save(filename=filename)

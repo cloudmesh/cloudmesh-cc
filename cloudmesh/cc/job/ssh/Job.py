@@ -143,7 +143,10 @@ class Job:
 
             if self.filetype == ".py":
                 try:
-                    command = f'ssh {self.username}@{self.host} "cd {self.directory} ; python ./{self.name}.py > {self.name}.log 2>&1 &"'
+                    if hasattr(self, 'venv'):
+                        command = f'ssh {self.username}@{self.host} "cd {self.directory} ; source activate {self.venv} ; python ./{self.name}.py > {self.name}.log 2>&1 &"'
+                    else:
+                        command = f'ssh {self.username}@{self.host} "cd {self.directory} ; python ./{self.name}.py > {self.name}.log 2>&1 &"'
                     print(command)
                     r = subprocess.Popen(command, shell=True)
                     state = 0
