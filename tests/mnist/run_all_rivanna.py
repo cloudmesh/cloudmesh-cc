@@ -88,7 +88,6 @@ path = Shell.map_filename('~/cm/cloudmesh-cc/tests/mnist').path
 os.chdir(path)
 for card in gpu:
     tag = f"{host}-{user}-{cpu}-{card}"
-    StopWatch.start(f'{card}-total')
     for script in scripts:
         if exec == "papermill":
             output = f"{script}-output"
@@ -100,9 +99,9 @@ for card in gpu:
             os.chdir(path)
             banner(command)
             try:
-                StopWatch.start(f'{script}')
+                StopWatch.start(f'{card}')
                 Shell.run(command)
-                StopWatch.stop(f'{script}')
+                StopWatch.stop(f'{card}')
             except Exception as e:
                 print(e.output)
 
@@ -116,10 +115,9 @@ for card in gpu:
             continue
 
 
-    StopWatch.stop(f'{card}-total')
-    StopWatch.benchmark(sysinfo=False, tag=tag, node=host, user=user, filename=f"all-{tag}.log")
+    StopWatch.benchmark(sysinfo=False, node=host, user=user)
 
-StopWatch.benchmark(sysinfo=False)
+StopWatch.benchmark(sysinfo=False, filename=f"all-mnist.log")
 
 StopWatch.progress(100)
 
