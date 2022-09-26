@@ -1343,11 +1343,13 @@ class Workflow:
                 host = job['host']
                 username = job['user']
                 label = name
+                venv = job['venv']
                 _job = Job(name=name,
                            host=host,
                            username=username,
                            label=label,
-                           label_format=label_format)
+                           label_format=label_format,
+                           venv=venv)
                 _job.sync()
                 _job.run()
 

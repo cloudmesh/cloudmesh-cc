@@ -104,7 +104,7 @@ for card in gpu:
                 StopWatch.start(f'{card}')
                 Shell.run(command)
                 StopWatch.stop(f'{card}')
-                #Shell.run(f'cms set delete currentgpu')
+                Shell.run(f'cms set delete currentgpu')
             except Exception as e:
                 print(e.output)
 
