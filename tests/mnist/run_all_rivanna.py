@@ -39,17 +39,17 @@ if host is None:
     Console.error("host not set")
     error = True
 
-if cpu is None:
-    Console.error("cpu not set")
-    error = True
-
-if gpu is None:
-    Console.error("gpu not set")
-    error = True
-
-if device is None:
-    Console.error("device not set")
-    error = True
+# if cpu is None:
+#     Console.error("cpu not set")
+#     error = True
+#
+# if gpu is None:
+#     Console.error("gpu not set")
+#     error = True
+#
+# if device is None:
+#     Console.error("device not set")
+#     error = True
 
 if error:
     sys.exit()
@@ -99,11 +99,11 @@ for card in gpu:
             os.chdir(path)
             banner(command)
             try:
-                Shell.run(f'cms set currentgpu={gpu}')
+                Shell.run(f'source activate ENV3 ; cms set currentgpu={gpu}')
                 StopWatch.start(f'{card}')
                 Shell.run(command)
                 StopWatch.stop(f'{card}')
-                Shell.run(f'cms set delete currentgpu')
+                Shell.run(f'source activate ENV3 ; cms set delete currentgpu')
             except Exception as e:
                 print(e.output)
 

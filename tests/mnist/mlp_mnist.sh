@@ -22,11 +22,13 @@ module load cudatoolkit/11.0.3-py3.8
 module load cuda/11.4.2
 module load cudnn/8.2.4.15
 module load anaconda/2020.11-py3.8
-cd ~/reu2022/code/deeplearning/mnist/
 cms set host=rivanna
 cms set cpu=IntelXeonE5-2630
 cms set device=rivanna
 echo "# cloudmesh status=running progress=70 pid=$$"
+cd ~
+source activate ENV3
+cd ~/reu2022/code/deeplearning/mnist/
 #python run_all_rivanna.py
 python mlp_mnist.py
 python mnist_autoencoder.py
