@@ -99,9 +99,11 @@ for card in gpu:
             os.chdir(path)
             banner(command)
             try:
+                Shell.run(f'cms set currentgpu={gpu}')
                 StopWatch.start(f'{card}')
                 Shell.run(command)
                 StopWatch.stop(f'{card}')
+                Shell.run(f'cms set delete currentgpu')
             except Exception as e:
                 print(e.output)
 
