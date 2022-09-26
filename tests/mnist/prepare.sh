@@ -16,6 +16,7 @@ git pull
 cd ~
 python ~/cm/cloudmesh-cc/tests/mnist/create_python.py
 echo "# cloudmesh status=running progress=75 pid=$$"
+source activate ENV3
 cd ~/reu2022/code/deeplearning/
 pip install -r requirements.txt
 cd ~/cm/cloudmesh-cc
