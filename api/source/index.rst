@@ -10,9 +10,20 @@ Welcome to cloudmesh-cc's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   gregor
    modules
    api
    usage
+   cloudmesh.cc.command
+
+Manual Page
+===========
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   cloudmesh.cc.command
 
 
 Indices and tables
