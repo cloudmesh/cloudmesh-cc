@@ -29,7 +29,7 @@ echo "# cloudmesh status=running progress=70 pid=$$"
 cd ~
 source activate ENV3
 cd ~/reu2022/code/deeplearning/mnist/
-currentgpu=$(echo $(cms set user) | sed -e "s/['\"]//g" -e "s/^\(currentgpu=\)*//")
+currentgpu=$(echo $(cms set currentgpu) | sed -e "s/['\"]//g" -e "s/^\(currentgpu=\)*//")
 #python run_all_rivanna.py
 python mlp_mnist.py 2>&1 mlp_mnist_output_py_$(echo currentgpu).log
 python mnist_autoencoder.py 2>&1 mnist_autoencoder_output_py_$(echo currentgpu).log
