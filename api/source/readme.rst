@@ -1,7 +1,8 @@
-Hybrid Multi-Cloud Analytics Services Framework
-===============================================
+Introduction
+============
 
-**Cloudmesh Controlled Computing through Workflows**
+Hybrid Multi-Cloud Analytics Services Framework and
+Cloudmesh Controlled Computing through Workflows
 
 Gregor von Laszewski (laszewski@gmail.com)\ :math:`^*`, Jacques
 Fleischer
@@ -28,15 +29,13 @@ a service that lets the user manage and execute without supervision. We
 have created a service that lets the user run jobs across multiple
 platforms in a dynamic queue with visualization and data storage.
 
-See fig. 1.
+See :numref:`fastapi-service`.
 
 .. figure:: images/fastapi-service.png
-   :alt: Figure 1: OpenAPI Description of the REST Interface to the
-   Workflow
-   :name: fig:fastapi-service
-   :width: 50.0%
+   :alt: Figure OpenAPI Description of the REST Interface to the Workflow
+   :name: fastapi-service
 
-   Figure 1: OpenAPI Description of the REST Interface to the Workflow
+   OpenAPI Description of the REST Interface to the Workflow
 
 Workflow Controlled Computing
 -----------------------------
@@ -101,13 +100,13 @@ Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
 Convolutional, and Recurrent Neural Networks, Distributed Training, and
 PyTorch training
 
-See fig. 2.
+See :numref:`workflow-uml`.
 
 .. figure:: images/workflow-uml.png
-   :alt: Figure 2: Design for the workflow.
-   :name: fig:workflow-uml
+   :alt: Figure Design for the workflow.
+   :name: workflow-uml
 
-   Figure 2: Design for the workflow.
+   Design for the workflow.
 
 Design
 ------
@@ -174,30 +173,3 @@ framework.
 Improvements to this project will include code cleanup and manual
 development.
 
-References
-----------
-
-A poster based on a pre-alpha version of this code is available as ppt
-and PDF file. However, that version is no longer valid and is superseded
-by much improved efforts. The code summarized in the pre-alpha version
-was mainly used to teach a number of students Python and how to work in
-a team
-
--  `Poster Presentation
-   (PPTX) <https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx>`__
--  `Poster Presentation
-   (PDF) <https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf>`__
-
-Please note also that the poster contains inaccurate statements and
-descriptions and should not be used as a reference to this work.
-
-Acknowledgments
----------------
-
-Continued work was in part funded by the NSF CyberTraining: CIC:
-CyberTraining for Students and Technologies from Generation Z with the
-award numbers 1829704 and 2200409. We like to thank the following
-contributors for their help and evaluation in a pre-alpha version of the
-code: Jackson Miskill, Alex Beck, Alison Lu. We are excited that this
-effort contributed significantly to their increased understanding of
-Python and how to develop in a team using the Python ecosystem.
