@@ -1,3 +1,4 @@
+"""Queue management."""
 import json as pyjson
 
 import yaml
@@ -10,21 +11,11 @@ from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.systeminfo import os_is_mac
 from cloudmesh.common.util import path_expand
 
-"""
-This is a program that allows for the instantiation of jobs and then
-allowing those jobs to be manipulated in a queue. These manipulations
-are add, create, remove, list, and run. This way, once a remote computer
-(such as Rivanna) is accessed, the jobs that need to be executed can be).
-
-Below are the objects and what they can do with examples of the type of
-command that would theoretically be run in the command line.
-"""
-
 
 class Job:
     """
-        A job is an object that has a name and a command. This name is paired
-        to the command.
+    A job is an object that has a name and a command. This name is paired
+    to the command.
     """
 
     def __init__(self, name=None, command=None, kind=None, status=None):
