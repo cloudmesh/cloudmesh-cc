@@ -14,6 +14,7 @@ class Slurm:
     def __init__(self, host):
         """
         sets locations of slurm commands for the job
+
         :param host: device that the script will be run on
         :type host: str
         """
@@ -75,6 +76,7 @@ class Job:
         Uses the inputted name of script to return the
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
+
         :param name: the name of the script
         :type name: str
         :return: file extension of script
@@ -92,6 +94,7 @@ class Job:
         """
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
+
         :return: description and specifications of job in string format
         :rtype: str
         """
@@ -114,6 +117,7 @@ class Job:
         """
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
+
         :return: the status of job
         :rtype: str
         """
@@ -122,6 +126,7 @@ class Job:
     def clean(self):
         """
         deletes the remote experiment directory
+
         :return: nothing
         :rtype: None
         """
@@ -134,6 +139,7 @@ class Job:
         creates remote experiment directory to contain job files such as
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
+
         :return: does not return anything
         :rtype: None
         """
@@ -145,6 +151,7 @@ class Job:
         """
         runs the job by making script executable and running the
         slurm job remotely.
+
         :returns:
             - state - undefined, running, or done
             - job_id - the slurm job id of the job
@@ -174,6 +181,7 @@ class Job:
     def clear(self):
         """
         clears all leftover log files from past runs
+
         :return: does not return anything
         :rtype: None
         """
@@ -190,6 +198,7 @@ class Job:
         """
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
+
         :param refresh: whether to copy the log file in case of changes
         :type refresh: bool
         :return: returns status, which is the progress of the job
@@ -212,6 +221,7 @@ class Job:
         """
         fetches the log file of the job and reads the log file to check
         for the current completeness of the job
+
         :param refresh: whether to copy the log file in case of changes
         :type refresh: bool
         :return: value from 0 to 100 which reflects completeness of job
@@ -240,6 +250,7 @@ class Job:
         """
         copy the remote log file and read the contents of the file to
         return the contents as a string
+
         :return: the contents of the log file in string format
         :rtype: str
         """
@@ -258,6 +269,7 @@ class Job:
         """
         makes experiment dir and changes permissions, and then
         copies the shell script to remote host
+
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
@@ -274,6 +286,7 @@ class Job:
         changes the permissions and flags of the script to be
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
+
         :return: 0 or 1 depending on success of command
         :rtype: int
         """
@@ -289,6 +302,7 @@ class Job:
         """
         used to check if the file is existing within the remote experiment
         directory
+
         :param filename: the name of the script, including file extension
         :type filename: str
         :return: True if the file exists and False if it doesnt
@@ -305,7 +319,8 @@ class Job:
         """
         waits and watches for progress to reach 100, on interval basis
         specified in the period in seconds,
-        till the job has completed
+        until the job has completed
+
         :param period: time in seconds to check, as an interval
         :type period: float
         :return: does not return anything
@@ -325,6 +340,7 @@ class Job:
     def get_pid(self, refresh=False):
         """
         get the pid that the job is running within
+
         :param refresh: whether to retrieve the latest log
         :type refresh: bool
         :return: the pid (process identifier)
@@ -344,6 +360,7 @@ class Job:
     def kill(self, period=1, job_id=None):
         """
         kills the slurm job
+
         :param period: interval to use for waiting for log/pid
         :type period: float
         :param job_id: id of slurm job
@@ -396,6 +413,7 @@ class Job:
         """
         creates a template
         for the slurm sbatch
+
         :param command: command to be executed
         :param file: name of file
         :param jobname: name of job
@@ -440,6 +458,7 @@ class Job:
         """
         creates a template
         for the slurm sbatch
+
         :param exec: command to be executed
         :type exec: str
         :return: name of script
