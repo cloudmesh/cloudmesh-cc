@@ -164,13 +164,17 @@ man:
 	echo "==========" >> tmp.rst
 	cat tmp.rst tmp1.rst > man_cc.rst
 	rsync -av man_cc.rst api/source/man_cc.rst
+	rm -f tmp.rst tmp1.rst
 
-doc:
+
+doc: man
 	cd api; sphinx-apidoc ../cloudmesh -o source
 	cd api/source; sphinx-autogen -o generated *.rst
 	cd api; make html
-	pandoc README.md -o api/source/readme.rst
-	pandoc MANUAL.md -o api/source/manual.rst
+	#pandoc README.md -o api/source/readme.rst
+	#pandoc MANUAL.md -o api/source/manual.rst
+	cp README.md api/source/readme.md
+	cp MANUAL.md api/source/manual.md
 	rsync -av images api/source
 
 
