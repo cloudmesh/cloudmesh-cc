@@ -169,6 +169,10 @@ doc:
 	cd api; sphinx-apidoc ../cloudmesh -o source
 	cd api/source; sphinx-autogen -o generated *.rst
 	cd api; make html
+	pandoc README.md -o api/source/readme.rst
+	pandoc MANUAL.md -o api/source/manual.rst
+	rsync -av images api/source
+
 
 view:
 ifeq ($(detected_OS),Windows)

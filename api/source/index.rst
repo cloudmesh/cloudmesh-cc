@@ -8,24 +8,29 @@ Cloudmesh Compute Cluster
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   mnist
-   modules
-   api
-   usage
    man_cc
-   gregor
-   cloudmesh.cc.command
 
-Manual Page
-===========
+.. toctree::
+   :maxdepth: 2
+
+   readme
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
 
-   cloudmesh.cc.command
+   manual
+   mnist
+
+Broken
+======
+
+.. toctree::
+   :maxdepth: 2
+
+   modules
+   api
+
 
 
 Indices and tables
