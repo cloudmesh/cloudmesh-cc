@@ -10,7 +10,7 @@ Welcome to cloudmesh-cc's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   gregor
+   mnist
    modules
    api
    usage

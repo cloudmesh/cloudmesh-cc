@@ -4,3 +4,4 @@ flake8
 sphinx
 sphinx_rtd_theme
 sphinx-autodoc-typehints
+myst-parser
