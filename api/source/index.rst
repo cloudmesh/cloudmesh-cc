@@ -29,7 +29,8 @@ Broken
 
    modules
    api
-   generated/cloudmesh.rst
+   generated/cloudmesh
+   generated/cloudmesh.cc
    cloudmesh
 
 
