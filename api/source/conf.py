@@ -8,16 +8,25 @@
 
 import sphinx_rtd_theme
 import sys, os
+from cloudmesh.cc.__version__ import version as cc_version
+
+rtd = True
+rtd = False
+
 sys.path.insert(0, os.path.abspath('..'))
 import cloudmesh.cc
 
+
 numfig = True
 
+
 html_theme = "sphinx_rtd_theme"
+
+
 project = 'cloudmesh-cc'
 copyright = '2022, Gregor von Laszewski'
 author = 'Gregor von Laszewski'
-release = '0.1'
+release = cc_version
 
 extensions = []
 extensions.append('sphinx_rtd_theme')
@@ -65,5 +74,14 @@ html_static_path = ['_static']
 # html_static_path = ['_static']
 
 autosummary_generate = True
-html_theme = 'default'
-
+# html_theme = 'default'
+if not rtd:
+    html_theme = 'sphinx_material'
+    html_sidebars = {
+        "**": [# "logo-text.html",
+               "globaltoc.html",
+               "localtoc.html",
+               "searchbox.html",
+               "genindex.html",
+               "generated/cloudmesh.cc.html"]
+}

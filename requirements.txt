@@ -26,3 +26,4 @@ sse-starlette
 ipython
 ipykernel
 psutil; platform_system == "Windows"
+#git+https://github.com/bashtage/sphinx-material.git

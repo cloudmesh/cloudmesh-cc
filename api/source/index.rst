@@ -10,15 +10,7 @@ Cloudmesh Compute Cluster
    :maxdepth: 2
 
    man_cc
-
-.. toctree::
-   :maxdepth: 2
-
    readme
-
-.. toctree::
-   :maxdepth: 1
-
    manual
    mnist
 
@@ -30,6 +22,8 @@ Broken
 
    modules
    api
+   generated/cloudmesh.rst
+   cloudmesh
 
 
 Indices and tables
