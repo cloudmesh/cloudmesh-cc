@@ -670,10 +670,11 @@ def upload(directory: str = Query(None,
                                               'that contains scripts '
                                               'and yaml file'),
            archive: str = Query(None,
-                                description='can be tgx, xz, tar.gz, '
+                                description='path to archive file that '
+                                            'can be tgx, xz, tar.gz, '
                                             'or tar'),
            yaml: str = Query(None,
-                             description='yaml file for workflow')):
+                             description='path to yaml file for workflow')):
     """
     upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
