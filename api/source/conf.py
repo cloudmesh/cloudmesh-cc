@@ -39,6 +39,7 @@ extensions.append('sphinx.ext.viewcode')
 extensions.append('sphinx.ext.graphviz')
 extensions.append('sphinx_autodoc_typehints')
 extensions.append('myst_parser')
+# extensions.append('sphinxcontrib.fulltoc')
 
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
@@ -81,7 +82,14 @@ if not rtd:
         "**": [# "logo-text.html",
                "globaltoc.html",
                "localtoc.html",
-               "searchbox.html",
+               # "searchbox.html",
                "genindex.html",
                "generated/cloudmesh.cc.html"]
 }
+
+
+html_sidebars = { '**': [
+    'globaltoc.html',
+    'relations.html',
+    'sourcelink.html',
+    'searchbox.html'] }

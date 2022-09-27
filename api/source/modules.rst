@@ -1,5 +1,5 @@
-API Reference
-=============
+Modules Reference
+=================
 
 .. rubric:: Modules
 
