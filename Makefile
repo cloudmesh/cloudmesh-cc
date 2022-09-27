@@ -158,20 +158,19 @@ log:
 ######################################################################
 
 man:
-	cms help cc | fgrep -v "# Timer" > man_cc.rst
-	pandoc man_cc.rst -o tmp.md
-	sed 's/^.*====/# cms cc/' tmp.md | \
-           fgrep -v "and patch enabled so applying the patch Applyting" | \
-	   fgrep -v "Alpha Channel fix. Your default Alpha Channel is now" > man_cc.md
-	rsync -av man_cc.md api/source/man_cc.md
+	cms help cc | fgrep -v "# Timer" > tmp.rst
+	sed '1,/^====/d' tmp.rst > tmp1.rst
+	echo "Command cc" > tmp.rst
+	echo "==========" >> tmp.rst
+	cat tmp.rst tmp1.rst > man_cc.rst
+	rsync -av man_cc.rst api/source/man_cc.rst
 
 doc:
 	cd api; sphinx-apidoc ../cloudmesh -o source
-	# cd api/source; sphinx-autogen -o generated *.rst
+	cd api/source; sphinx-autogen -o generated *.rst
 	cd api; make html
 
 view:
-
 ifeq ($(detected_OS),Windows)
 	cmd //C "start firefox file://$(mkfile_dir)api/build/html/index.html"
 endif

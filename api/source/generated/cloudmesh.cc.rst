@@ -1,4 +1,4 @@
-﻿cloudmesh.cc
+cloudmesh.cc
 ============
 
 .. automodule:: cloudmesh.cc

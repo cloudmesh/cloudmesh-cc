@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to cloudmesh-cc's documentation!
-========================================
+Cloudmesh Compute Cluster
+=========================
 
 .. toctree::
    :maxdepth: 2
@@ -14,6 +14,8 @@ Welcome to cloudmesh-cc's documentation!
    modules
    api
    usage
+   man_cc
+   gregor
    cloudmesh.cc.command
 
 Manual Page
