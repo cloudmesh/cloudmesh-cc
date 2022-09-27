@@ -177,6 +177,9 @@ doc: man
 	cp MANUAL.md api/source/manual.md
 	rsync -av images api/source
 
+latex:
+	cd api; make latexpdf
+
 docs:
 	rsync -av api/build/html/* docs
 
