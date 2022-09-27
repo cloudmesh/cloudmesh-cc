@@ -41,6 +41,7 @@ extensions.append('sphinx_autodoc_typehints')
 extensions.append('myst_parser')
 # extensions.append('sphinxcontrib.fulltoc')
 
+numfig=True
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 html_show_sourcelink = True  # Remove 'view source code' from top of page (for html, not python)
