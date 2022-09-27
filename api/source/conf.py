@@ -86,6 +86,9 @@ if not rtd:
                "localtoc.html",
                "genindex.html",
                "generated/cloudmesh.cc.html"]}
+    html_theme_options = {
+        'repo_url': 'https://github.com/cloudmesh/cloudmesh-cc'
+    }
 else:
     html_sidebars = { '**': [
         'globaltoc.html',
@@ -93,6 +96,3 @@ else:
         'sourcelink.html',
         'searchbox.html'] }
 
-html_theme_options = {
-    'repo_url': 'https://github.com/cloudmesh/cloudmesh-cc'
-}
