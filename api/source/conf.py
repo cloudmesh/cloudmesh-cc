@@ -29,6 +29,7 @@ extensions.append('sphinx.ext.mathjax')
 extensions.append('sphinx.ext.viewcode')
 extensions.append('sphinx.ext.graphviz')
 extensions.append('sphinx_autodoc_typehints')
+extensions.append('myst-parser')
 
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
