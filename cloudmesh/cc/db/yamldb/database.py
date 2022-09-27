@@ -10,7 +10,7 @@ class Database:
 
     def __init__(self, name="queue", filename=None, debug=False):
         """
-        Initializes a yaml database in which each elemebt is a string
+        Initializes a yaml database in which each element is a string
 
         :param name: name of the database. If set it is stored in
                      ~/.cloudmesh/name/name.yaml if not overwritten by filename
@@ -75,13 +75,14 @@ class Database:
 
     def remove(self):
         """
-        remove the database
+        Remove the database
         """
         os.remove(self.filename)
 
     def get(self, name):
         """
         Gets the element with the specified name
+
         :param name: the name of the element in the database
         :type name: string
         :return: the content of name
@@ -140,6 +141,7 @@ class Database:
     def __str__(self):
         """
         String representation of the database
+
         :return: content
         :rtype: string
         """
@@ -148,6 +150,7 @@ class Database:
     def clear(self):
         """
         Removes all data
+
         :return: None
         """
         self.data.clear()
@@ -156,6 +159,7 @@ class Database:
     def queues(self):
         """
         Lists all queues
+
         :return: names of teh queues
         :rtype: list
         """
@@ -166,6 +170,7 @@ class Database:
     def info(self):
         """
         prints all data of the DB
+
         :return: content
         :rtype: str
         """
