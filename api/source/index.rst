@@ -15,17 +15,16 @@ live status updates.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Documentation
 
    readme
    quickstart
    man_cc
    acknowledgements
 
-Examples
-========
-
 .. toctree::
    :maxdepth: 1
+   :caption: Examples
 
    mnist
 

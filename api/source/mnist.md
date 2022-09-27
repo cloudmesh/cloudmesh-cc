@@ -1,4 +1,7 @@
-# Running MNIST Workflow on Rivanna
+# MNIST Workflows
+
+For this example we use UVA's Rivanna machine. Please adopt 
+it to your HPC machine.
 
 We can test Rivanna's GPUs and benchmark
 their runtimes for running several MNIST

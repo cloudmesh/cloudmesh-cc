@@ -11,7 +11,7 @@ import sys, os
 from cloudmesh.cc.__version__ import version as cc_version
 
 rtd = True
-rtd = False
+# rtd = False
 
 sys.path.insert(0, os.path.abspath('..'))
 import cloudmesh.cc
@@ -81,19 +81,17 @@ if not rtd:
     html_theme = 'sphinx_material'
     html_sidebars = {
         "**": [# "logo-text.html",
+               "searchbox.html",
                "globaltoc.html",
                "localtoc.html",
-               # "searchbox.html",
                "genindex.html",
-               "generated/cloudmesh.cc.html"]
-}
-
-
-html_sidebars = { '**': [
-    'globaltoc.html',
-    'relations.html',
-    'sourcelink.html',
-    'searchbox.html'] }
+               "generated/cloudmesh.cc.html"]}
+else:
+    html_sidebars = { '**': [
+        'globaltoc.html',
+        'relations.html',
+        'sourcelink.html',
+        'searchbox.html'] }
 
 html_theme_options = {
     'repo_url': 'https://github.com/cloudmesh/cloudmesh-cc'
