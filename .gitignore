@@ -1,3 +1,10 @@
+api/source/generated/
+api/source/images/
+api/source/man_cc.rst
+api/source/manual.md
+api/source/readme.md
+man_cc.rst
+
 dest
 tests/workflow.yaml
 tests/workflow-service.yaml
