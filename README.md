@@ -28,6 +28,8 @@ execute without supervision. We have created a service that lets the
 user run jobs across multiple platforms in a dynamic queue with
 visualization and data storage.
 
+See @fig:fastapi-service.
+
 ![OpenAPI Description of the REST Interface to the Workflow](images/fastapi-service.png){#fig:fastapi-service width=50%}
 
 
@@ -90,6 +92,8 @@ tested on various local and remote machines These cases include
 Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
 Convolutional, and Recurrent Neural Networks, Distributed Training,
 and PyTorch training
+
+See @fig:workflow-uml.
 
 ![Design for the workflow.](images/workflow-uml.png){#fig:workflow-uml}
 
