@@ -93,3 +93,7 @@ html_sidebars = { '**': [
     'relations.html',
     'sourcelink.html',
     'searchbox.html'] }
+
+html_theme_options = {
+    'repo_url': 'https://github.com/cloudmesh/cloudmesh-cc'
+}
