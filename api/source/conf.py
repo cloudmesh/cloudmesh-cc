@@ -51,7 +51,14 @@ nbsphinx_allow_errors = True  # Continue through Jupyter errors
 #autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
 add_module_names = False # Remove namespaces from class/method signatures
 
-
+# replace "view page source" with "edit on github" in Read The Docs theme
+#  * https://github.com/readthedocs/sphinx_rtd_theme/issues/529
+html_context = {
+  'display_github': True,
+  'github_user': 'cloudmesh',
+  'github_repo': 'cloudmesh-cc',
+  'github_version': 'main/api/source/',
+}
 templates_path = ['_templates']
 exclude_patterns = []
 
