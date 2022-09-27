@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cloudmesh.cc.manager &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.manager</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cloudmesh.cc.manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">str</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="c1"># when requests is imported, it has its own &quot;str&quot;, so we have to import the built-in</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.cc.workflow</span> <span class="kn">import</span> <span class="n">Workflow</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.util</span> <span class="kn">import</span> <span class="n">path_expand</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">str</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="WorkflowCLIManager"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager">[docs]</a><span class="k">class</span> <span class="nc">WorkflowCLIManager</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.add_from_filename"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.add_from_arguments"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
+        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">argv</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.delete_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_job">[docs]</a>    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow delete [--name=NAME] --job=JOB</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">remove_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow delete [--name=NAME] --job=JOB</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">remove_workflow</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.list_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_job">[docs]</a>    <span class="k">def</span> <span class="nf">list_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.list_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow list [--name=NAME] [--filename=FILENAME]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">jobs</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.run"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">run_parallel</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dependency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow NAME DEPENDENCIES</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c1"># I think that the dependencies are separated by commas and will call this function a few times</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">dependency</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.status_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.status_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">status_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowCLIManager.graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow graph --name=NAME</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">graph</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="WorkflowServiceManager"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager">[docs]</a><span class="k">class</span> <span class="nc">WorkflowServiceManager</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+
+<div class="viewcode-block" id="WorkflowServiceManager.add_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.add_job">[docs]</a>    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
+        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;workflow&quot;</span>
+        <span class="k">if</span> <span class="n">job</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># read from config file</span>
+            <span class="n">job</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;job-</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;https://</span><span class="si">{self.host}</span><span class="s1">:</span><span class="si">{self.port}</span><span class="s1">/workflow?name=</span><span class="si">{name}</span><span class="s1">&amp;job=</span><span class="si">{job}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.add_from_filename"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.add_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># resp = requests.post(url=url, files=file)</span>
+        <span class="c1"># print(resp.json())</span>
+
+        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># &#39;https://{self.host}:{self.port}/workflow?name={name}&amp;job={job}&#39;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s1">/workflow&#39;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)}</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.delete"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># cc workflow service delete [--name=NAME] --job=JOB</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;https://</span><span class="si">{self.host}</span><span class="s1">:</span><span class="si">{self.port}</span><span class="s1">/workflow?name=</span><span class="si">{name}</span><span class="s1">&amp;job=</span><span class="si">{job}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.list"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># cc workflow service list [--name=NAME] [--job=JOB]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;workflow&quot;</span>
+        <span class="k">if</span> <span class="n">job</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">job</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;job-</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.status_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.status_job">[docs]</a>    <span class="k">def</span> <span class="nf">status_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.run"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WorkflowServiceManager.graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowServiceManager.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.manager</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

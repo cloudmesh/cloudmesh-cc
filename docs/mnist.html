@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Running MNIST Workflow on Rivanna &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="modules.html" />
+    <link rel="prev" title="Command cc" href="man_cc.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="API Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="man_cc.html" title="Command cc"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running MNIST Workflow on Rivanna</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="running-mnist-workflow-on-rivanna">
+<h1>Running MNIST Workflow on Rivanna<a class="headerlink" href="#running-mnist-workflow-on-rivanna" title="Permalink to this heading"></a></h1>
+<p>We can test Rivanna’s GPUs and benchmark
+their runtimes for running several MNIST
+Python programs. These programs include
+machine learning processing, convolutional
+neural network, long short-term memory,
+recurrent neural network, and others.</p>
+<p>To run the MNIST remote workflow on
+Rivanna, first ensure that your UVA computing
+ID is set with <code class="docutils literal notranslate"><span class="pre">cms</span> <span class="pre">set</span> <span class="pre">username=XXXXXX</span></code>, where
+the X’s are substituted with your computing ID.</p>
+<p>Then, stand in <code class="docutils literal notranslate"><span class="pre">cloudmesh-cc</span></code> and issue command
+<code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">-v</span> <span class="pre">-x</span> <span class="pre">--capture=no</span> <span class="pre">examples/example_run_mnist_workflow_exec.py</span></code></p>
+<p>This program uses SLURM and a shell script to
+iterate through the available GPUs on Rivanna,
+which are V100, A100, K80, and P100.</p>
+<p>On a successful run, the output will be similar to
+the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>+--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+
+<span class="p">|</span> Name   <span class="p">|</span> Status   <span class="p">|</span>     Time <span class="p">|</span>      Sum <span class="p">|</span> Start               <span class="p">|</span> tag   <span class="p">|</span> msg   <span class="p">|</span> Node        <span class="p">|</span> User   <span class="p">|</span> OS    <span class="p">|</span> Version                             <span class="p">|</span>
+<span class="p">|</span>--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------<span class="p">|</span>
+<span class="p">|</span> v100   <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">298</span>.068 <span class="p">|</span>  <span class="m">298</span>.068 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">22</span>:56:24 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="p">|</span> a100   <span class="p">|</span> ok       <span class="p">|</span> <span class="m">1226</span>.18  <span class="p">|</span> <span class="m">1226</span>.18  <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:07:56 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="p">|</span> k80    <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">714</span>.123 <span class="p">|</span>  <span class="m">714</span>.123 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:28:24 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="p">|</span> p100   <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">458</span>.094 <span class="p">|</span>  <span class="m">458</span>.094 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:40:19 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
++--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="man_cc.html"
+                          title="previous chapter">Command cc</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="modules.html"
+                          title="next chapter">API Reference</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mnist.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="API Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="man_cc.html" title="Command cc"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running MNIST Workflow on Rivanna</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

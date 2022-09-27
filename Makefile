@@ -2,7 +2,7 @@ package=cc
 UNAME=$(shell uname)
 VERSION=`head -1 VERSION`
 
-.PHONY: conda
+.PHONY: conda docs
 
 ifeq ($(OS),Windows_NT)
 detected_OS := Windows
@@ -176,6 +176,9 @@ doc: man
 	cp README.md api/source/readme.md
 	cp MANUAL.md api/source/manual.md
 	rsync -av images api/source
+
+docs:
+	rsync -av api/build/html/* docs
 
 
 view:

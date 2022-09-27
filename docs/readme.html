@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Hybrid Multi-Cloud Analytics Services Framework &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cloudmesh Compute Cluster Workflow (Quickstart)" href="manual.html" />
+    <link rel="prev" title="Command cc" href="man_cc.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="Cloudmesh Compute Cluster Workflow (Quickstart)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="man_cc.html" title="Command cc"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hybrid Multi-Cloud Analytics Services Framework</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="hybrid-multi-cloud-analytics-services-framework">
+<h1>Hybrid Multi-Cloud Analytics Services Framework<a class="headerlink" href="#hybrid-multi-cloud-analytics-services-framework" title="Permalink to this heading"></a></h1>
+<p><strong>Cloudmesh Controlled Computing through Workflows</strong></p>
+<p>Gregor von Laszewski (laszewski&#64;gmail.com)$^*$,
+Jacques Fleischer</p>
+<p>$^*$ Corresponding author</p>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading"></a></h2>
+<p>High-performance computing (HPC) is for decades a very important tool
+for science. Scientific tasks can be leveraging the processing power
+of a supercomputer so they can run at previously unobtainable high
+speeds or utilize specialized hardware for acceleration that otherwise
+are not available to the user. HPC can be used for analytic programs
+that leverage machine learning applied to large data sets to, for
+example, predict future values or to model current states. For such
+high-complexity projects, there are often multiple complex programs
+that may be running repeatedly in either competition or
+cooperation. Leveraging for example computational GPUs leads to
+several times higher performance when applied to deep learning
+algorithms. With such projects, program execution is submitted as a
+job to a typically remote HPC center, where time is billed as node
+hours. Such projects must have a service that lets the user manage and
+execute without supervision. We have created a service that lets the
+user run jobs across multiple platforms in a dynamic queue with
+visualization and data storage.</p>
+<p><img alt="OpenAPI Description of the REST Interface to the Workflow" src="_images/fastapi-service.png" />{#fig:fastapi-service width=50%}</p>
+</section>
+<section id="workflow-controlled-computing">
+<h2>Workflow Controlled Computing<a class="headerlink" href="#workflow-controlled-computing" title="Permalink to this heading"></a></h2>
+<p>This software was developed end enhancing Cloudmesh, a suite of
+software to make using cloud and HPC resources easier. Specifically,
+we have added a library called Cloudmesh Controlled Computing
+(cloudmesh-cc) that adds workflow features to control the execution of
+jobs on remote compute resources.</p>
+<p>The goal is to provide numerous methods of specifying the workflows on
+a local computer and running them on remote services such as HPC and
+cloud computing resources. This includes REST services and command
+line tools. The software developed is freely available and can easily
+be installed with standard python tools so integration in the python
+ecosystem using virtualenv’s and anaconda is simple.</p>
+</section>
+<section id="workflow-functionality">
+<h2>Workflow Functionality<a class="headerlink" href="#workflow-functionality" title="Permalink to this heading"></a></h2>
+<p>A hybrid multi-cloud analytics service framework was created to manage
+heterogeneous and remote workflows, queues, and jobs. It was designed
+for access through both the command line and REST services
+to simplify the coordination of tasks on remote computers. In
+addition, this service supports multiple operating systems like macOS,
+Linux, and Windows 10 and 11, on various hosts: the computer’s
+localhost, remote computers, and the Linux-based virtual image WSL.
+Jobs can be visualized and saved as a YAML and SVG data file. This
+workflow was extensively tested for functionality and reproducibility.</p>
+</section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h2>
+<p>To test the workflow program, prepare a cm directory in your home
+directory by executing the following commands in a terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+mkdir cm
+<span class="nb">cd</span> cm
+pip install cloudmesh-installer -U
+cloudmesh-installer get cc
+git clone https://github.com/cloudmesh/cloudmesh-cc
+<span class="nb">cd</span> cloudmesh-cc
+pip install -e .
+pip install -r requirements.txt
+pytest -v -x --capture<span class="o">=</span>no tests/test_080_workflow_clean.py
+</pre></div>
+</div>
+<p>This test runs three jobs within a singular workflow: the first job
+runs a local shell script, the second runs a local Python script, and
+the third runs a local Jupyter notebook.</p>
+</section>
+<section id="application-demonstration-using-mnist">
+<h2>Application demonstration using MNIST<a class="headerlink" href="#application-demonstration-using-mnist" title="Permalink to this heading"></a></h2>
+<p>The Modified National Institute of Standards and Technology Database
+is a machine learning database based on image processing Various MNIST
+files involving different machine learning cases were modified and
+tested on various local and remote machines These cases include
+Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
+Convolutional, and Recurrent Neural Networks, Distributed Training,
+and PyTorch training</p>
+<p><img alt="Design for the workflow." src="_images/workflow-uml.png" />{#fig:workflow-uml}</p>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this heading"></a></h2>
+<p>The hybrid multi-cloud analytics service framework was created to
+ensure running jobs across many platforms. We designed a small and
+streamlined number of abstractions so that jobs and workflows can be
+represented easily. The design is flexible and can be expanded as each
+job can contain arbitrary arguments. This made it possible to custom
+design for each target type a specific job type so that execution on
+local and remote compute resources including batch operating systems
+can be achieved. The job types supported include: local job on Linux,
+macOS, Windows 10, and Windows 11, jobs running in WSL on Windows
+computers, remote jobs using ssh, and a batch JObs using Slurm.</p>
+<p>In addition, we leveraged the exiting Networkx Graph framework to
+allow dependencies between jobs. This greatly reduced the complexity
+of the implementation while being able to leverage graphical displays
+of the workflow, as well as using scheduling jobs with for example
+topological sort available in Networkx. Custom schedulers can be
+designed easily based on the dependencies and job types managed
+through this straightforward interface. The status of the jobs is
+stored in a database that can be monitored during program
+execution. The creation of the jobs is done on the fly, e.g. when the
+job is needed to be determined on the dependencies when all its
+parents are resolved. This is especially important as it allows
+dynamic workflow patterns to be implemented while results from
+previous calculations can be used in later stages of the workflow.</p>
+<p>We have developed a simple-to-use API for this so programs can be
+formulated using the API in python. However, we embedded this API also
+in a prototype REST service to showcase that integration into
+language-independent frameworks is possible. The obvious functions to
+manage workflows are supported including graph specification through
+configuration files, upload of workflows, export, adding jobs and
+dependencies, and visualizing the workflow during the execution. An
+important feature that we added is the monitoring of the jobs while
+using progress reports through automated log file mining. This way
+each job reports the progress during the execution. This is especially
+of importance when we run very complex and long-running jobs.</p>
+<p>The REST service was implemented in FastAPI to leverage a small but
+fast service that features a much smaller footprint for implementation
+and setup in contrast to other similar REST service frameworks using
+python.</p>
+<p>This architectural component building this framework is depicted
+&#64;fig:workflow-uml.  The code is available in this repository and
+manual pages are provided on how to install it:
+<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc">cloudmesh-cc</a>.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>The main interaction with the workflow is through the command line.
+With the framework, researchers and scientists should be able to
+create jobs on their own, place them in the workflow, and run them on
+various types of computers.</p>
+<p>In addition, developers and users can utilize the built-in OpenAPI
+graphical user interface to manage
+workflows between jobs. They can be uploaded as YAML files or individually
+added through the build-in debug framework.</p>
+<p>Improvements to this project will include code cleanup and manual development.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<p>A poster based on a pre-alpha version of this code is available as ppt
+and PDF file. However, that version is no longer valid and is
+superseded by much improved efforts. The code summarized in the
+pre-alpha version was mainly used to teach a number of students Python
+and how to work in a team</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx">Poster Presentation (PPTX)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf">Poster Presentation (PDF)</a></p></li>
+</ul>
+<p>Please note also that the poster contains inaccurate statements and
+descriptions and should not be used as a reference to this work.</p>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this heading"></a></h2>
+<p>Continued work was in part funded by the NSF CyberTraining: CIC:
+CyberTraining for Students and Technologies from Generation Z with the
+award numbers 1829704 and 2200409.
+We like to thank the following contributors for their help and evaluation in a
+pre-alpha version of the code: Jackson Miskill, Alex Beck, Alison Lu.
+We are excited that this effort contributed significantly to their
+increased understanding of Python and how to develop in a team using
+the Python ecosystem.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Hybrid Multi-Cloud Analytics Services Framework</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#workflow-controlled-computing">Workflow Controlled Computing</a></li>
+<li><a class="reference internal" href="#workflow-functionality">Workflow Functionality</a></li>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#application-demonstration-using-mnist">Application demonstration using MNIST</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="man_cc.html"
+                          title="previous chapter">Command cc</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="manual.html"
+                          title="next chapter">Cloudmesh Compute Cluster Workflow (Quickstart)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/readme.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="Cloudmesh Compute Cluster Workflow (Quickstart)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="man_cc.html" title="Command cc"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hybrid Multi-Cloud Analytics Services Framework</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

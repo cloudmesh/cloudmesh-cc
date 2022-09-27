@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cloudmesh.common.StopWatch &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.StopWatch</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cloudmesh-common-stopwatch">
+<h1>cloudmesh.common.StopWatch<a class="headerlink" href="#cloudmesh-common-stopwatch" title="Permalink to this heading"></a></h1>
+<p>Class for starting and stopping named timers.</p>
+<p>Here is a simple example. the user and node parameters can be omitted,
+but they help in case you like to change the system retrieved values.</p>
+<p>from pprint import pprint
+from cloudmesh.common.StopWatch import StopWatch</p>
+<p>import time</p>
+<p>user=”gregor”
+node=”5950x”</p>
+<dl class="simple">
+<dt>for t in [“a”, “b”]:</dt><dd><p>StopWatch.start(t)
+time.sleep(0.1)
+StopWatch.stop(t)</p>
+</dd>
+</dl>
+<p>pprint(StopWatch.get_benchmark(user=user, node=node))</p>
+<p>StopWatch.benchmark(user=user, node=node)</p>
+<p>## Context Block</p>
+<p>StopWatch also comes with a context block allowing to use the
+convenient <cite>with</cite> statement. However, this is only recommended when the
+block is small as it is easy to lose the indentation in larger
+code. You can also certainly split the code up into functions so it is
+easier manageable.</p>
+<p>Here is a simple example of how to use the <cite>with</cite> statement, showing
+that is can be used for streams and files.  The mode determines if the
+file will be recreated, or if it will be expanded on. In addition,
+there is the ability to write metadata into the record with a <cite>dict</cite>
+that can optionally be passed along.</p>
+<p>In order not to overwrite the value of an event, you must give it a
+unique name.</p>
+<blockquote>
+<div><p>from cloudmesh.common.StopWatch import StopWatchBlock
+from cloudmesh.common.StopWatch import StopWatch
+from cloudmesh.common.util import readfile</p>
+<p>import time</p>
+<p>data = {“step”: “value”}</p>
+<p>StopWatch.event(“event-start”)
+d = {“key”: “value”}
+StopWatch.event(“event-with-value”, d)</p>
+<dl class="simple">
+<dt>with StopWatchBlock(“total”):</dt><dd><p>time.sleep(1.0)</p>
+</dd>
+<dt>with StopWatchBlock(“dict”, data=data):</dt><dd><p>time.sleep(1.0)
+data[“step”] = 1</p>
+</dd>
+<dt>with StopWatchBlock(“file”, data=data, log=”a.log”, mode=”w”):</dt><dd><p>time.sleep(1.0)
+data[“step”] = 2</p>
+</dd>
+<dt>with StopWatchBlock(“append”, data=data, log=”a.log”, mode=”a”):</dt><dd><p>time.sleep(1.0)
+data[“step”] = 3</p>
+</dd>
+</dl>
+<p>content = readfile (“a.log”)
+print (79*”=”)
+print (content.strip())
+print (79*”=”)</p>
+<p>StopWatch.event(“event-stop”)</p>
+<dl class="simple">
+<dt>StopWatch.benchmark(sysinfo=False,</dt><dd><p>tag=”myexperiment”,
+user=”gregor”,
+node=”computer”,
+attributes=[“timer”, “status”, “time”, “start”, “tag”, “msg”]</p>
+</dd>
+</dl>
+<p># for more examples, see our pytest:
+# * &lt;<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-common/blob/main/tests/test_stopwatch.py">https://github.com/cloudmesh/cloudmesh-common/blob/main/tests/test_stopwatch.py</a>&gt;
+#
+# there we demonstrate how to timers in a loop as individual timers and as sum.
+# We also showcase how to add a message to timers</p>
+</div></blockquote>
+<p>)</p>
+<span class="target" id="module-cloudmesh.common.StopWatch"></span><p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark</span></code>(func)</p></td>
+<td><p>decorator to benchmark a function :param func: function :type func: object :return: function with benchmarks based on the name of the function :rtype: object</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">progress</span></code>([filename, status, progress, pid, ...])</p></td>
+<td><p>Creates a printed line of the form</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code>(newname)</p></td>
+<td><p>decorator to rename a function :param newname: function name :type newname: str :return: renamed function :rtype: object</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">StopWatch</span></code>()</p></td>
+<td><p>A class to measure times between events.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">StopWatchBlock</span></code>(name[, data, log, mode])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/cloudmesh.common.StopWatch.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.StopWatch</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

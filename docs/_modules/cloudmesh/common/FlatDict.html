@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cloudmesh.common.FlatDict &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.FlatDict</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cloudmesh.common.FlatDict</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">key_prefix_replace</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">new_prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    replaces the list of prefix in keys of a flattened dict</span>
+
+<span class="sd">    :param d: the flattened dict</span>
+<span class="sd">    :param prefix: a list of prefixes that are replaced with a new prefix.</span>
+<span class="sd">                   Typically this will be &quot;&quot;</span>
+<span class="sd">    :type prefix: list of str</span>
+<span class="sd">    :param new_prefix: The new prefix. By default it is set to &quot;&quot;</span>
+<span class="sd">    :return: the dict with the keys replaced as specified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">new_key</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">new_key</span> <span class="o">=</span> <span class="n">new_key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">new_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_key</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">flatme</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="n">o</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">element</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">o</span>
+
+
+<span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">parent_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    flattens the dict into a one dimensional dictionary</span>
+
+<span class="sd">    :param d: multidimensional dict</span>
+<span class="sd">    :param parent_key: replaces from the parent key</span>
+<span class="sd">    :param sep: the separation character used when fattening. the default is __</span>
+<span class="sd">    :return: the flattened dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># http://stackoverflow.com/questions/6027558/flatten-nested-python-dictionaries-compressing-keys</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">flat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">parent_key</span><span class="o">=</span><span class="n">parent_key</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">flat</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">new_key</span> <span class="o">=</span> <span class="n">parent_key</span> <span class="o">+</span> <span class="n">sep</span> <span class="o">+</span> <span class="n">k</span> <span class="k">if</span> <span class="n">parent_key</span> <span class="k">else</span> <span class="n">k</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">):</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">new_key</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_key</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FlatDict"><a class="viewcode-back" href="../../../generated/cloudmesh.common.FlatDict.html#cloudmesh.common.FlatDict">[docs]</a><span class="k">class</span> <span class="nc">FlatDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A data structure to manage a flattened dict. It is initialized by passing</span>
+<span class="sd">    the dict at time of initialization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the dict</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+<div class="viewcode-block" id="FlatDict.__init__"><a class="viewcode-back" href="../../../generated/cloudmesh.common.FlatDict.html#cloudmesh.common.FlatDict.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initializes the flat dics</span>
+
+<span class="sd">        :param d: the dict data</span>
+<span class="sd">        :param sep: The character used to indicate an hirachie a__b</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span></div>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sets an item at a key</span>
+
+<span class="sd">        :param key: this is the key</span>
+<span class="sd">        :param item:  this is the item to be set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets an item form the key</span>
+
+<span class="sd">        :param key: the key</span>
+<span class="sd">        :return: the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The string representation of the dict</span>
+
+<span class="sd">        :return: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        number of elements in the dict</span>
+
+<span class="sd">        :return: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        delete the specified item</span>
+
+<span class="sd">        :param key: key of the item</span>
+<span class="sd">        :return: dict with the elementremoved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the keys</span>
+
+<span class="sd">        :return: list of keys</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        list of all values</span>
+
+<span class="sd">        :return: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cmp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        returns from a flatdict all keys that match the given pattern and</span>
+<span class="sd">        have the given value. If the value None is specified or ommitted, all</span>
+<span class="sd">        keys are returned regardless of value.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">            search(&quot;cloudmesh.cloud.*.cm.active&quot;, True)</span>
+
+<span class="sd">        :param key: The key pattern to be searched (given as regex)</span>
+<span class="sd">        :param value: The value</span>
+<span class="sd">        :return: keys matching the vakue in flat dict format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="n">FlatDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">flat</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">flat</span><span class="p">[</span><span class="n">entry</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                    <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span>
+
+    <span class="c1"># Modified idea from</span>
+    <span class="c1"># https://stackoverflow.com/questions/50607128/creating-a-nested-dictionary-from-a-flattened-dictionary</span>
+    <span class="k">def</span> <span class="nf">unflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        unflattens the falt dict bac to a regular dict</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unflatten_entry</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_unflatten_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rest</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unflatten_entry</span><span class="p">(</span><span class="n">rest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span></div>
+
+
+<span class="k">class</span> <span class="nc">FlatDict2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">primitive</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_primitive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">thing</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">primitive</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This function converts object into a Dict optionally Flattening it</span>
+<span class="sd">            :param obj: Object to be converted</span>
+<span class="sd">            :param flatten: boolean to specify if the dict has to be flattened</span>
+<span class="sd">            :return dict: the dict of the object (Flattened or Un-flattened)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dict_result</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">object_to_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">flatten</span><span class="p">:</span>
+            <span class="n">dict_result</span> <span class="o">=</span> <span class="n">FlatDict</span><span class="p">(</span><span class="n">dict_result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dict_result</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">object_to_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This function converts Objects into Dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dict_obj</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">dict_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+                    <span class="n">dict_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">object_to_dict</span><span class="p">(</span><span class="n">inst</span><span class="p">))</span>
+                <span class="n">dict_obj</span><span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_list</span>
+
+            <span class="k">elif</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                    <span class="c1"># is an object</span>
+                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                        <span class="n">dict_list</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                            <span class="n">dict_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">object_to_dict</span><span class="p">(</span><span class="n">inst</span><span class="p">))</span>
+                        <span class="n">dict_obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_list</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+                        <span class="n">temp_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">object_to_dict</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                        <span class="n">dict_obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dict</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">dict_obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">return</span> <span class="n">dict_obj</span>
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">def main():</span>
+<span class="sd">    d = {</span>
+<span class="sd">        &#39;cm_cloud&#39;: Default.cloud,</span>
+<span class="sd">        &#39;cm_update&#39;: &#39;2015-06-18 22:11:48 UTC&#39;,</span>
+<span class="sd">        &#39;cm_user&#39;: &#39;gregor&#39;,</span>
+<span class="sd">        &#39;extra&#39;: {&#39;created&#39;: &#39;2015-05-21T20:37:10Z&#39;,</span>
+<span class="sd">                  &#39;metadata&#39;: {&#39;base_image_ref&#39;: &#39;398746398798372493287&#39;,</span>
+<span class="sd">                               &#39;description&#39;: None,</span>
+<span class="sd">                               &#39;image_location&#39;: &#39;snapshot&#39;,</span>
+<span class="sd">                               &#39;image_state&#39;: &#39;available&#39;,</span>
+<span class="sd">                               &#39;image_type&#39;: &#39;snapshot&#39;,</span>
+<span class="sd">                               &#39;instance_type_ephemeral_gb&#39;: &#39;0&#39;,</span>
+<span class="sd">                               &#39;instance_type_flavorid&#39;: &#39;3&#39;,</span>
+<span class="sd">                               &#39;instance_type_id&#39;: &#39;1&#39;,</span>
+<span class="sd">                               &#39;instance_type_memory_mb&#39;: &#39;4096&#39;,</span>
+<span class="sd">                               &#39;instance_type_name&#39;: &#39;m1.medium&#39;,</span>
+<span class="sd">                               &#39;instance_type_root_gb&#39;: &#39;40&#39;,</span>
+<span class="sd">                               &#39;instance_type_rxtx_factor&#39;: &#39;1.0&#39;,</span>
+<span class="sd">                               &#39;instance_type_swap&#39;: &#39;0&#39;,</span>
+<span class="sd">                               &#39;instance_type_vcpus&#39;: &#39;2&#39;,</span>
+<span class="sd">                               &#39;instance_uuid&#39;: &#39;386473678463876387&#39;,</span>
+<span class="sd">                               &#39;kernel_id&#39;: None,</span>
+<span class="sd">                               &#39;network_allocated&#39;: &#39;True&#39;,</span>
+<span class="sd">                               &#39;owner_id&#39;: &#39;36487264932876984723649&#39;,</span>
+<span class="sd">                               &#39;ramdisk_id&#39;: None,</span>
+<span class="sd">                               &#39;user_id&#39;: &#39;762387463827463278649837&#39;},</span>
+<span class="sd">                  &#39;minDisk&#39;: 40,</span>
+<span class="sd">                  &#39;minRam&#39;: 0,</span>
+<span class="sd">                  &#39;progress&#39;: 100,</span>
+<span class="sd">                  &#39;serverId&#39;: &#39;yiuksajhlkjahl&#39;,</span>
+<span class="sd">                  &#39;status&#39;: &#39;ACTIVE&#39;,</span>
+<span class="sd">                  &#39;updated&#39;: &#39;2015-05-27T02:11:48Z&#39;},</span>
+<span class="sd">        &#39;id&#39;: &#39;39276498376478936247832687&#39;,</span>
+<span class="sd">        &#39;name&#39;: &#39;VM with Cloudmesh Configured Completely&#39;</span>
+<span class="sd">    }</span>
+
+<span class="sd">    vm = {</span>
+<span class="sd">        &#39;extra&#39;: {&#39;access_ip&#39;: &#39;&#39;,</span>
+<span class="sd">                  &#39;availability_zone&#39;: &#39;nova&#39;,</span>
+<span class="sd">                  &#39;config_drive&#39;: &#39;&#39;,</span>
+<span class="sd">                  &#39;created&#39;: &#39;2015-06-19T00:06:58Z&#39;,</span>
+<span class="sd">                  &#39;disk_config&#39;: &#39;MANUAL&#39;,</span>
+<span class="sd">                  &#39;flavorId&#39;: &#39;1&#39;,</span>
+<span class="sd">                  &#39;hostId&#39;: &#39;&#39;,</span>
+<span class="sd">                  &#39;imageId&#39;: &#39;abcd&#39;,</span>
+<span class="sd">                  &#39;key&#39;: None,</span>
+<span class="sd">                  &#39;metadata&#39;: {},</span>
+<span class="sd">                  &#39;password&#39;: &#39;********&#39;,</span>
+<span class="sd">                  &#39;tenantId&#39;: &#39;1234&#39;,</span>
+<span class="sd">                  &#39;updated&#39;: &#39;2015-06-19T00:06:58Z&#39;,</span>
+<span class="sd">                  &#39;uri&#39;: &#39;http://i5r.idp.iu.futuregrid.org/v2/1234/servers/abcd&#39;},</span>
+<span class="sd">        &#39;id&#39;: &#39;67f6bsf67a6b&#39;,</span>
+<span class="sd">        &#39;image&#39;: None,</span>
+<span class="sd">        &#39;name&#39;: &#39;gregor-cm_test&#39;,</span>
+<span class="sd">        &#39;private_ips&#39;: [],</span>
+<span class="sd">        &#39;public_ips&#39;: [],</span>
+<span class="sd">        &#39;size&#39;: None,</span>
+<span class="sd">        &#39;state&#39;: 3</span>
+<span class="sd">    }</span>
+
+<span class="sd">    pprint(d)</span>
+<span class="sd">    pprint(flatten(d))</span>
+
+<span class="sd">    f = FlatDict(d)</span>
+<span class="sd">    pprint(f.dict)</span>
+<span class="sd">    pprint(f.__dict__)</span>
+<span class="sd">    print(f[&#39;cm_user&#39;])</span>
+<span class="sd">    print(f[&#39;extra__created&#39;])</span>
+
+<span class="sd">    print(f.cm_user)</span>
+<span class="sd">    print(f.extra__created)</span>
+
+<span class="sd">    f.cm_user = &#39;GREGOR&#39;</span>
+<span class="sd">    print(f.cm_user)</span>
+
+<span class="sd">    # pprint(OpenStack_libcloud.flatten_image(d))</span>
+
+<span class="sd">    # pprint(flatten(vm))</span>
+
+<span class="sd">    # pprint(OpenStack_libcloud.flatten_vm(vm))</span>
+
+
+<span class="sd">if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">    main()</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.FlatDict</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cloudmesh.cc.labelmaker &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.labelmaker</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cloudmesh.cc.labelmaker</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.variables</span> <span class="kn">import</span> <span class="n">Variables</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.DateTime</span> <span class="kn">import</span> <span class="n">DateTime</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="Labelmaker"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.labelmaker.Labelmaker">[docs]</a><span class="k">class</span> <span class="nc">Labelmaker</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cms_variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">t0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>\
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{os.&quot;</span><span class="p">,</span> <span class="s2">&quot;{os_&quot;</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{cm.&quot;</span><span class="p">,</span> <span class="s2">&quot;{cm_&quot;</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{now.&quot;</span><span class="p">,</span> <span class="s2">&quot;{now_&quot;</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{dt.&quot;</span><span class="p">,</span> <span class="s2">&quot;{dt_&quot;</span><span class="p">)</span>
+        <span class="c1"># .replace(&quot;{created.&quot;, &quot;{created_&quot;) \</span>
+        <span class="c1"># .replace(&quot;{modified.&quot;, &quot;{modified_&quot;) \</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Labelmaker.get"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.labelmaker.Labelmaker.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If now is followed by any of them its uste as strfmt</span>
+<span class="sd">        Example: now.%m/%d/%Y, %H:%M:%S&quot;</span>
+
+<span class="sd">        :param data:</span>
+<span class="sd">        :type data:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="ow">or</span> <span class="n">now</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+        <span class="n">replacements</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1">#print(&quot;LABELMAKER&quot;, data)</span>
+
+
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;os_&quot;</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;os_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;unicode-escape&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cm_&quot;</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;cm_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;now_&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;now_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;now&quot;</span><span class="p">)</span>
+                <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;now&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># elif variable.startswith(&quot;created_&quot;):</span>
+            <span class="c1">#     template = variable.split(&quot;created_&quot;, 1)[1]</span>
+            <span class="c1">#     self.template = self.template.replace(template, &quot;created&quot;)</span>
+            <span class="c1">#     replacements[&quot;created&quot;] = now.strftime(value)</span>
+            <span class="c1">#     del data[&quot;created&quot;]</span>
+            <span class="c1"># elif variable.startswith(&quot;modified_&quot;):</span>
+            <span class="c1">#     template = variable.split(&quot;modified_&quot;, 1)[1]</span>
+            <span class="c1">#     self.template = self.template.replace(template, &quot;modified&quot;)</span>
+            <span class="c1">#     replacements[&quot;modified&quot;] = now.strftime(value)</span>
+            <span class="c1">#     del data[&quot;modified&quot;]</span>
+            <span class="c1">#     print (data)</span>
+            <span class="c1">#     print (replacements)</span>
+            <span class="c1">#     print (variables)</span>
+            <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dt_&quot;</span><span class="p">):</span>
+                <span class="c1"># template = variable.split(&quot;dt_&quot;, 1)[1]</span>
+                <span class="n">dummy</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">cms_t0_name</span> <span class="o">=</span> <span class="s1">&#39;created_time_&#39;</span> <span class="o">+</span> <span class="n">name</span>
+                <span class="k">if</span> <span class="n">cms_t0_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cms_variables</span><span class="p">:</span>
+                    <span class="c1"># Console.error(f&#39;workflow {name} not found in cms set&#39;,</span>
+                    <span class="c1">#               traceflag=True)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cms_variables</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span>
+                        <span class="n">cms_t0_name</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">t0</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">cms_variables</span><span class="p">[</span><span class="n">cms_t0_name</span><span class="p">],</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">t0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">)</span>
+                <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
+                <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;dt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">replacements</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.labelmaker</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

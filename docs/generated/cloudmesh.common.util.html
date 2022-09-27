@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cloudmesh.common.util &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.util</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-cloudmesh.common.util">
+<span id="cloudmesh-common-util"></span><h1>cloudmesh.common.util<a class="headerlink" href="#module-cloudmesh.common.util" title="Permalink to this heading"></a></h1>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FUNCTIONNAME</span></code>()</p></td>
+<td><p>Returns the anme of a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">HEADING</span></code>([txt, c, color])</p></td>
+<td><p>Prints a message to stdout with #### surrounding it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">appendfile</span></code>(filename, content)</p></td>
+<td><p>writes the content into the file :param filename: the filename :param content: teh content :return:</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_create_requirements</span></code>(requirements)</p></td>
+<td><p>creates a requirement.txt file form the requirements in the list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_create_version</span></code>(class_name, version[, ...])</p></td>
+<td><p>creates a version number in the __init__.py file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">backup_name</span></code>(filename)</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param filename</dt>
+<dd class="field-odd"><p>given a filename creates a backup name of the form</p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">banner</span></code>([txt, c, prefix, debug, label, ...])</p></td>
+<td><p>prints a banner of the form with a frame of # around the txt.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_root</span></code>([dryrun, terminate])</p></td>
+<td><p>check if I am the root user.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_from_unicode</span></code>(data)</p></td>
+<td><p>converts unicode data to a string :param data: the data to convert :return:</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_files</span></code>(files_glob, source_dir, dest_dir)</p></td>
+<td><p>copies the files to the destination</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code>(source, destination[, force])</p></td>
+<td><p>Downloads the file from source to destination</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">exponential_backoff</span></code>(fn[, sleeptime_s_max])</p></td>
+<td><p>Calls <cite>fn</cite> until it returns True, with an exponentially increasing wait time between calls</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_password</span></code>([length, lower, upper, number])</p></td>
+<td><p>generates a simple password.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_password</span></code>(prompt)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grep</span></code>(pattern, filename)</p></td>
+<td><p>Very simple grep that returns the first matching line in a file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cmd_exe</span></code>()</p></td>
+<td><p>return True if you run in a Windows CMD</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_gitbash</span></code>()</p></td>
+<td><p>returns True if you run in a Windows gitbash</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_local</span></code>(host)</p></td>
+<td><p>Checks if the host is the localhost</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_powershell</span></code>()</p></td>
+<td><p>True if you run in powershell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">path_expand</span></code>(text[, slashreplace])</p></td>
+<td><p>returns a string with expanded variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readfile</span></code>(filename[, mode])</p></td>
+<td><p>returns the content of a file :param filename: the filename :return:</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code>(lines, pattern)</p></td>
+<td><p>return all lines that match the pattern #TODO: we need an example</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">str_banner</span></code>([txt, c, prefix, debug, label, ...])</p></td>
+<td><p>prints a banner of the form with a frame of # around the txt.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">str_bool</span></code>(value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sudo_readfile</span></code>(filename[, split, trim])</p></td>
+<td><p>Reads the content of the file as sudo and returns the result</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tempdir</span></code>(*args, **kwargs)</p></td>
+<td><p>A contextmanager to work in an auto-removed temporary directory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writefd</span></code>(filename, content[, mode, flags, mask])</p></td>
+<td><p>writes the content into the file and control permissions :param filename: the full or relative path to the filename :param content: the content being written :param mode: the write mode ('w') or write bytes mode ('wb') :param flags: the os flags that determine the permissions for the file :param mask: the mask that the permissions will be applied to</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writefile</span></code>(filename, content)</p></td>
+<td><p>writes the content into the file :param filename: the filename :param content: teh content :return:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">yn_choice</span></code>(message[, default, tries])</p></td>
+<td><p>asks for a yes/no question.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/cloudmesh.common.util.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.util</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

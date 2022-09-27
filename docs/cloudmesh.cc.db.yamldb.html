@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cloudmesh.cc.db.yamldb package &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.db.yamldb package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cloudmesh-cc-db-yamldb-package">
+<h1>cloudmesh.cc.db.yamldb package<a class="headerlink" href="#cloudmesh-cc-db-yamldb-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-cloudmesh.cc.db.yamldb.database">
+<span id="cloudmesh-cc-db-yamldb-database-module"></span><h2>cloudmesh.cc.db.yamldb.database module<a class="headerlink" href="#module-cloudmesh.cc.db.yamldb.database" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'queue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Initializes a yaml database in which each elemebt is a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – name of the database. If set it is stored in
+~/.cloudmesh/name/name.yaml if not overwritten by filename</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – the filename. The default is   “~/.cloudmesh/queue/queues.yaml”</p></li>
+<li><p><strong>debug</strong> (<em>bool</em>) – prints debug messages if TRue</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.clear" title="Permalink to this definition"></a></dt>
+<dd><p>Removes all data
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the element with the specified name
+:param name: the name of the element in the database
+:type name: string
+:return: the content of name
+:rtype: string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.get_job">
+<span class="sig-name descname"><span class="pre">get_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.get_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.get_job" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a job from the queue by its name and the queue name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>queue</strong> (<em>string</em>) – the queue name</p></li>
+<li><p><strong>name</strong> (<em>the queue name</em>) – the name of teh jobe</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the job</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.get_queue">
+<span class="sig-name descname"><span class="pre">get_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.get_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.get_queue" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the Queue with the given name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – the name of the queue</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>thr queu with the given name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.info" title="Permalink to this definition"></a></dt>
+<dd><p>prints all data of the DB
+:return: content
+:rtype: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load the database and return as data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – the filename</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.queues">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">queues</span></span><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.queues" title="Permalink to this definition"></a></dt>
+<dd><p>Lists all queues
+:return: names of teh queues
+:rtype: list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.remove" title="Permalink to this definition"></a></dt>
+<dd><p>remove the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cloudmesh.cc.db.yamldb.database.Database.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/db/yamldb/database.html#Database.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.db.yamldb.database.Database.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the data to the database to the specified filename.
+If the filename is ommited it will save it to the filename sat at init.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – the filename</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cloudmesh.cc.db.yamldb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cloudmesh.cc.db.yamldb" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">cloudmesh.cc.db.yamldb package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-cloudmesh.cc.db.yamldb.database">cloudmesh.cc.db.yamldb.database module</a><ul>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database"><code class="docutils literal notranslate"><span class="pre">Database</span></code></a><ul>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.clear"><code class="docutils literal notranslate"><span class="pre">Database.clear()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.get"><code class="docutils literal notranslate"><span class="pre">Database.get()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.get_job"><code class="docutils literal notranslate"><span class="pre">Database.get_job()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.get_queue"><code class="docutils literal notranslate"><span class="pre">Database.get_queue()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.info"><code class="docutils literal notranslate"><span class="pre">Database.info()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.load"><code class="docutils literal notranslate"><span class="pre">Database.load()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.queues"><code class="docutils literal notranslate"><span class="pre">Database.queues</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.remove"><code class="docutils literal notranslate"><span class="pre">Database.remove()</span></code></a></li>
+<li><a class="reference internal" href="#cloudmesh.cc.db.yamldb.database.Database.save"><code class="docutils literal notranslate"><span class="pre">Database.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-cloudmesh.cc.db.yamldb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cloudmesh.cc.db.yamldb.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.db.yamldb package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

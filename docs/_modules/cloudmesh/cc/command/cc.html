@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cloudmesh.cc.command.cc &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.command.cc</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cloudmesh.cc.command.cc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="c1"># from cloudmesh.cc.hostdata import Data</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.cc.queue</span> <span class="kn">import</span> <span class="n">Queues</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Shell</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.variables</span> <span class="kn">import</span> <span class="n">Variables</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.systeminfo</span> <span class="kn">import</span> <span class="n">os_is_windows</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.shell.command</span> <span class="kn">import</span> <span class="n">PluginCommand</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.shell.command</span> <span class="kn">import</span> <span class="n">command</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.shell.command</span> <span class="kn">import</span> <span class="n">map_parameters</span>
+
+
+<span class="c1"># TODO: these imports needs to be put in where it is needed.</span>
+<span class="c1">#  It is not supposed to be a global import</span>
+
+
+<span class="c1"># if kind == &quot;remote&quot;:</span>
+<span class="c1">#     from cloudmesh.cc.job.ssh.Job import Job</span>
+<span class="c1">#</span>
+<span class="c1"># elif kind == &quot;slurm&quot;:</span>
+<span class="c1">#     from cloudmesh.cc.job.slurm.Job import Job</span>
+<span class="c1">#</span>
+<span class="c1"># elif kind ==&quot;localhost&quot;:</span>
+<span class="c1">#     from cloudmesh.cc.job.local.Job import Job</span>
+<span class="c1">#</span>
+<span class="c1"># else:</span>
+<span class="c1">#     Console.error(&quot;kind not supported&quot;)</span>
+
+<span class="c1"># noinspection PyShadowingNames,HttpUrlsUsage</span>
+<div class="viewcode-block" id="CcCommand"><a class="viewcode-back" href="../../../../cloudmesh.cc.command.html#cloudmesh.cc.command.cc.CcCommand">[docs]</a><span class="k">class</span> <span class="nc">CcCommand</span><span class="p">(</span><span class="n">PluginCommand</span><span class="p">):</span>
+
+    <span class="c1"># noinspection PyUnusedLocal,PyShadowingNames,HttpUrlsUsage</span>
+    <span class="nd">@command</span>
+    <span class="k">def</span> <span class="nf">do_cc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">arguments</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ::</span>
+
+<span class="sd">          Usage:</span>
+<span class="sd">                cc start [-c] [--reload] [--host=HOST] [--port=PORT]</span>
+<span class="sd">                cc stop</span>
+<span class="sd">                cc status</span>
+<span class="sd">                cc doc</span>
+<span class="sd">                cc test</span>
+<span class="sd">                cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+<span class="sd">                cc workflow add [--name=NAME] --filename=FILENAME</span>
+<span class="sd">                cc workflow delete [--name=NAME] [--job=JOB]</span>
+<span class="sd">                cc workflow list [--name=NAME] [--job=JOB]</span>
+<span class="sd">                cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+<span class="sd">                cc workflow [--name=NAME] --dependencies=DEPENDENCIES</span>
+<span class="sd">                cc workflow status --name=NAME [--output=OUTPUT]</span>
+<span class="sd">                cc workflow graph --name=NAME</span>
+<span class="sd">                cc workflow service add [--name=NAME] FILENAME</span>
+<span class="sd">                cc workflow service list [--name=NAME] [--job=JOB]</span>
+<span class="sd">                cc workflow service add [--name=NAME] [--job=JOB] ARGS...</span>
+<span class="sd">                cc workflow service run --name=NAME</span>
+
+<span class="sd">          This command does some useful things.</span>
+
+<span class="sd">          Arguments:</span>
+<span class="sd">              FILENAME   a file name</span>
+<span class="sd">              QUEUE  the name of the queue object as a variable in code</span>
+<span class="sd">              QUEUES the name of the queues (dictionary of queues) object</span>
+<span class="sd">              JOB  the name of a job that has been created</span>
+<span class="sd">              COMMAND  the command that is associated with the job name</span>
+<span class="sd">              SCHEDULER  designation of how jobs should be pulled from the queue</span>
+<span class="sd">              QUEUES  the name of the queues object that has been created</span>
+
+<span class="sd">          Options:</span>
+<span class="sd">              --reload               reload for debugging</span>
+<span class="sd">              --host=HOST            the host ip [default: 127.0.0.1]</span>
+<span class="sd">              --port=PORT            the port [default: 8000]</span>
+<span class="sd">              -c                     flag to set host and port to 0.0.0.0:8000</span>
+<span class="sd">              --queue=QUEUE          queue that you want to access</span>
+<span class="sd">              --filename=FILENAME    file that contains a workflow specification</span>
+<span class="sd">              --name=NAME            the workflow name</span>
+<span class="sd">              --job=JOB              the job name</span>
+<span class="sd">              --command=COMMAND      a command to be added to a job</span>
+<span class="sd">              --scheduler=SCHEDULER  the scheduling technique that is to be used</span>
+<span class="sd">              --queues=QUEUES        the queues object that is to be used</span>
+<span class="sd">              </span>
+<span class="sd">          Description:</span>
+
+<span class="sd">            Please note that all arguments such as NAME and JOB can be comma </span>
+<span class="sd">            separated parameter expansions, so a command can be applied to multiple</span>
+<span class="sd">            workflows or jobs at the same time</span>
+
+<span class="sd">            </span>
+<span class="sd">            NEW WORKFLOW CLI COMMANDS</span>
+<span class="sd">            </span>
+<span class="sd">            Note that none of the CLI commands use the Workflow service. All actions</span>
+<span class="sd">            are performed directly in the command shell.</span>
+<span class="sd">            </span>
+<span class="sd">            cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+<span class="sd">            cc workflow delete [--name=NAME] --job=JOB</span>
+<span class="sd">            cc workflow list [--name=NAME] [--job=JOB]</span>
+<span class="sd">            cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+<span class="sd">            cc workflow [--name=NAME] --dependencies=DEPENDENCIES</span>
+<span class="sd">            cc workflow status --name=NAME [--output=OUTPUT]</span>
+<span class="sd">            cc workflow graph --name=NAME</span>
+<span class="sd">            </span>
+<span class="sd">            NEW WORKFLOW SERVICE COMMANDS</span>
+<span class="sd">            </span>
+<span class="sd">            Note that for all service commands to function you need to have a running </span>
+<span class="sd">            server. In future, we need a mechanism how to set the hostname and port also </span>
+<span class="sd">            for the service commands. For the time being they are issues to </span>
+<span class="sd">            127.0.0.1:8000</span>
+<span class="sd">            </span>
+<span class="sd">            SERVICE MANAGEMENT COMMANDS</span>
+<span class="sd">            </span>
+<span class="sd">            cc start [-reload] [--host=HOST] [--port=PORT]</span>
+<span class="sd">                start the service.  one can add the host and port so the service is</span>
+<span class="sd">                started with http://host:port. The default is 127.0.0.1:8000.</span>
+<span class="sd">                If -c is specified 0.0.0.0:8000 is used. </span>
+<span class="sd">                </span>
+<span class="sd">            cc stop</span>
+<span class="sd">                stop the service</span>
+<span class="sd">                Currently this command is not supported.</span>
+
+<span class="sd">            cc status</span>
+<span class="sd">                returns the status of the service</span>
+<span class="sd">                </span>
+<span class="sd">            cc doc</span>
+<span class="sd">                opens a web browser and displays the OpenAPI specification</span>
+
+<span class="sd">            cc test</span>
+<span class="sd">                issues a simple test to see if the service is running. This command</span>
+<span class="sd">                may be in future eliminated as the status should encompass such a test.</span>
+<span class="sd">            </span>
+<span class="sd">            WORKFLOW MANAGEMENT COMMANDS</span>
+<span class="sd">            </span>
+<span class="sd">            Each workflow can be identified by its name. Note that through </span>
+<span class="sd">            cms set workflow=NAME the default name of the workflow can be set. </span>
+<span class="sd">            If it is not set the default is `workflow`</span>
+<span class="sd">            </span>
+<span class="sd">            cc workflow service add [--name=NAME] [--directory=DIR] FILENAME</span>
+<span class="sd">                adds a workflow with the given name from data included in the filename.</span>
+<span class="sd">                the underlying database will use that name and if not explicitly </span>
+<span class="sd">                specified the location of the data base will be  </span>
+<span class="sd">                ~/.cloudmesh/workflow/NAME/NAME.yaml</span>
+<span class="sd">                To identify the location a special configuration file will be placed in </span>
+<span class="sd">                ~/.cloudmesh/workflow/config.yaml that contains the location of </span>
+<span class="sd">                the directories for the named workflows.</span>
+<span class="sd">                            </span>
+<span class="sd">            cc workflow service list [--name=NAME] [--job=JOB]</span>
+<span class="sd">                this command reacts dependent on which options we specify</span>
+<span class="sd">                If we do not specify anything the workflows will be listed.</span>
+<span class="sd">                If we specify a workflow name only that workflow will be listed</span>
+<span class="sd">                If we also specify a job the job will be listed.</span>
+<span class="sd">                If we only specif the job name, all jobs with that name from all </span>
+<span class="sd">                workflows will be returned.</span>
+<span class="sd">                            </span>
+<span class="sd">            cc workflow service add [--name=NAME] --job=JOB ARGS...</span>
+<span class="sd">                This command adds a job. with the specified arguments. A check </span>
+<span class="sd">                is returned and the user is alerted if arguments are missing</span>
+<span class="sd">                arguments are passe in ATTRIBUTE=VALUE fashion.</span>
+<span class="sd">                if the name of the workflow is committed the default workflow is used.</span>
+<span class="sd">                If no cob name is specified an automated number that is kept in the </span>
+<span class="sd">                config.yaml file will be used and the name will be job-n</span>
+<span class="sd">            </span>
+<span class="sd">            cc workflow service delete [--name=NAME] --job=JOB</span>
+<span class="sd">                deletes the job in the specified workflow</span>
+<span class="sd">                            </span>
+<span class="sd">            cc workflow service run [--name=NAME]</span>
+<span class="sd">                runs the names workflow. If no name is provided the default </span>
+<span class="sd">                workflow is used.</span>
+
+<span class="sd">            THIS MAY BE OUTDATED</span>
+
+<span class="sd">            cc workflow NAME DEPENDENCIES</span>
+
+<span class="sd">               with workflow command you can add dependencies between jobs. The dependencies</span>
+<span class="sd">               are added to a named workflow. Multiple workflows can be added to create a</span>
+<span class="sd">               complex workflow.</span>
+<span class="sd">               The dependency specification is simply a comma separated list of job names</span>
+<span class="sd">               introducing a direct acyclic graph.</span>
+
+<span class="sd">               &gt; cms cc workflow simple a,b,d</span>
+<span class="sd">               &gt; cms cc workflow simple a,c,d</span>
+
+<span class="sd">               which will introduce a workflow</span>
+
+<span class="sd">               &gt;          a</span>
+<span class="sd">               &gt;        /   \</span>
+<span class="sd">               &gt;       b     c</span>
+<span class="sd">               &gt;        \   /</span>
+<span class="sd">               &gt;          d</span>
+
+<span class="sd">            cc workflow run NAME</span>
+<span class="sd">               runs the workflow with the given name</span>
+
+<span class="sd">            cc workflow graph NAME</span>
+<span class="sd">               creates a graph with the current status. Tasks that have been</span>
+<span class="sd">               executed will be augmented by metadata, such as runtime</span>
+
+<span class="sd">            cc workflow status NAME --output=OUTPUT</span>
+<span class="sd">               prints the status of the workflow in various formats including</span>
+<span class="sd">               table, json, yaml</span>
+
+<span class="sd">            &gt; cms cc --parameter=&quot;a[1-2,5],a10&quot;</span>
+<span class="sd">            &gt;    example on how to use Parameter.expand. See source code at</span>
+<span class="sd">            &gt;      https://github.com/cloudmesh/cloudmesh-cc/blob/main/cloudmesh/cc/command/cc.py</span>
+<span class="sd">            &gt;    prints the expanded parameter as a list</span>
+<span class="sd">            &gt;    [&#39;a1&#39;, &#39;a2&#39;, &#39;a3&#39;, &#39;a4&#39;, &#39;a5&#39;, &#39;a10&#39;]</span>
+
+<span class="sd">            &gt; cc exp --experiment=a=b,c=d</span>
+<span class="sd">            &gt; example on how to use Parameter.arguments_to_dict. See source code at</span>
+<span class="sd">            &gt;      https://github.com/cloudmesh/cloudmesh-cc/blob/main/cloudmesh/cc/command/cc.py</span>
+<span class="sd">            &gt; prints the parameter as dict</span>
+<span class="sd">            &gt;   {&#39;a&#39;: &#39;b&#39;, &#39;c&#39;: &#39;d&#39;}</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: W605</span>
+
+        <span class="c1"># arguments.FILE = arguments[&#39;--file&#39;] or None</span>
+        <span class="c1"># arguments.COMMAND = arguments[&#39;--command&#39;]</span>
+
+        <span class="c1"># switch debug on</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># banner(&quot;original arguments&quot;, color=&quot;RED&quot;)</span>
+
+        <span class="c1"># VERBOSE(arguments)</span>
+
+        <span class="c1"># banner(&quot;rewriting arguments so we can use . notation for file,</span>
+        <span class="c1"># parameter, and experiment&quot;, color=&quot;RED&quot;)</span>
+
+        <span class="n">map_parameters</span><span class="p">(</span><span class="n">arguments</span><span class="p">,</span>
+                       <span class="s2">&quot;filename&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;queue&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;job&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;command&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;scheduler&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;queues&quot;</span>
+                       <span class="p">)</span>
+
+        <span class="c1"># VERBOSE(arguments)</span>
+
+        <span class="c1"># banner(&quot;rewriting arguments, so we convert to appropriate types for</span>
+        <span class="c1"># easier handling&quot;, color=&quot;RED&quot;)</span>
+
+        <span class="n">arguments</span> <span class="o">=</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span>
+
+        <span class="c1"># arguments[&quot;queues&quot;] = Parameter.expand(arguments[&quot;--queue&quot;])</span>
+
+        <span class="c1"># VERBOSE(arguments)</span>
+
+        <span class="c1"># banner(&quot;showcasing tom simple if parsing based on teh dotdict&quot;,</span>
+        <span class="c1"># color=&quot;RED&quot;)</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># It is important to keep the programming here to a minimum and any</span>
+        <span class="c1"># substantial programming ought to be conducted in a separate class</span>
+        <span class="c1"># outside the command parameter manipulation. If between the elif</span>
+        <span class="c1"># statement you have more than 10 lines, you may consider putting it in</span>
+        <span class="c1"># a class that you import here and have proper methods in that class</span>
+        <span class="c1"># to handle the functionality. See the Manager class for an example.</span>
+        <span class="c1">#</span>
+
+        <span class="k">def</span> <span class="nf">get_workflow_name</span><span class="p">():</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">name</span>
+
+        <span class="n">host</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;--host&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;--port&quot;</span><span class="p">])</span> <span class="ow">or</span> <span class="mi">8000</span>
+
+        <span class="k">if</span> <span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+        <span class="k">if</span> <span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;-c&quot;</span><span class="p">]:</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="mi">8000</span>
+
+        <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start the service&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;--reload&quot;</span><span class="p">]:</span>
+                <span class="n">reload</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reload</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">cloudmesh_cc</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;cloudmesh.cc&quot;</span><span class="p">,</span>
+                                                           <span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reload:&quot;</span><span class="p">,</span> <span class="n">reload</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dir:&quot;</span><span class="p">,</span> <span class="n">cloudmesh_cc</span><span class="p">)</span>
+            <span class="kn">import</span> <span class="nn">uvicorn</span>
+
+            <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;cloudmesh.cc.service.service:app&quot;</span><span class="p">,</span>
+                        <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span>
+                        <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+                        <span class="n">workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">reload</span><span class="o">=</span><span class="n">reload</span><span class="p">,</span>
+                        <span class="n">reload_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">cloudmesh_cc</span><span class="p">,</span> <span class="n">cloudmesh_cc</span> <span class="o">+</span> <span class="s2">&quot;/service&quot;</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">doc</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/docs&quot;</span>
+            <span class="n">Shell</span><span class="o">.</span><span class="n">browser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">test</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+            <span class="kn">import</span> <span class="nn">requests</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/docs&quot;</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">stop</span><span class="p">:</span>
+            <span class="n">Console</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stop the service&quot;</span><span class="p">)</span>
+            <span class="c1"># commands = Shell.ps()</span>
+            <span class="c1"># # pprint(commands)</span>
+            <span class="c1"># # print(type(commands))</span>
+            <span class="c1"># for command in commands:</span>
+            <span class="c1">#     # print(command)</span>
+            <span class="c1">#     if command[&quot;name&quot;].startswith(&#39;python&#39;):</span>
+            <span class="c1">#         cmdline = command[&quot;cmdline&quot;]</span>
+            <span class="c1">#         if &#39;cc&#39; in cmdline and &#39;start&#39; in cmdline:</span>
+            <span class="c1">#             # print(command)</span>
+            <span class="c1">#             Shell.kill_pid(command[&quot;pid&quot;])</span>
+            <span class="c1">#         if &#39;cloudmesh.cc.service.service:queue_app&#39; in cmdline:</span>
+            <span class="c1">#             # print(command)</span>
+            <span class="c1">#             Shell.kill_pid(command[&quot;pid&quot;])</span>
+            <span class="k">if</span> <span class="n">os_is_windows</span><span class="p">():</span>
+                <span class="kn">import</span> <span class="nn">psutil</span>
+                <span class="kn">import</span> <span class="nn">ctypes</span>
+
+                <span class="k">if</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">IsUserAnAdmin</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please run as admin&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="n">cms_ids</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># Iterate over all running processes</span>
+                <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">process_iter</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;cms.exe&#39;</span><span class="p">:</span>
+                        <span class="n">cms_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span>
+
+                <span class="c1"># this is necessary or else the prg will attempt</span>
+                <span class="c1"># to terminate itself. since there are two cms.exe,</span>
+                <span class="c1"># we must end the one started earlier</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cms_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">cms_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">create_time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">cms_ids</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">create_time</span><span class="p">():</span>
+                        <span class="n">cms_ids</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cms_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">cms_ids</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cms_ids</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">fr</span><span class="s1">&#39;taskkill /PID </span><span class="si">{</span><span class="n">cms_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> /F /T&#39;</span><span class="p">)</span>
+                    <span class="n">Console</span><span class="o">.</span><span class="n">ok</span><span class="p">(</span><span class="s1">&#39;Server successfully killed&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;kill $(pgrep -f &quot;cms cc start&quot;)&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">create</span> <span class="ow">and</span> \
+                <span class="n">arguments</span><span class="o">.</span><span class="n">queues</span> <span class="ow">and</span> \
+                <span class="n">arguments</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="c1">#  cc create --queue=a,b into the correct database: yaml or shelve</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">queues</span><span class="p">)</span>
+            <span class="n">queues</span> <span class="o">=</span> <span class="n">Queues</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="n">queues</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">add</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">service</span><span class="p">:</span>
+            <span class="c1"># cc workflow service add [--name=NAME] FILENAME</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">get_workflow_name</span><span class="p">()</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowServiceManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowServiceManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">add_from_filename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># cc workflow service list [--name=NAME] [--job=JOB]</span>
+        <span class="c1"># cc workflow service job add [--name=NAME] --job=JOB ARGS...</span>
+        <span class="c1"># cc workflow service run --name=NAME</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># IMPLEMENT THESE</span>
+        <span class="c1">#</span>
+
+        <span class="c1"># add a workflow from an inputted file</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">add</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="c1"># cc workflow add [--name=NAME] --filename=FILENAME</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">get_workflow_name</span><span class="p">()</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">add_from_filename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># add a job (with specifications as specified by the user) to a</span>
+        <span class="c1"># workflow. Can be a file that already exists</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">add</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+            <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS... these are the</span>
+            <span class="c1"># arguments we need for the add job</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">get_workflow_name</span><span class="p">()</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">add_from_arguments</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">,</span>
+                                       <span class="n">filename</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># delete a job from a workflow</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">delete</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+            <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">delete_job</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="c1"># delete an entire workflow (reset)</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">delete</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span><span class="p">:</span>
+            <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">delete_workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># list a job and its characteristics</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">list</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+            <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">list_job</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="c1"># list a workflow, all its jobs and all their characteristics</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">list</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">list_workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># run a workflow!!!!!!</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="c1"># cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># add dependencies to a workflow</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">dependencies</span><span class="p">:</span>
+            <span class="c1"># cc workflow [--name=NAME] --dependencies=DEPENDENCIES</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">dependencies</span><span class="p">)</span>
+
+        <span class="c1"># status check on a workflow</span>
+        <span class="c1"># DONE</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">status</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="c1"># cc workflow status --name=NAME [--output=OUTPUT]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># produce a graph for the workflow</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
+            <span class="c1"># cc workflow graph --name=NAME</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowCLIManager</span>
+
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowCLIManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+
+        <span class="c1"># cc workflow service add [--name=NAME] FILENAME</span>
+        <span class="c1"># cc workflow service list [--name=NAME] [--job=JOB]</span>
+        <span class="c1"># cc workflow service job add [--name=NAME] --job=JOB ARGS...</span>
+        <span class="c1"># cc workflow service run --name=NAME</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        #</span>
+<span class="sd">        # DO NOT IMPLEMENT THESE</span>
+<span class="sd">        #</span>
+<span class="sd">        cc donotdofromhereon</span>
+<span class="sd">        cc future queue create --name=QUEUES --database=DATABASE</span>
+<span class="sd">        cc future queue add --name=QUEUE --job=JOB --command=COMMAND</span>
+<span class="sd">        cc future queue run --command=COMMAND</span>
+<span class="sd">        cc future remove queue --name=QUEUE --job=JOB</span>
+<span class="sd">        cc future remove queue --name=QUEUE</span>
+<span class="sd">        cc future list queue --name=QUEUE</span>
+<span class="sd">                </span>
+<span class="sd">        elif arguments.add and \</span>
+<span class="sd">                arguments.queue and \</span>
+<span class="sd">                arguments.job and \</span>
+<span class="sd">                arguments.command:</span>
+
+<span class="sd">            # cc add --queue=QUEUE --job=JOB --command=COMMAND</span>
+<span class="sd">            # here is what the command looks like  cc add --queue=QUEUE --job=JOB --command=COMMAND</span>
+<span class="sd">            job = arguments.job</span>
+<span class="sd">            command = arguments.command</span>
+<span class="sd">            q = Queues()  # how to we access the previously made queue?</span>
+<span class="sd">            q.add(arguments.queue, job, command)</span>
+
+<span class="sd">        elif arguments.remove and arguments.queue:</span>
+<span class="sd">            q = Queues()</span>
+<span class="sd">            q.remove(arguments.queue)</span>
+
+<span class="sd">        elif arguments.remove and \</span>
+<span class="sd">                arguments.queue and \</span>
+<span class="sd">                arguments.job:</span>
+<span class="sd">            q = Queues()</span>
+<span class="sd">            q[arguments.queue].remove(arguments.job)</span>
+
+<span class="sd">        elif arguments.run and arguments.command:</span>
+<span class="sd">            # TODO</span>
+<span class="sd">            print(&#39;Here&#39;)</span>
+<span class="sd">            print(&#39;woah nelly&#39;)</span>
+<span class="sd">            print(arguments.command)</span>
+
+<span class="sd">        elif arguments.list and arguments.queue:</span>
+<span class="sd">            # TODO: implement with workflow</span>
+<span class="sd">            q = Queues()</span>
+<span class="sd">            q.list(self)</span>
+
+<span class="sd">        elif arguments.workflow and arguments.NAME and arguments.DEPENDENCIES:</span>
+
+<span class="sd">            name = arguments.NAME</span>
+<span class="sd">            dependencies = Parameter.expand(arguments.DEPENDENCIES)</span>
+<span class="sd">            workflow = Workflow(name=name, dependencies=dependencies)</span>
+<span class="sd">            print(workflow)</span>
+
+<span class="sd">            # cc workflow NAME DEPENDENCIES</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.command.cc</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>

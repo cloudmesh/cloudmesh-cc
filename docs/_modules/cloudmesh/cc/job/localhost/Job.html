@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cloudmesh.cc.job.localhost.Job &#8212; cloudmesh-cc 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/readthedocs-custom.css" />
+    
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../job.html" accesskey="U">cloudmesh.cc.job</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.job.localhost.Job</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cloudmesh.cc.job.localhost.Job</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Submit a job to the local host.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+
+<span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Shell</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.util</span> <span class="kn">import</span> <span class="n">path_expand</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.util</span> <span class="kn">import</span> <span class="n">readfile</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.util</span> <span class="kn">import</span> <span class="n">writefile</span>
+<span class="kn">from</span> <span class="nn">cloudmesh.common.systeminfo</span> <span class="kn">import</span> <span class="n">os_is_windows</span>
+
+
+<div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job">[docs]</a><span class="k">class</span> <span class="nc">Job</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to submit a job to the local host. Supported operating systems:</span>
+
+<span class="sd">    * Linux</span>
+<span class="sd">    * MacOS</span>
+<span class="sd">    * Windows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        cms set username=abc123</span>
+
+<span class="sd">        creates a job by passing either a dict with **dict or named arguments</span>
+<span class="sd">        attribute1 = value1, ...</span>
+
+<span class="sd">        :param data:</span>
+<span class="sd">        :type data:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># print(&quot;self.data&quot;, self.data)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">argv</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Name is not defined&quot;</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">has_extension</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.sh&#39;</span><span class="p">,</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;.ipynb&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">file_extension</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">file_extension</span><span class="p">):</span>
+                <span class="n">has_extension</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">file_extension</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="n">file_extension</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_extension</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="s1">&#39;.sh&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">user</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="ow">or</span> <span class="s2">&quot;localhost&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;~/experiment/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;local&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">exec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_script</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exec</span><span class="p">)</span>
+
+        <span class="c1">#if self.exec is None and self.script is None:</span>
+        <span class="c1">#    Console.warning(&quot;either exec or script must be set&quot;)</span>
+
+<div class="viewcode-block" id="Job.script_type"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.script_type">[docs]</a>    <span class="k">def</span> <span class="nf">script_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the inputted name of script to return the</span>
+<span class="sd">        corresponding file extension that is run, such as</span>
+<span class="sd">        shell script, jupyter notebook, or python file</span>
+<span class="sd">        :param name: the name of the script</span>
+<span class="sd">        :return: file extension of script</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;sh&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">kind</span>
+        <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">kind</span>
+        <span class="k">return</span> <span class="s2">&quot;os&quot;</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns pertinent information of job in string format,</span>
+<span class="sd">        including host, username, name of job, and other characteristics</span>
+<span class="sd">        :return: description and specifications of job in string format</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;host:      </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;username:  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;name:      </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;label:     </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;directory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;filetype:  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;script:    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;exec:      </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">exec</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;data:      </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;locals     </span><span class="si">{</span><span class="nb">locals</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        exactly the same as get_status but duplicated to provide as</span>
+<span class="sd">        a shortened-named, alternative call</span>
+<span class="sd">        :return: the status of job</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Job.mkdir_experimentdir"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.mkdir_experimentdir">[docs]</a>    <span class="k">def</span> <span class="nf">mkdir_experimentdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates experiment directory to contain job files such as</span>
+<span class="sd">        yaml file, log file, and pertinent script to be run</span>
+<span class="sd">        like sh script or ipynb or py</span>
+<span class="sd">        :return: does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Job.run"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        runs the job by making script executable and running the</span>
+<span class="sd">        script locally. only works for shell scripts, as .sh is</span>
+<span class="sd">        hardcoded within the commands</span>
+<span class="sd">        :return: 0 if successfully run and 1 if failed</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mkdir_experimentdir</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">==</span> <span class="s2">&quot;.py&quot;</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;chmod ug+x ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.py&#39;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os_is_windows</span><span class="p">():</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">=</span> <span class="sa">fr</span><span class="s1">&#39;&quot;%ProgramFiles%\Git\bin\bash.exe&quot; -c &quot;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; python ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.py &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log 2&gt;&amp;1&quot;&#39;</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; python ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.py &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log 2&gt;&amp;1&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s1"> &amp;&#39;</span><span class="p">)</span>
+
+            <span class="n">logfile</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">==</span> <span class="s2">&quot;.ipynb&quot;</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;chmod ug+x ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.ipynb&#39;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os_is_windows</span><span class="p">():</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">=</span> <span class="sa">fr</span><span class="s1">&#39;&quot;%ProgramFiles%\Git\bin\bash.exe&quot; -c &quot;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; papermill ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.ipynb ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-output.ipynb&quot;&#39;</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; papermill ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.ipynb ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-output.ipynb&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s1"> &amp;&#39;</span><span class="p">)</span>
+
+            <span class="n">logfile</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;chmod ug+x ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.sh&#39;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os_is_windows</span><span class="p">():</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">=</span> <span class="sa">fr</span><span class="s1">&#39;&quot;%ProgramFiles%\Git\bin\bash.exe&quot; -c &quot;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; nohup ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.sh &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log 2&gt;&amp;1&quot;&#39;</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1"> &amp;&amp; nohup ./</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.sh &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log 2&gt;&amp;1&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s1"> &amp;&#39;</span><span class="p">)</span>
+
+            <span class="n">logfile</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+
+        <span class="n">started</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="n">started</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;sync&quot;</span><span class="p">)</span>
+            <span class="n">started</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">logfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;STARTED&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">started</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">state</span></div>
+
+<div class="viewcode-block" id="Job.clear"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        clears all leftover log files from past runs</span>
+<span class="sd">        :return: does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;~/experiment/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log&#39;</span>
+            <span class="n">destination</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span>
+            <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm -f </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm -f </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Job.get_status"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fetches the log file of the job and returns the status of</span>
+<span class="sd">        the job, which can be undefined, running, or done</span>
+<span class="sd">        :param refresh: whether to copy the log file in case of changes</span>
+<span class="sd">        :type refresh: bool</span>
+<span class="sd">        :return: returns status, which is the progress of the job</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ready&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">find_lines_with</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;# cloudmesh&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;status=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">status</span></div>
+
+<div class="viewcode-block" id="Job.get_progress"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_progress">[docs]</a>    <span class="k">def</span> <span class="nf">get_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fetch the log file of the job and read the log file to check</span>
+<span class="sd">        for the current completeness of the job</span>
+<span class="sd">        :param refresh: whether to copy the log file in case of changes</span>
+<span class="sd">        :type refresh: bool</span>
+<span class="sd">        :return: value from 0 to 100 which reflects completeness of job</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">find_lines_with</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;# cloudmesh&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;progress=&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">progress</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;progress=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">progress</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Job.get_log"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_log">[docs]</a>    <span class="k">def</span> <span class="nf">get_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        copy the log file, sync, and read the contents of the file to</span>
+<span class="sd">        return the contents as a string</span>
+<span class="sd">        :param refresh: whether to copy the log file in case of changes</span>
+<span class="sd">        :type refresh: bool</span>
+<span class="sd">        :return: the contents of the log file in string format</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">refresh</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cp </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;sync&quot;</span><span class="p">)</span>  <span class="c1"># tested and returns 0</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">content</span></div>
+
+<div class="viewcode-block" id="Job.sync"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        copies the shell script to the experiment directory and</span>
+<span class="sd">        ensures that the file is copied with the sync command</span>
+<span class="sd">        :return: 0 or 1 depending on success of command</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mkdir_experimentdir</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chmod</span><span class="p">()</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cp ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;sync&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="Job.chmod"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.chmod">[docs]</a>    <span class="k">def</span> <span class="nf">chmod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        changes the permissions and flags of the script to be</span>
+<span class="sd">        run (shell or py file, ipynb not yet supported) so that</span>
+<span class="sd">        the system can successfully execute the script</span>
+<span class="sd">        :return: 0 or 1 depending on success of command</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;chmod ug+rx ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="Job.exists"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        used to check if the file is existing within the experiment</span>
+<span class="sd">        directory</span>
+<span class="sd">        :param filename: the name of the script, including file extension</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: True if the file exists and False if it doesnt</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Job.watch"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.watch">[docs]</a>    <span class="k">def</span> <span class="nf">watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        waits and watches for progress to reach 100, on interval basis</span>
+<span class="sd">        specified in the period in seconds,</span>
+<span class="sd">        till the job has completed</span>
+<span class="sd">        :param period: time in seconds to check, as an interval</span>
+<span class="sd">        :type period: float</span>
+<span class="sd">        :return: does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">finished</span><span class="p">:</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_progress</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Progress </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span>
+            <span class="n">finished</span> <span class="o">=</span> <span class="n">progress</span> <span class="o">==</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">finished</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Job.get_pid"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_pid">[docs]</a>    <span class="k">def</span> <span class="nf">get_pid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the pid that the job is running within</span>
+<span class="sd">        :param refresh: whether to retrieve the latest log</span>
+<span class="sd">        :type refresh: bool</span>
+<span class="sd">        :return: the pid (process identifier)</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">refresh</span><span class="p">:</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">find_lines_with</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;# cloudmesh&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;pid=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">pid</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Job.kill"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.kill">[docs]</a>    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        kills the job</span>
+<span class="sd">        :param period: interval to use for waiting for log/pid</span>
+<span class="sd">        :type period: float</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            - pid - process identifier as str</span>
+<span class="sd">            - child - child process as str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="c1"># find logfile</span>
+        <span class="c1">#</span>
+
+        <span class="n">logfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.log&#39;</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">log</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_log</span><span class="p">()</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">logfile</span><span class="p">)</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;# cloudmesh&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;pid=&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                    <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;no log file yet&quot;</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">pid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pid</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">pid</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s1">&#39;ps&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">os_is_windows</span><span class="p">():</span>
+            <span class="n">rs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="n">rs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">rs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">pid</span><span class="p">:</span>
+                    <span class="n">child</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="sa">fr</span><span class="s1">&#39;&quot;%ProgramFiles%\Git\bin\bash.exe&quot; -c &quot;kill -9 </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="c1">#r = Shell.run(f&#39;taskkill /PID {pid} /F&#39;)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;pgrep -P </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;kill -9 </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;kill -9 </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">Console</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Killing </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;No such process&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="n">Console</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Process </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> not found. It is likely it already completed.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pid</span><span class="p">,</span> <span class="n">child</span></div>
+
+<div class="viewcode-block" id="Job.create_script"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.create_script">[docs]</a>    <span class="k">def</span> <span class="nf">create_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a template</span>
+<span class="sd">        for the slurm sbatch</span>
+<span class="sd">        :param exec: command to be executed</span>
+<span class="sd">        :type exec: str</span>
+<span class="sd">        :return: name of script</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.sh&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;ipynb&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">exec</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;-output.ipynb&quot;</span><span class="p">)</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;papermill </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;sh&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;py&#39;</span><span class="p">:</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;python </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            #!/bin/sh</span>
+<span class="s2">            echo &quot;# cloudmesh status=running progress=1 pid=$$&quot;</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            echo &quot;# cloudmesh status=running progress=100 pid=$$&quot;</span>
+<span class="s2">            #</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exec</span><span class="o">=</span><span class="n">exec</span><span class="p">)</span>
+        <span class="n">writefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">script</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;chmod a+x </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filename</span></div>
+
+    <span class="c1"># this method is deprecated ....</span>
+<div class="viewcode-block" id="Job.create"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.create">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a template</span>
+<span class="sd">        for the slurm sbatch</span>
+<span class="sd">        :param filename: name of file that the script will be written to</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :param script: contents of script</span>
+<span class="sd">        :type script: str</span>
+<span class="sd">        :param exec: command to be executed</span>
+<span class="sd">        :type exec: str</span>
+<span class="sd">        :return: the contents of the script itself</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">script</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">exec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Script and executable cannot be used at the same time.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">script</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="n">script</span>
+        <span class="k">elif</span> <span class="s1">&#39;.ipynb&#39;</span> <span class="ow">in</span> <span class="n">exec</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">exec</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;-output.ipynb&quot;</span><span class="p">)</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;papermill </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">elif</span> <span class="s1">&#39;.sh&#39;</span> <span class="ow">in</span> <span class="n">exec</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="s1">&#39;.py&#39;</span> <span class="ow">in</span> <span class="n">exec</span><span class="p">:</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;python </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+
+        <span class="n">template</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            #!/bin/sh</span>
+<span class="s2">            echo &quot;# cloudmesh status=running progress=1 pid=$$&quot;</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            echo &quot;# cloudmesh status=running progress=100 pid=$$&quot;</span>
+<span class="s2">            #</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exec</span><span class="o">=</span><span class="n">exec</span><span class="p">)</span>
+        <span class="n">writefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">script</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">script</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../job.html" >cloudmesh.cc.job</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.job.localhost.Job</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Gregor von Laszewski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
+    </div>
+  </body>
+</html>
