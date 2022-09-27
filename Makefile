@@ -178,7 +178,7 @@ endif
 
 doc: man
 	cp README.md api/source/readme.md
-	cp MANUAL.md api/source/manual.md
+	cp QUICKSTART.md api/source/quickstart.md
 ifeq ($(detected_OS),Windows)
 	rm -rf ./api/source/images
 	mkdir ./api/source/images

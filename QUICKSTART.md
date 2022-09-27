@@ -1,4 +1,4 @@
-# Cloudmesh Compute Cluster Workflow (Quickstart)
+# Quickstart
 
 The Cloudmesh Compute Cluster service allows you to execute
 analytical, computational workflows which run programs on remote
