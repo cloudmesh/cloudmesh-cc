@@ -177,15 +177,13 @@ endif
 
 
 doc: man
-	cd api; sphinx-apidoc ../cloudmesh -o source
-	cd api/source; sphinx-autogen -o generated *.rst
-	cd api; make html
-	#pandoc README.md -o api/source/readme.rst
-	#pandoc MANUAL.md -o api/source/manual.rst
 	cp README.md api/source/readme.md
 	cp MANUAL.md api/source/manual.md
 ifeq ($(detected_OS),Windows)
-	robocopy /e images api/source
+	rm -rf ./api/source/images
+	mkdir ./api/source/images
+	cp ./images/* ./api/source/images
+	#xcopy .\images .\api\source\images /s /e /h /l /i /y
 endif
 ifeq ($(detected_OS),Darwin)
 	rsync -av images api/source
@@ -193,6 +191,11 @@ endif
 ifeq ($(detected_OS),Linux)
 	rsync -av images api/source
 endif
+	cd api; sphinx-apidoc ../cloudmesh -o source
+	cd api/source; sphinx-autogen -o generated *.rst
+	cd api; make html
+	#pandoc README.md -o api/source/readme.rst
+	#pandoc MANUAL.md -o api/source/manual.rst
 
 latex:
 	cd api; make latexpdf
