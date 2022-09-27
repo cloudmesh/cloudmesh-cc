@@ -8,4 +8,9 @@ API Reference
    :recursive:
    :members:
 
-   cloudmesh
+.. toctree::
+   :maxdepth: 1
+
+   generated/cloudmesh.cc
+   generated/cloudmesh
+   modules

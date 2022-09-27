@@ -14,26 +14,20 @@ then be analyzed through benchmarks and
 live status updates.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   man_cc
    readme
    quickstart
-   manual
-   mnist
+   man_cc
    acknowledgements
 
-Broken
-======
+Examples
+========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   modules
-   api
-   generated/cloudmesh
-   generated/cloudmesh.cc
-   cloudmesh
+   mnist
 
 
 Indices and tables
