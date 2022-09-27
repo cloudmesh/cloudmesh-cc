@@ -6,6 +6,5 @@ Modules Reference
 .. autosummary::
    :toctree: generated
    :recursive:
-   :members:
 
    cloudmesh
