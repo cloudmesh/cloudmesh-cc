@@ -17,7 +17,7 @@ live status updates.
    :maxdepth: 2
 
    man_cc
-   readme
+   quickstart
    manual
    mnist
 
