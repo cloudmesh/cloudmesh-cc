@@ -164,7 +164,15 @@ man:
 	echo "Command cc" > tmp.rst
 	echo "==========" >> tmp.rst
 	cat tmp.rst tmp1.rst > man_cc.rst
+ifeq ($(detected_OS),Windows)
+	cp man_cc.rst api/source/man_cc.rst
+endif
+ifeq ($(detected_OS),Darwin)
 	rsync -av man_cc.rst api/source/man_cc.rst
+endif
+ifeq ($(detected_OS),Linux)
+	rsync -av man_cc.rst api/source/man_cc.rst
+endif
 	rm -f tmp.rst tmp1.rst
 
 
@@ -176,7 +184,15 @@ doc: man
 	#pandoc MANUAL.md -o api/source/manual.rst
 	cp README.md api/source/readme.md
 	cp MANUAL.md api/source/manual.md
+ifeq ($(detected_OS),Windows)
+	robocopy /e images api/source
+endif
+ifeq ($(detected_OS),Darwin)
 	rsync -av images api/source
+endif
+ifeq ($(detected_OS),Linux)
+	rsync -av images api/source
+endif
 
 latex:
 	cd api; make latexpdf
