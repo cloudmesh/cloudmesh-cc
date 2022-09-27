@@ -20,6 +20,7 @@ live status updates.
    readme
    quickstart
    man_cc
+   api
    acknowledgements
 
 .. toctree::
