@@ -41,6 +41,7 @@ extensions.append('sphinx_autodoc_typehints')
 extensions.append('myst_parser')
 extensions.append('sphinxcontrib.openapi')
 # extensions.append('sphinxcontrib.fulltoc')
+extensions.append('sphinx_copybutton')
 
 numfig=True
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
