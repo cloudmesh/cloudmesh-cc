@@ -1423,9 +1423,9 @@ class Workflow:
                     self.jobs[name]['progress'] = progress
                     self.graph.save_to_yaml(filename=self.runtime_filename)
                     if (progress != placeholder_progress) or (status != placeholder_status):
+                        save_graph_to_file()
                         if show:
                             display_in_browser()
-                        save_graph_to_file()
                         placeholder_status = status
                         placeholder_progress = progress
 
@@ -1472,20 +1472,18 @@ class Workflow:
         :return: nothing
         :rtype: None
         """
-        if os_is_windows():
-            Shell.mkdir("./tmp")
-            filename = filename or f"tmp/{name}.svg"
-        else:
-            filename = filename or f"/tmp/{name}.svg"
+        filename = filename or f"./{name}.svg"
         self.graph.save(filename=filename, colors="status", engine="dot")
-        if first and os_is_mac():
-            os.system(f'open {filename}')
-            first = False
-        elif first and os_is_linux():
-            os.system(f'gopen {filename}')
+        if os_is_mac():
+            Shell.open(filename=filename)
+        elif os_is_linux():
+            #  elif first and os_is_linux():
+            # Shell.open(filename=filename)  # does not work
+            os.system(f"chromium {filename}&")
+            # os.system(f"eog {filename}")
+
         else:
-            cwd = os.getcwd()
-            os.system(f'start chrome {cwd}\\{filename}')
+            Shell.browser(filename)
 
     def create_topological_order(self): #create_sequential_order
         # or put it in workflow or in both # mey need to be in workflow.
