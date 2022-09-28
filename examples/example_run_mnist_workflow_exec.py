@@ -1,7 +1,7 @@
 # ##############################################################
 # pytest -v -x --capture=no examples/example_run_mnist_workflow_exec.py
 # pytest -v  examples/example_run_mnist_workflow_exec.py
-# pytest -v --capture=no  examples/example_run_mnist_workflow_exec.py::TestWorkflowLocal::<METHODNAME>
+# pytest -v --capture=no  examples/example_run_mnist_workflow_exec.py::TestMnist::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil
