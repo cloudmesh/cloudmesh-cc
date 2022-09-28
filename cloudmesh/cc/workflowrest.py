@@ -19,7 +19,7 @@ class RESTWorkflow:
         :rtype: dict
         """
         content = requests.get(f"{self.address}/workflows") # return as json string
-        return content  # liely a dict
+        return content  # likely a dict
 
     def add_job(self, workflow_name: str, **kwargs):
         """

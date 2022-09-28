@@ -458,6 +458,7 @@ async def running_watcher(request, name_of_workflow: str):
 def status_returner(name_of_workflow: str):
     """
     reads a runtime yaml file to return a dict of status of jobs.
+
     :param name_of_workflow:
     :type name_of_workflow:
     :return:
@@ -528,6 +529,7 @@ async def home_page(request: Request):
     """
     home function that features html and
     sidebar
+
     :return: up message
     """
     os.path.dirname(__file__)
@@ -550,6 +552,7 @@ async def home_page(request: Request):
 async def contact_page(request: Request):
     """
     page that lists contact information
+
     :return: contact page
     """
     os.path.dirname(__file__)
@@ -569,6 +572,7 @@ async def contact_page(request: Request):
 async def man_page(request: Request):
     """
     page that lists contact information
+
     :return: contact page
     """
     os.path.dirname(__file__)
@@ -589,6 +593,7 @@ async def man_page(request: Request):
 async def about_page(request: Request):
     """
     page that lists readme as html
+
     :return: about page
     """
     os.path.dirname(__file__)
@@ -614,6 +619,7 @@ def list_workflows(request: Request, output: str = None):
     """
     This command returns a list of workflows that is found within
     the server.
+
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflows' \
         -H 'accept: application/json'
@@ -678,24 +684,31 @@ def upload(directory: str = Query(None,
     """
     upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
+
     :param directory: path to directory with workflow files
     :type directory: str
+
     curl -X 'POST' \
         'http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
         -H 'accept: application/json' \
         -d ''
+
     :param archive: tgz, xz, tar.gz, or tar file with workflow files
     :type archive: str
+
     curl -X 'POST' \
         'http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile' \
         -H 'accept: application/json' \
         -d ''
+
     :param yaml: yaml file with workflow specifications
     :type yaml: str
+
     curl -X 'POST' \
         'http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
         -H 'accept: application/json' \
         -d ''
+
     :return: success or failure message
     """
     if sum(bool(x) for x in [directory, archive, yaml]) > 1:
@@ -844,6 +857,7 @@ def delete_workflow(name: str, job: str = None):
     curl -X 'DELETE' \
         'http://127.0.0.1:8000/workflow/workflow-example' \
         -H 'accept: application/json'
+
     :param name: name of the workflow
     :type name: str
     :param job: name of the job
@@ -1058,6 +1072,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
 def get_workflow_graph(request: Request, name: str):
     """
     see the graph embedded within web interface
+
     :param request: type of request (api does this automatically in browser)
     :type request: Request
     :param name: name of workflow to retrieve the graph for
@@ -1170,6 +1185,7 @@ def watch_running_workflow(request: Request,
                            name: str):
     """
     page for watching a workflow that has been started
+
     :param request: type of request (api does this automatically in browser)
     :type request: Request
     :param name: name of workflow
@@ -1302,6 +1318,7 @@ def add_job(name_of_workflow: str,
 def preferences_post(request: Request):
     """
     preferences page
+
     :return: preferences page
     """
     folders = get_available_workflows()
