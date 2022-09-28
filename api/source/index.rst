@@ -22,6 +22,7 @@ live status updates.
    quickstart
    man_cc
    api
+   openapi
    acknowledgements
 
 .. toctree::
