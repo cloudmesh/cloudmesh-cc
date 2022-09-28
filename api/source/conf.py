@@ -39,6 +39,7 @@ extensions.append('sphinx.ext.viewcode')
 extensions.append('sphinx.ext.graphviz')
 extensions.append('sphinx_autodoc_typehints')
 extensions.append('myst_parser')
+extensions.append('sphinxcontrib.openapi')
 # extensions.append('sphinxcontrib.fulltoc')
 
 numfig=True
