@@ -17,6 +17,7 @@ live status updates.
    :maxdepth: 1
    :caption: Documentation
 
+   ultimate_documentation
    readme
    quickstart
    man_cc

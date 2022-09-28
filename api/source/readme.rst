@@ -29,7 +29,7 @@ a service that lets the user manage and execute without supervision. We
 have created a service that lets the user run jobs across multiple
 platforms in a dynamic queue with visualization and data storage.
 
-See :numref:`fastapi-service`.
+See :numref:`fastapi-service` for the OpenAPI interface of such service.
 
 .. figure:: images/fastapi-service.png
    :alt: Figure OpenAPI Description of the REST Interface to the Workflow
@@ -100,7 +100,7 @@ Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
 Convolutional, and Recurrent Neural Networks, Distributed Training, and
 PyTorch training
 
-See :numref:`workflow-uml`.
+See :numref:`workflow-uml` for a diagram of the workflow components.
 
 .. figure:: images/workflow-uml.png
    :alt: Figure Design for the workflow.
@@ -120,7 +120,7 @@ each target type a specific job type so that execution on local and
 remote compute resources including batch operating systems can be
 achieved. The job types supported include: local job on Linux, macOS,
 Windows 10, and Windows 11, jobs running in WSL on Windows computers,
-remote jobs using ssh, and a batch JObs using Slurm.
+remote jobs using SSH, and batch jobs using Slurm.
 
 In addition, we leveraged the exiting Networkx Graph framework to allow
 dependencies between jobs. This greatly reduced the complexity of the
@@ -152,9 +152,9 @@ The REST service was implemented in FastAPI to leverage a small but fast
 service that features a much smaller footprint for implementation and
 setup in contrast to other similar REST service frameworks using python.
 
-This architectural component building this framework is depicted fig. 2.
-The code is available in this repository and manual pages are provided
-on how to install it:
+The architectural component building this framework is depicted in
+:numref:`workflow-uml`. The code is available in this repository and
+manual pages are provided on how to install it:
 `cloudmesh-cc <https://github.com/cloudmesh/cloudmesh-cc>`__.
 
 Summary

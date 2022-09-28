@@ -11,6 +11,7 @@ cloudmesh.cc.db.yamldb.database module
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
 
 Module contents
 ---------------
@@ -19,3 +20,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
