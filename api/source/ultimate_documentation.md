@@ -1,4 +1,4 @@
-# Workflow 
+# Guide to cloudmesh cc Workflow
 
 The Workflow class in cloudmesh-cc allows the creation of workflows, which are
 compilations of jobs to be run on nodes. These workflows report information on
@@ -23,7 +23,7 @@ as well as the four different ways to interface the class: through command line
 interface, Python, browser GUI through local FastAPI server, or REST
 interface through local FastAPI server.
 
-## Set-Up
+## Requirements
 
 Downloading the code is relatively simple. We leverage the cloudmesh-installer
 to locally install the cloudmesh suite of repositories.
@@ -33,6 +33,34 @@ mkdir ~/cm
 cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
+```
+
+### Windows
+
+Git Bash and Graphviz must be installed. The user can use Chocolatey run as
+an administrator for convenience:
+
+```bash
+choco install git.install --params "/GitAndUnixToolsOnPath \
+        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf" -y
+choco install graphviz -y
+```
+
+### macOS
+
+Graphviz must be installed. The user can use Homebrew for convenience:
+
+```zsh
+brew install graphviz
+```
+
+### Linux
+
+Graphviz is included in a normal Ubuntu installation, but the user should
+install Graphviz if not on the machine with the following command:
+
+```bash
+sudo apt install graphviz
 ```
 
 ## A. Use Workflow Class in Python Code
