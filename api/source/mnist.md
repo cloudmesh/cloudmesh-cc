@@ -19,14 +19,10 @@ cms set username=XXXXXX
 ```
 where  the X's are substituted with your computing ID.
 
-Then, change into 
+Then, issue commands:
 
 ```bash
-cloudmesh-cc
-````
-and issue command
-
-```bash
+cd ~/cm/cloudmesh-cc
 pytest -v -x --capture=no examples/example_run_mnist_workflow_exec.py
 ```
 
