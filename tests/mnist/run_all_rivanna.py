@@ -81,7 +81,7 @@ mlp_mnist
 host = 'rivanna'
 
 #if gpu is None:
-gpu = ['v100', 'a100', 'k80', 'p100']
+gpu = ['v100', 'a100', 'k80', 'p100', 'rtx2080']
 #gpu = ['a100']
 #else:
 #    gpu = v['gpu'].split(',')
@@ -95,6 +95,10 @@ for card in gpu:
             command = f"{exec} {script}.ipynb {output}.ipynb"
         elif exec == 'sbatch':
             command = f"{exec} --wait --gres=gpu:{card}:1 {script}.sh"
+            # if card == 'a100':
+            #     command = f"{exec} --wait --account=bii_dsc_community --reservation=bi_fox_dgx --partition=bii-gpu --gres=gpu:{card}:1 {script}.sh"
+            # else:
+            #     command = f"{exec} --wait --partition=gpu --gres=gpu:{card}:1 {script}.sh"
         banner(command)
         if not dryrun:
             os.chdir(path)

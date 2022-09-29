@@ -31,13 +31,13 @@ source activate ENV3
 cd ~/reu2022/code/deeplearning/mnist/
 currentgpu=$(echo $(cms set currentgpu) | sed -e "s/['\"]//g" -e "s/^\(currentgpu=\)*//")
 #python run_all_rivanna.py
-python mlp_mnist.py > mlp_mnist_output_py_$(echo $currentgpu).log 2>&1
-python mnist_autoencoder.py > mnist_autoencoder_output_py_$(echo $currentgpu).log 2>&1
-python mnist_cnn.py > mnist_cnn_output_py_$(echo $currentgpu).log 2>&1
-python mnist_lstm.py > mnist_lstm_output_py_$(echo $currentgpu).log 2>&1
-python mnist_mlp_with_lstm.py > mnist_mlp_with_lstm_output_py_$(echo $currentgpu).log 2>&1
-python mnist_rnn.py > mnist_rnn_output_py_$(echo $currentgpu).log 2>&1
-python mnist_with_distributed_training.py > mnist_with_distributed_training_py_$(echo $currentgpu).log 2>&1
-python mnist_with_pytorch.py > mnist_with_pytorch_py_$(echo $currentgpu).log 2>&1
+python mlp_mnist.py > result/mlp_mnist_output_py_$(echo $currentgpu).log 2>&1
+python mnist_autoencoder.py > result/mnist_autoencoder_output_py_$(echo $currentgpu).log 2>&1
+python mnist_cnn.py > result/mnist_cnn_output_py_$(echo $currentgpu).log 2>&1
+python mnist_lstm.py > result/mnist_lstm_output_py_$(echo $currentgpu).log 2>&1
+python mnist_mlp_with_lstm.py > result/mnist_mlp_with_lstm_output_py_$(echo $currentgpu).log 2>&1
+python mnist_rnn.py > result/mnist_rnn_output_py_$(echo $currentgpu).log 2>&1
+python mnist_with_distributed_training.py > result/mnist_with_distributed_training_py_$(echo $currentgpu).log 2>&1
+python mnist_with_pytorch.py > result/mnist_with_pytorch_py_$(echo $currentgpu).log 2>&1
 echo "# cloudmesh status=done progress=100 pid=$$"
 # python mlp_mnist.py
