@@ -206,7 +206,7 @@ latex:
 	cd api; make latexpdf
 
 docs:
-	rsync -av api/build/html/* docs
+	rsync --size-only -av api/build/html/* docs
 
 
 view:
