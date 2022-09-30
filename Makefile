@@ -194,8 +194,10 @@ endif
 #	rsync -av images api/source
 #endif
 
+reqirements-dev:
+	pip install -r requirements-dev.txt
 
-doc: man
+doc: reqirements-dev man 
 	cd api; sphinx-apidoc ../cloudmesh -o source
 	cd api/source; sphinx-autogen -o generated *.rst
 	cd api; make html
