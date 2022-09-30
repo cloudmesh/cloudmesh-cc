@@ -1,46 +1,200 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>cloudmesh.common.security &#8212; cloudmesh-cc 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/readthedocs-custom.css" />
-    
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cloudmesh.common.security &mdash; cloudmesh-cc 4.3.6 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.security</a></li> 
-      </ul>
-    </div>  
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cloudmesh.common.shlex" href="cloudmesh.common.shlex.html" />
+    <link rel="prev" title="cloudmesh.common.run.subprocess" href="cloudmesh.common.run.subprocess.html" /> 
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ultimate_documentation.html">Guide to cloudmesh cc Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../man_cc.html">Command cc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cloudmesh.html">cloudmesh</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.abstract.html">cloudmesh.abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.admin.html">cloudmesh.admin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.check.html">cloudmesh.check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.management.html">cloudmesh.management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.mongo.html">cloudmesh.mongo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.provider.html">cloudmesh.provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.start.html">cloudmesh.start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.stop.html">cloudmesh.stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cmd5.html">cloudmesh.cmd5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.debug.html">cloudmesh.debug</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.default.html">cloudmesh.default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.dryrun.html">cloudmesh.dryrun</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.man.html">cloudmesh.man</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.set.html">cloudmesh.set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.shell.html">cloudmesh.shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.sysinfo.html">cloudmesh.sysinfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.terminal.html">cloudmesh.terminal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.var.html">cloudmesh.var</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="cloudmesh.common.html">cloudmesh.common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Benchmark.html">cloudmesh.common.Benchmark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.DateTime.html">cloudmesh.common.DateTime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.DictList.html">cloudmesh.common.DictList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.FlatDict.html">cloudmesh.common.FlatDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Host.html">cloudmesh.common.Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Inspector.html">cloudmesh.common.Inspector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.JobMultiHostScript.html">cloudmesh.common.JobMultiHostScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.JobScript.html">cloudmesh.common.JobScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.JobSet.html">cloudmesh.common.JobSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Printer.html">cloudmesh.common.Printer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Shell.html">cloudmesh.common.Shell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.StopWatch.html">cloudmesh.common.StopWatch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.StopWatchMllog.html">cloudmesh.common.StopWatchMllog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.TableParser.html">cloudmesh.common.TableParser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.Tabulate.html">cloudmesh.common.Tabulate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.console.html">cloudmesh.common.console</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.debug.html">cloudmesh.common.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.default.html">cloudmesh.common.default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.deprecated.html">cloudmesh.common.deprecated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.dotdict.html">cloudmesh.common.dotdict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.error.html">cloudmesh.common.error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.location.html">cloudmesh.common.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.logger.html">cloudmesh.common.logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.notebook.html">cloudmesh.common.notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.parameter.html">cloudmesh.common.parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.prettytable.html">cloudmesh.common.prettytable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.run.html">cloudmesh.common.run</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cloudmesh.common.security</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.shlex.html">cloudmesh.common.shlex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.ssh.html">cloudmesh.common.ssh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.strdb.html">cloudmesh.common.strdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.sudo.html">cloudmesh.common.sudo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.systeminfo.html">cloudmesh.common.systeminfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.todo.html">cloudmesh.common.todo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.util.html">cloudmesh.common.util</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.variables.html">cloudmesh.common.variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.common.wifi.html">cloudmesh.common.wifi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.config.html">cloudmesh.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.configuration.html">cloudmesh.configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.gui.html">cloudmesh.gui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.host.html">cloudmesh.host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.inventory.html">cloudmesh.inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.sys.html">cloudmesh.sys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.test.html">cloudmesh.test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.vpn.html">cloudmesh.vpn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.progress.html">cloudmesh.progress</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html">Modules Reference</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="cloudmesh.html">cloudmesh</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.abstract.html">cloudmesh.abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.admin.html">cloudmesh.admin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.check.html">cloudmesh.check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.management.html">cloudmesh.management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.mongo.html">cloudmesh.mongo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.provider.html">cloudmesh.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.start.html">cloudmesh.start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.stop.html">cloudmesh.stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cmd5.html">cloudmesh.cmd5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.debug.html">cloudmesh.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.default.html">cloudmesh.default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.dryrun.html">cloudmesh.dryrun</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.man.html">cloudmesh.man</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.set.html">cloudmesh.set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.shell.html">cloudmesh.shell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.sysinfo.html">cloudmesh.sysinfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.terminal.html">cloudmesh.terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.var.html">cloudmesh.var</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="cloudmesh.common.html">cloudmesh.common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.config.html">cloudmesh.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.configuration.html">cloudmesh.configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.gui.html">cloudmesh.gui</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.host.html">cloudmesh.host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.inventory.html">cloudmesh.inventory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.sys.html">cloudmesh.sys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.test.html">cloudmesh.test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.vpn.html">cloudmesh.vpn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.progress.html">cloudmesh.progress</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../openapi.html">OpenAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../mnist.html">MNIST Workflows</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+          <li><a href="cloudmesh.html">cloudmesh</a> &raquo;</li>
+          <li><a href="cloudmesh.common.html">cloudmesh.common</a> &raquo;</li>
+      <li>cloudmesh.common.security</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/generated/cloudmesh.common.security.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="module-cloudmesh.common.security">
 <span id="cloudmesh-common-security"></span><h1>cloudmesh.common.security<a class="headerlink" href="#module-cloudmesh.common.security" title="Permalink to this heading"></a></h1>
 <p class="rubric">Functions</p>
@@ -58,49 +212,34 @@
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cloudmesh.common.run.subprocess.html" class="btn btn-neutral float-left" title="cloudmesh.common.run.subprocess" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.common.shlex.html" class="btn btn-neutral float-right" title="cloudmesh.common.shlex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/generated/cloudmesh.common.security.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">cloudmesh.common.security</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Gregor von Laszewski.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

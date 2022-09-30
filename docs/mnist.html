@@ -1,56 +1,91 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Running MNIST Workflow on Rivanna &#8212; cloudmesh-cc 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
-    
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MNIST Workflows &mdash; cloudmesh-cc 4.3.6 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="modules.html" />
-    <link rel="prev" title="Command cc" href="man_cc.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="modules.html" title="API Reference"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="man_cc.html" title="Command cc"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running MNIST Workflow on Rivanna</a></li> 
-      </ul>
-    </div>  
+    <link rel="prev" title="Acknowledgments" href="acknowledgements.html" /> 
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="running-mnist-workflow-on-rivanna">
-<h1>Running MNIST Workflow on Rivanna<a class="headerlink" href="#running-mnist-workflow-on-rivanna" title="Permalink to this heading"></a></h1>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ultimate_documentation.html">Guide to cloudmesh cc Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="man_cc.html">Command cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MNIST Workflows</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>MNIST Workflows</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/mnist.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mnist-workflows">
+<h1>MNIST Workflows<a class="headerlink" href="#mnist-workflows" title="Permalink to this heading"></a></h1>
+<p>For this example we use UVA’s Rivanna machine. Please adopt
+it to your HPC machine.</p>
 <p>We can test Rivanna’s GPUs and benchmark
 their runtimes for running several MNIST
 Python programs. These programs include
@@ -59,87 +94,62 @@ neural network, long short-term memory,
 recurrent neural network, and others.</p>
 <p>To run the MNIST remote workflow on
 Rivanna, first ensure that your UVA computing
-ID is set with <code class="docutils literal notranslate"><span class="pre">cms</span> <span class="pre">set</span> <span class="pre">username=XXXXXX</span></code>, where
-the X’s are substituted with your computing ID.</p>
-<p>Then, stand in <code class="docutils literal notranslate"><span class="pre">cloudmesh-cc</span></code> and issue command
-<code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">-v</span> <span class="pre">-x</span> <span class="pre">--capture=no</span> <span class="pre">examples/example_run_mnist_workflow_exec.py</span></code></p>
+ID is set with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cms <span class="nb">set</span> <span class="nv">username</span><span class="o">=</span>XXXXXX
+</pre></div>
+</div>
+<p>where  the X’s are substituted with your computing ID.</p>
+<p>Then, issue commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
+pytest -v -x --capture<span class="o">=</span>no examples/example_run_mnist_workflow_exec.py
+</pre></div>
+</div>
 <p>This program uses SLURM and a shell script to
 iterate through the available GPUs on Rivanna,
 which are V100, A100, K80, and P100.</p>
 <p>On a successful run, the output will be similar to
 the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>+--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+
-<span class="p">|</span> Name   <span class="p">|</span> Status   <span class="p">|</span>     Time <span class="p">|</span>      Sum <span class="p">|</span> Start               <span class="p">|</span> tag   <span class="p">|</span> msg   <span class="p">|</span> Node        <span class="p">|</span> User   <span class="p">|</span> OS    <span class="p">|</span> Version                             <span class="p">|</span>
-<span class="p">|</span>--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------<span class="p">|</span>
-<span class="p">|</span> v100   <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">298</span>.068 <span class="p">|</span>  <span class="m">298</span>.068 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">22</span>:56:24 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
-<span class="p">|</span> a100   <span class="p">|</span> ok       <span class="p">|</span> <span class="m">1226</span>.18  <span class="p">|</span> <span class="m">1226</span>.18  <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:07:56 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
-<span class="p">|</span> k80    <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">714</span>.123 <span class="p">|</span>  <span class="m">714</span>.123 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:28:24 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
-<span class="p">|</span> p100   <span class="p">|</span> ok       <span class="p">|</span>  <span class="m">458</span>.094 <span class="p">|</span>  <span class="m">458</span>.094 <span class="p">|</span> <span class="m">2022</span>-09-26 <span class="m">23</span>:40:19 <span class="p">|</span>       <span class="p">|</span>       <span class="p">|</span> udc-ba36-36 <span class="p">|</span> XXXXXX <span class="p">|</span> Linux <span class="p">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
-+--------+----------+----------+----------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+----------+---------+---------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+</span>
+<span class="o">|</span> <span class="n">Name</span>    <span class="o">|</span> <span class="n">Status</span>   <span class="o">|</span>    <span class="n">Time</span> <span class="o">|</span>     <span class="n">Sum</span> <span class="o">|</span> <span class="n">Start</span>               <span class="o">|</span> <span class="n">tag</span>   <span class="o">|</span> <span class="n">msg</span>   <span class="o">|</span> <span class="n">Node</span>        <span class="o">|</span> <span class="n">User</span>   <span class="o">|</span> <span class="n">OS</span>    <span class="o">|</span> <span class="n">Version</span>                             <span class="o">|</span>
+<span class="o">|---------+----------+---------+---------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------|</span>
+<span class="o">|</span> <span class="n">v100</span>    <span class="o">|</span> <span class="n">ok</span>       <span class="o">|</span> <span class="mf">138.087</span> <span class="o">|</span> <span class="mf">138.087</span> <span class="o">|</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">45</span> <span class="o">|</span>       <span class="o">|</span>       <span class="o">|</span> <span class="n">udc</span><span class="o">-</span><span class="n">ba34</span><span class="o">-</span><span class="mi">36</span> <span class="o">|</span> <span class="n">XXXXXX</span> <span class="o">|</span> <span class="n">Linux</span> <span class="o">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="o">|</span> <span class="n">a100</span>    <span class="o">|</span> <span class="n">ok</span>       <span class="o">|</span> <span class="mf">106.046</span> <span class="o">|</span> <span class="mf">106.046</span> <span class="o">|</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">05</span> <span class="o">|</span>       <span class="o">|</span>       <span class="o">|</span> <span class="n">udc</span><span class="o">-</span><span class="n">ba34</span><span class="o">-</span><span class="mi">36</span> <span class="o">|</span> <span class="n">XXXXXX</span> <span class="o">|</span> <span class="n">Linux</span> <span class="o">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="o">|</span> <span class="n">k80</span>     <span class="o">|</span> <span class="n">ok</span>       <span class="o">|</span> <span class="mf">171.057</span> <span class="o">|</span> <span class="mf">171.057</span> <span class="o">|</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">19</span><span class="p">:</span><span class="mi">52</span> <span class="o">|</span>       <span class="o">|</span>       <span class="o">|</span> <span class="n">udc</span><span class="o">-</span><span class="n">ba34</span><span class="o">-</span><span class="mi">36</span> <span class="o">|</span> <span class="n">XXXXXX</span> <span class="o">|</span> <span class="n">Linux</span> <span class="o">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="o">|</span> <span class="n">p100</span>    <span class="o">|</span> <span class="n">ok</span>       <span class="o">|</span> <span class="mf">202.055</span> <span class="o">|</span> <span class="mf">202.055</span> <span class="o">|</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">22</span><span class="p">:</span><span class="mi">44</span> <span class="o">|</span>       <span class="o">|</span>       <span class="o">|</span> <span class="n">udc</span><span class="o">-</span><span class="n">ba34</span><span class="o">-</span><span class="mi">36</span> <span class="o">|</span> <span class="n">XXXXXX</span> <span class="o">|</span> <span class="n">Linux</span> <span class="o">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="o">|</span> <span class="n">rtx2080</span> <span class="o">|</span> <span class="n">ok</span>       <span class="o">|</span> <span class="mf">138.048</span> <span class="o">|</span> <span class="mf">138.048</span> <span class="o">|</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">26</span><span class="p">:</span><span class="mi">07</span> <span class="o">|</span>       <span class="o">|</span>       <span class="o">|</span> <span class="n">udc</span><span class="o">-</span><span class="n">ba34</span><span class="o">-</span><span class="mi">36</span> <span class="o">|</span> <span class="n">XXXXXX</span> <span class="o">|</span> <span class="n">Linux</span> <span class="o">|</span> <span class="c1">#1 SMP Wed Feb 23 16:47:03 UTC 2022 |</span>
+<span class="o">+---------+----------+---------+---------+---------------------+-------+-------+-------------+--------+-------+-------------------------------------+</span>
 </pre></div>
 </div>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="acknowledgements.html" class="btn btn-neutral float-left" title="Acknowledgments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="man_cc.html"
-                          title="previous chapter">Command cc</a></p>
+    </section>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="modules.html"
-                          title="next chapter">API Reference</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/mnist.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="modules.html" title="API Reference"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="man_cc.html" title="Command cc"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Running MNIST Workflow on Rivanna</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Gregor von Laszewski.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
-    </div>
-  </body>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

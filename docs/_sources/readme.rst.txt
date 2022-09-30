@@ -1,7 +1,8 @@
-Hybrid Multi-Cloud Analytics Services Framework
-===============================================
+Introduction
+============
 
-**Cloudmesh Controlled Computing through Workflows**
+Hybrid Multi-Cloud Analytics Services Framework and
+Cloudmesh Controlled Computing through Workflows
 
 Gregor von Laszewski (laszewski@gmail.com)\ :math:`^*`, Jacques
 Fleischer
@@ -28,10 +29,11 @@ a service that lets the user manage and execute without supervision. We
 have created a service that lets the user run jobs across multiple
 platforms in a dynamic queue with visualization and data storage.
 
+See :numref:`fastapi-service` for the OpenAPI interface of such service.
+
 .. figure:: images/fastapi-service.png
-   :alt: OpenAPI Description of the REST Interface to the Workflow
-   :name: fig:fastapi-service
-   :width: 50.0%
+   :alt: Figure OpenAPI Description of the REST Interface to the Workflow
+   :name: fastapi-service
 
    OpenAPI Description of the REST Interface to the Workflow
 
@@ -98,9 +100,11 @@ Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
 Convolutional, and Recurrent Neural Networks, Distributed Training, and
 PyTorch training
 
+See :numref:`workflow-uml` for a diagram of the workflow components.
+
 .. figure:: images/workflow-uml.png
-   :alt: Design for the workflow.
-   :name: fig:workflow-uml
+   :alt: Figure Design for the workflow.
+   :name: workflow-uml
 
    Design for the workflow.
 
@@ -116,7 +120,7 @@ each target type a specific job type so that execution on local and
 remote compute resources including batch operating systems can be
 achieved. The job types supported include: local job on Linux, macOS,
 Windows 10, and Windows 11, jobs running in WSL on Windows computers,
-remote jobs using ssh, and a batch JObs using Slurm.
+remote jobs using SSH, and batch jobs using Slurm.
 
 In addition, we leveraged the exiting Networkx Graph framework to allow
 dependencies between jobs. This greatly reduced the complexity of the
@@ -148,9 +152,9 @@ The REST service was implemented in FastAPI to leverage a small but fast
 service that features a much smaller footprint for implementation and
 setup in contrast to other similar REST service frameworks using python.
 
-This architectural component building this framework is depicted
-@fig:workflow-uml. The code is available in this repository and manual
-pages are provided on how to install it:
+The architectural component building this framework is depicted in
+:numref:`workflow-uml`. The code is available in this repository and
+manual pages are provided on how to install it:
 `cloudmesh-cc <https://github.com/cloudmesh/cloudmesh-cc>`__.
 
 Summary
@@ -169,30 +173,3 @@ framework.
 Improvements to this project will include code cleanup and manual
 development.
 
-References
-----------
-
-A poster based on a pre-alpha version of this code is available as ppt
-and PDF file. However, that version is no longer valid and is superseded
-by much improved efforts. The code summarized in the pre-alpha version
-was mainly used to teach a number of students Python and how to work in
-a team
-
--  `Poster Presentation
-   (PPTX) <https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pptx>`__
--  `Poster Presentation
-   (PDF) <https://github.com/cloudmesh/cloudmesh-cc/raw/main/documents/analytics-service.pdf>`__
-
-Please note also that the poster contains inaccurate statements and
-descriptions and should not be used as a reference to this work.
-
-Acknowledgments
----------------
-
-Continued work was in part funded by the NSF CyberTraining: CIC:
-CyberTraining for Students and Technologies from Generation Z with the
-award numbers 1829704 and 2200409. We like to thank the following
-contributors for their help and evaluation in a pre-alpha version of the
-code: Jackson Miskill, Alex Beck, Alison Lu. We are excited that this
-effort contributed significantly to their increased understanding of
-Python and how to develop in a team using the Python ecosystem.

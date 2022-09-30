@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide to cloudmesh cc Workflow &mdash; cloudmesh-cc 4.3.6 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="readme.html" />
+    <link rel="prev" title="Cloudmesh Compute Cluster" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide to cloudmesh cc Workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macos">macOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a-use-workflow-class-in-python-code">A. Use Workflow Class in Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#b-use-browser-gui-through-local-fastapi-web-server">B. Use Browser GUI Through Local FastAPI Web Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#details-about-workflow-class">Details about Workflow Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shell-and-slurm-scripts">Shell and Slurm Scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-scripts-and-jupyter-notebooks">Python Scripts and Jupyter Notebooks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="man_cc.html">Command cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mnist.html">MNIST Workflows</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Guide to cloudmesh cc Workflow</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/ultimate_documentation.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-to-cloudmesh-cc-workflow">
+<h1>Guide to cloudmesh cc Workflow<a class="headerlink" href="#guide-to-cloudmesh-cc-workflow" title="Permalink to this heading"></a></h1>
+<p>The Workflow class in cloudmesh-cc allows the creation of workflows, which are
+compilations of jobs to be run on nodes. These workflows report information on
+the status of jobs as they are run, whether locally or remotely. These jobs
+can be customized to run as bash scripts, Python scripts, Jupyter notebooks,
+or Slurm scripts.</p>
+<p>Users can utilize the Workflow class in three different ways: through the
+command line interface, through a locally hosted web interface with FastAPI,
+or with REST API.</p>
+<p>The usefulness of such Workflow class includes the ability to upload
+a mixture of different types of jobs together, including local and remote;
+Slurm and shell; Windows and Unix; and so on. It also allows for a more
+efficient job execution as opposed to manually inputting commands repeatedly
+at a terminal. For example, a one-time specification inside a YAML
+configuration file automatically sets up log generation, fetches the log,
+reports progress, resets results on rerun, and other helpful features.</p>
+<p>In this documentation, we describe the installation and methods for this class,
+as well as the four different ways to interface the class: through command line
+interface, Python, browser GUI through local FastAPI server, or REST
+interface through local FastAPI server.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>Downloading the code is relatively simple. We leverage the cloudmesh-installer
+to locally install the cloudmesh suite of repositories.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/cm
+<span class="nb">cd</span> ~/cm
+pip install cloudmesh-installer -U
+cloudmesh-installer get cc
+</pre></div>
+</div>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this heading"></a></h3>
+<p>Git Bash and Graphviz must be installed. The user can use Chocolatey run as
+an administrator for convenience:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>choco install git.install --params <span class="s2">&quot;/GitAndUnixToolsOnPath \</span>
+<span class="s2">        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf&quot;</span> -y
+choco install graphviz -y
+</pre></div>
+</div>
+</section>
+<section id="macos">
+<h3>macOS<a class="headerlink" href="#macos" title="Permalink to this heading"></a></h3>
+<p>Graphviz must be installed. The user can use Homebrew for convenience:</p>
+<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>brew install graphviz
+</pre></div>
+</div>
+</section>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this heading"></a></h3>
+<p>Graphviz is included in a normal Ubuntu installation, but the user should
+install Graphviz if not on the machine with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install graphviz
+</pre></div>
+</div>
+</section>
+</section>
+<section id="a-use-workflow-class-in-python-code">
+<h2>A. Use Workflow Class in Python Code<a class="headerlink" href="#a-use-workflow-class-in-python-code" title="Permalink to this heading"></a></h2>
+<p>In Python, we can instantiate an instance of the Workflow class to
+create a new Workflow. We supply an arbitrary filename for the workflow and
+specify that we are not loading a preexisting one, but creating a new one.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cloudmesh.cc.workflow</span> <span class="kn">import</span> <span class="n">Workflow</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow-example&#39;</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Simply instantiating a workflow will create the necessary runtime
+directories located on your computer at
+<code class="docutils literal notranslate"><span class="pre">~/.cloudmesh/workflow/workflow-example</span></code>. Within this directory is a <code class="docutils literal notranslate"><span class="pre">runtime</span></code>
+directory, where all the scripts of the workflow must be placed. Compatible
+script types include shell scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, Python scripts <code class="docutils literal notranslate"><span class="pre">.py</span></code>, Jupyter
+notebooks <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>, and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code> (<code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code>
+directives are required in the Slurm script).</p>
+<p>We can utilize some scripts that are already available in the repository for
+our workflow-example. We will now use cloudmesh Shell for path expansion and
+for copying the scripts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Shell</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">cloudmesh_cc_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+    <span class="s1">&#39;~/cm/cloudmesh-cc/tests/workflow-example/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+<span class="n">scripts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;start.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;fetch-data.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;compute.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;analyze.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;end.sh&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+    <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cloudmesh_cc_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">script</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lastly, we can enable the running of these scripts by adding jobs to the
+workflow object. We can also add dependencies to tell the workflow in which
+order to run the jobs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="se">\n</span><span class="s2">progress=</span><span class="si">{progress}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;analyze.sh,end.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;compute.sh,analyze.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fetch-data.sh,compute.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;start.sh,fetch-data.sh&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To test our workflow, we can run it in topological order with the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">run_topo</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The workflow will now run the jobs in a topological order and show the
+progress of the jobs in your web browser.</p>
+<p>To instead load a YAML file for the configuration of the workflow,
+use the <code class="docutils literal notranslate"><span class="pre">filename=</span></code> parameter of the instantiation of the workflow.
+The supplied parameter should be a filepath that points to the location
+of the YAML, and <code class="docutils literal notranslate"><span class="pre">load=</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>The following is the workflow-example configuration in YAML format.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    start.sh:
+       name: start.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: start.sh
+    fetch-data.sh:
+       name: fetch-data.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: fetch-data.sh
+   compute.sh:
+       name: compute.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: compute.sh
+   analyze.sh:
+       name: analyze.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: analyze.sh
+   end.sh:
+       name: end.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: end.sh
+  dependencies:
+    - start.sh,fetch-data.sh,compute.sh,analyze.sh,end.sh
+</pre></div>
+</div>
+<p>The different options for kind include local, ssh, slurm, and wsl.
+The filetype, e.g. <code class="docutils literal notranslate"><span class="pre">.sh</span></code> or <code class="docutils literal notranslate"><span class="pre">.py</span></code>, is automatically inferred from the
+script.</p>
+</section>
+<section id="b-use-browser-gui-through-local-fastapi-web-server">
+<h2>B. Use Browser GUI Through Local FastAPI Web Server<a class="headerlink" href="#b-use-browser-gui-through-local-fastapi-web-server" title="Permalink to this heading"></a></h2>
+<p>The web server provides a more customizable, easy-to-use interface
+for the Workflow class. To start the web server, issue commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
+cms cc start
+</pre></div>
+</div>
+<p>Then, in a web browser, open the link http://127.0.0.1:8000/</p>
+<p>The browser provides an interface to view preexisting workflows
+in both a DataTable format and as a graph format. Both views will
+update automatically, in a live fashion, as the workflows are run,
+reporting live job status and progress.</p>
+<p>For a quick and easy example of leveraging this GUI interface,
+click on the Example tab in the left-hand sidebar. Then, a
+workflow-example will appear underneath Workflows. Click on the
+workflow-example and run the workflow by clicking the green Run
+button in the top-right. As the workflow runs, the user is able
+to click on the Graph button and back to the Table button, as
+desired, to view the workflow’s progression.</p>
+</section>
+<section id="details-about-workflow-class">
+<h2>Details about Workflow Class<a class="headerlink" href="#details-about-workflow-class" title="Permalink to this heading"></a></h2>
+<p>The scripts must leverage some format of cloudmesh.progress
+to run successfully. Otherwise, the Workflow class cannot tell
+if the scripts are done, breaking the functionality.</p>
+<section id="shell-and-slurm-scripts">
+<h3>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h3>
+<p>For shell and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, the script must contain:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# cloudmesh status=running progress=1 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>at the beginning of the script, and</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# cloudmesh status=done progress=100 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>at the end of the script.</p>
+</section>
+<section id="python-scripts-and-jupyter-notebooks">
+<h3>Python Scripts and Jupyter Notebooks<a class="headerlink" href="#python-scripts-and-jupyter-notebooks" title="Permalink to this heading"></a></h3>
+<p>For Python scripts <code class="docutils literal notranslate"><span class="pre">.py</span></code> and Jupyter notebooks <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>,
+the script must contain an import module from
+cloudmesh.common and calls to the progress function.</p>
+<p>py_script.py</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from cloudmesh.common.StopWatch import progress
+from cloudmesh.common.Shell import Shell
+<span class="nv">filename</span> <span class="o">=</span> Shell.map_filename<span class="o">(</span><span class="s1">&#39;./py_script.log&#39;</span><span class="o">)</span>.path
+progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">1</span>, <span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
+
+<span class="c1"># your script does what you want it to do here...</span>
+
+progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">100</span>, <span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
+</pre></div>
+</div>
+<p>The statements do not need to be at the absolute beginning
+or end of the script, but the progress must:</p>
+<ul class="simple">
+<li><p>be written to a filename with the same name as the script</p></li>
+<li><p>begin at progress=1</p></li>
+<li><p>and end at progress=100</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Cloudmesh Compute Cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="readme.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

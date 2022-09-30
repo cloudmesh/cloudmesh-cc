@@ -11,6 +11,7 @@ cloudmesh.cc.job.ssh.Job module
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
 
 cloudmesh.cc.job.ssh.Queue module
 ---------------------------------
@@ -19,6 +20,7 @@ cloudmesh.cc.job.ssh.Queue module
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
 
 Module contents
 ---------------
@@ -27,3 +29,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:

@@ -6,32 +6,30 @@
 Cloudmesh Compute Cluster
 =========================
 
-.. toctree::
-   :maxdepth: 2
-
-   man_cc
-
-.. toctree::
-   :maxdepth: 2
-
-   readme
+The Cloudmesh Compute Cluster repository
+enables the running of workflows, which
+are compilations of jobs that can be run
+locally or remotely. The workflows can
+then be analyzed through benchmarks and
+live status updates.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Documentation
 
-   manual
-   mnist
-
-Broken
-======
+   ultimate_documentation
+   readme
+   quickstart
+   man_cc
+   api
+   openapi
+   acknowledgements
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: Examples
 
-   modules
-   api
-   py-modindex
-
+   mnist
 
 
 Indices and tables

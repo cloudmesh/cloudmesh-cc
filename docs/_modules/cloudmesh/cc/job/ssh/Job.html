@@ -1,47 +1,81 @@
-
 <!DOCTYPE html>
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cloudmesh.cc.job.ssh.Job &#8212; cloudmesh-cc 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/readthedocs-custom.css" />
-    
-    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-    <script src="../../../../../_static/jquery.js"></script>
-    <script src="../../../../../_static/underscore.js"></script>
-    <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../../../_static/doctools.js"></script>
-    <script src="../../../../../_static/sphinx_highlight.js"></script>
-    
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cloudmesh.cc.job.ssh.Job &mdash; cloudmesh-cc 4.3.6 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../job.html" accesskey="U">cloudmesh.cc.job</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.job.ssh.Job</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../man_cc.html">Command cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../acknowledgements.html">Acknowledgments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../mnist.html">MNIST Workflows</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../job.html">cloudmesh.cc.job</a> &raquo;</li>
+      <li>cloudmesh.cc.job.ssh.Job</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <h1>Source code for cloudmesh.cc.job.ssh.Job</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
@@ -116,6 +150,7 @@
 <span class="sd">        Uses the inputted name of script to return the</span>
 <span class="sd">        corresponding file extension that is run, such as</span>
 <span class="sd">        shell script, jupyter notebook, or python file</span>
+
 <span class="sd">        :param name: the name of the script</span>
 <span class="sd">        :type name: str</span>
 <span class="sd">        :return: file extension of script</span>
@@ -133,6 +168,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        returns pertinent information of job in string format,</span>
 <span class="sd">        including host, username, name of job, and other characteristics</span>
+
 <span class="sd">        :return: description and specifications of job in string format</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -155,6 +191,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        exactly the same as get_status but duplicated to provide as</span>
 <span class="sd">        a shortened-named, alternative call</span>
+
 <span class="sd">        :return: the status of job</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -165,6 +202,7 @@
 <span class="sd">        creates remote experiment directory to contain job files such as</span>
 <span class="sd">        yaml file, log file, and pertinent script to be run</span>
 <span class="sd">        like sh script or ipynb or py</span>
+
 <span class="sd">        :return: does not return anything</span>
 <span class="sd">        :rtype: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -176,6 +214,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        runs the job by making script executable and running the</span>
 <span class="sd">        job remotely.</span>
+
 <span class="sd">        :returns:</span>
 <span class="sd">            - state - undefined, running, or done</span>
 <span class="sd">            - log - the output of the job</span>
@@ -242,6 +281,7 @@
 <div class="viewcode-block" id="Job.clear"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        clears all leftover log files from past runs</span>
+
 <span class="sd">        :return: does not return anything</span>
 <span class="sd">        :rtype: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -257,6 +297,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        fetches the log file of the job and returns the status of</span>
 <span class="sd">        the job, which can be undefined, running, or done</span>
+
 <span class="sd">        :param refresh: whether to copy the log file in case of changes</span>
 <span class="sd">        :type refresh: bool</span>
 <span class="sd">        :return: returns status, which is the progress of the job</span>
@@ -278,6 +319,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        fetches the log file of the job and reads the log file to check</span>
 <span class="sd">        for the current completeness of the job</span>
+
 <span class="sd">        :param refresh: whether to copy the log file in case of changes</span>
 <span class="sd">        :type refresh: bool</span>
 <span class="sd">        :return: value from 0 to 100 which reflects completeness of job</span>
@@ -303,6 +345,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        copy the remote log file and read the contents of the file to</span>
 <span class="sd">        return the contents as a string</span>
+
 <span class="sd">        :return: the contents of the log file in string format</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -323,6 +366,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        makes experiment dir and changes permissions, and then</span>
 <span class="sd">        copies the shell script to remote host</span>
+
 <span class="sd">        :return: 0 or 1 depending on success of command</span>
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -339,6 +383,7 @@
 <span class="sd">        changes the permissions and flags of the script to be</span>
 <span class="sd">        run (shell or py file, ipynb not yet supported) so that</span>
 <span class="sd">        the system can successfully execute the script</span>
+
 <span class="sd">        :return: 0 or 1 depending on success of command</span>
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -351,6 +396,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        used to check if the file is existing within the remote experiment</span>
 <span class="sd">        directory</span>
+
 <span class="sd">        :param filename: the name of the script, including file extension</span>
 <span class="sd">        :type filename: str</span>
 <span class="sd">        :return: True if the file exists and False if it doesnt</span>
@@ -368,7 +414,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        waits and watches for progress to reach 100, on interval basis</span>
 <span class="sd">        specified in the period in seconds,</span>
-<span class="sd">        till the job has completed</span>
+<span class="sd">        until the job has completed</span>
+
 <span class="sd">        :param period: time in seconds to check, as an interval</span>
 <span class="sd">        :type period: float</span>
 <span class="sd">        :return: does not return anything</span>
@@ -385,6 +432,7 @@
 <div class="viewcode-block" id="Job.get_pid"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.get_pid">[docs]</a>    <span class="k">def</span> <span class="nf">get_pid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        get the pid that the job is running within</span>
+
 <span class="sd">        :param refresh: whether to retrieve the latest log</span>
 <span class="sd">        :type refresh: bool</span>
 <span class="sd">        :return: the pid (process identifier)</span>
@@ -404,6 +452,7 @@
 <div class="viewcode-block" id="Job.kill"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.kill">[docs]</a>    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        kills the job</span>
+
 <span class="sd">        :param period: interval to use for waiting for log/pid</span>
 <span class="sd">        :type period: float</span>
 <span class="sd">        :returns:</span>
@@ -457,6 +506,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a template</span>
 <span class="sd">        for the script</span>
+
 <span class="sd">        :param exec: command to be executed</span>
 <span class="sd">        :type exec: str</span>
 <span class="sd">        :return: name of script</span>
@@ -488,44 +538,31 @@
 
 </pre></div>
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../../index.html">cloudmesh-cc 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../job.html" >cloudmesh.cc.job</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">cloudmesh.cc.job.ssh.Job</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Gregor von Laszewski.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

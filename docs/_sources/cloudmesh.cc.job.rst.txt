@@ -23,6 +23,7 @@ cloudmesh.cc.job.AbstractJob module
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
 
 Module contents
 ---------------
@@ -31,3 +32,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :noindex:
