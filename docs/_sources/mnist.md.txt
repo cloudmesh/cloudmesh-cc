@@ -28,7 +28,7 @@ pytest -v -x --capture=no examples/example_run_mnist_workflow_exec.py
 
 This program uses SLURM and a shell script to
 iterate through the available GPUs on Rivanna,
-which are V100, A100, K80, and P100.
+which are V100, A100, K80, P100, and RTX2080.
 
 On a successful run, the output will be similar to
 the following:
