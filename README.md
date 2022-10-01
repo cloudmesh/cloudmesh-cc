@@ -112,7 +112,7 @@ computers, remote jobs using ssh, and a batch JObs using Slurm.
 
 
 
-In addition, we leveraged the exiting Networkx Graph framework to
+In addition, we leveraged the existing Networkx Graph framework to
 allow dependencies between jobs. This greatly reduced the complexity
 of the implementation while being able to leverage graphical displays
 of the workflow, as well as using scheduling jobs with for example
