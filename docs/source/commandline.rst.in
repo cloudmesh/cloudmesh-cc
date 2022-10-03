@@ -4,9 +4,3 @@ Command Line Interface
 The user can manage workflows from the command line.
 The following is a manual page that lists all the
 available commands and their corresponding options.
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Manual Page
-
-   man_cc
