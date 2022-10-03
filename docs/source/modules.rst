@@ -3,8 +3,10 @@ Modules Reference
 
 .. rubric:: Modules
 
-.. autosummary::
-   :toctree:
+.. automodule::
+   :toctree: generated
+   :members:
    :recursive:
+   :noindex:
 
    cloudmesh.cc

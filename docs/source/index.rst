@@ -31,7 +31,8 @@ live status updates.
    :caption: API
 
    cloudmesh
-   prgapi
+   api
+   modules
    openapi
 
 
