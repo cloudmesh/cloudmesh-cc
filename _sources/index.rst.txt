@@ -15,7 +15,34 @@ live status updates.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Documentation
+   :caption: Getting Started
+
+   introduction
+   installation
+   quickstart
+
+.. toctree::
+   :maxdepth: 1
+   :caption: User Guide
+
+   comamndline
+   rest
+   rest-gui
+   python
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Examples
+
+    mnist
+    cloudmask
+    earthquake
+
+* API Reference
+
+* Contributors Guide
+
+
 
    ultimate_documentation
    readme
