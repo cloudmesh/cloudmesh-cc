@@ -63,6 +63,10 @@ clean:
 	find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 	rm -rf .tox
 	rm -f *.whl
+	rm -rf docs/source/generated
+	rm -rf docs/source/cloudmesh.cc.*.rst
+	rm -rf docs/source/cloudmesh.cc.rst
+	rm -rf docs/source/cloudmesh.rst
 
 clear:
 	rm -rf ~/experiment
