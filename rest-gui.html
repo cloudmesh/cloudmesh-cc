@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REST-GUI &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>REST GUI Web Browser Interface &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -54,7 +54,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="man_cc.html">Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rest.html">REST</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">REST-GUI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST GUI Web Browser Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -76,9 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>REST-GUI</li>
+      <li>REST GUI Web Browser Interface</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/rest-gui.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/rest-gui.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -86,8 +86,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rest-gui">
-<h1>REST-GUI<a class="headerlink" href="#rest-gui" title="Permalink to this heading"></a></h1>
+  <section id="rest-gui-web-browser-interface">
+<h1>REST GUI Web Browser Interface<a class="headerlink" href="#rest-gui-web-browser-interface" title="Permalink to this heading"></a></h1>
+<p>The web server provides a more customizable, easy-to-use interface
+for the Workflow class. To start the web server, issue commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
+cms cc start
+</pre></div>
+</div>
+<p>Then, in a web browser, open the link http://127.0.0.1:8000/</p>
+<p>The browser provides an interface to view preexisting workflows
+in both a DataTable format and as a graph format. Both views will
+update automatically, in a live fashion, as the workflows are run,
+reporting live job status and progress.</p>
+<p>For a quick and easy example of leveraging this GUI interface,
+click on the Example tab in the left-hand sidebar. Then, a
+workflow-example will appear underneath Workflows. Click on the
+workflow-example and run the workflow by clicking the green Run
+button in the top-right. As the workflow runs, the user is able
+to click on the Graph button and back to the Table button, as
+desired, to view the workflow’s progression.</p>
 </section>
 
 
