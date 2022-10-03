@@ -5,7 +5,6 @@ Cloudmesh cc
    :toctree: generated
 
    cloudmesh.cc
-   manual/cc
 
 .. rubric:: Modules
 

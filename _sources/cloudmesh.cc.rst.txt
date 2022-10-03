@@ -22,7 +22,6 @@ cloudmesh.cc.hostdata module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
 
 cloudmesh.cc.labelmaker module
 ------------------------------
@@ -31,7 +30,6 @@ cloudmesh.cc.labelmaker module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
 
 cloudmesh.cc.manager module
 ---------------------------
@@ -40,7 +38,6 @@ cloudmesh.cc.manager module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
 
 cloudmesh.cc.queue module
 -------------------------
@@ -49,7 +46,6 @@ cloudmesh.cc.queue module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
 
 cloudmesh.cc.workflow module
 ----------------------------
@@ -58,22 +54,11 @@ cloudmesh.cc.workflow module
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
-   :private-members:
-   :special-members:
 
-cloudmesh.cc.workflow.Workflow module
--------------------------------------
+cloudmesh.cc.workflowrest module
+--------------------------------
 
-.. automodule:: cloudmesh.cc.workflow.Workflow
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.workflow.Graph module
-----------------------------------
-
-.. automodule:: cloudmesh.cc.workflow.Graph
+.. automodule:: cloudmesh.cc.workflowrest
    :members:
    :undoc-members:
    :show-inheritance:
@@ -85,4 +70,3 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:

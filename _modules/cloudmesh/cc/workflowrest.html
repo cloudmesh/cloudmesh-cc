@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cloudmesh.cc.workflowrest &mdash; cloudmesh-cc 4.3.7 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">What Is Cloudmesh cc?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../abstract.html">Extended Abstract</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual/cc.html">Command cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rest.html">REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rest-gui.html">REST GUI Web Browser Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python.html">Python Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../prgapi.html">Cloudmesh cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../openapi.html">OpenAPI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mnist.html">MNIST Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cloudmask.html">Cloudmask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../earthquake.html">Earthquake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributors Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>cloudmesh.cc.workflowrest</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cloudmesh.cc.workflowrest</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+
+<div class="viewcode-block" id="RESTWorkflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow">[docs]</a><span class="k">class</span> <span class="nc">RESTWorkflow</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000&quot;</span>
+
+    <span class="c1"># @app.get(&quot;/workflows&quot;)</span>
+<div class="viewcode-block" id="RESTWorkflow.list_workflows"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.list_workflows">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This command returns a list of workflows that is found within the server.</span>
+
+<span class="sd">        You can invoke this function also with a curl command:</span>
+
+<span class="sd">        curl -X &#39;GET&#39; &#39;http://127.0.0.1:8000/workflows&#39; -H &#39;accept: application/json&#39;</span>
+
+<span class="sd">        :return: list of workflow names</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">/workflows&quot;</span><span class="p">)</span> <span class="c1"># return as json string</span>
+        <span class="k">return</span> <span class="n">content</span>  <span class="c1"># likely a dict</span></div>
+
+<div class="viewcode-block" id="RESTWorkflow.add_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.add_job">[docs]</a>    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This command adds a job to a workflow that is specified in the</span>
+<span class="sd">        provided workflow_name string.</span>
+
+<span class="sd">        :return: all jobs within workflow</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jobname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;jobname&#39;</span><span class="p">]</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;http://127.0.0.1:8000/add-job/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">?job=</span><span class="si">{</span><span class="n">jobname</span><span class="si">}</span><span class="s1">&amp;user=</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1">&amp;host=</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s1">&amp;kind=</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;status&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;status=</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;script&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">script</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;script&#39;</span><span class="p">]</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;script=</span><span class="si">{</span><span class="n">script</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="s1">&#39;exec&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">exec</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;exec&#39;</span><span class="p">]</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;exec=</span><span class="si">{</span><span class="n">exec</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;progress&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;progress=</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;label&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&amp;label=</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">my_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">jobname</span><span class="p">,</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
+            <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="n">kind</span><span class="p">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+            <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="n">script</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="c1"># curl -X &#39;POST&#39; &#39;http://127.0.0.1:8000/workflow/workflow?job=c&amp;user=gregor&amp;host=localhost&amp;kind=local&amp;status=ready&amp;script=c.sh&#39; -H &#39;accept: application/json&#39;/</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     r = os.system(f&#39;&#39;&#39;curl -X &#39;POST&#39; {url} -H &#39;accept: application/json&#39;/&#39;&#39;&#39;)</span>
+        <span class="c1"># except Exception as e:</span>
+        <span class="c1">#     print(e.output)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">content</span></div>
+
+<div class="viewcode-block" id="RESTWorkflow.upload_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">upload_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/upload&#39;</span>
+        <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?directory=</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">archive</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?archive=</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">yaml</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?yaml=</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="c1">#files = {&#39;file&#39;: open(file_path, &#39;rb&#39;)}</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+
+<div class="viewcode-block" id="RESTWorkflow.get_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param workflow_name:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://127.0.0.1:8000/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">job_name</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?job=</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="RESTWorkflow.run_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.run_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;topo&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://127.0.0.1:8000/run/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">?type=</span><span class="si">{</span><span class="n">run_type</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="RESTWorkflow.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://127.0.0.1:8000/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">job_name</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?job=</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">class Workflow:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Workflow documentation</span>
+
+<span class="sd">    w = Workflow(filename=&quot;workflow.yaml&quot;)</span>
+<span class="sd">    w.load(filename=&quot;abc.yaml&quot;) &lt;- loads in the graph, but will save it still to workflow.yaml</span>
+<span class="sd">    w.add(filename=&quot;add.yaml&quot;) &lt;-adds a new workflow into the existing one.</span>
+<span class="sd">    w.add_job(name=&quot;a&quot;,</span>
+<span class="sd">                command=&quot;hostname&quot;,</span>
+<span class="sd">                user=None, # bug if kind is local and user is None, we do not need user, but can take local user</span>
+<span class="sd">                host=None, # bug:  if host is none and kind is local use localhost</span>
+<span class="sd">                label=&quot;a&quot;,</span>
+<span class="sd">                kind=&quot;local&quot;,</span>
+<span class="sd">                status=&quot;ready&quot;,</span>
+<span class="sd">                progress=0)</span>
+<span class="sd">    w.add_job(name=&quot;b&quot;, command=&quot;ls&quot;)</span>
+<span class="sd">    w.add_job(name=&quot;c&quot;, command=&quot;pwd&quot;)</span>
+<span class="sd">    w.add_job(name=&quot;d&quot;, command=&quot;uname -a&quot;)</span>
+<span class="sd">    w.add_dependencies(dependency=&quot;a,b,d&quot;)</span>
+<span class="sd">    w.add_dependencies(dependency=&quot;a,c,d&quot;)</span>
+
+<span class="sd">    w.run()</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    def __init__(self, name=None, filename=None, user=None, host=None, load=True):</span>
+<span class="sd">        # name, label, user, host, status, progress, command</span>
+<span class="sd">        # if filename exists, load filename</span>
+<span class="sd">        # if graph is not None, overwrite the graph potentially read from filename</span>
+<span class="sd">        # gvl reimplemented but did not test</span>
+<span class="sd">        # The workflow is run in experiment/workflow</span>
+
+<span class="sd">        #</span>
+<span class="sd">        # name may not be defined properly</span>
+<span class="sd">        #</span>
+<span class="sd">        raise NotImplementedError</span>
+
+<span class="sd">    def __str__(self):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #return str(self.graph)</span>
+
+<span class="sd">    @property</span>
+<span class="sd">    def jobs(self):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # return self.graph.nodes  # [name]</span>
+
+<span class="sd">    def __getitem__(self, name):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # return self.jobs[name]</span>
+
+<span class="sd">    def job(self, name):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # return self.jobs[name]</span>
+
+<span class="sd">    @property</span>
+<span class="sd">    def dependencies(self):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #</span>
+<span class="sd">        # gvl implemented but not tested</span>
+<span class="sd">        # return self.graph.edges  # [name]</span>
+
+<span class="sd">    def predecessor(self, name):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #</span>
+<span class="sd">        # GVL reimplemented but not tested</span>
+<span class="sd">        # predecessors = []</span>
+<span class="sd">        # edges = self.dependencies</span>
+<span class="sd">        #</span>
+<span class="sd">        # for _name, edge in edges.items():</span>
+<span class="sd">        #     if edge[&quot;destination&quot;] == name:</span>
+<span class="sd">        #         predecessors.append(edge[&quot;source&quot;])</span>
+<span class="sd">        # return predecessors</span>
+
+<span class="sd">    def get_predecessors(self, name):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # &quot;&quot;&quot;</span>
+<span class="sd">        # figure out all of the dependencies of the name node</span>
+<span class="sd">        # then test if each node in front (parent) has progress of 100</span>
+<span class="sd">        # if the parent has progress 100, remove those nodes</span>
+<span class="sd">        # :return:</span>
+<span class="sd">        # &quot;&quot;&quot;</span>
+<span class="sd">        # parents = []</span>
+<span class="sd">        # candidates = self.predecessors(name)</span>
+<span class="sd">        # print(candidates)</span>
+<span class="sd">        # for candidate in candidates:</span>
+<span class="sd">        #     if candidate[&#39;progress&#39;] != 100:</span>
+<span class="sd">        #         parents.append(candidate)</span>
+<span class="sd">        #</span>
+<span class="sd">        # if parents == []:</span>
+<span class="sd">        #     return None</span>
+<span class="sd">        # else:</span>
+<span class="sd">        #     return parents</span>
+
+<span class="sd">    def save_with_state(self, filename, stdout=False):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # print(self.graph)</span>
+<span class="sd">        # data = {}</span>
+<span class="sd">        # data[&#39;workflow&#39;] = {</span>
+<span class="sd">        #     &quot;nodes&quot;: dict(self.graph.nodes),</span>
+<span class="sd">        #     &quot;dependencies&quot;: dict(self.graph.edges),</span>
+<span class="sd">        # }</span>
+<span class="sd">        # if self.graph.colors:</span>
+<span class="sd">        #     data[&quot;colors&quot;] = dict(self.graph.colors)</span>
+<span class="sd">        #</span>
+<span class="sd">        # d = str(yaml.dump(data, indent=2))</span>
+<span class="sd">        # writefile(filename, d)</span>
+<span class="sd">        # if stdout:</span>
+<span class="sd">        #     return d</span>
+
+<span class="sd">    def load_with_state(self, filename):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # s = readfile(filename)</span>
+<span class="sd">        # data = yaml.safe_load(s)</span>
+<span class="sd">        # if &quot;nodes&quot; in data[&#39;workflow&#39;]:</span>
+<span class="sd">        #     self.graph.nodes = data[&#39;workflow&#39;][&#39;nodes&#39;]</span>
+<span class="sd">        # if &quot;dependencies&quot; in data[&#39;workflow&#39;]:</span>
+<span class="sd">        #     self.graph.edges = data[&#39;workflow&#39;][&#39;dependencies&#39;]</span>
+<span class="sd">        # if &quot;colors&quot; in data:</span>
+<span class="sd">        #     self.graph.colors = data[&#39;colors&#39;]</span>
+
+<span class="sd">    def load(self, filename, clear=True):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        Loads a workflow graph from file. However the file is still stored in</span>
+<span class="sd">        the filename that was used when the Workflow was created. This allows to</span>
+<span class="sd">        load in a saved workflow in another file, but continue working on it in</span>
+<span class="sd">        the file used in init</span>
+
+<span class="sd">        :param filename:</span>
+<span class="sd">        :type filename:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        # self.graph.load(...)</span>
+<span class="sd">        &quot;&quot;&quot; </span>
+<span class="sd">        workflow:</span>
+<span class="sd">          nodes:</span>
+<span class="sd">            a:</span>
+<span class="sd">               name: a</span>
+<span class="sd">               user: gregor</span>
+<span class="sd">               host: localhost</span>
+<span class="sd">               kind: local</span>
+<span class="sd">               status: ready</span>
+<span class="sd">               label: job-1-label</span>
+<span class="sd">               script: test-a.sh</span>
+<span class="sd">            b:</span>
+<span class="sd">               name: b</span>
+<span class="sd">               user: gregor</span>
+<span class="sd">               host: localhost</span>
+<span class="sd">               kind: local</span>
+<span class="sd">               status: ready</span>
+<span class="sd">               label: job-2-label</span>
+<span class="sd">               script: test-a.sh</span>
+<span class="sd">          dependencies:</span>
+<span class="sd">            - a,b</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # self.graph = Graph()</span>
+<span class="sd">        # # if not clear:</span>
+<span class="sd">        # self.graph.load(filename=filename)</span>
+<span class="sd">        #</span>
+<span class="sd">        # # with open(filename, &#39;r&#39;) as stream:</span>
+<span class="sd">        # #     graph = yaml.safe_load(stream)</span>
+<span class="sd">        # #</span>
+<span class="sd">        # # dependencies = graph[&quot;workflow&quot;]</span>
+<span class="sd">        # #nodes = graph[&quot;workflow&quot;][&quot;nodes&quot;].items()</span>
+<span class="sd">        # #</span>
+<span class="sd">        # # # for name, node in graph[&quot;workflow&quot;][&quot;nodes&quot;].items():</span>
+<span class="sd">        # for name, node in self.graph.nodes.items():</span>
+<span class="sd">        #      if &quot;name&quot; not in node:</span>
+<span class="sd">        #          node[&quot;name&quot;] = name</span>
+<span class="sd">        #      self.add_job(**node)</span>
+<span class="sd">        # #</span>
+<span class="sd">        # # for edge in dependencies:</span>
+<span class="sd">        # #     self.add_dependencies(edge)</span>
+<span class="sd">        #</span>
+<span class="sd">        #</span>
+<span class="sd">        # # expand script and exec and save shell scripts</span>
+<span class="sd">        # for name, node in self.graph.nodes.items():</span>
+<span class="sd">        #     if node[&#39;exec&#39;] is None and node[&#39;script&#39;] is not None:</span>
+<span class="sd">        #         del node[&#39;exec&#39;]</span>
+<span class="sd">        #     if &quot;exec&quot; in node and node[&quot;kind&quot;] == &quot;local&quot;:</span>
+<span class="sd">        #         from cloudmesh.cc.job.localhost.Job import Job</span>
+<span class="sd">        #         print (&quot;NNNN&quot;, node)</span>
+<span class="sd">        #         if &quot;script&quot; not in node:</span>
+<span class="sd">        #             node[&quot;script&quot;] = f&quot;{name}.sh&quot;</span>
+<span class="sd">        #         pprint (node)</span>
+<span class="sd">        #         job = Job.create(filename=node[&#39;script&#39;], exec=node[&quot;exec&quot;])</span>
+<span class="sd">        #         print (job)</span>
+
+<span class="sd">    def save(self, filename):</span>
+<span class="sd">        rasie NotImplementedError</span>
+<span class="sd">        # if os_is_windows():</span>
+<span class="sd">        #     name = os.path.basename(filename).replace(r&quot;.yaml&quot;, &quot;&quot;)</span>
+<span class="sd">        #     dir = Shell.map_filename(fr&quot;~/.cloudmesh/workflow/{name}/{name}.yaml&quot;).path</span>
+<span class="sd">        #     self.graph.save_to_file(dir)</span>
+<span class="sd">        # self.graph.save_to_file(filename)</span>
+
+<span class="sd">    def add_job(self,</span>
+<span class="sd">                name=None,</span>
+<span class="sd">                user=None,</span>
+<span class="sd">                host=None,</span>
+<span class="sd">                label=None,</span>
+<span class="sd">                kind=&quot;local&quot;,</span>
+<span class="sd">                status=&quot;ready&quot;,</span>
+<span class="sd">                progress=0,</span>
+<span class="sd">                script=None,</span>
+<span class="sd">                exec=None,</span>
+<span class="sd">                pid=None,</span>
+<span class="sd">                **kwargs</span>
+<span class="sd">                ):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #</span>
+<span class="sd">        # label = label or name</span>
+<span class="sd">        # user = user or self.user or Shell.user()</span>
+<span class="sd">        # host = host or self.host or Shell.host()</span>
+<span class="sd">        #</span>
+<span class="sd">        # if script is None:</span>
+<span class="sd">        #     script = f&quot;{name}.sh&quot;</span>
+<span class="sd">        #</span>
+<span class="sd">        # now = str(DateTime.now())</span>
+<span class="sd">        # self.graph.add_node(</span>
+<span class="sd">        #     name=name,</span>
+<span class="sd">        #     label=label,</span>
+<span class="sd">        #     kind=kind,</span>
+<span class="sd">        #     user=user,</span>
+<span class="sd">        #     host=host,</span>
+<span class="sd">        #     status=status,</span>
+<span class="sd">        #     progress=progress,</span>
+<span class="sd">        #     created=now,</span>
+<span class="sd">        #     modified=now,</span>
+<span class="sd">        #     script=script,</span>
+<span class="sd">        #     exec=exec,</span>
+<span class="sd">        #     instance=None</span>
+<span class="sd">        # )</span>
+<span class="sd">        # self.save(self.filename)</span>
+
+
+
+<span class="sd">    def add_dependency(self, source, destination):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #    self.graph.add_dependency(source, destination)</span>
+
+<span class="sd">    def add_dependencies(self, dependency):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # self.graph.add_dependencies(dependency=dependency)</span>
+
+<span class="sd">    def update_status(self, name, status):</span>
+<span class="sd">        raise NotImplementedError #</span>
+<span class="sd">        # self.graph[name][&quot;status&quot;] = status</span>
+
+<span class="sd">    def set_progress(self, name, percent):</span>
+<span class="sd">        raise NotImplementedError #</span>
+<span class="sd">        # self.graph[name][&quot;progress&quot;] = percent</span>
+
+<span class="sd">    def update_progress(self, name):</span>
+<span class="sd">        # fetches log file and looks for progress event TBD</span>
+<span class="sd">        # once progress is fetched set it for the named job</span>
+<span class="sd">        raise NotImplementedError</span>
+
+<span class="sd">    def run_parallel(self,</span>
+<span class="sd">                     directory=&quot;~/experiment&quot;,</span>
+<span class="sd">                     order=None,</span>
+<span class="sd">                     parallel=False,</span>
+<span class="sd">                     dryrun=False,</span>
+<span class="sd">                     show=True,</span>
+<span class="sd">                     period=0.5,</span>
+<span class="sd">                     filename=None):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        #</span>
+<span class="sd">        # finished = False</span>
+<span class="sd">        #</span>
+<span class="sd">        # undefined = []</span>
+<span class="sd">        # completed = []  # list of completed nodes</span>
+<span class="sd">        # running = []  # list of runiing nodes</span>
+<span class="sd">        # outstanding = list(self.jobs)  # list of outstanding nodes</span>
+<span class="sd">        # failed = []  # list of failed nodes</span>
+<span class="sd">        #</span>
+<span class="sd">        # def info():</span>
+<span class="sd">        #     print(&quot;Undefined:   &quot;, undefined)</span>
+<span class="sd">        #     print(&quot;Completed:   &quot;, completed)</span>
+<span class="sd">        #     print(&quot;Running:     &quot;, running)</span>
+<span class="sd">        #     print(&quot;Outstanding: &quot;, outstanding)</span>
+<span class="sd">        #     print(&quot;Failed:      &quot;, failed)</span>
+<span class="sd">        #     print()</span>
+<span class="sd">        #     print(&quot;Todo:       &quot;, self.graph.todo())</span>
+<span class="sd">        #     print(&quot;Dependencies:&quot;, len(self.graph.edges))</span>
+<span class="sd">        #</span>
+<span class="sd">        # def update(name):</span>
+<span class="sd">        #     banner(f&quot;update {name}&quot;)</span>
+<span class="sd">        #     log = self.jobs[name][&quot;instance&quot;].get_log()</span>
+<span class="sd">        #     status = self.jobs[name][&quot;instance&quot;].get_status()</span>
+<span class="sd">        #     progress = self.jobs[name][&quot;instance&quot;].get_progress()</span>
+<span class="sd">        #     self.jobs[name][&#39;status&#39;] = status</span>
+<span class="sd">        #     self.jobs[name][&#39;progress&#39;] = progress</span>
+<span class="sd">        #</span>
+<span class="sd">        #     # print(&quot;Job data&quot;, name, status, progress)</span>
+<span class="sd">        #</span>
+<span class="sd">        #</span>
+<span class="sd">        #     if progress == 100:</span>
+<span class="sd">        #         self.graph.done(name)</span>
+<span class="sd">        #         if name in running:</span>
+<span class="sd">        #             running.remove(name)</span>
+<span class="sd">        #         if name not in completed:</span>
+<span class="sd">        #             completed.append(name)</span>
+<span class="sd">        #         if name in undefined:</span>
+<span class="sd">        #             undefined.remove(name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     elif status == &quot;undefined&quot;:</span>
+<span class="sd">        #         if name in running:</span>
+<span class="sd">        #             running.remove(name)</span>
+<span class="sd">        #         if name not in completed:</span>
+<span class="sd">        #             completed.append(name)</span>
+<span class="sd">        #         if name not in undefined and name not in outstanding:</span>
+<span class="sd">        #             undefined.append(name)</span>
+<span class="sd">        #     # elif status == &#39;running&#39;:</span>
+<span class="sd">        #     #    ready.remove(name)</span>
+<span class="sd">        #</span>
+
+
+
+<span class="sd">        def start(name):</span>
+<span class="sd">            raise NotImplementedError</span>
+<span class="sd">        #</span>
+<span class="sd">        #     banner(name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     job = self.job(name=name)</span>
+<span class="sd">        #     wf_name = os.path.basename(filename).split(&quot;.&quot;)[0]</span>
+<span class="sd">        #     experiment_directory = f&#39;~/experiment/{wf_name}/{name}&#39;</span>
+<span class="sd">        #     job[&#39;directory&#39;] = experiment_directory</span>
+<span class="sd">        #     if not dryrun and job[&quot;status&quot;] in [&quot;ready&quot;]:</span>
+<span class="sd">        #         local = wsl = ssh = slurm = lsf = False</span>
+<span class="sd">        #         if job[&#39;kind&#39;] in [&quot;local&quot;]:</span>
+<span class="sd">        #             local = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.localhost.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&quot;wsl&quot;]:</span>
+<span class="sd">        #             wsl = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.wsl.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;ssh&#39;]:</span>
+<span class="sd">        #             ssh = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.ssh.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;slurm&#39;]:</span>
+<span class="sd">        #             slurm = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.slurm.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;lsf&#39;]:</span>
+<span class="sd">        #             lsf = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.lsf.Job import Job</span>
+<span class="sd">        #         else:</span>
+<span class="sd">        #             from cloudmesh.cc.job.localhost.Job import Job</span>
+<span class="sd">        #         job[&quot;status&quot;] = &quot;running&quot;</span>
+<span class="sd">        #         name = job[&#39;name&#39;]</span>
+<span class="sd">        #         host = job[&#39;host&#39;]</span>
+<span class="sd">        #         username = job[&#39;user&#39;]</span>
+<span class="sd">        #         label = name</span>
+<span class="sd">        #         if local or wsl:</span>
+<span class="sd">        #             job[&quot;instance&quot;] = Job(name=name,</span>
+<span class="sd">        #                                   host=host,</span>
+<span class="sd">        #                                   username=username,</span>
+<span class="sd">        #                                   label=label,</span>
+<span class="sd">        #                                   directory=experiment_directory)</span>
+<span class="sd">        #         if ssh or slurm:</span>
+<span class="sd">        #             job = Job(name=name,</span>
+<span class="sd">        #                       host=host,</span>
+<span class="sd">        #                       username=username,</span>
+<span class="sd">        #                       label=label,</span>
+<span class="sd">        #                       directory=experiment_directory)</span>
+<span class="sd">        #             job.sync()</span>
+<span class="sd">        #             job.run()</span>
+<span class="sd">        #         if local or wsl:</span>
+<span class="sd">        #             job[&quot;instance&quot;].sync()</span>
+<span class="sd">        #             job[&quot;instance&quot;].run()</span>
+<span class="sd">        #             print(str(job[&quot;instance&quot;]))</span>
+<span class="sd">        #             running.append(name)</span>
+<span class="sd">        #             outstanding.remove(name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #         # elif job[&#39;kind&#39;] in [&quot;local-slurm&quot;]:</span>
+<span class="sd">        #         #     raise NotImplementedError</span>
+<span class="sd">        #         # elif job[&#39;kind&#39;] in [&quot;remote-slurm&quot;]:</span>
+<span class="sd">        #         #     raise NotImplementedError</span>
+<span class="sd">        #     else:</span>
+<span class="sd">        #         # banner(f&quot;Job: {name}&quot;)</span>
+<span class="sd">        #         Console.msg(f&quot;running {name}&quot;)</span>
+<span class="sd">        #</span>
+<span class="sd">        # if os_is_windows():</span>
+<span class="sd">        #     Shell.mkdir(&quot;./tmp&quot;)</span>
+<span class="sd">        #     filename = filename or &quot;tmp/workflow.svg&quot;</span>
+<span class="sd">        # else:</span>
+<span class="sd">        #     filename = filename or &quot;/tmp/workflow.svg&quot;</span>
+<span class="sd">        #</span>
+<span class="sd">        # first = True</span>
+<span class="sd">        #</span>
+<span class="sd">        # while not finished:</span>
+<span class="sd">        #</span>
+<span class="sd">        #     info()</span>
+<span class="sd">        #</span>
+<span class="sd">        #     for name in running:</span>
+<span class="sd">        #         update(name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     todo = self.graph.todo()</span>
+<span class="sd">        #</span>
+<span class="sd">        #     for name in todo:</span>
+<span class="sd">        #         print(&quot;TODO&quot;, name)</span>
+<span class="sd">        #         start(name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     # print(self.table)</span>
+<span class="sd">        #     print(self.table2(with_label=True))</span>
+<span class="sd">        #</span>
+<span class="sd">        #     if show:</span>
+<span class="sd">        #         self.graph.save(filename=filename, colors=&quot;status&quot;, engine=&quot;dot&quot;)</span>
+<span class="sd">        #         if first and os_is_mac():</span>
+<span class="sd">        #             Shell.open(filename=filename)</span>
+<span class="sd">        #             first = False</span>
+<span class="sd">        #         elif first and os_is_linux():</span>
+<span class="sd">        #             Shell.open(filename=filename)</span>
+<span class="sd">        #         else:</span>
+<span class="sd">        #             Shell.browser(filename)</span>
+<span class="sd">        #     time.sleep(period)</span>
+<span class="sd">        #     finished = len(completed) == len(self.jobs)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     # debugging</span>
+<span class="sd">        #     #info()</span>
+<span class="sd">        #     #input()</span>
+<span class="sd">        #</span>
+<span class="sd">        # # save graph occurs again to make sure things are being saved</span>
+<span class="sd">        # self.graph.save(filename=filename,</span>
+<span class="sd">        #                 colors=&quot;status&quot;,</span>
+<span class="sd">        #                 engine=&quot;dot&quot;)</span>
+
+<span class="sd">    def run_topo(self, order=None, parallel=False, dryrun=False, show=True, filename=None):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # # bug the tno file needs to be better handled</span>
+<span class="sd">        # if order is None:</span>
+<span class="sd">        #     order = self.sequential_order</span>
+<span class="sd">        #</span>
+<span class="sd">        # if os_is_windows() and filename is None:</span>
+<span class="sd">        #     Shell.mkdir(&quot;./tmp&quot;)</span>
+<span class="sd">        #     filename = filename or f&quot;tmp/{self.name}.svg&quot;</span>
+<span class="sd">        # else:</span>
+<span class="sd">        #     filename = filename or f&quot;/tmp/{self.name}.svg&quot;</span>
+<span class="sd">        #</span>
+<span class="sd">        # first = True</span>
+<span class="sd">        # for name in order():</span>
+<span class="sd">        #     job = self.job(name=name)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     if not dryrun:</span>
+<span class="sd">        #         local = wsl = ssh = slurm = lsf = False</span>
+<span class="sd">        #         if job[&#39;kind&#39;] in [&quot;local&quot;]:</span>
+<span class="sd">        #             local = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.localhost.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&quot;wsl&quot;]:</span>
+<span class="sd">        #             wsl = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.wsl.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;ssh&#39;]:</span>
+<span class="sd">        #             ssh = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.ssh.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;slurm&#39;]:</span>
+<span class="sd">        #             slurm = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.slurm.Job import Job</span>
+<span class="sd">        #         elif job[&#39;kind&#39;] in [&#39;lsf&#39;]:</span>
+<span class="sd">        #             lsf = True</span>
+<span class="sd">        #             from cloudmesh.cc.job.lsf.Job import Job</span>
+<span class="sd">        #         else:</span>
+<span class="sd">        #             from cloudmesh.cc.job.localhost.Job import Job</span>
+<span class="sd">        #         if local or ssh or slurm:</span>
+<span class="sd">        #             job[&quot;status&quot;] = &quot;running&quot;</span>
+<span class="sd">        #         name = job[&#39;name&#39;]</span>
+<span class="sd">        #         host = job[&#39;host&#39;]</span>
+<span class="sd">        #         username = job[&#39;user&#39;]</span>
+<span class="sd">        #         label = name</span>
+<span class="sd">        #         _job = Job(name=name,</span>
+<span class="sd">        #                   host=host,</span>
+<span class="sd">        #                   username=username,</span>
+<span class="sd">        #                   label=label)</span>
+<span class="sd">        #         _job.sync()</span>
+<span class="sd">        #         _job.run()</span>
+<span class="sd">        #</span>
+<span class="sd">        #         if local or wsl or slurm:</span>
+<span class="sd">        #             _job.watch(period=0.5)</span>
+<span class="sd">        #         elif ssh or slurm:</span>
+<span class="sd">        #             _job.watch(period=3)</span>
+<span class="sd">        #</span>
+<span class="sd">        #         self.graph.done(name)</span>
+<span class="sd">        #         print(self.table)</span>
+<span class="sd">        #         _job.watch(period=1)</span>
+<span class="sd">        #         log = _job.get_log()</span>
+<span class="sd">        #         status = _job.get_status()</span>
+<span class="sd">        #         progress = _job.get_progress()</span>
+<span class="sd">        #         if progress == 100:</span>
+<span class="sd">        #             status = &quot;done&quot;</span>
+<span class="sd">        #         print(&#39;Status: &#39;, status)</span>
+<span class="sd">        #         print(&#39;Progress: &#39;, progress)</span>
+<span class="sd">        #         self.jobs[name][&#39;status&#39;] = status</span>
+<span class="sd">        #         self.jobs[name][&#39;progress&#39;] = progress</span>
+<span class="sd">        #</span>
+<span class="sd">        #         # elif job[&#39;kind&#39;] in [&quot;local-slurm&quot;]:</span>
+<span class="sd">        #         #     raise NotImplementedError</span>
+<span class="sd">        #         # elif job[&#39;kind&#39;] in [&quot;remote-slurm&quot;]:</span>
+<span class="sd">        #         #     raise NotImplementedError</span>
+<span class="sd">        #     else:</span>
+<span class="sd">        #         # banner(f&quot;Job: {name}&quot;)</span>
+<span class="sd">        #         Console.msg(f&quot;running {name}&quot;)</span>
+<span class="sd">        #</span>
+<span class="sd">        #     if show:</span>
+<span class="sd">        #         self.graph.save(filename=filename, colors=&quot;status&quot;,</span>
+<span class="sd">        #                         layout=nx.circular_layout, engine=&quot;dot&quot;)</span>
+<span class="sd">        #         if first and os_is_mac():</span>
+<span class="sd">        #             Shell.open(filename=filename)</span>
+<span class="sd">        #             first = False</span>
+<span class="sd">        #         elif first and os_is_linux():</span>
+<span class="sd">        #             Shell.open(filename=filename)</span>
+<span class="sd">        #         else:</span>
+<span class="sd">        #             Shell.browser(filename)</span>
+
+<span class="sd">    def display(self, filename=None, name=&#39;workflow&#39;, first=True):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">    #     if os_is_windows():</span>
+<span class="sd">    #         Shell.mkdir(&quot;./tmp&quot;)</span>
+<span class="sd">    #         filename = filename or f&quot;tmp/{name}.svg&quot;</span>
+<span class="sd">    #     else:</span>
+<span class="sd">    #         filename = filename or f&quot;/tmp/{name}.svg&quot;</span>
+<span class="sd">    #     self.graph.save(filename=filename, colors=&quot;status&quot;, engine=&quot;dot&quot;)</span>
+<span class="sd">    #     if first and os_is_mac():</span>
+<span class="sd">    #         os.system(f&#39;open {filename}&#39;)</span>
+<span class="sd">    #         first = False</span>
+<span class="sd">    #     elif first and os_is_linux():</span>
+<span class="sd">    #         os.system(f&#39;gopen {filename}&#39;)</span>
+<span class="sd">    #     else:</span>
+<span class="sd">    #         cwd = os.getcwd()</span>
+<span class="sd">    #         os.system(f&#39;start chrome {cwd}\\{filename}&#39;)</span>
+<span class="sd">    #</span>
+<span class="sd">    # def sequential_order(self):</span>
+<span class="sd">    #     tuples = []</span>
+<span class="sd">    #     for name, edge in self.graph.edges.items():</span>
+<span class="sd">    #         tuples.append((edge[&quot;source&quot;], edge[&quot;destination&quot;]))</span>
+<span class="sd">    #     g = nx.DiGraph(tuples)</span>
+<span class="sd">    #     order = list(nx.topological_sort(g))</span>
+<span class="sd">    #     return order</span>
+<span class="sd">    #</span>
+<span class="sd">    # @property</span>
+<span class="sd">    # def yaml(self):</span>
+<span class="sd">    #     data = {</span>
+<span class="sd">    #         &#39;nodes: &#39;: dict(self.jobs),</span>
+<span class="sd">    #         &#39;dependencies&#39;: dict(self.dependencies)</span>
+<span class="sd">    #     }</span>
+<span class="sd">    #     return yaml.dump(data)</span>
+<span class="sd">    #</span>
+<span class="sd">    # def json(self, filepath=None):</span>
+<span class="sd">    #     data = {</span>
+<span class="sd">    #         &#39;nodes: &#39;: dict(self.jobs),</span>
+<span class="sd">    #         &#39;dependencies&#39;: dict(self.dependencies)</span>
+<span class="sd">    #     }</span>
+<span class="sd">    #     return json.dumps(data, indent=2)</span>
+<span class="sd">    #</span>
+<span class="sd">    # @property</span>
+<span class="sd">    # def table(self):</span>
+<span class="sd">    #     # gvl rewritten</span>
+<span class="sd">    #     with_label = False</span>
+<span class="sd">    #</span>
+<span class="sd">    #     data = dict(self.graph.nodes)</span>
+<span class="sd">    #</span>
+<span class="sd">    #     for name in self.graph.nodes:</span>
+<span class="sd">    #         label = self.graph.nodes[name][&quot;label&quot;]</span>
+<span class="sd">    #         replacement = Labelmaker(label)</span>
+<span class="sd">    #         msg = replacement.get(**self.graph.nodes[name])</span>
+<span class="sd">    #         data[name][&quot;label&quot;] = msg</span>
+<span class="sd">    #</span>
+<span class="sd">    #     if with_label:</span>
+<span class="sd">    #         order = [&#39;host&#39;,</span>
+<span class="sd">    #                  &#39;status&#39;,</span>
+<span class="sd">    #                  &#39;label&#39;,</span>
+<span class="sd">    #                  &#39;name&#39;,</span>
+<span class="sd">    #                  &#39;progress&#39;,</span>
+<span class="sd">    #                  &#39;script&#39;,</span>
+<span class="sd">    #                  &#39;user&#39;,</span>
+<span class="sd">    #                  &#39;parent&#39;,</span>
+<span class="sd">    #                  &#39;kind&#39;]</span>
+<span class="sd">    #     else:</span>
+<span class="sd">    #         order = [&#39;host&#39;,</span>
+<span class="sd">    #                  &#39;status&#39;,</span>
+<span class="sd">    #                  &#39;name&#39;,</span>
+<span class="sd">    #                  &#39;progress&#39;,</span>
+<span class="sd">    #                  &#39;script&#39;,</span>
+<span class="sd">    #                  &#39;user&#39;,</span>
+<span class="sd">    #                  &#39;parent&#39;,</span>
+<span class="sd">    #                  &#39;kind&#39;]</span>
+<span class="sd">    #</span>
+<span class="sd">    #     return Printer.write(self.graph.nodes,</span>
+<span class="sd">    #                          order=order)</span>
+
+<span class="sd">    def table2(self, with_label=False):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # # gvl rewritten</span>
+<span class="sd">        # # with_label = False</span>
+<span class="sd">        #</span>
+<span class="sd">        # data = dict(self.graph.nodes)</span>
+<span class="sd">        #</span>
+<span class="sd">        # for name in self.graph.nodes:</span>
+<span class="sd">        #     label = self.graph.nodes[name][&quot;label&quot;]</span>
+<span class="sd">        #     replacement = Labelmaker(label)</span>
+<span class="sd">        #     msg = replacement.get(**self.graph.nodes[name])</span>
+<span class="sd">        #     data[name][&quot;label&quot;] = msg</span>
+<span class="sd">        #</span>
+<span class="sd">        # if with_label:</span>
+<span class="sd">        #     order = [&#39;host&#39;,</span>
+<span class="sd">        #              &#39;status&#39;,</span>
+<span class="sd">        #              &#39;label&#39;,</span>
+<span class="sd">        #              &#39;name&#39;,</span>
+<span class="sd">        #              &#39;progress&#39;,</span>
+<span class="sd">        #              &#39;script&#39;,</span>
+<span class="sd">        #              &#39;user&#39;,</span>
+<span class="sd">        #              &#39;parent&#39;,</span>
+<span class="sd">        #              &#39;kind&#39;]</span>
+<span class="sd">        # else:</span>
+<span class="sd">        #     order = [&#39;host&#39;,</span>
+<span class="sd">        #              &#39;status&#39;,</span>
+<span class="sd">        #              &#39;name&#39;,</span>
+<span class="sd">        #              &#39;progress&#39;,</span>
+<span class="sd">        #              &#39;script&#39;,</span>
+<span class="sd">        #              &#39;user&#39;,</span>
+<span class="sd">        #              &#39;parent&#39;,</span>
+<span class="sd">        #              &#39;kind&#39;]</span>
+<span class="sd">        #</span>
+<span class="sd">        # return Printer.write(self.graph.nodes,</span>
+<span class="sd">        #                      order=order)</span>
+
+
+
+<span class="sd">    def remove_workflow(self):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # # gvl rrewritten</span>
+<span class="sd">        # # TODO: the rm seems wrong</span>
+<span class="sd">        # d = os.path.dirname(self.filename)</span>
+<span class="sd">        # os.system(&quot;rm -r {d}&quot;)</span>
+<span class="sd">        # self.graph = None</span>
+<span class="sd">        # self.jobs = None</span>
+<span class="sd">        # self.graph.edges = None</span>
+
+<span class="sd">    def remove_job(self, name, state=False):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # # remove job</span>
+<span class="sd">        #</span>
+<span class="sd">        # # del self.jobs[name]</span>
+<span class="sd">        # p = self.jobs.pop(name)</span>
+<span class="sd">        # # print(&quot;popped:&quot;,p)</span>
+<span class="sd">        #</span>
+<span class="sd">        # # remove dependencies to job</span>
+<span class="sd">        # dependencies = self.graph.edges.items()</span>
+<span class="sd">        #</span>
+<span class="sd">        # dellist = []</span>
+<span class="sd">        # for edge, dependency in dependencies:</span>
+<span class="sd">        #     if dependency[&quot;source&quot;] == name or dependency[&quot;destination&quot;] == name:</span>
+<span class="sd">        #         dellist.append(edge)</span>
+<span class="sd">        #</span>
+<span class="sd">        # # TODO: remove parent node</span>
+<span class="sd">        # for key in dellist:</span>
+<span class="sd">        #     self.graph.edges.pop(key)</span>
+<span class="sd">        #</span>
+<span class="sd">        # if state:</span>
+<span class="sd">        #     self.save_with_state(self.filename)</span>
+<span class="sd">        # else:</span>
+<span class="sd">        #     self.save(self.filename)</span>
+
+<span class="sd">    def status(self):</span>
+<span class="sd">        raise NotImplementedError</span>
+<span class="sd">        # # gvl implemented but not tested</span>
+<span class="sd">        # s = &quot;done&quot;</span>
+<span class="sd">        # _status = {&quot;workflow&quot;: s,</span>
+<span class="sd">        #            &quot;job&quot;: None}</span>
+<span class="sd">        # for name in self.jobs:</span>
+<span class="sd">        #     state = self.jobs[&quot;status&quot;]</span>
+<span class="sd">        #     progress = self.jobs[&quot;progress&quot;]</span>
+<span class="sd">        #     _status[&quot;job&quot;][name] = {</span>
+<span class="sd">        #         &quot;status&quot;: state,</span>
+<span class="sd">        #         &quot;progress&quot;: progress</span>
+<span class="sd">        #     }</span>
+<span class="sd">        #     if state in [&quot;running&quot;]:</span>
+<span class="sd">        #         s = &quot;running&quot;</span>
+<span class="sd">        #     elif state in [&quot;undefined&quot;]:</span>
+<span class="sd">        #         s = &quot;undefined&quot;</span>
+<span class="sd">        #     elif state in [&quot;filed&quot;]:</span>
+<span class="sd">        #         s = &quot;failed&quot;</span>
+<span class="sd">        # _status[&quot;workflow&quot;] = s</span>
+<span class="sd">        # return _status</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
