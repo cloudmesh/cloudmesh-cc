@@ -7,4 +7,4 @@ Modules Reference
    :toctree: generated
    :recursive:
 
-   cloudmesh
+   cloudmesh.cc

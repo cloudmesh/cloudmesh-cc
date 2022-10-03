@@ -1,16 +1,15 @@
-API Reference
-=============
+Cloudmesh sbatch
+================
 
-.. rubric:: API
-
-.. automodule::
+.. autosummary::
    :toctree: generated
-   :recursive:
-   :members:
+
+   cloudmesh.cc
+   manual/cc
+
+.. rubric:: Modules
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   generated/cloudmesh.cc
-   generated/cloudmesh
    modules
