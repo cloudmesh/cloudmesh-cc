@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh package &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>Contributing &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -24,7 +24,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Acknowledgments" href="acknowledgements.html" />
+    <link rel="prev" title="Python Interface" href="python.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,8 +59,8 @@
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributors Guide</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -80,9 +82,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>cloudmesh package</li>
+      <li>Contributing</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/contributing.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -90,62 +92,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cloudmesh-package">
-<h1>cloudmesh package<a class="headerlink" href="#cloudmesh-package" title="Permalink to this heading"></a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.command.html">cloudmesh.cc.command package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.command.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.command.html#cloudmesh-cc-command-cc-module">cloudmesh.cc.command.cc module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.command.html#module-contents">Module contents</a></li>
+  <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading"></a></h1>
+<p>All contributions will be done
+under the apache license. The code will be managed
+in open-source. Pull requests need to be made in
+the repository. The main branch is the release
+branch. Contributions will first be done in other
+branches, and once we agree that they need to be
+integrated into the code, they will be merged into
+main. All new code must have sufficient pytests.
+The pytests may need to be documented in case
+special authentication is required.</p>
+<p>We follow a <a class="reference external" href="https://docs.github.com/en/get-started/quickstart/github-flow">typical GitHub workflow</a>
+of:</p>
+<ul class="simple">
+<li><p>create a personal fork of this repo</p></li>
+<li><p>create a branch</p></li>
+<li><p>open a pull request</p></li>
+<li><p>fix findings of various linters and checks</p></li>
+<li><p>work through code review</p></li>
 </ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.db.html#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.db.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.html">cloudmesh.cc.job package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.html#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.html#cloudmesh-cc-job-abstractjob-module">cloudmesh.cc.job.AbstractJob module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.service.html">cloudmesh.cc.service package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.html#cloudmesh-cc-service-queue-service-module">cloudmesh.cc.service.queue_service module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.html#cloudmesh-cc-service-service-module">cloudmesh.cc.service.service module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#cloudmesh-cc-hostdata-module">cloudmesh.cc.hostdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#cloudmesh-cc-labelmaker-module">cloudmesh.cc.labelmaker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#cloudmesh-cc-manager-module">cloudmesh.cc.manager module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#cloudmesh-cc-queue-module">cloudmesh.cc.queue module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#cloudmesh-cc-workflow-module">cloudmesh.cc.workflow module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="module-cloudmesh">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cloudmesh" title="Permalink to this heading"></a></h2>
-</section>
+<p>For each pull request, the documentation is built
+and deployed to make it easier to review the changes
+in the PR.</p>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="python.html" class="btn btn-neutral float-left" title="Python Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="acknowledgements.html" class="btn btn-neutral float-right" title="Acknowledgments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
