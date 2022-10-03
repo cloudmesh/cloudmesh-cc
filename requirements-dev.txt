@@ -9,3 +9,4 @@ git+https://github.com/bashtage/sphinx-material.git
 mistune==0.8.4
 sphinxcontrib-openapi
 sphinx-copybutton
+wheel
