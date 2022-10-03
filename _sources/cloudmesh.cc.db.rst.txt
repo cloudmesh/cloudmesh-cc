@@ -1,31 +1,18 @@
-cloudmesh.cc.db
-===============
+cloudmesh.cc.db package
+=======================
 
-.. automodule:: cloudmesh.cc.db
+Subpackages
+-----------
 
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
-.. rubric:: Modules
-
-.. autosummary::
-   :toctree:
-   :recursive:
+.. toctree::
+   :maxdepth: 4
 
    cloudmesh.cc.db.yamldb
 
+Module contents
+---------------
+
+.. automodule:: cloudmesh.cc.db
+   :members:
+   :undoc-members:
+   :show-inheritance:

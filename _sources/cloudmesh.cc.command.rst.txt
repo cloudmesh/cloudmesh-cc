@@ -1,31 +1,21 @@
-cloudmesh.cc.command
-====================
+cloudmesh.cc.command package
+============================
+
+Submodules
+----------
+
+cloudmesh.cc.command.cc module
+------------------------------
+
+.. automodule:: cloudmesh.cc.command.cc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
 
 .. automodule:: cloudmesh.cc.command
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
-.. rubric:: Modules
-
-.. autosummary::
-   :toctree:
-   :recursive:
-
-   cloudmesh.cc.command.cc
-
+   :members:
+   :undoc-members:
+   :show-inheritance:
