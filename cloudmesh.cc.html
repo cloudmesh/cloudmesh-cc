@@ -708,6 +708,67 @@ and colors.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__dict__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">mappingproxy({'__module__':</span> <span class="pre">'cloudmesh.cc.workflow',</span> <span class="pre">'__doc__':</span> <span class="pre">'This</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">Graph</span> <span class="pre">class</span> <span class="pre">TEST</span> <span class="pre">TEST</span> <span class="pre">TEST.\n\n</span>&#160;&#160;&#160; <span class="pre">ppppp\n</span>&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'__init__':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.__init__&gt;,</span> <span class="pre">'clear':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.clear&gt;,</span> <span class="pre">'__getitem__':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.__getitem__&gt;,</span> <span class="pre">'set_status_colors':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.set_status_colors&gt;,</span> <span class="pre">'add_color':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.add_color&gt;,</span> <span class="pre">'__str__':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.__str__&gt;,</span> <span class="pre">'load':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.load&gt;,</span> <span class="pre">'add_node':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.add_node&gt;,</span> <span class="pre">'add_edge':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.add_edge&gt;,</span> <span class="pre">'done':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.done&gt;,</span> <span class="pre">'todo':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.todo&gt;,</span> <span class="pre">'set_status':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.set_status&gt;,</span> <span class="pre">'get_status':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.get_status&gt;,</span> <span class="pre">'add_dependency':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.add_dependency&gt;,</span> <span class="pre">'add_dependencies':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.add_dependencies&gt;,</span> <span class="pre">'export':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.export&gt;,</span> <span class="pre">'save_to_yaml':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.save_to_yaml&gt;,</span> <span class="pre">'create_label':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.create_label&gt;,</span> <span class="pre">'save':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.save&gt;,</span> <span class="pre">'get_topological_order':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.get_topological_order&gt;,</span> <span class="pre">'create_topological_order':</span> <span class="pre">&lt;function</span> <span class="pre">Graph.create_topological_order&gt;,</span> <span class="pre">'__dict__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__dict__'</span> <span class="pre">of</span> <span class="pre">'Graph'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__weakref__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__weakref__'</span> <span class="pre">of</span> <span class="pre">'Graph'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__annotations__':</span> <span class="pre">{}})</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>returns the specified variable from the nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – the variable to be retrieved</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the specified variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'graph'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>initialize the graph with characteristics such as edges, nodes
+and colors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the graph</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – name of the file of the graph</p></li>
+<li><p><strong>clear</strong> (<em>bool</em>) – whether to reload from scratch</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cloudmesh.cc.workflow'</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>returns the graph in string format with its
+characteristics and specifications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>graph in string format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">add_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">colors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -1075,6 +1136,64 @@ as hex values.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__dict__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">mappingproxy({'__module__':</span> <span class="pre">'cloudmesh.cc.workflow',</span> <span class="pre">'__doc__':</span> <span class="pre">'Workflow</span> <span class="pre">documentation.\n\n</span>&#160;&#160;&#160; <span class="pre">::\n\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w</span> <span class="pre">=</span> <span class="pre">Workflow(filename=&quot;workflow.yaml&quot;)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.load(filename=&quot;abc.yaml&quot;)</span> <span class="pre">&lt;-</span> <span class="pre">loads</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">graph,</span> <span class="pre">but</span> <span class="pre">will</span> <span class="pre">save</span> <span class="pre">it</span> <span class="pre">still</span> <span class="pre">to</span> <span class="pre">workflow.yaml\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add(filename=&quot;add.yaml&quot;)</span> <span class="pre">&lt;-adds</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">workflow</span> <span class="pre">into</span> <span class="pre">the</span> <span class="pre">existing</span> <span class="pre">one.\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_job(name=&quot;a&quot;,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">command=&quot;hostname&quot;,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">user=None,</span> <span class="pre">#</span> <span class="pre">bug</span> <span class="pre">if</span> <span class="pre">kind</span> <span class="pre">is</span> <span class="pre">local</span> <span class="pre">and</span> <span class="pre">user</span> <span class="pre">is</span> <span class="pre">None,</span> <span class="pre">we</span> <span class="pre">do</span> <span class="pre">not</span> <span class="pre">need</span> <span class="pre">user,</span> <span class="pre">but</span> <span class="pre">can</span> <span class="pre">take</span> <span class="pre">local</span> <span class="pre">user\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">host=None,</span> <span class="pre">#</span> <span class="pre">bug:</span>&#160; <span class="pre">if</span> <span class="pre">host</span> <span class="pre">is</span> <span class="pre">none</span> <span class="pre">and</span> <span class="pre">kind</span> <span class="pre">is</span> <span class="pre">local</span> <span class="pre">use</span> <span class="pre">localhost\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">label=&quot;a&quot;,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">kind=&quot;local&quot;,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">status=&quot;ready&quot;,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">progress=0)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_job(name=&quot;b&quot;,</span> <span class="pre">command=&quot;ls&quot;)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_job(name=&quot;c&quot;,</span> <span class="pre">command=&quot;pwd&quot;)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_job(name=&quot;d&quot;,</span> <span class="pre">command=&quot;uname</span> <span class="pre">-a&quot;)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_dependencies(dependency=&quot;a,b,d&quot;)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.add_dependencies(dependency=&quot;a,c,d&quot;)\n\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">w.run()\n\n</span>&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'__init__':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.__init__&gt;,</span> <span class="pre">'__str__':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.__str__&gt;,</span> <span class="pre">'jobs':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'__getitem__':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.__getitem__&gt;,</span> <span class="pre">'job':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.job&gt;,</span> <span class="pre">'dependencies':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'predecessor':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.predecessor&gt;,</span> <span class="pre">'get_predecessors':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.get_predecessors&gt;,</span> <span class="pre">'save_with_state':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.save_with_state&gt;,</span> <span class="pre">'load_with_state':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.load_with_state&gt;,</span> <span class="pre">'load':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.load&gt;,</span> <span class="pre">'save':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.save&gt;,</span> <span class="pre">'add_job':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.add_job&gt;,</span> <span class="pre">'add_dependency':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.add_dependency&gt;,</span> <span class="pre">'add_dependencies':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.add_dependencies&gt;,</span> <span class="pre">'update_status':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.update_status&gt;,</span> <span class="pre">'set_progress':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.set_progress&gt;,</span> <span class="pre">'update_progress':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.update_progress&gt;,</span> <span class="pre">'run_parallel':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.run_parallel&gt;,</span> <span class="pre">'run_topo':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.run_topo&gt;,</span> <span class="pre">'display':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.display&gt;,</span> <span class="pre">'create_topological_order':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.create_topological_order&gt;,</span> <span class="pre">'sequential_order':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.sequential_order&gt;,</span> <span class="pre">'yaml':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'dict_of_workflow':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'json':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.json&gt;,</span> <span class="pre">'table':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'table2':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.table2&gt;,</span> <span class="pre">'remove_workflow':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.remove_workflow&gt;,</span> <span class="pre">'remove_job':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.remove_job&gt;,</span> <span class="pre">'status':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.status&gt;,</span> <span class="pre">'analyze_states':</span> <span class="pre">&lt;function</span> <span class="pre">Workflow.analyze_states&gt;,</span> <span class="pre">'__dict__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__dict__'</span> <span class="pre">of</span> <span class="pre">'Workflow'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__weakref__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__weakref__'</span> <span class="pre">of</span> <span class="pre">'Workflow'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__annotations__':</span> <span class="pre">{}})</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>returns the details of an item within the workflow
+:param name: name of item
+:type name: str
+:return: details of an item within the workflow
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear_runtime_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>initializes workflow with specified characteristics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – location of yaml file to load workflow from</p></li>
+<li><p><strong>runtime_dir</strong> (<em>str</em>) – directory of yaml file to be read and written to</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – name of user</p></li>
+<li><p><strong>host</strong> (<em>str</em>) – location of where the workflow will be run</p></li>
+<li><p><strong>load</strong> (<em>bool</em>) – whether to load the workflow</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cloudmesh.cc.workflow'</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>returns workflow and its characteristics in string format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string format of workflow</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">add_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.add_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -1593,6 +1712,35 @@ the file used in init.</p>
 
 </dd></dl>
 
+</section>
+<section id="module-cloudmesh.cc.workflow.Workflow">
+<span id="cloudmesh-cc-workflow-workflow-module"></span><h2>cloudmesh.cc.workflow.Workflow module<a class="headerlink" href="#module-cloudmesh.cc.workflow.Workflow" title="Permalink to this heading"></a></h2>
+<p>Workflow documentation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;workflow.yaml&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;abc.yaml&quot;</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">loads</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">graph</span><span class="p">,</span> <span class="n">but</span> <span class="n">will</span> <span class="n">save</span> <span class="n">it</span> <span class="n">still</span> <span class="n">to</span> <span class="n">workflow</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;add.yaml&quot;</span><span class="p">)</span> <span class="o">&lt;-</span><span class="n">adds</span> <span class="n">a</span> <span class="n">new</span> <span class="n">workflow</span> <span class="n">into</span> <span class="n">the</span> <span class="n">existing</span> <span class="n">one</span><span class="o">.</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># bug if kind is local and user is None, we do not need user, but can take local user</span>
+            <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># bug:  if host is none and kind is local use localhost</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;ready&quot;</span><span class="p">,</span>
+            <span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;pwd&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;uname -a&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="s2">&quot;a,b,d&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="s2">&quot;a,c,d&quot;</span><span class="p">)</span>
+
+<span class="n">w</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="module-cloudmesh.cc.workflow.Graph">
+<span id="cloudmesh-cc-workflow-graph-module"></span><h2>cloudmesh.cc.workflow.Graph module<a class="headerlink" href="#module-cloudmesh.cc.workflow.Graph" title="Permalink to this heading"></a></h2>
+<p>This is the Graph class TEST TEST TEST.</p>
+<p>ppppp</p>
 </section>
 <section id="module-contents">
 <h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
