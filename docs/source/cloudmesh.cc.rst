@@ -59,6 +59,24 @@ cloudmesh.cc.workflow module
    :undoc-members:
    :show-inheritance:
    :noindex:
+   :private-members:
+   :special-members:
+
+cloudmesh.cc.workflow.Workflow module
+-------------------------------------
+
+.. automodule:: cloudmesh.cc.workflow.Workflow
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cloudmesh.cc.workflow.Graph module
+----------------------------------
+
+.. automodule:: cloudmesh.cc.workflow.Graph
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
