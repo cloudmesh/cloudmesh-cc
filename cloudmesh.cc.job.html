@@ -160,7 +160,7 @@ host=”host”)</p>
 </div></blockquote>
 <p>it will create an experiment directory where the job specification is
 located. To run it, it needs first to be syncronized and copied to the
-remote host.</p>
+remote host</p>
 <blockquote>
 <div><p>job.sync()</p>
 </div></blockquote>
@@ -260,23 +260,27 @@ and places it localy into</p>
 <dd><p>returns the status of the job as reported in status messages in the
 log file. If additional states need to be defined they can be used as strings
 A status can be followed by a stringified dict, so that more sophisticated
-status messaged can be created.</p>
-<p># cloudmesh status=ready
-…
-# cloudmesh status=running {“progress”:0, “result”: 50}
-…
-# cloudmesh status=running {“progress”: 25, “result”: 50}
-…
-# cloudmesh status=failed
-…
-# cloudmesh status=done</p>
+status messaged can be created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cloudmesh status=ready</span>
+<span class="o">...</span>
+<span class="c1"># cloudmesh status=running {&quot;progress&quot;:0, &quot;result&quot;: 50}</span>
+<span class="o">...</span>
+<span class="c1"># cloudmesh status=running {&quot;progress&quot;: 25, &quot;result&quot;: 50}</span>
+<span class="o">...</span>
+<span class="c1"># cloudmesh status=failed</span>
+<span class="o">...</span>
+<span class="c1"># cloudmesh status=done</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>returns only the status string. To find other values, use</p>
+<dd class="field-odd"><p>returns only the status string. To find other values, use
+get(attribute)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
 </dd>
 </dl>
-<p>get(attribute)
-:rtype:</p>
 </dd></dl>
 
 <dl class="py method">

@@ -113,7 +113,7 @@
 
 <span class="sd">it will create an experiment directory where the job specification is</span>
 <span class="sd">located. To run it, it needs first to be syncronized and copied to the</span>
-<span class="sd">remote host.</span>
+<span class="sd">remote host</span>
 
 <span class="sd">    job.sync()</span>
 
@@ -214,20 +214,20 @@
 <span class="sd">        returns the status of the job as reported in status messages in the</span>
 <span class="sd">        log file. If additional states need to be defined they can be used as strings</span>
 <span class="sd">        A status can be followed by a stringified dict, so that more sophisticated</span>
-<span class="sd">        status messaged can be created.</span>
+<span class="sd">        status messaged can be created::</span>
 
-<span class="sd">        # cloudmesh status=ready</span>
-<span class="sd">        ...</span>
-<span class="sd">        # cloudmesh status=running {&quot;progress&quot;:0, &quot;result&quot;: 50}</span>
-<span class="sd">        ...</span>
-<span class="sd">        # cloudmesh status=running {&quot;progress&quot;: 25, &quot;result&quot;: 50}</span>
-<span class="sd">        ...</span>
-<span class="sd">        # cloudmesh status=failed</span>
-<span class="sd">        ...</span>
-<span class="sd">        # cloudmesh status=done</span>
+<span class="sd">            # cloudmesh status=ready</span>
+<span class="sd">            ...</span>
+<span class="sd">            # cloudmesh status=running {&quot;progress&quot;:0, &quot;result&quot;: 50}</span>
+<span class="sd">            ...</span>
+<span class="sd">            # cloudmesh status=running {&quot;progress&quot;: 25, &quot;result&quot;: 50}</span>
+<span class="sd">            ...</span>
+<span class="sd">            # cloudmesh status=failed</span>
+<span class="sd">            ...</span>
+<span class="sd">            # cloudmesh status=done</span>
 
 <span class="sd">        :return: returns only the status string. To find other values, use</span>
-<span class="sd">        get(attribute)</span>
+<span class="sd">                 get(attribute)</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
