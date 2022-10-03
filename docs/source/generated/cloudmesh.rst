@@ -52,6 +52,7 @@ cloudmesh
    cloudmesh.gui
    cloudmesh.host
    cloudmesh.inventory
+   cloudmesh.sbatch
    cloudmesh.sys
    cloudmesh.test
    cloudmesh.vpn

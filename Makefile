@@ -168,10 +168,10 @@ ifeq ($(detected_OS),Windows)
 	cp man_cc.rst api/source/man_cc.rst
 endif
 ifeq ($(detected_OS),Darwin)
-	rsync -av man_cc.rst api/source/man_cc.rst
+	rsync -av man_cc.rst docs/source/man_cc.rst
 endif
 ifeq ($(detected_OS),Linux)
-	rsync -av man_cc.rst api/source/man_cc.rst
+	rsync -av man_cc.rst docs/source/man_cc.rst
 endif
 	rm -f tmp.rst tmp1.rst
 
@@ -197,26 +197,32 @@ endif
 requirements-dev:
 	pip install -r requirements-dev.txt
 
+#doc: requirements-dev man
+#	cd api; sphinx-apidoc ../cloudmesh -o source
+#	cd api/source; sphinx-autogen -o generated *.rst
+#	cd api; make html
+
 doc: requirements-dev man
-	cd api; sphinx-apidoc ../cloudmesh -o source
-	cd api/source; sphinx-autogen -o generated *.rst
-	cd api; make html
+	cd docs; sphinx-apidoc ../cloudmesh -o source
+	cd docs/source; sphinx-autogen -o generated *.rst
+	cd docs; make html
+
 
 latex:
 	cd api; make latexpdf
 
-docs:
-	rsync --size-only -av api/build/html/* docs
+#docs:
+#	rsync --size-only -av api/build/html/* docs
 
 
 view:
 ifeq ($(detected_OS),Windows)
-	cmd //C "start firefox file://$(mkfile_dir)api/build/html/index.html"
+	cmd //C "start firefox file://$(mkfile_dir)docs/build/html/index.html"
 endif
 ifeq ($(detected_OS),Darwin)        # Mac OS X
-	$(shell open api/build/html/index.html)
+	$(shell open docs/build/html/index.html)
 endif
 ifeq ($(detected_OS),Linux)
-	$(shell firefox api/build/html/index.html)
+	$(shell firefox docs/build/html/index.html)
 endif
 
