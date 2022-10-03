@@ -163,11 +163,10 @@ log:
 man:
 	cms help cc | fgrep -v "# Timer" > tmp.rst
 	sed '1,/^====/d' tmp.rst > tmp1.rst
-	echo "Command cc" > tmp.rst
-	echo "==========" >> tmp.rst
+	cat docs/source/commandline.rst > tmp.rst
 	cat tmp.rst tmp1.rst > man_cc.rst
 ifeq ($(detected_OS),Windows)
-	cp man_cc.rst api/source/man_cc.rst
+	cp man_cc.rst docs/source/man_cc.rst
 endif
 ifeq ($(detected_OS),Darwin)
 	rsync -av man_cc.rst docs/source/man_cc.rst

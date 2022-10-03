@@ -111,7 +111,7 @@ class CcCommand(PluginCommand):
             
             SERVICE MANAGEMENT COMMANDS
             
-            cc start [-reload] [--host=HOST] [--port=PORT]
+            cc start [--reload] [--host=HOST] [--port=PORT]
                 start the service.  one can add the host and port so the service is
                 started with http://host:port. The default is 127.0.0.1:8000.
                 If -c is specified 0.0.0.0:8000 is used. 
