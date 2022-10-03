@@ -13,7 +13,7 @@ A job can be created as follows
 
 it will create an experiment directory where the job specification is
 located. To run it, it needs first to be syncronized and copied to the
-remote host.
+remote host
 
     job.sync()
 
@@ -114,20 +114,20 @@ class AbstractJob:
         returns the status of the job as reported in status messages in the
         log file. If additional states need to be defined they can be used as strings
         A status can be followed by a stringified dict, so that more sophisticated
-        status messaged can be created.
+        status messaged can be created::
 
-        # cloudmesh status=ready
-        ...
-        # cloudmesh status=running {"progress":0, "result": 50}
-        ...
-        # cloudmesh status=running {"progress": 25, "result": 50}
-        ...
-        # cloudmesh status=failed
-        ...
-        # cloudmesh status=done
+            # cloudmesh status=ready
+            ...
+            # cloudmesh status=running {"progress":0, "result": 50}
+            ...
+            # cloudmesh status=running {"progress": 25, "result": 50}
+            ...
+            # cloudmesh status=failed
+            ...
+            # cloudmesh status=done
 
         :return: returns only the status string. To find other values, use
-        get(attribute)
+                 get(attribute)
         :rtype:
         """
         return self.get_status()
