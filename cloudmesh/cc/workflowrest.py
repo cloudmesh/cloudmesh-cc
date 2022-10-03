@@ -1,3 +1,4 @@
+"""Cloudmesh cc REST workflow."""
 import requests
 
 

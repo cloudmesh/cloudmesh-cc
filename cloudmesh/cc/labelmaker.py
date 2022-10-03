@@ -1,3 +1,4 @@
+"""Cloudmesh cc labelmaker."""
 import os
 import re
 from cloudmesh.common.variables import Variables

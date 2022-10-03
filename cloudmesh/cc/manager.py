@@ -1,3 +1,4 @@
+"""Cloudmesh cc manager."""
 from builtins import str
 
 import requests
