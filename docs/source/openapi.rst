@@ -1,4 +1,0 @@
-OpenAPI
-=======
-
-.. openapi:: openapi.yaml

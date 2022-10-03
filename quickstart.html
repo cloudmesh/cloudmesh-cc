@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart &mdash; cloudmesh-cc 4.3.7 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cloudmesh sbatch" href="api.html" />
+    <link rel="prev" title="Introduction" href="readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ultimate_documentation.html">Guide to cloudmesh cc Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-simple-example">Creating a simple example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-upload-and-run-a-workflow-embedded-in-an-archive-file">A. Upload and run a workflow embedded in an archive file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-tar-archive-file">Create tar archive file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-upload-via-curl">Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-upload-via-docs">Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-3-upload-via-the-python-api">Option 3: Upload via the Python API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-4-upload-with-a-third-party-rest-framework">Option 4: Upload with a third party REST framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#c-upload-a-dir-that-contains-workflow-directory">C. Upload a dir that contains workflow directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-upload-via-curl-1">Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-upload-via-docs-1">Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-3-upload-via-the-python-api-1">Option 3: Upload via the Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters-to-the-upload-a-workflow-with-a-rest-call">Parameters to the Upload a workflow with a REST call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-workflow">Run the workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Cloudmesh sbatch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mnist.html">MNIST Workflows</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/quickstart.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
+<p>The Cloudmesh Compute Cluster service allows you to execute analytical,
+computational workflows which run programs on remote compute resources.
+We specify not only a list of tasks to be executed, but the tasks can
+also have dependencies between each other expressed through a direct,
+cyclic graph. Currently, we have predefined task types that can execute
+shell scripts, Python programs, and Python notebooks, all of which can
+be executed on local or remote compute resources.</p>
+<p>In Figure 1 we depict a simple example workflow to be executed where
+each task is executed sequentially. The status of the execution can be
+displayed as table or as graph. In Figure 1, we showcase how the graph
+changes its appearance over time.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 20%" />
+<col style="width: 18%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Step 0</p></th>
+<th class="head"><p>Step 0.5</p></th>
+<th class="head"><p>Step 1</p></th>
+<th class="head"><p>Step 2</p></th>
+<th class="head"><p>Step 3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Definition</p></td>
+<td><p>Running
+first task</p></td>
+<td><p>Finished
+first task</p></td>
+<td><p>Finished
+second task</p></td>
+<td><p>Completed
+workflow</p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="A graph of an example workflow" src="_images/workflow-example.svg" /></p></td>
+<td><p><img alt="fetch-data finished" src="_images/workflow-example-1.5.svg" /></p></td>
+<td><p><img alt="image1" src="_images/workflow-example-2.svg" /></p></td>
+<td><p><img alt="compute node finished" src="_images/workflow-example-3.svg" /></p></td>
+<td><p><img alt="Entire workflow finished" src="_images/workflow-example-5.svg" /></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Figure 1:</strong> Execution and display graph of an example workflow over
+time</p>
+<p>We can specify such workflows in a YAML file making it very easy to
+create and manage them. To get you started, we have developed a
+quickstart example that you can enhance to get acquainted with the
+system.</p>
+<p>Once a workflow is specified, it can be executed a using one of our
+interfaces. This includes a Python API and a command line interface
+without a REST service. In addition we have, with the help of the Python
+API, developed a REST service so that integration into other frameworks
+can be facilitated through REST calls. The availability of the REST
+service is important to access it from non Python frameworks, but also
+allows the easy interaction through a Web-based Portal.</p>
+<p>Let us demonstrate a number of selected features with the help of this
+quickstart. We will only focus on using the REST service.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>To start, the code is needed and we assume you are standing in the
+cloudmesh-cc directory. Use the following commands</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/cloudmesh/cloudmesh-cc.git
+<span class="nb">cd</span> cloudmesh-cc
+pip install -e .
+</pre></div>
+</div>
+<p>We also assume you start the service with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cms cc start --reload
+</pre></div>
+</div>
+</section>
+<section id="creating-a-simple-example">
+<h2>Creating a simple example<a class="headerlink" href="#creating-a-simple-example" title="Permalink to this heading"></a></h2>
+<p>First let us create a simple workflow example that we already have
+included for you in our source code. We will use this workflow and copy
+it into a temporary directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir -p /tmp/workflow-example
+cp tests/workflow-example/workflow-example.yaml /tmp/workflow-example
+cp tests/workflow-example/*.sh /tmp/workflow-example
+</pre></div>
+</div>
+<p>We like you to inspect the example so you get an overview of how to
+define a workflow:</p>
+<ul class="simple">
+<li><p>workflow-example.yaml
+<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml</a></p></li>
+<li><p>fetch-data
+<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/fetch-data.sh">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/fetch-data.sh</a></p></li>
+<li><p>compute
+<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/compute.sh">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/compute.sh</a></p></li>
+<li><p>analyze
+<a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/analyze.sh">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/analyze.sh</a></p></li>
+</ul>
+<p>Now we can test a selected number of ways on how to interact with the
+service. We showcase here how to</p>
+<ul class="simple">
+<li><ol class="upperalpha simple">
+<li><p>upload workflows as tar/xz file of a self containing directory,</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="2">
+<li><p>upload all files in a directory recursively, or</p></li>
+</ol>
+</li>
+<li><p>C. upload the workflow and the scripts referred to in the workflow
+individually.</p></li>
+</ul>
+</section>
+<section id="a-upload-and-run-a-workflow-embedded-in-an-archive-file">
+<h2>A. Upload and run a workflow embedded in an archive file<a class="headerlink" href="#a-upload-and-run-a-workflow-embedded-in-an-archive-file" title="Permalink to this heading"></a></h2>
+<p>We can upload an archive file which contains all the workflow files,
+including the yaml specification file and the scripts. Providing an
+archive file such as a <code class="docutils literal notranslate"><span class="pre">.tar</span></code>, <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>, or <code class="docutils literal notranslate"><span class="pre">.xz</span></code>. may enable the
+workflow to be better suited towards portability and simplicity, where
+one can share an archive file with another user. We will choose here a
+tar file as example.</p>
+<section id="create-tar-archive-file">
+<h3>Create tar archive file<a class="headerlink" href="#create-tar-archive-file" title="Permalink to this heading"></a></h3>
+<p>Before uploading a <code class="docutils literal notranslate"><span class="pre">tar</span></code> archive file, we must first create it using
+the previous example yaml and scripts that we copied.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar -C /tmp/workflow-example -cf workflow-example.tar .
+</pre></div>
+</div>
+</section>
+<section id="option-1-upload-via-curl">
+<h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl" title="Permalink to this heading"></a></h3>
+<p>We can upload the archive file by using the <code class="docutils literal notranslate"><span class="pre">curl</span></code> terminal command as
+follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+  <span class="s1">&#39;http://127.0.0.1:8000/upload?archive=workflow-example.tar&#39;</span> <span class="se">\</span>
+  -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+  -d <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="option-2-upload-via-docs">
+<h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs" title="Permalink to this heading"></a></h3>
+<p>As the service is using also an OpenAPI 2.0 specification the workflow
+can also be uploaded implicitly through the specification GUI. Navigate
+to <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code> and use the POST Upload method.</p>
+<figure class="align-default" id="id4">
+<img alt="Browser API GUI for Cloudmesh Compute Cluster" src="_images/upload_api.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Browser API GUI for Cloudmesh Compute Cluster</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Please click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code> and then enter
+<code class="docutils literal notranslate"><span class="pre">~/cm/cloudmesh-cc/workflow-example.tar</span></code> in the <code class="docutils literal notranslate"><span class="pre">archive</span></code> field and
+then click Execute.</p>
+</section>
+<section id="option-3-upload-via-the-python-api">
+<h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api" title="Permalink to this heading"></a></h3>
+<p>As we use a REST service, we can also easily upload the workflow through
+a Python enabled REST call. We will use Python requests to demonstrate
+this upload feature.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/upload?archive=workflow-example.tar&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Printing <code class="docutils literal notranslate"><span class="pre">r</span></code> returns the response code from the API (a code of 200
+indicates success). Printing <code class="docutils literal notranslate"><span class="pre">r.text</span></code> returns the message from the
+API, such as a success or error message.</p>
+</section>
+<section id="option-4-upload-with-a-third-party-rest-framework">
+<h3>Option 4: Upload with a third party REST framework<a class="headerlink" href="#option-4-upload-with-a-third-party-rest-framework" title="Permalink to this heading"></a></h3>
+<p>Naturally if you like to use a different REST API you can do so. You can
+also use different programming languages and we leave it up to you to
+choose the framework of your choice to interact with the REST service,
+popular choices are JavaScript, Go, C/C++, matlab, and R, to name a few.</p>
+</section>
+</section>
+<section id="c-upload-a-dir-that-contains-workflow-directory">
+<h2>C. Upload a dir that contains workflow directory<a class="headerlink" href="#c-upload-a-dir-that-contains-workflow-directory" title="Permalink to this heading"></a></h2>
+<p>To increase flexibility and allow quick experiments, users can specify a
+workflow directory which contains the yaml specification file and the
+scripts. This way, pre-archival of the directory is not needed. The
+program sets up the workflow by copying the necessary files from the
+specified directory.</p>
+<p>There are three different ways to upload the dir: via <code class="docutils literal notranslate"><span class="pre">curl</span></code> on the
+command line, via the browser GUI, and via the Python API.</p>
+<section id="option-1-upload-via-curl-1">
+<span id="id1"></span><h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl-1" title="Permalink to this heading"></a></h3>
+<p>A workflow can be uploaded easily with a curl command from the command
+line. On the command line execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+  <span class="s1">&#39;http://127.0.0.1:8000/upload?directory=/tmp/workflow-example&#39;</span> <span class="se">\</span>
+  -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+  -d <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="option-2-upload-via-docs-1">
+<span id="id2"></span><h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs-1" title="Permalink to this heading"></a></h3>
+<p>Also here one cane upload the needed files with the OpenAPI
+specification interface on the service. Navigate to
+<code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code> and use the POST Upload method.</p>
+<p>Click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code> and then enter <code class="docutils literal notranslate"><span class="pre">/tmp/workflow-example</span></code> in the
+directory field and then click Execute.</p>
+</section>
+<section id="option-3-upload-via-the-python-api-1">
+<span id="id3"></span><h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api-1" title="Permalink to this heading"></a></h3>
+<p>Accessing the upload from the Pythin API is very easy. We will use
+python requests to demonstrate the upload of the workflow.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/upload?directory=/tmp/workflow-example&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Printing <code class="docutils literal notranslate"><span class="pre">r</span></code> returns the response code from the API (a code of 200
+indicates success). Printing <code class="docutils literal notranslate"><span class="pre">r.text</span></code> returns the message from the
+API, such as a success or error message.</p>
+</section>
+</section>
+<section id="parameters-to-the-upload-a-workflow-with-a-rest-call">
+<h2>Parameters to the Upload a workflow with a REST call<a class="headerlink" href="#parameters-to-the-upload-a-workflow-with-a-rest-call" title="Permalink to this heading"></a></h2>
+<p>The upload REST URL can take different parameters, such as</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">?directory=name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?archive=name.tar.gz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?archive=name.tgz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?archive=name.xz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?yaml=name</span></code></p></li>
+</ul>
+<p>The semantic of the upload is specified through its parameter. Only one
+of them can be used at a time.</p>
+<p>The directory parameter indicates that the contents of a specified
+directory will be transferred into a workflow.</p>
+<p>The archive parameter indicates that an archive file, such as a <code class="docutils literal notranslate"><span class="pre">tar</span></code>
+file, will be extracted and its contents will be transferred into a
+workflow. Please note that the <code class="docutils literal notranslate"><span class="pre">archive</span></code> and <code class="docutils literal notranslate"><span class="pre">directory</span></code> parameters
+can not be used in the same REST call.</p>
+<p>The yaml parameter indicates that only a yaml file will be uploaded
+without any corresponding scripts. Uploading a yaml file by itself
+allows for a script specified by the yaml to be uploaded later. The yaml
+can even work without scripts by using the <code class="docutils literal notranslate"><span class="pre">exec</span></code> specification within
+the yaml.</p>
+</section>
+<section id="run-the-workflow">
+<h2>Run the workflow<a class="headerlink" href="#run-the-workflow" title="Permalink to this heading"></a></h2>
+<p>To run, navigate to homepage at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/</span></code> and click the
+workflow-example on the left side. Then click Run.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="readme.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="Cloudmesh sbatch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

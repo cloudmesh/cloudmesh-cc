@@ -1,0 +1,70 @@
+cloudmesh.cc.service.service
+============================
+
+.. automodule:: cloudmesh.cc.service.service
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      about_page
+      add_job
+      contact_page
+      datatable_server
+      delete_workflow
+      delete_workflow_direct_url
+      dict_of_available_workflows
+      done_watcher
+      edit_workflow_direct_url
+      failed_watcher
+      generate_example_workflow
+      get_available_workflows
+      get_workflow
+      get_workflow_graph
+      home_page
+      image_watcher
+      list_workflows
+      load_workflow
+      man_page
+      penultimate_status_watcher
+      preferences_post
+      ready_watcher
+      run_workflow
+      running_watcher
+      serve_done
+      serve_failed
+      serve_ready
+      serve_running
+      serve_submitted
+      serve_table
+      serve_watcher
+      status_returner
+      submitted_watcher
+      test_run
+      upload
+      watch_running_workflow
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Jobpy
+   
+   
+
+   
+   
+   
+
+
+
