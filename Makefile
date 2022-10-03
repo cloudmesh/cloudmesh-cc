@@ -205,7 +205,7 @@ requirements-dev:
 
 doc: requirements-dev man
 	cd docs; sphinx-apidoc ../cloudmesh -o source
-	cd docs/source; sphinx-autogen -o generated *.rst
+	#cd docs/source; sphinx-autogen -o generated *.rst
 	cd docs; make html
 
 

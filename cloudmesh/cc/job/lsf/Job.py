@@ -1,3 +1,5 @@
+"""Not yet implemented."""
+
 import os
 
 # from cloudmesh.common FIND SOMETHING THAT READS TEXT FILES
@@ -8,9 +10,9 @@ from cloudmesh.common.console import Console
 from cloudmesh.common.util import readfile
 from cloudmesh.common.util import writefile
 
-
+"""Have not implemented yet."""
 class Lsf:
-
+    """Not yet implemented."""
     def __init__(self, host):
         """
         sets locations of LSF commands for the job
@@ -30,7 +32,7 @@ class Lsf:
 
 
 class Job:
-
+    """Not yet implemented."""
     def __init__(self, name=None, username=None, host=None, label=None, directory=None, **argv):
         """
         cms set username=abc123

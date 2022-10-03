@@ -1,3 +1,6 @@
+"""Not yet implemented."""
+
+
 class Queue:
 
     def __init__(self, host, queue):

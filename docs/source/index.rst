@@ -20,6 +20,7 @@ live status updates.
    introduction
    installation
    quickstart
+   abstract
 
 .. toctree::
    :maxdepth: 1
@@ -49,11 +50,7 @@ live status updates.
    :maxdepth: 1
    :caption: Contributors Guide
 
-   readme
-   quickstart
-   man_cc
-   api
-   openapi
+   contributing
    acknowledgements
 
 .. toctree::

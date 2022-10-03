@@ -1,3 +1,4 @@
+"""General job class."""
 class Queue:
 
     def __init__(self, host, queue):

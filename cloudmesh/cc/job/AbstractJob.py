@@ -1,4 +1,5 @@
-"""
+"""Abstract job.
+
 The Job class creates a simple job that can be executed asynchronously
 on a computer. The status of the job is managed through
 a number of files that can be quered to identify its execution state.
