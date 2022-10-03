@@ -21,7 +21,7 @@ live status updates.
    :maxdepth: 1
    :caption: User Guide
 
-   commandline
+   man_cc
    rest
    rest-gui
    python
