@@ -33,6 +33,7 @@ cloudmesh-cmd5
 cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
+cloudmesh-progress
 yamldb
 docker-compose
 networkx[default]
@@ -42,7 +43,6 @@ fastapi[all]
 httpx
 trio
 papermill
-cloudmesh-progress
 pandas
 markdown
 sse-starlette
