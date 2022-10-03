@@ -32,6 +32,7 @@ jobs:
         cloudmesh-installer get cc
         python -m pip install -e .
         cms help
+        mkdir .cloudmesh/workflow
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
