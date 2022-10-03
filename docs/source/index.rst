@@ -1,8 +1,3 @@
-.. cloudmesh-cc documentation master file, created by
-   sphinx-quickstart on Thu Aug  4 08:29:16 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Cloudmesh Compute Cluster
 =========================
 
@@ -33,18 +28,20 @@ live status updates.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Examples
+   :caption: Hallo
 
-    mnist
-    cloudmask
-    earthquake
+   prgapi
+   openapi
+
 
 .. toctree::
    :maxdepth: 1
-   :caption: API Reference
+   :caption: Examples
 
-    api
-    openapi
+   mnist
+   cloudmask
+   earthquake
+
 
 .. toctree::
    :maxdepth: 1
@@ -58,6 +55,7 @@ live status updates.
    :caption: Examples
 
    mnist
+   cloudmask
 
 
 Indices and tables
