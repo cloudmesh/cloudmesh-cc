@@ -28,7 +28,7 @@ live status updates.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Hallo
+   :caption: API
 
    prgapi
    openapi
@@ -50,12 +50,6 @@ live status updates.
    contributing
    acknowledgements
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Examples
-
-   mnist
-   cloudmask
 
 
 Indices and tables
