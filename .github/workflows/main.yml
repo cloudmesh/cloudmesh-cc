@@ -22,7 +22,7 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install -e .
           python -m pip install cloudmesh-installer
-          python -m pip install cloudmesh-cms
+          python -m pip install cloudmesh-cmd5
           cms help
       # Runs a set of commands using the runners shell
       - name: Build Sphinx Site
