@@ -51,7 +51,7 @@ class AbstractJob:
 
     def __init__(self, **argv):
         """
-        craetes a job by passing either a dict with **dict or named arguments
+        creates a job by passing either a dict with \*\*dict or named arguments
         attribute1 = value1, ...
 
         :param data:

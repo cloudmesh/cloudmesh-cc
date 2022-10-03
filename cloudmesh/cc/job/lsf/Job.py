@@ -37,7 +37,7 @@ class Job:
         """
         cms set username=abc123
 
-        creates a job by passing either a dict with **dict or named arguments
+        creates a job by passing either a dict with \*\*dict or named arguments
         attribute1 = value1, ...
 
         :param data:
