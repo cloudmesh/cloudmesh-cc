@@ -18,12 +18,12 @@ class Job:
     to the command.
     """
 
+    # this is not realy that good, as we need to be able to overwrite from **data ...
+    # atend we want to see that values are defined, and if they have not been passed
+    # we create the defaults
     def __init__(self, name=None, command=None, kind=None, status=None):
         """
-
-        # this is not realy that good, as we need to be able to overwrite from **data ...
-        # atend we want to see that values are defined, and if they have not been passed
-        # we create the defaults
+        Inititalize the job.
 
         :param name:
         :type name:
