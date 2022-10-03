@@ -29,7 +29,8 @@ jobs:
         python -m pip install -r requirements-dev.txt
         python -m pip install -r requirements.txt
         python -m pip install cloudmesh-installer
-        python -m pip install cloudmesh-cmd5
+        python -m pip install cloudmesh-installer get cc
+        python -m pip install -e .
         cms help
     - name: Lint with flake8
       run: |
