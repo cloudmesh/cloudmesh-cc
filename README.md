@@ -45,8 +45,8 @@ The goal is to provide numerous methods of specifying the workflows on
 a local computer and running them on remote services such as HPC and
 cloud computing resources. This includes REST services and command
 line tools. The software developed is freely available and can easily
-be installed with standard python tools so integration in the python
-ecosystem using virtualenv's and anaconda is simple.
+be installed with standard Python tools so integration in the Python
+ecosystem using virtualenv's and Anaconda is simple.
 
 
 ## Workflow Functionality
@@ -91,7 +91,7 @@ files involving different machine learning cases were modified and
 tested on various local and remote machines These cases include
 Multilayer Perceptron, LSTM (Long short-term memory), Auto-Encoder,
 Convolutional, and Recurrent Neural Networks, Distributed Training,
-and PyTorch training
+and PyTorch training.
 
 See @fig:workflow-uml.
 
@@ -108,7 +108,7 @@ design for each target type a specific job type so that execution on
 local and remote compute resources including batch operating systems
 can be achieved. The job types supported include: local job on Linux,
 macOS, Windows 10, and Windows 11, jobs running in WSL on Windows
-computers, remote jobs using ssh, and a batch JObs using Slurm.
+computers, remote jobs using ssh, and batch jobs using Slurm.
 
 
 
