@@ -78,7 +78,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>Python Interface</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/python.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/python.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -88,6 +88,110 @@
              
   <section id="python-interface">
 <h1>Python Interface<a class="headerlink" href="#python-interface" title="Permalink to this heading"></a></h1>
+<p>In Python, we can instantiate an instance of the Workflow class to
+create a new Workflow. We supply an arbitrary filename for the workflow and
+specify that we are not loading a preexisting one, but creating a new one.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cloudmesh.cc.workflow</span> <span class="kn">import</span> <span class="n">Workflow</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow-example&#39;</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Simply instantiating a workflow will create the necessary runtime
+directories located on your computer at
+<code class="docutils literal notranslate"><span class="pre">~/.cloudmesh/workflow/workflow-example</span></code>. Within this directory is a <code class="docutils literal notranslate"><span class="pre">runtime</span></code>
+directory, where all the scripts of the workflow must be placed. Compatible
+script types include shell scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, Python scripts <code class="docutils literal notranslate"><span class="pre">.py</span></code>, Jupyter
+notebooks <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>, and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code> (<code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code>
+directives are required in the Slurm script).</p>
+<p>We can utilize some scripts that are already available in the repository for
+our workflow-example. We will now use cloudmesh Shell for path expansion and
+for copying the scripts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cloudmesh.common.Shell</span> <span class="kn">import</span> <span class="n">Shell</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">cloudmesh_cc_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+    <span class="s1">&#39;~/cm/cloudmesh-cc/tests/workflow-example/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+<span class="n">scripts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;start.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;fetch-data.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;compute.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;analyze.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;end.sh&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+    <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cloudmesh_cc_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">script</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lastly, we can enable the running of these scripts by adding jobs to the
+workflow object. We can also add dependencies to tell the workflow in which
+order to run the jobs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="se">\n</span><span class="s2">progress=</span><span class="si">{progress}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;analyze.sh,end.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;compute.sh,analyze.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fetch-data.sh,compute.sh&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;start.sh,fetch-data.sh&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To test our workflow, we can run it in topological order with the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">run_topo</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The workflow will now run the jobs in a topological order and show the
+progress of the jobs in your web browser.</p>
+<p>To instead load a YAML file for the configuration of the workflow,
+use the <code class="docutils literal notranslate"><span class="pre">filename=</span></code> parameter of the instantiation of the workflow.
+The supplied parameter should be a filepath that points to the location
+of the YAML, and <code class="docutils literal notranslate"><span class="pre">load=</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>The following is the workflow-example configuration in YAML format.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    start.sh:
+       name: start.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: start.sh
+    fetch-data.sh:
+       name: fetch-data.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: fetch-data.sh
+   compute.sh:
+       name: compute.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: compute.sh
+   analyze.sh:
+       name: analyze.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: analyze.sh
+   end.sh:
+       name: end.sh
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: end.sh
+  dependencies:
+    - start.sh,fetch-data.sh,compute.sh,analyze.sh,end.sh
+</pre></div>
+</div>
+<p>The different options for kind include local, ssh, slurm, and wsl.
+The filetype, e.g. <code class="docutils literal notranslate"><span class="pre">.sh</span></code> or <code class="docutils literal notranslate"><span class="pre">.py</span></code>, is automatically inferred from the
+script.</p>
 </section>
 
 
