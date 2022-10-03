@@ -64,6 +64,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../mnist.html">MNIST Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cloudmask.html">Cloudmask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../earthquake.html">Earthquake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributors Guide</span></p>
 <ul>
@@ -116,12 +117,12 @@
 <span class="sd">    to the command.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># this is not realy that good, as we need to be able to overwrite from **data ...</span>
+    <span class="c1"># atend we want to see that values are defined, and if they have not been passed</span>
+    <span class="c1"># we create the defaults</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        # this is not realy that good, as we need to be able to overwrite from **data ...</span>
-<span class="sd">        # atend we want to see that values are defined, and if they have not been passed</span>
-<span class="sd">        # we create the defaults</span>
+<span class="sd">        Inititalize the job.</span>
 
 <span class="sd">        :param name:</span>
 <span class="sd">        :type name:</span>
