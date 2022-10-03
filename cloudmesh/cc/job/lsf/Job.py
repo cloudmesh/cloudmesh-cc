@@ -13,18 +13,20 @@ class Lsf:
 
     def __init__(self, host):
         """
-        sets locations of slurm commands for the job
+        sets locations of LSF commands for the job
 
         :param host: device that the script will be run on
         :type host: str
         """
         if host.startswith("rivanna"):
-            self.slurm = "/opt/slurm/current/bin"
-            self.squeue = f"{self.slurm}/squeue"
-            self.sbatch = f"{self.slurm}/sbatch"
-            self.srun = f"{self.slurm}/srun"
+            Console.error("Rivanna does not use LSF but SLURM")
+
+            # self.slurm = "/opt/slurm/current/bin"
+            # self.squeue = f"{self.slurm}/squeue"
+            # self.sbatch = f"{self.slurm}/sbatch"
+            # self.srun = f"{self.slurm}/srun"
         else:
-            Console.error("Slurm not yet set up for this host")
+            Console.error("LSF not yet set up for this host")
 
 
 class Job:
@@ -79,7 +81,7 @@ class Job:
         if self.directory is None:
             self.directory = f'~/experiment/{self.name}'
 
-        self.slurm = Slurm(self.host)
+        self.slurm = Lsf(self.host)
 
     def __str__(self):
         """
