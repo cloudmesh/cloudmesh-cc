@@ -85,11 +85,6 @@
              
   <section id="guide-to-cloudmesh-cc-workflow">
 <h1>Guide to cloudmesh cc Workflow<a class="headerlink" href="#guide-to-cloudmesh-cc-workflow" title="Permalink to this heading"></a></h1>
-<p>The Workflow class in cloudmesh-cc allows the creation of workflows, which are
-compilations of jobs to be run on nodes. These workflows report information on
-the status of jobs as they are run, whether locally or remotely. These jobs
-can be customized to run as bash scripts, Python scripts, Jupyter notebooks,
-or Slurm scripts.</p>
 <p>Users can utilize the Workflow class in three different ways: through the
 command line interface, through a locally hosted web interface with FastAPI,
 or with REST API.</p>
@@ -106,39 +101,6 @@ interface, Python, browser GUI through local FastAPI server, or REST
 interface through local FastAPI server.</p>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
-<p>Downloading the code is relatively simple. We leverage the cloudmesh-installer
-to locally install the cloudmesh suite of repositories.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/cm
-<span class="nb">cd</span> ~/cm
-pip install cloudmesh-installer -U
-cloudmesh-installer get cc
-</pre></div>
-</div>
-<section id="windows">
-<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this heading"></a></h3>
-<p>Git Bash and Graphviz must be installed. The user can use Chocolatey run as
-an administrator for convenience:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>choco install git.install --params <span class="s2">&quot;/GitAndUnixToolsOnPath \</span>
-<span class="s2">        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf&quot;</span> -y
-choco install graphviz -y
-</pre></div>
-</div>
-</section>
-<section id="macos">
-<h3>macOS<a class="headerlink" href="#macos" title="Permalink to this heading"></a></h3>
-<p>Graphviz must be installed. The user can use Homebrew for convenience:</p>
-<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>brew install graphviz
-</pre></div>
-</div>
-</section>
-<section id="linux">
-<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this heading"></a></h3>
-<p>Graphviz is included in a normal Ubuntu installation, but the user should
-install Graphviz if not on the machine with the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install graphviz
-</pre></div>
-</div>
-</section>
 </section>
 <section id="a-use-workflow-class-in-python-code">
 <h2>A. Use Workflow Class in Python Code<a class="headerlink" href="#a-use-workflow-class-in-python-code" title="Permalink to this heading"></a></h2>

@@ -47,7 +47,12 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">What Is Cloudmesh cc?</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux">Linux</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
@@ -77,7 +82,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>Installation</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/installation.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/installation.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -87,7 +92,39 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
-<p>TBD</p>
+<p>Installation is relatively simple. We leverage the cloudmesh-installer
+to locally install the cloudmesh suite of repositories.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/cm
+<span class="nb">cd</span> ~/cm
+pip install cloudmesh-installer -U
+cloudmesh-installer get cc
+</pre></div>
+</div>
+<section id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this heading"></a></h2>
+<p>Git Bash and Graphviz must be installed. The user can use Chocolatey run as
+an administrator for convenience:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>choco install git.install --params <span class="s2">&quot;/GitAndUnixToolsOnPath \</span>
+<span class="s2">        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf&quot;</span> -y
+choco install graphviz -y
+</pre></div>
+</div>
+</section>
+<section id="macos">
+<h2>macOS<a class="headerlink" href="#macos" title="Permalink to this heading"></a></h2>
+<p>Graphviz must be installed. The user can use Homebrew for convenience:</p>
+<div class="highlight-zsh notranslate"><div class="highlight"><pre><span></span>brew install graphviz
+</pre></div>
+</div>
+</section>
+<section id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this heading"></a></h2>
+<p>Graphviz is included in a normal Ubuntu installation, but the user should
+install Graphviz if not on the machine with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install graphviz
+</pre></div>
+</div>
+</section>
 </section>
 
 
