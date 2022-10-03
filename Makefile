@@ -163,7 +163,7 @@ log:
 man:
 	cms help cc | fgrep -v "# Timer" > tmp.rst
 	sed '1,/^====/d' tmp.rst > tmp1.rst
-	cat docs/source/commandline.rst > tmp.rst
+	cat docs/source/commandline.rst.in > tmp.rst
 	cat tmp.rst tmp1.rst > man_cc.rst
 ifeq ($(detected_OS),Windows)
 	cp man_cc.rst docs/source/man_cc.rst
