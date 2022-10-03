@@ -30,11 +30,8 @@ live status updates.
    :maxdepth: 1
    :caption: API
 
-   cloudmesh
    api
-   modules
    openapi
-
 
 .. toctree::
    :maxdepth: 1
