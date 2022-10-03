@@ -161,21 +161,7 @@ log:
 ######################################################################
 
 man:
-	cms help cc | fgrep -v "# Timer" > tmp.rst
-	sed '1,/^====/d' tmp.rst > tmp1.rst
-	cat docs/source/commandline.rst.in > tmp.rst
-	cat tmp.rst tmp1.rst > man_cc.rst
-ifeq ($(detected_OS),Windows)
-	cp man_cc.rst docs/source/man_cc.rst
-endif
-ifeq ($(detected_OS),Darwin)
-	rsync -av man_cc.rst docs/source/man_cc.rst
-endif
-ifeq ($(detected_OS),Linux)
-	rsync -av man_cc.rst docs/source/man_cc.rst
-endif
-	rm -f tmp.rst tmp1.rst
-
+	cd docs; make man
 
 #manpages:
 #	#cp README.md api/source/readme.md

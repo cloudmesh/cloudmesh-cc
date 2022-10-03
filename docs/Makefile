@@ -10,7 +10,7 @@ BUILDDIR      = build
 
 man:
 	mkdir -p source/manual
-	cms help cc | grep -v "# Timer" > source/manual/cc.rst
+	cms help cc | grep -v "# Timer" | grep -v "patch enabled so applying the patch" | grep -v "Alpha Channel fix" > source/manual/cc.rst
 
 # Put it first so that "make" without argument is like "make help".
 help:
