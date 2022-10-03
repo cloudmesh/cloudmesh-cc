@@ -28,11 +28,11 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements-dev.txt
         python -m pip install -r requirements.txt
-        python -m pip install cloudmesh-installer
-        cloudmesh-installer get cc
         python -m pip install -e .
         cms help
         mkdir -p /home/runner/.cloudmesh/workflow
+        echo $USER
+        echo $HOME
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

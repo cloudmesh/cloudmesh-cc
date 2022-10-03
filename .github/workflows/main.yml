@@ -18,13 +18,14 @@ jobs:
        
       - name: Install cloudmesh-cc
         run: |
+          python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-dev.txt
-          python -m pip install cloudmesh-installer
-          cloudmesh-installer get cc
           python -m pip install -e .
           cms help
           mkdir -p /home/runner/.cloudmesh/workflow
+          echo $USER
+          echo $HOME
       # Runs a set of commands using the runners shell
       - name: Build Sphinx Site
         run: |
