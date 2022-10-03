@@ -4,7 +4,6 @@ import json
 import os
 import posixpath
 import threading
-import time
 from collections import Counter
 from pathlib import Path
 from pprint import pprint
@@ -13,16 +12,14 @@ import markdown
 import networkx as nx
 import pandas as pd
 import pkg_resources
+import time
 import yaml
-from cloudmesh.common.Printer import Printer
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.util import writefile, readfile
-from cloudmesh.common.variables import Variables
 from fastapi import FastAPI, Query
 from fastapi import Request, Form
-from fastapi.responses import FileResponse, StreamingResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse
+from fastapi.responses import RedirectResponse
+from fastapi.responses import Response
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -31,6 +28,12 @@ from sse_starlette.sse import EventSourceResponse
 from cloudmesh.cc.__version__ import version as cm_version
 from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
+from cloudmesh.common.Printer import Printer
+from cloudmesh.common.Shell import Shell
+from cloudmesh.common.console import Console
+from cloudmesh.common.util import path_expand
+from cloudmesh.common.util import writefile, readfile
+from cloudmesh.common.variables import Variables
 
 """
 all the URLs.
@@ -242,7 +245,10 @@ async def image_watcher(request, name_of_workflow: str):
         if current_timestamp != placeholder_timestamp:
             placeholder_timestamp = current_timestamp
             try:
-                svg = '\n'.join(Shell.find_lines_between(readfile(runtime_graph_file).splitlines(), r'<svg', r'</svg>'))
+                svg = '\n'.join(
+                    Shell.find_lines_between(readfile(runtime_graph_file).splitlines(),
+                                             r'<svg',
+                                             r'</svg>'))
             except:  # noqa: E722
                 pass
             yield svg

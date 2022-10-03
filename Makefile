@@ -25,8 +25,10 @@ source:
 	pip install -e . -U
 
 flake8:
-	cd ..; flake8 --max-line-length 124 --ignore=E722 cloudmesh-$(package)/cloudmesh
-	cd ..; flake8 --max-line-length 124 --ignore=E722 cloudmesh-$(package)/tests
+	flake8 cloudmesh
+
+#cd ..; flake8 --max-line-length 124 --ignore=E722 cloudmesh-$(package)/cloudmesh
+#cd ..; flake8 --max-line-length 124 --ignore=E722 cloudmesh-$(package)/tests
 
 pylint:
 	cd ..; pylint --rcfile=cloudmesh-$(package)/.pylintrc  cloudmesh-$(package)/cloudmesh
