@@ -21,7 +21,7 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-dev.txt
           python -m pip install cloudmesh-installer
-          python -m pip install cloudmesh-installer get cc
+          cloudmesh-installer get cc
           python -m pip install -e .
           cms help
       # Runs a set of commands using the runners shell
