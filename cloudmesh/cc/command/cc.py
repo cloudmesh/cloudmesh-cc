@@ -1,3 +1,4 @@
+"""Cloudmesh CcCommand."""
 import os
 
 import pkg_resources
@@ -14,24 +15,9 @@ from cloudmesh.shell.command import command
 from cloudmesh.shell.command import map_parameters
 
 
-# TODO: these imports needs to be put in where it is needed.
-#  It is not supposed to be a global import
-
-
-# if kind == "remote":
-#     from cloudmesh.cc.job.ssh.Job import Job
-#
-# elif kind == "slurm":
-#     from cloudmesh.cc.job.slurm.Job import Job
-#
-# elif kind =="localhost":
-#     from cloudmesh.cc.job.local.Job import Job
-#
-# else:
-#     Console.error("kind not supported")
-
 # noinspection PyShadowingNames,HttpUrlsUsage
 class CcCommand(PluginCommand):
+    """cms cc command."""
 
     # noinspection PyUnusedLocal,PyShadowingNames,HttpUrlsUsage
     @command

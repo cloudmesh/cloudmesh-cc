@@ -2,7 +2,7 @@ Cloudmesh cc
 ============
 
 .. autosummary::
-   :toctree: generated
+   :toctree:
 
    cloudmesh.cc
 
