@@ -163,35 +163,11 @@ log:
 man:
 	cd docs; make man
 
-#manpages:
-#	#cp README.md api/source/readme.md
-#	#cp QUICKSTART.md api/source/quickstart.md
-#	pandoc README.md -F pandoc-crossref --citeproc -o api/source/readme.rst
-#	pandoc QUICKSTART.md -F pandoc-crossref --citeproc -o api/source/quickstart.rst
-#ifeq ($(detected_OS),Windows)
-#	rm -rf ./api/source/images
-#	mkdir ./api/source/images
-#	cp ./images/* ./api/source/images
-#	#xcopy .\images .\api\source\images /s /e /h /l /i /y
-#endif
-#ifeq ($(detected_OS),Darwin)
-#	rsync -av images api/source
-#endif
-#ifeq ($(detected_OS),Linux)
-#	rsync -av images api/source
-#endif
-
 requirements-dev:
 	pip install -r requirements-dev.txt
 
-#doc: requirements-dev man
-#	cd api; sphinx-apidoc ../cloudmesh -o source
-#	cd api/source; sphinx-autogen -o generated *.rst
-#	cd api; make html
-
 doc: requirements-dev man
 	cd docs; sphinx-apidoc ../cloudmesh -o source
-	#cd docs/source; sphinx-autogen -o generated *.rst
 	cd docs; make html
 
 
