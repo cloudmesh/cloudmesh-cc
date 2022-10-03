@@ -9,6 +9,7 @@ cloudmesh-progress
 #
 #    pip-compile setup.py
 #
+psutil
 yamldb
 docker-compose
 networkx[default]
@@ -25,4 +26,4 @@ pywin32; platform_system == "Windows"
 sse-starlette
 ipython
 ipykernel
-psutil; platform_system == "Windows"
+

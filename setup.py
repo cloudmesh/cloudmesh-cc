@@ -34,6 +34,7 @@ cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
+psutil
 yamldb
 docker-compose
 networkx[default]
@@ -52,7 +53,6 @@ ipykernel
 
 if os_is_windows():
     requiers.append('pywin32')
-    requiers.append('psutil')
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 
@@ -89,8 +89,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     install_requires=requiers,
     tests_require=[
