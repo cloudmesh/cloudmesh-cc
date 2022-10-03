@@ -23,6 +23,7 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install -e .
           cms help
+          make doc
           mkdir -p /home/runner/.cloudmesh/workflow
 
       - name: Environment
