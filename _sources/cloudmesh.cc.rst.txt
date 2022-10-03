@@ -1,72 +1,40 @@
-cloudmesh.cc package
-====================
+﻿cloudmesh.cc
+============
 
-Subpackages
------------
+.. automodule:: cloudmesh.cc
 
-.. toctree::
-   :maxdepth: 4
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
 
    cloudmesh.cc.command
    cloudmesh.cc.db
+   cloudmesh.cc.hostdata
    cloudmesh.cc.job
+   cloudmesh.cc.labelmaker
+   cloudmesh.cc.manager
+   cloudmesh.cc.queue
    cloudmesh.cc.service
+   cloudmesh.cc.workflow
+   cloudmesh.cc.workflowrest
 
-Submodules
-----------
-
-cloudmesh.cc.hostdata module
-----------------------------
-
-.. automodule:: cloudmesh.cc.hostdata
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.labelmaker module
-------------------------------
-
-.. automodule:: cloudmesh.cc.labelmaker
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.manager module
----------------------------
-
-.. automodule:: cloudmesh.cc.manager
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.queue module
--------------------------
-
-.. automodule:: cloudmesh.cc.queue
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.workflow module
-----------------------------
-
-.. automodule:: cloudmesh.cc.workflow
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.workflowrest module
---------------------------------
-
-.. automodule:: cloudmesh.cc.workflowrest
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: cloudmesh.cc
-   :members:
-   :undoc-members:
-   :show-inheritance:

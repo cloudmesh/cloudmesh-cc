@@ -1,29 +1,32 @@
-cloudmesh.cc.service package
-============================
-
-Submodules
-----------
-
-cloudmesh.cc.service.queue\_service module
-------------------------------------------
-
-.. automodule:: cloudmesh.cc.service.queue_service
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.service.service module
------------------------------------
-
-.. automodule:: cloudmesh.cc.service.service
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
+cloudmesh.cc.service
+====================
 
 .. automodule:: cloudmesh.cc.service
-   :members:
-   :undoc-members:
-   :show-inheritance:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   cloudmesh.cc.service.queue_service
+   cloudmesh.cc.service.service
+

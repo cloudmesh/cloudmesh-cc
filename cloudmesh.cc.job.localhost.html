@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.job.localhost package &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>cloudmesh.cc.job.localhost &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -24,7 +24,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cloudmesh.cc.job.localhost.Job" href="cloudmesh.cc.job.localhost.Job.html" />
+    <link rel="prev" title="cloudmesh.cc.job.AbstractJob" href="cloudmesh.cc.job.AbstractJob.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,8 +59,33 @@
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloudmesh.html">cloudmesh package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.command.html">cloudmesh.cc.command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.hostdata.html">cloudmesh.cc.hostdata</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="cloudmesh.cc.job.html">cloudmesh.cc.job</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.AbstractJob.html">cloudmesh.cc.job.AbstractJob</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cloudmesh.cc.job.localhost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html">cloudmesh.cc.job.lsf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html">cloudmesh.cc.job.slurm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html">cloudmesh.cc.job.ssh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html">cloudmesh.cc.job.wsl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.labelmaker.html">cloudmesh.cc.labelmaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.manager.html">cloudmesh.cc.manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.queue.html">cloudmesh.cc.queue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.service.html">cloudmesh.cc.service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflow.html">cloudmesh.cc.workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflowrest.html">cloudmesh.cc.workflowrest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -87,7 +114,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>cloudmesh.cc.job.localhost package</li>
+          <li><a href="cloudmesh.html">cloudmesh package</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.html">cloudmesh.cc</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.job.html">cloudmesh.cc.job</a> &raquo;</li>
+      <li>cloudmesh.cc.job.localhost</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.cc.job.localhost.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,356 +127,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cloudmesh-cc-job-localhost-package">
-<h1>cloudmesh.cc.job.localhost package<a class="headerlink" href="#cloudmesh-cc-job-localhost-package" title="Permalink to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
-</section>
-<section id="module-cloudmesh.cc.job.localhost.Job">
-<span id="cloudmesh-cc-job-localhost-job-module"></span><h2>cloudmesh.cc.job.localhost.Job module<a class="headerlink" href="#module-cloudmesh.cc.job.localhost.Job" title="Permalink to this heading"></a></h2>
-<p>Submit a job to the local host.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to submit a job to the local host. Supported operating systems:</p>
-<ul class="simple">
-<li><p>Linux</p></li>
-<li><p>MacOS</p></li>
-<li><p>Windows.</p></li>
-</ul>
-<p>cms set username=abc123</p>
-<p>creates a job by passing either a dict with **dict or named arguments
-attribute1 = value1, …</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.chmod">
-<span class="sig-name descname"><span class="pre">chmod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.chmod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.chmod" title="Permalink to this definition"></a></dt>
-<dd><p>changes the permissions and flags of the script to be
-run (shell or py file, ipynb not yet supported) so that
-the system can successfully execute the script</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>0 or 1 depending on success of command</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.clear" title="Permalink to this definition"></a></dt>
-<dd><p>clears all leftover log files from past runs</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>does not return anything</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.create">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.create" title="Permalink to this definition"></a></dt>
-<dd><p>creates a template
-for the slurm sbatch</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – name of file that the script will be written to</p></li>
-<li><p><strong>script</strong> (<em>str</em>) – contents of script</p></li>
-<li><p><strong>exec</strong> (<em>str</em>) – command to be executed</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the contents of the script itself</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.create_script">
-<span class="sig-name descname"><span class="pre">create_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.create_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.create_script" title="Permalink to this definition"></a></dt>
-<dd><p>creates a template
-for the slurm sbatch</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>exec</strong> (<em>str</em>) – command to be executed</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>name of script</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.exists">
-<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.exists" title="Permalink to this definition"></a></dt>
-<dd><p>used to check if the file is existing within the experiment
-directory</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – the name of the script, including file extension</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the file exists and False if it doesnt</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.get_log">
-<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.get_log" title="Permalink to this definition"></a></dt>
-<dd><p>copy the log file, sync, and read the contents of the file to
-return the contents as a string</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to copy the log file in case of changes</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the contents of the log file in string format</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.get_pid">
-<span class="sig-name descname"><span class="pre">get_pid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.get_pid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.get_pid" title="Permalink to this definition"></a></dt>
-<dd><p>get the pid that the job is running within</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to retrieve the latest log</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the pid (process identifier)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.get_progress">
-<span class="sig-name descname"><span class="pre">get_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.get_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.get_progress" title="Permalink to this definition"></a></dt>
-<dd><p>fetch the log file of the job and read the log file to check
-for the current completeness of the job</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to copy the log file in case of changes</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>value from 0 to 100 which reflects completeness of job</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.get_status">
-<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.get_status" title="Permalink to this definition"></a></dt>
-<dd><p>fetches the log file of the job and returns the status of
-the job, which can be undefined, running, or done</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to copy the log file in case of changes</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>returns status, which is the progress of the job</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.kill">
-<span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.kill" title="Permalink to this definition"></a></dt>
-<dd><p>kills the job</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>period</strong> (<em>float</em>) – interval to use for waiting for log/pid</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>pid - process identifier as str</p></li>
-<li><p>child - child process as str</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.mkdir_experimentdir">
-<span class="sig-name descname"><span class="pre">mkdir_experimentdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.mkdir_experimentdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.mkdir_experimentdir" title="Permalink to this definition"></a></dt>
-<dd><p>creates experiment directory to contain job files such as
-yaml file, log file, and pertinent script to be run
-like sh script or ipynb or py</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>does not return anything</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.run" title="Permalink to this definition"></a></dt>
-<dd><p>runs the job by making script executable and running the
-script locally. only works for shell scripts, as .sh is
-hardcoded within the commands</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>0 if successfully run and 1 if failed</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.script_type">
-<span class="sig-name descname"><span class="pre">script_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.script_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.script_type" title="Permalink to this definition"></a></dt>
-<dd><p>Uses the inputted name of script to return the
-corresponding file extension that is run, such as
-shell script, jupyter notebook, or python file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> – the name of the script</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>file extension of script</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.status">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.status" title="Permalink to this definition"></a></dt>
-<dd><p>exactly the same as get_status but duplicated to provide as
-a shortened-named, alternative call</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the status of job</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.sync">
-<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.sync" title="Permalink to this definition"></a></dt>
-<dd><p>copies the shell script to the experiment directory and
-ensures that the file is copied with the sync command</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>0 or 1 depending on success of command</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Job.Job.watch">
-<span class="sig-name descname"><span class="pre">watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Job.html#Job.watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Job.Job.watch" title="Permalink to this definition"></a></dt>
-<dd><p>waits and watches for progress to reach 100, on interval basis
-specified in the period in seconds,
-till the job has completed</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>period</strong> (<em>float</em>) – time in seconds to check, as an interval</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>does not return anything</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-cloudmesh.cc.job.localhost.Queue">
-<span id="cloudmesh-cc-job-localhost-queue-module"></span><h2>cloudmesh.cc.job.localhost.Queue module<a class="headerlink" href="#module-cloudmesh.cc.job.localhost.Queue" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Queue.Queue">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Queue.html#Queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Queue.Queue" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Queue.Queue.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tbd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Queue.html#Queue.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Queue.Queue.add" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Queue.Queue.cancel">
-<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Queue.html#Queue.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Queue.Queue.cancel" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Queue.Queue.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Queue.html#Queue.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Queue.Queue.list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.localhost.Queue.Queue.status">
-<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/localhost/Queue.html#Queue.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.localhost.Queue.Queue.status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-cloudmesh.cc.job.localhost">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cloudmesh.cc.job.localhost" title="Permalink to this heading"></a></h2>
-</section>
+  <section id="module-cloudmesh.cc.job.localhost">
+<span id="cloudmesh-cc-job-localhost"></span><h1>cloudmesh.cc.job.localhost<a class="headerlink" href="#module-cloudmesh.cc.job.localhost" title="Permalink to this heading"></a></h1>
+<p class="rubric">Modules</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.job.localhost.Job.html#module-cloudmesh.cc.job.localhost.Job" title="cloudmesh.cc.job.localhost.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.localhost.Job</span></code></a></p></td>
+<td><p>Submit a job to the local host.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cloudmesh.cc.job.localhost.Queue.html#module-cloudmesh.cc.job.localhost.Queue" title="cloudmesh.cc.job.localhost.Queue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.localhost.Queue</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cloudmesh.cc.job.AbstractJob.html" class="btn btn-neutral float-left" title="cloudmesh.cc.job.AbstractJob" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.cc.job.localhost.Job.html" class="btn btn-neutral float-right" title="cloudmesh.cc.job.localhost.Job" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

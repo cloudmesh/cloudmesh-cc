@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.job.wsl &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>cloudmesh.cc.job.AbstractJob &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="cloudmesh.cc.job.wsl.Job" href="cloudmesh.cc.job.wsl.Job.html" />
-    <link rel="prev" title="cloudmesh.cc.job.ssh.Queue" href="cloudmesh.cc.job.ssh.Queue.html" /> 
+    <link rel="next" title="cloudmesh.cc.job.localhost" href="cloudmesh.cc.job.localhost.html" />
+    <link rel="prev" title="cloudmesh.cc.job" href="cloudmesh.cc.job.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -67,12 +67,12 @@
 <li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.hostdata.html">cloudmesh.cc.hostdata</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="cloudmesh.cc.job.html">cloudmesh.cc.job</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.AbstractJob.html">cloudmesh.cc.job.AbstractJob</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cloudmesh.cc.job.AbstractJob</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html">cloudmesh.cc.job.localhost</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html">cloudmesh.cc.job.lsf</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html">cloudmesh.cc.job.slurm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html">cloudmesh.cc.job.ssh</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cloudmesh.cc.job.wsl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html">cloudmesh.cc.job.wsl</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.labelmaker.html">cloudmesh.cc.labelmaker</a></li>
@@ -117,9 +117,9 @@
           <li><a href="cloudmesh.html">cloudmesh package</a> &raquo;</li>
           <li><a href="cloudmesh.cc.html">cloudmesh.cc</a> &raquo;</li>
           <li><a href="cloudmesh.cc.job.html">cloudmesh.cc.job</a> &raquo;</li>
-      <li>cloudmesh.cc.job.wsl</li>
+      <li>cloudmesh.cc.job.AbstractJob</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.cc.job.wsl.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.cc.job.AbstractJob.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -127,17 +127,61 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-cloudmesh.cc.job.wsl">
-<span id="cloudmesh-cc-job-wsl"></span><h1>cloudmesh.cc.job.wsl<a class="headerlink" href="#module-cloudmesh.cc.job.wsl" title="Permalink to this heading"></a></h1>
-<p class="rubric">Modules</p>
+  <section id="module-cloudmesh.cc.job.AbstractJob">
+<span id="cloudmesh-cc-job-abstractjob"></span><h1>cloudmesh.cc.job.AbstractJob<a class="headerlink" href="#module-cloudmesh.cc.job.AbstractJob" title="Permalink to this heading"></a></h1>
+<p>Abstract job.</p>
+<p>The Job class creates a simple job that can be executed asynchronously
+on a computer. The status of the job is managed through
+a number of files that can be quered to identify its execution state.</p>
+<p>A job can be created as follows</p>
+<blockquote>
+<div><dl class="simple">
+<dt>job = Job(name=f”job1”,</dt><dd><p>command=”./test.sh”,
+user=”user”,
+host=”host”)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>it will create an experiment directory where the job specification is
+located. To run it, it needs first to be syncronized and copied to the
+remote host</p>
+<blockquote>
+<div><p>job.sync()</p>
+</div></blockquote>
+<p>After this we can run it with</p>
+<blockquote>
+<div><p>job.run()</p>
+</div></blockquote>
+<p>Please note the the job runs asynchronously and you can probe its state with</p>
+<blockquote>
+<div><p>job.status</p>
+</div></blockquote>
+<p>Note this is a property and not a function for the user. The final
+state is called “end”. Users can define their onw states and add them
+to the log file so custom actions could be called.</p>
+<p>To retrieve the CURRENT log file as a string you can use the functions</p>
+<blockquote>
+<div><p>job.get_log()</p>
+</div></blockquote>
+<p>To retrieve the CURRENT error file as a string you can use the functions</p>
+<blockquote>
+<div><p>job.get_error()</p>
+</div></blockquote>
+<p>To get the pid on the remote machine we can use</p>
+<blockquote>
+<div><p>job.pid</p>
+</div></blockquote>
+<p>Note that prior to running the command job.run(), the variable job.pid has
+the value None</p>
+<p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.job.wsl.Job.html#module-cloudmesh.cc.job.wsl.Job" title="cloudmesh.cc.job.wsl.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.wsl.Job</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractJob</span></code>(**argv)</p></td>
+<td><p>creates a job by passing either a dict with **dict or named arguments attribute1 = value1, ...</p></td>
 </tr>
 </tbody>
 </table>
@@ -147,8 +191,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cloudmesh.cc.job.ssh.Queue.html" class="btn btn-neutral float-left" title="cloudmesh.cc.job.ssh.Queue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cloudmesh.cc.job.wsl.Job.html" class="btn btn-neutral float-right" title="cloudmesh.cc.job.wsl.Job" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cloudmesh.cc.job.html" class="btn btn-neutral float-left" title="cloudmesh.cc.job" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.cc.job.localhost.html" class="btn btn-neutral float-right" title="cloudmesh.cc.job.localhost" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

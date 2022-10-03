@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.service package &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>cloudmesh.cc.service &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -24,7 +24,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cloudmesh.cc.service.queue_service" href="cloudmesh.cc.service.queue_service.html" />
+    <link rel="prev" title="cloudmesh.cc.queue" href="cloudmesh.cc.queue.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,8 +59,29 @@
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloudmesh.html">cloudmesh package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.command.html">cloudmesh.cc.command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.hostdata.html">cloudmesh.cc.hostdata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.html">cloudmesh.cc.job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.labelmaker.html">cloudmesh.cc.labelmaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.manager.html">cloudmesh.cc.manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.queue.html">cloudmesh.cc.queue</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cloudmesh.cc.service</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.queue_service.html">cloudmesh.cc.service.queue_service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.service.service.html">cloudmesh.cc.service.service</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflow.html">cloudmesh.cc.workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflowrest.html">cloudmesh.cc.workflowrest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -87,7 +110,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>cloudmesh.cc.service package</li>
+          <li><a href="cloudmesh.html">cloudmesh package</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.html">cloudmesh.cc</a> &raquo;</li>
+      <li>cloudmesh.cc.service</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.cc.service.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,501 +122,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cloudmesh-cc-service-package">
-<h1>cloudmesh.cc.service package<a class="headerlink" href="#cloudmesh-cc-service-package" title="Permalink to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
-</section>
-<section id="module-cloudmesh.cc.service.queue_service">
-<span id="cloudmesh-cc-service-queue-service-module"></span><h2>cloudmesh.cc.service.queue_service module<a class="headerlink" href="#module-cloudmesh.cc.service.queue_service" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.queue_service.create_item">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queuename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/queue_service.html#create_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.queue_service.create_item" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.queue_service.get_queue">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/queue_service.html#get_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.queue_service.get_queue" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.queue_service.home">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/queue_service.html#home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.queue_service.home" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.queue_service.info">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/queue_service.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.queue_service.info" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</section>
-<section id="module-cloudmesh.cc.service.service">
-<span id="cloudmesh-cc-service-service-module"></span><h2>cloudmesh.cc.service.service module<a class="headerlink" href="#module-cloudmesh.cc.service.service" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Jobpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#Jobpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.host">
-<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.host" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.kind">
-<span class="sig-name descname"><span class="pre">kind</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.kind" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.label">
-<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.label" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.name" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.parent">
-<span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.parent" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.pid">
-<span class="sig-name descname"><span class="pre">pid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.pid" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.progress">
-<span class="sig-name descname"><span class="pre">progress</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.progress" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.script">
-<span class="sig-name descname"><span class="pre">script</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.script" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.status">
-<span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.Jobpy.user">
-<span class="sig-name descname"><span class="pre">user</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cloudmesh.cc.service.service.Jobpy.user" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.about_page">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">about_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#about_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.about_page" title="Permalink to this definition"></a></dt>
-<dd><p>page that lists readme as html</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>about page</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.add_job">
-<span class="sig-name descname"><span class="pre">add_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#add_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.add_job" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>This command adds a node to a workflow. with the specified arguments. A check</dt><dd><p>is returned and the user is alerted if arguments are missing
-arguments are passed in ATTRIBUTE=VALUE fashion.
-if the name of the workflow is omitted, the default workflow is used.
-If no job name is specified, an automated number that is kept in the
-config.yaml file will be used and the name will be job-n</p>
-</dd>
-</dl>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel">http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name_of_workflow</strong> (<em>str</em>) – the name of the workflow</p></li>
-<li><p><strong>job</strong> (<a class="reference internal" href="#cloudmesh.cc.service.service.Jobpy" title="cloudmesh.cc.service.service.Jobpy"><em>Jobpy</em></a>) – the specifications and characteristics of the job</p></li>
-<li><p><strong>user</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>host</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>kind</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>status</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>script</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>exec</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>progress</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>label</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>parent</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>returns jobs within the specified workflow</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.contact_page">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">contact_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#contact_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.contact_page" title="Permalink to this definition"></a></dt>
-<dd><p>page that lists contact information</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>contact page</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.datatable_server">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">datatable_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#datatable_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.datatable_server" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.delete_workflow">
-<span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#delete_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.delete_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>deletes the job in the specified workflow if specified.
-If the job is not specified, it deletes entire workflow.</p>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘DELETE’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – name of the job</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>success or failure message</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.delete_workflow_direct_url">
-<span class="sig-name descname"><span class="pre">delete_workflow_direct_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#delete_workflow_direct_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.delete_workflow_direct_url" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.dict_of_available_workflows">
-<span class="sig-name descname"><span class="pre">dict_of_available_workflows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#dict_of_available_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.dict_of_available_workflows" title="Permalink to this definition"></a></dt>
-<dd><p>looks inside ~/.cloudmesh/workflow directory
-for available workflows and returns them
-as initialized workflows inside a dict
-:return: available workflows as dict
-:rtype: dict</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.done_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">done_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#done_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.done_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.edit_workflow_direct_url">
-<span class="sig-name descname"><span class="pre">edit_workflow_direct_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#edit_workflow_direct_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.edit_workflow_direct_url" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.failed_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">failed_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#failed_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.failed_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.generate_example_workflow">
-<span class="sig-name descname"><span class="pre">generate_example_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#generate_example_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.generate_example_workflow" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_available_workflows">
-<span class="sig-name descname"><span class="pre">get_available_workflows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_available_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_available_workflows" title="Permalink to this definition"></a></dt>
-<dd><p>returns workflow dirs found in .cloudmesh directory
-:return: names of workflows found
-:rtype: list</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_workflow">
-<span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves a job in a workflow, if specified. if not specified,
-retrieves an entire workflow</p>
-<p>you need to have first uploaded the workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>) – </p></li>
-<li><p><strong>name</strong> (<em>str</em>) – name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – name of the job</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – how to print workflow. can be html or table</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>success or failure message</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_workflow_graph">
-<span class="sig-name descname"><span class="pre">get_workflow_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow_graph" title="Permalink to this definition"></a></dt>
-<dd><p>see the graph embedded within web interface</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<em>Request</em>) – type of request (api does this automatically in browser)</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – name of workflow to retrieve the graph for</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>html page with graph</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.home_page">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">home_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#home_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.home_page" title="Permalink to this definition"></a></dt>
-<dd><p>home function that features html and
-sidebar</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>up message</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.image_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">image_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#image_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.image_watcher" title="Permalink to this definition"></a></dt>
-<dd><p>watches a svg for changes
-:return:</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.list_workflows">
-<span class="sig-name descname"><span class="pre">list_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#list_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.list_workflows" title="Permalink to this definition"></a></dt>
-<dd><p>This command returns a list of workflows that is found within
-the server.</p>
-<p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflows">http://127.0.0.1:8000/workflows</a>’         -H ‘accept: application/json’
-:return: list of workflow names</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.load_workflow">
-<span class="sig-name descname"><span class="pre">load_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_with_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#load_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.load_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>loads a workflow corresponding to given name</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
-<li><p><strong>load_with_graph</strong> – </p></li>
-<li><p><strong>load</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>loaded workflow</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow" title="cloudmesh.cc.workflow.Workflow">Workflow</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.man_page">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">man_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#man_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.man_page" title="Permalink to this definition"></a></dt>
-<dd><p>page that lists contact information</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>contact page</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.penultimate_status_watcher">
-<span class="sig-name descname"><span class="pre">penultimate_status_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#penultimate_status_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.penultimate_status_watcher" title="Permalink to this definition"></a></dt>
-<dd><p>watches a runtime yaml for status changes
-:param request:
-:type request:
-:type name_of_workflow: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param name_of_workflow:
-:type name_of_workflow:
-:return:
-:rtype:</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.preferences_post">
-<span class="sig-name descname"><span class="pre">preferences_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(False)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#preferences_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.preferences_post" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.ready_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ready_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#ready_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.ready_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.run_workflow">
-<span class="sig-name descname"><span class="pre">run_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'topo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#run_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.run_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>runs a specified workflow according to provided run type</p>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/run/workflow-example?run_type=topo">http://127.0.0.1:8000/run/workflow-example?run_type=topo</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>) – </p></li>
-<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
-<li><p><strong>run_type</strong> (<em>str</em>) – type of run, either topo or parallel</p></li>
-<li><p><strong>redirect</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>success or exception message</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.running_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">running_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#running_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.running_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_done">
-<span class="sig-name descname"><span class="pre">serve_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_done" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_failed">
-<span class="sig-name descname"><span class="pre">serve_failed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_failed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_failed" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_ready">
-<span class="sig-name descname"><span class="pre">serve_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_ready" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_running">
-<span class="sig-name descname"><span class="pre">serve_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_running" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_submitted">
-<span class="sig-name descname"><span class="pre">serve_submitted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_submitted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_submitted" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_table">
-<span class="sig-name descname"><span class="pre">serve_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_watcher">
-<span class="sig-name descname"><span class="pre">serve_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.status_returner">
-<span class="sig-name descname"><span class="pre">status_returner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#status_returner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.status_returner" title="Permalink to this definition"></a></dt>
-<dd><p>reads a runtime yaml file to return a dict of status of jobs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name_of_workflow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.submitted_watcher">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">submitted_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_workflow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#submitted_watcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.submitted_watcher" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.test_run">
-<span class="sig-name descname"><span class="pre">test_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#test_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.test_run" title="Permalink to this definition"></a></dt>
-<dd><p>creates a test queue with several different jobs
-:return: Queues object
-:rtype: Queues</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.upload">
-<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.upload" title="Permalink to this definition"></a></dt>
-<dd><p>upload a workflow to the ~/.cloudmesh/workflow directory for running
-or editing.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – path to directory with workflow files</p>
-</dd>
-</dl>
-<p>curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example">http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example</a>’         -H ‘accept: application/json’         -d ‘’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>archive</strong> (<em>str</em>) – tgz, xz, tar.gz, or tar file with workflow files</p>
-</dd>
-</dl>
-<p>curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile">http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile</a>’         -H ‘accept: application/json’         -d ‘’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>yaml</strong> (<em>str</em>) – yaml file with workflow specifications</p>
-</dd>
-</dl>
-<p>curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml">http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</a>’         -H ‘accept: application/json’         -d ‘’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>success or failure message</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cloudmesh.cc.service.service.watch_running_workflow">
-<span class="sig-name descname"><span class="pre">watch_running_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#watch_running_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.watch_running_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>page for watching a workflow that has been started</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<em>Request</em>) – type of request (api does this automatically in browser)</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>html page with updating table</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-cloudmesh.cc.service">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cloudmesh.cc.service" title="Permalink to this heading"></a></h2>
-</section>
+  <section id="module-cloudmesh.cc.service">
+<span id="cloudmesh-cc-service"></span><h1>cloudmesh.cc.service<a class="headerlink" href="#module-cloudmesh.cc.service" title="Permalink to this heading"></a></h1>
+<p class="rubric">Modules</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.service.queue_service.html#module-cloudmesh.cc.service.queue_service" title="cloudmesh.cc.service.queue_service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.service.queue_service</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cloudmesh.cc.service.service.html#module-cloudmesh.cc.service.service" title="cloudmesh.cc.service.service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.service.service</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cloudmesh.cc.queue.html" class="btn btn-neutral float-left" title="cloudmesh.cc.queue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.cc.service.queue_service.html" class="btn btn-neutral float-right" title="cloudmesh.cc.service.queue_service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

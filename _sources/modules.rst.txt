@@ -4,7 +4,7 @@ Modules Reference
 .. rubric:: Modules
 
 .. autosummary::
-   :toctree: generated
+   :toctree:
    :recursive:
 
    cloudmesh.cc

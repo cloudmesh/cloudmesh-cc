@@ -1,29 +1,32 @@
-cloudmesh.cc.job.localhost package
-==================================
-
-Submodules
-----------
-
-cloudmesh.cc.job.localhost.Job module
--------------------------------------
-
-.. automodule:: cloudmesh.cc.job.localhost.Job
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-cloudmesh.cc.job.localhost.Queue module
----------------------------------------
-
-.. automodule:: cloudmesh.cc.job.localhost.Queue
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
+cloudmesh.cc.job.localhost
+==========================
 
 .. automodule:: cloudmesh.cc.job.localhost
-   :members:
-   :undoc-members:
-   :show-inheritance:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   cloudmesh.cc.job.localhost.Job
+   cloudmesh.cc.job.localhost.Queue
+

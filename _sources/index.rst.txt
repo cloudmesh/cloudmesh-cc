@@ -30,6 +30,7 @@ live status updates.
    :maxdepth: 1
    :caption: API
 
+   cloudmesh
    prgapi
    openapi
 

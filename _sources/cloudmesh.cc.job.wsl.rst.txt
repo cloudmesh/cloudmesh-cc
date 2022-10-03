@@ -1,21 +1,31 @@
-cloudmesh.cc.job.wsl package
-============================
-
-Submodules
-----------
-
-cloudmesh.cc.job.wsl.Job module
--------------------------------
-
-.. automodule:: cloudmesh.cc.job.wsl.Job
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
+cloudmesh.cc.job.wsl
+====================
 
 .. automodule:: cloudmesh.cc.job.wsl
-   :members:
-   :undoc-members:
-   :show-inheritance:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   cloudmesh.cc.job.wsl.Job
+

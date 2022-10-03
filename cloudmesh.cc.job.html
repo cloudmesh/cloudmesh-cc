@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.job package &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>cloudmesh.cc.job &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -24,7 +24,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cloudmesh.cc.job.AbstractJob" href="cloudmesh.cc.job.AbstractJob.html" />
+    <link rel="prev" title="cloudmesh.cc.hostdata" href="cloudmesh.cc.hostdata.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,8 +59,33 @@
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloudmesh.html">cloudmesh package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="prgapi.html">Cloudmesh cc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.command.html">cloudmesh.cc.command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.hostdata.html">cloudmesh.cc.hostdata</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cloudmesh.cc.job</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.AbstractJob.html">cloudmesh.cc.job.AbstractJob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html">cloudmesh.cc.job.localhost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html">cloudmesh.cc.job.lsf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html">cloudmesh.cc.job.slurm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html">cloudmesh.cc.job.ssh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html">cloudmesh.cc.job.wsl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.labelmaker.html">cloudmesh.cc.labelmaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.manager.html">cloudmesh.cc.manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.queue.html">cloudmesh.cc.queue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.service.html">cloudmesh.cc.service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflow.html">cloudmesh.cc.workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflowrest.html">cloudmesh.cc.workflowrest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="openapi.html">OpenAPI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
@@ -87,7 +114,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>cloudmesh.cc.job package</li>
+          <li><a href="cloudmesh.html">cloudmesh package</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.html">cloudmesh.cc</a> &raquo;</li>
+      <li>cloudmesh.cc.job</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/cloudmesh.cc.job.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,402 +126,57 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cloudmesh-cc-job-package">
-<h1>cloudmesh.cc.job package<a class="headerlink" href="#cloudmesh-cc-job-package" title="Permalink to this heading"></a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.job.localhost.html">cloudmesh.cc.job.localhost package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#module-cloudmesh.cc.job.localhost.Job">cloudmesh.cc.job.localhost.Job module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.chmod"><code class="docutils literal notranslate"><span class="pre">Job.chmod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.clear"><code class="docutils literal notranslate"><span class="pre">Job.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.create"><code class="docutils literal notranslate"><span class="pre">Job.create()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.create_script"><code class="docutils literal notranslate"><span class="pre">Job.create_script()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.exists"><code class="docutils literal notranslate"><span class="pre">Job.exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_log"><code class="docutils literal notranslate"><span class="pre">Job.get_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_pid"><code class="docutils literal notranslate"><span class="pre">Job.get_pid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_progress"><code class="docutils literal notranslate"><span class="pre">Job.get_progress()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.get_status"><code class="docutils literal notranslate"><span class="pre">Job.get_status()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.kill"><code class="docutils literal notranslate"><span class="pre">Job.kill()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.mkdir_experimentdir"><code class="docutils literal notranslate"><span class="pre">Job.mkdir_experimentdir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.script_type"><code class="docutils literal notranslate"><span class="pre">Job.script_type()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.status"><code class="docutils literal notranslate"><span class="pre">Job.status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.sync"><code class="docutils literal notranslate"><span class="pre">Job.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.watch"><code class="docutils literal notranslate"><span class="pre">Job.watch()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#module-cloudmesh.cc.job.localhost.Queue">cloudmesh.cc.job.localhost.Queue module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Queue.Queue.add"><code class="docutils literal notranslate"><span class="pre">Queue.add()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Queue.Queue.cancel"><code class="docutils literal notranslate"><span class="pre">Queue.cancel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Queue.Queue.list"><code class="docutils literal notranslate"><span class="pre">Queue.list()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Queue.Queue.status"><code class="docutils literal notranslate"><span class="pre">Queue.status()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.localhost.html#module-cloudmesh.cc.job.localhost">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.job.lsf.html">cloudmesh.cc.job.lsf package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#module-cloudmesh.cc.job.lsf.Job">cloudmesh.cc.job.lsf.Job module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.chmod"><code class="docutils literal notranslate"><span class="pre">Job.chmod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.clear"><code class="docutils literal notranslate"><span class="pre">Job.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.create"><code class="docutils literal notranslate"><span class="pre">Job.create()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.exists"><code class="docutils literal notranslate"><span class="pre">Job.exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.get_log"><code class="docutils literal notranslate"><span class="pre">Job.get_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.get_pid"><code class="docutils literal notranslate"><span class="pre">Job.get_pid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.get_progress"><code class="docutils literal notranslate"><span class="pre">Job.get_progress()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.get_status"><code class="docutils literal notranslate"><span class="pre">Job.get_status()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.kill"><code class="docutils literal notranslate"><span class="pre">Job.kill()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.mkdir_experimentdir"><code class="docutils literal notranslate"><span class="pre">Job.mkdir_experimentdir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.status"><code class="docutils literal notranslate"><span class="pre">Job.status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.sync"><code class="docutils literal notranslate"><span class="pre">Job.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Job.watch"><code class="docutils literal notranslate"><span class="pre">Job.watch()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Job.Lsf"><code class="docutils literal notranslate"><span class="pre">Lsf</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#module-cloudmesh.cc.job.lsf.Queue">cloudmesh.cc.job.lsf.Queue module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Queue.Queue.add"><code class="docutils literal notranslate"><span class="pre">Queue.add()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Queue.Queue.cancel"><code class="docutils literal notranslate"><span class="pre">Queue.cancel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Queue.Queue.list"><code class="docutils literal notranslate"><span class="pre">Queue.list()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#cloudmesh.cc.job.lsf.Queue.Queue.status"><code class="docutils literal notranslate"><span class="pre">Queue.status()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.lsf.html#module-cloudmesh.cc.job.lsf">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.job.slurm.html">cloudmesh.cc.job.slurm package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#module-cloudmesh.cc.job.slurm.Job">cloudmesh.cc.job.slurm.Job module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.chmod"><code class="docutils literal notranslate"><span class="pre">Job.chmod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.clean"><code class="docutils literal notranslate"><span class="pre">Job.clean()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.clear"><code class="docutils literal notranslate"><span class="pre">Job.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.create"><code class="docutils literal notranslate"><span class="pre">Job.create()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.create_script"><code class="docutils literal notranslate"><span class="pre">Job.create_script()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.exists"><code class="docutils literal notranslate"><span class="pre">Job.exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.get_log"><code class="docutils literal notranslate"><span class="pre">Job.get_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.get_pid"><code class="docutils literal notranslate"><span class="pre">Job.get_pid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.get_progress"><code class="docutils literal notranslate"><span class="pre">Job.get_progress()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.get_status"><code class="docutils literal notranslate"><span class="pre">Job.get_status()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.kill"><code class="docutils literal notranslate"><span class="pre">Job.kill()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.mkdir_experimentdir"><code class="docutils literal notranslate"><span class="pre">Job.mkdir_experimentdir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.script_type"><code class="docutils literal notranslate"><span class="pre">Job.script_type()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.status"><code class="docutils literal notranslate"><span class="pre">Job.status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.sync"><code class="docutils literal notranslate"><span class="pre">Job.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.watch"><code class="docutils literal notranslate"><span class="pre">Job.watch()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Slurm"><code class="docutils literal notranslate"><span class="pre">Slurm</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#module-cloudmesh.cc.job.slurm.Queue">cloudmesh.cc.job.slurm.Queue module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Queue.Queue.add"><code class="docutils literal notranslate"><span class="pre">Queue.add()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Queue.Queue.cancel"><code class="docutils literal notranslate"><span class="pre">Queue.cancel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Queue.Queue.list"><code class="docutils literal notranslate"><span class="pre">Queue.list()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Queue.Queue.status"><code class="docutils literal notranslate"><span class="pre">Queue.status()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.slurm.html#module-cloudmesh.cc.job.slurm">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.job.ssh.html">cloudmesh.cc.job.ssh package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#module-cloudmesh.cc.job.ssh.Job">cloudmesh.cc.job.ssh.Job module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.chmod"><code class="docutils literal notranslate"><span class="pre">Job.chmod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.clear"><code class="docutils literal notranslate"><span class="pre">Job.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.create_script"><code class="docutils literal notranslate"><span class="pre">Job.create_script()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.exists"><code class="docutils literal notranslate"><span class="pre">Job.exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.get_log"><code class="docutils literal notranslate"><span class="pre">Job.get_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.get_pid"><code class="docutils literal notranslate"><span class="pre">Job.get_pid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.get_progress"><code class="docutils literal notranslate"><span class="pre">Job.get_progress()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.get_status"><code class="docutils literal notranslate"><span class="pre">Job.get_status()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.kill"><code class="docutils literal notranslate"><span class="pre">Job.kill()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.mkdir_experimentdir"><code class="docutils literal notranslate"><span class="pre">Job.mkdir_experimentdir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.script_type"><code class="docutils literal notranslate"><span class="pre">Job.script_type()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.status"><code class="docutils literal notranslate"><span class="pre">Job.status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.sync"><code class="docutils literal notranslate"><span class="pre">Job.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.watch"><code class="docutils literal notranslate"><span class="pre">Job.watch()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#module-cloudmesh.cc.job.ssh.Queue">cloudmesh.cc.job.ssh.Queue module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Queue.Queue.add"><code class="docutils literal notranslate"><span class="pre">Queue.add()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Queue.Queue.cancel"><code class="docutils literal notranslate"><span class="pre">Queue.cancel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Queue.Queue.list"><code class="docutils literal notranslate"><span class="pre">Queue.list()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Queue.Queue.status"><code class="docutils literal notranslate"><span class="pre">Queue.status()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.ssh.html#module-cloudmesh.cc.job.ssh">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cloudmesh.cc.job.wsl.html">cloudmesh.cc.job.wsl package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#module-cloudmesh.cc.job.wsl.Job">cloudmesh.cc.job.wsl.Job module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.chmod"><code class="docutils literal notranslate"><span class="pre">Job.chmod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.clear"><code class="docutils literal notranslate"><span class="pre">Job.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.exists"><code class="docutils literal notranslate"><span class="pre">Job.exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_log"><code class="docutils literal notranslate"><span class="pre">Job.get_log()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_pid"><code class="docutils literal notranslate"><span class="pre">Job.get_pid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_progress"><code class="docutils literal notranslate"><span class="pre">Job.get_progress()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_status"><code class="docutils literal notranslate"><span class="pre">Job.get_status()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.kill"><code class="docutils literal notranslate"><span class="pre">Job.kill()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.mkdir_experimentdir"><code class="docutils literal notranslate"><span class="pre">Job.mkdir_experimentdir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.script_type"><code class="docutils literal notranslate"><span class="pre">Job.script_type()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.status"><code class="docutils literal notranslate"><span class="pre">Job.status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.sync"><code class="docutils literal notranslate"><span class="pre">Job.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.watch"><code class="docutils literal notranslate"><span class="pre">Job.watch()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cloudmesh.cc.job.wsl.html#module-cloudmesh.cc.job.wsl">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
-</section>
-<section id="module-cloudmesh.cc.job.AbstractJob">
-<span id="cloudmesh-cc-job-abstractjob-module"></span><h2>cloudmesh.cc.job.AbstractJob module<a class="headerlink" href="#module-cloudmesh.cc.job.AbstractJob" title="Permalink to this heading"></a></h2>
-<p>Abstract job.</p>
-<p>The Job class creates a simple job that can be executed asynchronously
-on a computer. The status of the job is managed through
-a number of files that can be quered to identify its execution state.</p>
-<p>A job can be created as follows</p>
-<blockquote>
-<div><dl class="simple">
-<dt>job = Job(name=f”job1”,</dt><dd><p>command=”./test.sh”,
-user=”user”,
-host=”host”)</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>it will create an experiment directory where the job specification is
-located. To run it, it needs first to be syncronized and copied to the
-remote host</p>
-<blockquote>
-<div><p>job.sync()</p>
-</div></blockquote>
-<p>After this we can run it with</p>
-<blockquote>
-<div><p>job.run()</p>
-</div></blockquote>
-<p>Please note the the job runs asynchronously and you can probe its state with</p>
-<blockquote>
-<div><p>job.status</p>
-</div></blockquote>
-<p>Note this is a property and not a function for the user. The final
-state is called “end”. Users can define their onw states and add them
-to the log file so custom actions could be called.</p>
-<p>To retrieve the CURRENT log file as a string you can use the functions</p>
-<blockquote>
-<div><p>job.get_log()</p>
-</div></blockquote>
-<p>To retrieve the CURRENT error file as a string you can use the functions</p>
-<blockquote>
-<div><p>job.get_error()</p>
-</div></blockquote>
-<p>To get the pid on the remote machine we can use</p>
-<blockquote>
-<div><p>job.pid</p>
-</div></blockquote>
-<p>Note that prior to running the command job.run(), the variable job.pid has
-the value None</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AbstractJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>creates a job by passing either a dict with **dict or named arguments
-attribute1 = value1, …</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.get_error">
-<span class="sig-name descname"><span class="pre">get_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.get_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.get_error" title="Permalink to this definition"></a></dt>
-<dd><p>returns the content of the error file</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.get_log">
-<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.get_log" title="Permalink to this definition"></a></dt>
-<dd><p>returns the content of ths stdout file</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.get_progress">
-<span class="sig-name descname"><span class="pre">get_progress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.get_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.get_progress" title="Permalink to this definition"></a></dt>
-<dd><p>returns the current progress as reported last in the log file</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.get_status">
-<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.get_status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.probe">
-<span class="sig-name descname"><span class="pre">probe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.probe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.probe" title="Permalink to this definition"></a></dt>
-<dd><p>gets the error and log files, as well as the status
-and places it localy into</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.progress">
-<span class="sig-name descname"><span class="pre">progress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.progress" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.status">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.status" title="Permalink to this definition"></a></dt>
-<dd><p>returns the status of the job as reported in status messages in the
-log file. If additional states need to be defined they can be used as strings
-A status can be followed by a stringified dict, so that more sophisticated
-status messaged can be created:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cloudmesh status=ready</span>
-<span class="o">...</span>
-<span class="c1"># cloudmesh status=running {&quot;progress&quot;:0, &quot;result&quot;: 50}</span>
-<span class="o">...</span>
-<span class="c1"># cloudmesh status=running {&quot;progress&quot;: 25, &quot;result&quot;: 50}</span>
-<span class="o">...</span>
-<span class="c1"># cloudmesh status=failed</span>
-<span class="o">...</span>
-<span class="c1"># cloudmesh status=done</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>returns only the status string. To find other values, use
-get(attribute)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.sync">
-<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.sync" title="Permalink to this definition"></a></dt>
-<dd><p>copies the job script into the right location onto the executing host.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.AbstractJob.AbstractJob.watch">
-<span class="sig-name descname"><span class="pre">watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/AbstractJob.html#AbstractJob.watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.AbstractJob.AbstractJob.watch" title="Permalink to this definition"></a></dt>
-<dd><p>watches the status of the job and updates it based on the
-perid specified in seconds</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>period</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-cloudmesh.cc.job">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cloudmesh.cc.job" title="Permalink to this heading"></a></h2>
+  <section id="module-cloudmesh.cc.job">
+<span id="cloudmesh-cc-job"></span><h1>cloudmesh.cc.job<a class="headerlink" href="#module-cloudmesh.cc.job" title="Permalink to this heading"></a></h1>
 <p>General job class.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.Queue">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job.html#Queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.Queue" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.Queue.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tbd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job.html#Queue.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.Queue.add" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.Queue.cancel">
-<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job.html#Queue.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.Queue.cancel" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.Queue.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job.html#Queue.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.Queue.list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cloudmesh.cc.job.Queue.status">
-<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job.html#Queue.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.Queue.status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Queue</span></code>(host, queue)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Modules</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.job.AbstractJob.html#module-cloudmesh.cc.job.AbstractJob" title="cloudmesh.cc.job.AbstractJob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.AbstractJob</span></code></a></p></td>
+<td><p>Abstract job.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cloudmesh.cc.job.localhost.html#module-cloudmesh.cc.job.localhost" title="cloudmesh.cc.job.localhost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.localhost</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.job.lsf.html#module-cloudmesh.cc.job.lsf" title="cloudmesh.cc.job.lsf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.lsf</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cloudmesh.cc.job.slurm.html#module-cloudmesh.cc.job.slurm" title="cloudmesh.cc.job.slurm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.slurm</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="cloudmesh.cc.job.ssh.html#module-cloudmesh.cc.job.ssh" title="cloudmesh.cc.job.ssh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.ssh</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cloudmesh.cc.job.wsl.html#module-cloudmesh.cc.job.wsl" title="cloudmesh.cc.job.wsl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cloudmesh.cc.job.wsl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cloudmesh.cc.hostdata.html" class="btn btn-neutral float-left" title="cloudmesh.cc.hostdata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.cc.job.AbstractJob.html" class="btn btn-neutral float-right" title="cloudmesh.cc.job.AbstractJob" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
