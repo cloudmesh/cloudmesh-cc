@@ -38,13 +38,17 @@ live status updates.
     cloudmask
     earthquake
 
-* API Reference
+.. toctree::
+   :maxdepth: 1
+   :caption: API Reference
 
-* Contributors Guide
+    api
+    openapi
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Contributors Guide
 
-
-   ultimate_documentation
    readme
    quickstart
    man_cc
