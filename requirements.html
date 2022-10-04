@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guide to cloudmesh cc Workflow &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>Requirements &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -24,7 +24,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command cc" href="manual/cc.html" />
+    <link rel="prev" title="Extended Abstract" href="abstract.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="abstract.html">Extended Abstract</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
-<ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#shell-and-slurm-scripts">Shell and Slurm Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-scripts-and-jupyter-notebooks">Python Scripts and Jupyter Notebooks</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="manual/cc.html">Command cc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rest.html">REST</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rest-gui.html">REST GUI Web Browser Interface</a></li>
@@ -87,9 +94,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Guide to cloudmesh cc Workflow</li>
+      <li>Requirements</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/ultimate_documentation.md" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/requirements.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -97,38 +104,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="guide-to-cloudmesh-cc-workflow">
-<h1>Guide to cloudmesh cc Workflow<a class="headerlink" href="#guide-to-cloudmesh-cc-workflow" title="Permalink to this heading"></a></h1>
-<p>Users can utilize the Workflow class in three different ways: through the
-command line interface, through a locally hosted web interface with FastAPI,
-or with REST API.</p>
-<p>The usefulness of such Workflow class includes the ability to upload
-a mixture of different types of jobs together, including local and remote;
-Slurm and shell; Windows and Unix; and so on. It also allows for a more
-efficient job execution as opposed to manually inputting commands repeatedly
-at a terminal. For example, a one-time specification inside a YAML
-configuration file automatically sets up log generation, fetches the log,
-reports progress, resets results on rerun, and other helpful features.</p>
-<p>In this documentation, we describe the installation and methods for this class,
-as well as the four different ways to interface the class: through command line
-interface, Python, browser GUI through local FastAPI server, or REST
-interface through local FastAPI server.</p>
-<section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
-</section>
-<section id="a-use-workflow-class-in-python-code">
-<h2>A. Use Workflow Class in Python Code<a class="headerlink" href="#a-use-workflow-class-in-python-code" title="Permalink to this heading"></a></h2>
-</section>
-<section id="b-use-browser-gui-through-local-fastapi-web-server">
-<h2>B. Use Browser GUI Through Local FastAPI Web Server<a class="headerlink" href="#b-use-browser-gui-through-local-fastapi-web-server" title="Permalink to this heading"></a></h2>
-</section>
-<section id="details-about-workflow-class">
-<h2>Details about Workflow Class<a class="headerlink" href="#details-about-workflow-class" title="Permalink to this heading"></a></h2>
+  <section id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h1>
 <p>The scripts must leverage some format of cloudmesh.progress
 to run successfully. Otherwise, the Workflow class cannot tell
 if the scripts are done, breaking the functionality.</p>
 <section id="shell-and-slurm-scripts">
-<h3>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h3>
+<h2>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h2>
 <p>For shell and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, the script must contain:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# cloudmesh status=running progress=1 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
 </pre></div>
@@ -140,7 +122,7 @@ if the scripts are done, breaking the functionality.</p>
 <p>at the end of the script.</p>
 </section>
 <section id="python-scripts-and-jupyter-notebooks">
-<h3>Python Scripts and Jupyter Notebooks<a class="headerlink" href="#python-scripts-and-jupyter-notebooks" title="Permalink to this heading"></a></h3>
+<h2>Python Scripts and Jupyter Notebooks<a class="headerlink" href="#python-scripts-and-jupyter-notebooks" title="Permalink to this heading"></a></h2>
 <p>For Python scripts <code class="docutils literal notranslate"><span class="pre">.py</span></code> and Jupyter notebooks <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>,
 the script must contain an import module from
 cloudmesh.common and calls to the progress function.</p>
@@ -164,12 +146,14 @@ or end of the script, but the progress must:</p>
 </ul>
 </section>
 </section>
-</section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="abstract.html" class="btn btn-neutral float-left" title="Extended Abstract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manual/cc.html" class="btn btn-neutral float-right" title="Command cc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
