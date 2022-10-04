@@ -3,8 +3,6 @@ import os
 
 import pkg_resources
 
-# from cloudmesh.cc.hostdata import Data
-from cloudmesh.cc.queue import Queues
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.Shell import Console
 from cloudmesh.common.parameter import Parameter

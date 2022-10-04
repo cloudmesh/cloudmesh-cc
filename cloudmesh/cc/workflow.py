@@ -63,7 +63,6 @@ from cloudmesh.common.util import writefile
 from cloudmesh.common.util import readfile
 from pathlib import Path
 from yamldb import YamlDB
-from cloudmesh.cc.queue import Job
 from cloudmesh.common.console import Console
 from cloudmesh.common.DateTime import DateTime
 from cloudmesh.common.Printer import Printer
