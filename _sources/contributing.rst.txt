@@ -1,6 +1,17 @@
 Contributing
 ============
 
+GitHub
+------
+
+The code is maintained on GitHub
+
+* `GitHub Issues <https://github.com/cloudmesh/cloudmesh-cc/issues>`_
+* `GitHub Pull Requests <https://github.com/cloudmesh/cloudmesh-cc/pulls>`_
+
+Management
+----------
+
 All contributions will be done under the apache license. The code will
 be managed in open-source. Pull requests need to be made in the
 repository. The main branch is the release branch. Contributions will
@@ -21,6 +32,8 @@ of:
 
 For each pull request, the documentation is built and deployed to make
 it easier to review the changes in the pull request.
+
+
 
 Tests
 -----
