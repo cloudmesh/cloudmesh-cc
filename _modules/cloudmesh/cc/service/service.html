@@ -165,25 +165,6 @@
 <span class="n">include_in_schema_portal_tag</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<span class="c1"># def test_run():</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     creates a test queue with several different jobs</span>
-<span class="c1">#     :return: Queues object</span>
-<span class="c1">#     :rtype: Queues</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     kind = &#39;yamldb&#39;</span>
-<span class="c1">#     q = Queues(filename=&#39;~/.cloudmesh/queue/queuetest1&#39;)</span>
-<span class="c1">#     q.create(name=&#39;local&#39;)</span>
-<span class="c1">#     q.create(name=&#39;rivanna&#39;)</span>
-<span class="c1">#     q.add(name=&#39;local&#39;, job=&#39;job01&#39;, command=&#39;pwd&#39;)</span>
-<span class="c1">#     q.add(name=&#39;local&#39;, job=&#39;job02&#39;, command=&#39;ls&#39;)</span>
-<span class="c1">#     q.add(name=&#39;local&#39;, job=&#39;job03&#39;, command=&#39;hostname&#39;)</span>
-<span class="c1">#     q.add(name=&#39;rivanna&#39;, job=&#39;job04&#39;, command=&#39;pwd&#39;)</span>
-<span class="c1">#     q.add(name=&#39;rivanna&#39;, job=&#39;job05&#39;, command=&#39;ls - a&#39;)</span>
-<span class="c1">#     q.add(name=&#39;rivanna&#39;, job=&#39;job06&#39;, command=&#39;hostname&#39;)</span>
-<span class="c1">#     q.add(name=&#39;rivanna&#39;, job=&#39;job07&#39;, command=&#39;git status&#39;)</span>
-<span class="c1">#     return q</span>
-
 
 <div class="viewcode-block" id="get_available_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows">[docs]</a><span class="k">def</span> <span class="nf">get_available_workflows</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -265,29 +246,6 @@
 <span class="c1"># ROUTES</span>
 <span class="c1">#</span>
 
-<span class="c1"># # deprecated only here as example/test once working example is implemented, remove</span>
-<span class="c1"># @app.get(&quot;/item/{id}&quot;, response_class=HTMLResponse)</span>
-<span class="c1"># async def read_item(request: Request, id: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     jobs = []</span>
-<span class="c1">#     for queue in q.queues:</span>
-<span class="c1">#         for job in q.queues[queue]:</span>
-<span class="c1">#             jobs.append(q.queues[queue][job])</span>
-<span class="c1">#     order = q.queues[queue][job].keys()</span>
-<span class="c1">#     order = [word.capitalize() for word in order]</span>
-<span class="c1">#     Console.error(str(order))</span>
-<span class="c1">#</span>
-<span class="c1">#     return templates.TemplateResponse(&quot;templates/item.html&quot;,</span>
-<span class="c1">#                                       {&quot;request&quot;: request,</span>
-<span class="c1">#                                        &quot;id&quot;: id,</span>
-<span class="c1">#                                        &quot;jobs&quot;: jobs,</span>
-<span class="c1">#                                        &quot;order&quot;: order})</span>
-<span class="c1">#</span>
-<span class="c1"># # deprecated only here as example/test once working example is implemented, remove</span>
-<span class="c1"># @app.get(&quot;/items&quot;, response_class=HTMLResponse)</span>
-<span class="c1"># async def item_table(request: Request):</span>
-<span class="c1">#     return templates.TemplateResponse(&quot;templates/table.html&quot;,</span>
-<span class="c1">#                                       {&quot;request&quot;: request})</span>
 
 <div class="viewcode-block" id="load_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow">[docs]</a><span class="k">def</span> <span class="nf">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load_with_graph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Workflow</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1537,107 +1495,6 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span></div>
 
-<span class="c1">#</span>
-<span class="c1"># QUEUES</span>
-<span class="c1">#</span>
-<span class="c1"># @app.get(&quot;/queues/&quot;, response_class=HTMLResponse)</span>
-<span class="c1"># async def list_queues(request: Request):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     return templates.TemplateResponse(&#39;templates/queues.html&#39;,</span>
-<span class="c1">#                                       {&quot;request&quot;: request,</span>
-<span class="c1">#                                        &quot;queues&quot;: q.queues})</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># #TODO: fix</span>
-<span class="c1"># @app.post(&quot;/queue&quot;)</span>
-<span class="c1"># async def add_queue(name: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     q.create(name=name)</span>
-<span class="c1">#     return {</span>
-<span class="c1">#         &quot;queues&quot;: q.queues</span>
-<span class="c1">#     }</span>
-<span class="c1">#</span>
-<span class="c1"># # TODO this may not be right</span>
-<span class="c1"># @app.delete(&quot;/queue/{name}&quot;)</span>
-<span class="c1"># async def delete_queue(name: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     q.remove(name)</span>
-<span class="c1">#     return {</span>
-<span class="c1">#         &quot;queues&quot;: q.queues</span>
-<span class="c1">#     }</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># #</span>
-<span class="c1"># # JOBS</span>
-<span class="c1"># #</span>
-<span class="c1">#</span>
-<span class="c1"># #TODO: fix</span>
-<span class="c1"># @app.post(&quot;/job&quot;)</span>
-<span class="c1"># async def add_job(name: str, job: str, command: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     q.add(name=name, job=job, command=command)</span>
-<span class="c1">#     return {</span>
-<span class="c1">#         &quot;jobs&quot;: q.queues[name]</span>
-<span class="c1">#     }</span>
-<span class="c1">#</span>
-<span class="c1"># # TODO this may not be right</span>
-<span class="c1"># @app.delete(&quot;/job/{queue}/{name}&quot;)</span>
-<span class="c1"># async def delete_job(name: str, queue:str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     q.remove(name)</span>
-<span class="c1">#     return {</span>
-<span class="c1">#         &quot;jobs&quot;: q.queues[name]</span>
-<span class="c1">#     }</span>
-<span class="c1">#</span>
-<span class="c1"># @app.get(&quot;/jobs/{queue}&quot;, response_class=HTMLResponse)</span>
-<span class="c1"># async def list_jobs(request: Request, queue: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     jobs = []</span>
-<span class="c1">#     for q in q.queues:</span>
-<span class="c1">#         if q == queue:</span>
-<span class="c1">#             for job in q.queues[queue]:</span>
-<span class="c1">#                 jobs.append(q.queues[queue][job])</span>
-<span class="c1">#     order = q.queues[queue][job][0:1]</span>
-<span class="c1">#     order = [word.capitalize() for word in order]</span>
-<span class="c1">#     Console.error(str(order))</span>
-<span class="c1">#</span>
-<span class="c1">#     return templates.TemplateResponse(&quot;templates/item.html&quot;,</span>
-<span class="c1">#                                       {&quot;request&quot;: request,</span>
-<span class="c1">#                                        &quot;no&quot;: no,</span>
-<span class="c1">#                                        &quot;jobs&quot;: jobs,</span>
-<span class="c1">#                                        &quot;order&quot;: order})</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># @app.get(&quot;/job/{queue}/{job}&quot;, response_class=HTMLResponse)</span>
-<span class="c1"># async def read_job(queue: str, job: str):</span>
-<span class="c1">#     global q</span>
-<span class="c1">#     result = Printer.attribute(q.queues[queue][job], output=&#39;html&#39;)</span>
-<span class="c1">#     name = q.queues[queue][job][&quot;name&quot;]</span>
-<span class="c1">#     d = f&quot;&lt;h1&gt;{name}&lt;/h1&gt;&quot;</span>
-<span class="c1">#     d += &quot;&lt;table&gt;&quot;</span>
-<span class="c1">#     d += f&quot;&lt;tr&gt; &lt;th&gt; attribute &lt;/th&gt;&lt;th&gt; value &lt;/th&gt; &lt;/tr&gt;&quot;</span>
-<span class="c1">#</span>
-<span class="c1">#     for attribute in q.queues[queue][job]:</span>
-<span class="c1">#         value = q.queues[queue][job][attribute]</span>
-<span class="c1">#         d += f&quot;&lt;tr&gt; &lt;td&gt; {attribute} &lt;/td&gt;&lt;td&gt; {value} &lt;/td&gt; &lt;/tr&gt;&quot;</span>
-<span class="c1">#     d += &quot;&lt;/table&gt;&quot;</span>
-<span class="c1">#     result = d</span>
-<span class="c1">#     print(Printer.attribute(q.queues[queue][job]))</span>
-<span class="c1">#     print(result)</span>
-<span class="c1">#</span>
-<span class="c1">#     page = f&quot;&quot;&quot;</span>
-<span class="c1">#     &lt;html&gt;</span>
-<span class="c1">#         &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css&quot;&gt;</span>
-<span class="c1">#         &lt;script type=&quot;text/javascript&quot; charset=&quot;utf8&quot; src=&quot;https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js&quot;&gt;&lt;/script&gt;</span>
-<span class="c1">#         &lt;head&gt;</span>
-<span class="c1">#             &lt;title&gt;Some HTML in here&lt;/title&gt;</span>
-<span class="c1">#         &lt;/head&gt;</span>
-<span class="c1">#         &lt;body&gt;</span>
-<span class="c1">#             {result}</span>
-<span class="c1">#         &lt;/body&gt;</span>
-<span class="c1">#     &lt;/html&gt;</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return page</span>
 </pre></div>
 
            </div>
