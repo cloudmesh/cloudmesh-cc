@@ -128,20 +128,20 @@ curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.
 </dd></dl>
 
 <dl class="http post">
-<dt class="sig sig-object http" id="post--upload">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/upload</span></span><a class="headerlink" href="#post--upload" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object http" id="post--workflow-upload">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/workflow/upload</span></span><a class="headerlink" href="#post--workflow-upload" title="Permalink to this definition"></a></dt>
 <dd><p><strong>Upload</strong></p>
 <p>upload a workflow to the ~/.cloudmesh/workflow directory for running
 or editing.
 :param directory: path to directory with workflow files
 :type directory: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example">http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example</a>’         -H ‘accept: application/json’         -d ‘’
+curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example">http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example</a>’         -H ‘accept: application/json’         -d ‘’
 :param archive: tgz, xz, tar.gz, or tar file with workflow files
 :type archive: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile">http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile</a>’         -H ‘accept: application/json’         -d ‘’
+curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile">http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile</a>’         -H ‘accept: application/json’         -d ‘’
 :param yaml: yaml file with workflow specifications
 :type yaml: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml">http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</a>’         -H ‘accept: application/json’         -d ‘’
+curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml">http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</a>’         -H ‘accept: application/json’         -d ‘’
 :return: success or failure message</p>
 <dl class="field-list simple">
 <dt class="field-odd">Query Parameters</dt>

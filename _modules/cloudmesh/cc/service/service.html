@@ -145,10 +145,10 @@
 <span class="sd">    ?html</span>
 <span class="sd">    ?dict</span>
 <span class="sd">    </span>
-<span class="sd">@app.post(&quot;/upload&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.post(&quot;/workflow/upload&quot;, tags=[&#39;workflow&#39;])</span>
 <span class="sd">@app.delete(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
 <span class="sd">@app.get(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
-<span class="sd">@app.get(&quot;/run/{name}&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.get(&quot;/workflow/run/{name}&quot;, tags=[&#39;workflow&#39;])</span>
 <span class="sd">@app.post(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -735,7 +735,7 @@
 <span class="c1"># 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3</span>
 <span class="c1"># 4.2 they are uncompressed just as if they were to do an individual upload.</span>
 <span class="c1"># name is optional because the name is determined on what is provided</span>
-<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/upload&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to workflow dir &#39;</span>
                                               <span class="s1">&#39;that contains scripts &#39;</span>
@@ -754,7 +754,7 @@
 <span class="sd">    :type directory: str</span>
 
 <span class="sd">    curl -X &#39;POST&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39; \</span>
 <span class="sd">        -d &#39;&#39;</span>
 
@@ -762,7 +762,7 @@
 <span class="sd">    :type archive: str</span>
 
 <span class="sd">    curl -X &#39;POST&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39; \</span>
 <span class="sd">        -d &#39;&#39;</span>
 
@@ -770,7 +770,7 @@
 <span class="sd">    :type yaml: str</span>
 
 <span class="sd">    curl -X &#39;POST&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39; \</span>
 <span class="sd">        -d &#39;&#39;</span>
 
@@ -892,7 +892,7 @@
 
 <span class="c1"># import requests</span>
 <span class="c1">#</span>
-<span class="c1"># url = &#39;http://127.0.0.1:8000/upload&#39;</span>
+<span class="c1"># url = &#39;http://127.0.0.1:8000/workflow/upload&#39;</span>
 <span class="c1"># file = {&#39;file&#39;: open(&#39;images/1.png&#39;, &#39;rb&#39;)}</span>
 <span class="c1"># resp = requests.post(url=url, files=file)</span>
 <span class="c1"># print(resp.json())</span>
@@ -1186,7 +1186,7 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/run/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;topo&quot;</span><span class="p">,</span>
                  <span class="n">redirect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1195,7 +1195,7 @@
 <span class="sd">    example curl:</span>
 <span class="sd">    we need to have first uploaded workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;GET&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/run/workflow-example?run_type=topo&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
 <span class="sd">    :param request:</span>

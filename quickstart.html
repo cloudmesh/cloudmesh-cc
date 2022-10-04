@@ -257,7 +257,7 @@ the previous example yaml and scripts that we copied.</p>
 <p>We can upload the archive file by using the <code class="docutils literal notranslate"><span class="pre">curl</span></code> terminal command as
 follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-  <span class="s1">&#39;http://127.0.0.1:8000/upload?archive=workflow-example.tar&#39;</span> <span class="se">\</span>
+  <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?archive=workflow-example.tar&#39;</span> <span class="se">\</span>
   -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
   -d <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -285,7 +285,7 @@ a Python enabled REST call. We will use Python requests to demonstrate
 this upload feature.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/upload?archive=workflow-example.tar&#39;</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?archive=workflow-example.tar&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
@@ -316,7 +316,7 @@ command line, via the browser GUI, and via the Python API.</p>
 <p>A workflow can be uploaded easily with a curl command from the command
 line. On the command line execute:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-  <span class="s1">&#39;http://127.0.0.1:8000/upload?directory=/tmp/workflow-example&#39;</span> <span class="se">\</span>
+  <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?directory=/tmp/workflow-example&#39;</span> <span class="se">\</span>
   -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
   -d <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -336,7 +336,7 @@ directory field and then click Execute.</p>
 python requests to demonstrate the upload of the workflow.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/upload?directory=/tmp/workflow-example&#39;</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?directory=/tmp/workflow-example&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>

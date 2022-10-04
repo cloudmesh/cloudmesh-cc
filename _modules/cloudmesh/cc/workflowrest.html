@@ -177,7 +177,7 @@
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/upload&#39;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload&#39;</span>
         <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?directory=</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">if</span> <span class="n">archive</span><span class="p">:</span>
@@ -208,7 +208,7 @@
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://127.0.0.1:8000/run/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">?type=</span><span class="si">{</span><span class="n">run_type</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://127.0.0.1:8000/workflow/run/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">?type=</span><span class="si">{</span><span class="n">run_type</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span></div>
 
