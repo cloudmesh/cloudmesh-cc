@@ -48,6 +48,7 @@ progress(progress=100, filename=filename)
 The statements do not need to be at the absolute beginning
 or end of the script, but the progress must:
 
-- be written to a filename with the same name as the script 
+- be written to a filename with the same name as the script,
+ending in `.log`
 - begin at progress=1
 - and end at progress=100
