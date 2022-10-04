@@ -31,9 +31,8 @@ brew install graphviz
 
 ## Linux
 
-Graphviz is included in a normal Ubuntu installation, but the user should
-install Graphviz if not on the machine with the following command:
+Graphviz must be installed. The user can use apt for convenience:
 
 ```bash
-sudo apt install graphviz
+sudo apt install graphviz -y
 ```
