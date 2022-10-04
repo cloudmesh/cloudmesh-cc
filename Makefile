@@ -173,6 +173,9 @@ requirements-dev:
 doc: requirements-dev man
 	cd docs; sphinx-apidoc ../cloudmesh -o source
 	cd docs; make html
+	cp openapi.html docs/build/html/openapi3.html
+	cp openapi.json docs/build/html/openapi3.json
+	cp openapi.json docs/build/html/openapi.json
 
 
 latex:
