@@ -36,19 +36,19 @@ The tests are organized as follows:
 -  ``pytest tests/test_1??_*`` will run locally but also present graphs
 
 .. todo:: in future we will likely change this and allow a test
-          variable ``cms set test_with_graph=False/True`` and if it is not
-          existent it is False. In case it is false the graohs will not be
-          displayed. but the test will be run.
-          This change will also allow tests with 1?? to be run on github
-          workflows
+   variable ``cms set test_with_graph=False/True`` and if it is not
+   existent it is False. In case it is false the graohs will not be
+   displayed. but the test will be run.
+   This change will also allow tests with 1?? to be run on github
+   workflows
 
 -  ``pytest tests/test_5??_*`` will run on remote machines and require
    at this time rivanna from UVA
 
 .. todo:: in future this test will be modified so we can specify the remote
-          user and remote host ``cms set test_remote_user=TBD``
-          ``cms set test_remote_host=TBD``. If they do not exist they will use the defualts from ssh config
-          rivanna. verify if logic is ok.
+   user and remote host ``cms set test_remote_user=TBD``
+   ``cms set test_remote_host=TBD``. If they do not exist they will use the defualts from ssh config
+   rivanna. verify if logic is ok.
 
 -  ``pytest tests/test_6??_*`` will test the rest service
 

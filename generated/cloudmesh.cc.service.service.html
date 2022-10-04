@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cloudmesh.cc.service.service &mdash; cloudmesh-cc 4.3.7 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cloudmesh.cc.workflow" href="cloudmesh.cc.workflow.html" />
+    <link rel="prev" title="cloudmesh.cc.service" href="cloudmesh.cc.service.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> cloudmesh-cc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">What Is Cloudmesh cc?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../abstract.html">Extended Abstract</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/cc.html">Command cc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rest.html">REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rest-gui.html">REST GUI Web Browser Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python.html">Python Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="cloudmesh.cc.html">cloudmesh.cc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.command.html">cloudmesh.cc.command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.db.html">cloudmesh.cc.db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.hostdata.html">cloudmesh.cc.hostdata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.job.html">cloudmesh.cc.job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.labelmaker.html">cloudmesh.cc.labelmaker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.manager.html">cloudmesh.cc.manager</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="cloudmesh.cc.service.html">cloudmesh.cc.service</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cloudmesh.cc.service.service</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflow.html">cloudmesh.cc.workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cloudmesh.cc.workflowrest.html">cloudmesh.cc.workflowrest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../openapi.html">OpenAPI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../mnist.html">MNIST Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloudmask.html">Cloudmask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earthquake.html">Earthquake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributors Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todos.html">Todo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference external" href="[https://github.com/cloudmesh/cloudmesh-cc/issues]">[https://github.com/cloudmesh/cloudmesh-cc/issues]</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cloudmesh-cc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api.html">API</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.html">cloudmesh.cc</a> &raquo;</li>
+          <li><a href="cloudmesh.cc.service.html">cloudmesh.cc.service</a> &raquo;</li>
+      <li>cloudmesh.cc.service.service</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/generated/cloudmesh.cc.service.service.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-cloudmesh.cc.service.service">
+<span id="cloudmesh-cc-service-service"></span><h1>cloudmesh.cc.service.service<a class="headerlink" href="#module-cloudmesh.cc.service.service" title="Permalink to this heading"></a></h1>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.about_page" title="cloudmesh.cc.service.service.about_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">about_page</span></code></a>(request)</p></td>
+<td><p>page that lists readme as html</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job" title="cloudmesh.cc.service.service.add_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_job</span></code></a>(name_of_workflow, job[, user, host, ...])</p></td>
+<td><p>This command adds a node to a workflow. with the specified arguments. A check</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.contact_page" title="cloudmesh.cc.service.service.contact_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contact_page</span></code></a>(request)</p></td>
+<td><p>page that lists contact information</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.datatable_server" title="cloudmesh.cc.service.service.datatable_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datatable_server</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow" title="cloudmesh.cc.service.service.delete_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_workflow</span></code></a>(name[, job])</p></td>
+<td><p>deletes the job in the specified workflow if specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url" title="cloudmesh.cc.service.service.delete_workflow_direct_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_workflow_direct_url</span></code></a>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.dict_of_available_workflows" title="cloudmesh.cc.service.service.dict_of_available_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict_of_available_workflows</span></code></a>()</p></td>
+<td><p>looks inside ~/.cloudmesh/workflow directory for available workflows and returns them as initialized workflows inside a dict :return: available workflows as dict :rtype: dict</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.done_watcher" title="cloudmesh.cc.service.service.done_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">done_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.edit_workflow_direct_url" title="cloudmesh.cc.service.service.edit_workflow_direct_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit_workflow_direct_url</span></code></a>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.failed_watcher" title="cloudmesh.cc.service.service.failed_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">failed_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.generate_example_workflow" title="cloudmesh.cc.service.service.generate_example_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_example_workflow</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows" title="cloudmesh.cc.service.service.get_available_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_available_workflows</span></code></a>()</p></td>
+<td><p>returns workflow dirs found in .cloudmesh directory :return: names of workflows found :rtype: list</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow" title="cloudmesh.cc.service.service.get_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow</span></code></a>(request, name[, job, output])</p></td>
+<td><p>retrieves a job in a workflow, if specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph" title="cloudmesh.cc.service.service.get_workflow_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow_graph</span></code></a>(request, name)</p></td>
+<td><p>see the graph embedded within web interface</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.home_page" title="cloudmesh.cc.service.service.home_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">home_page</span></code></a>(request)</p></td>
+<td><p>home function that features html and sidebar</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher" title="cloudmesh.cc.service.service.image_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p>watches a svg for changes :return:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows" title="cloudmesh.cc.service.service.list_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_workflows</span></code></a>(request[, output])</p></td>
+<td><p>This command returns a list of workflows that is found within the server.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow" title="cloudmesh.cc.service.service.load_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_workflow</span></code></a>(name[, load_with_graph, load])</p></td>
+<td><p>loads a workflow corresponding to given name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.man_page" title="cloudmesh.cc.service.service.man_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">man_page</span></code></a>(request)</p></td>
+<td><p>page that lists contact information</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher" title="cloudmesh.cc.service.service.penultimate_status_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">penultimate_status_watcher</span></code></a>(request, ...)</p></td>
+<td><p>watches a runtime yaml for status changes :param request: :type request: :type name_of_workflow: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> :param name_of_workflow: :type name_of_workflow: :return: :rtype:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_post" title="cloudmesh.cc.service.service.preferences_post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preferences_post</span></code></a>(request[, id, name, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher" title="cloudmesh.cc.service.service.ready_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ready_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow" title="cloudmesh.cc.service.service.run_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_workflow</span></code></a>(request, name[, run_type, redirect])</p></td>
+<td><p>runs a specified workflow according to provided run type</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher" title="cloudmesh.cc.service.service.running_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done" title="cloudmesh.cc.service.service.serve_done"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_done</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed" title="cloudmesh.cc.service.service.serve_failed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_failed</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready" title="cloudmesh.cc.service.service.serve_ready"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_ready</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running" title="cloudmesh.cc.service.service.serve_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_running</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted" title="cloudmesh.cc.service.service.serve_submitted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_submitted</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table" title="cloudmesh.cc.service.service.serve_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_table</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher" title="cloudmesh.cc.service.service.serve_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_watcher</span></code></a>(request, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.status_returner" title="cloudmesh.cc.service.service.status_returner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_returner</span></code></a>(name_of_workflow)</p></td>
+<td><p>reads a runtime yaml file to return a dict of status of jobs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher" title="cloudmesh.cc.service.service.submitted_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">submitted_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload" title="cloudmesh.cc.service.service.upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload</span></code></a>([directory, archive, yaml])</p></td>
+<td><p>upload a workflow to the ~/.cloudmesh/workflow directory for running or editing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow" title="cloudmesh.cc.service.service.watch_running_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watch_running_workflow</span></code></a>(request, name)</p></td>
+<td><p>page for watching a workflow that has been started</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.Jobpy" title="cloudmesh.cc.service.service.Jobpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Jobpy</span></code></a>(**data)</p></td>
+<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cloudmesh.cc.service.html" class="btn btn-neutral float-left" title="cloudmesh.cc.service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloudmesh.cc.workflow.html" class="btn btn-neutral float-right" title="cloudmesh.cc.workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gregor von Laszewski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
