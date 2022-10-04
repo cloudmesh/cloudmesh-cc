@@ -43,10 +43,10 @@ all the URLs.
     ?html
     ?dict
     
-@app.post("/upload", tags=['workflow'])
+@app.post("/workflow/upload", tags=['workflow'])
 @app.delete("/workflow/{name}", tags=['workflow'])
 @app.get("/workflow/{name}", tags=['workflow'])
-@app.get("/run/{name}", tags=['workflow'])
+@app.get("/workflow/run/{name}", tags=['workflow'])
 @app.post("/workflow/{name}", tags=['workflow'])
 """
 
@@ -633,7 +633,7 @@ def list_workflows(request: Request, output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/upload", tags=['workflow'])
+@app.post("/workflow/upload", tags=['workflow'])
 def upload(directory: str = Query(None,
                                   description='path to workflow dir '
                                               'that contains scripts '
@@ -652,7 +652,7 @@ def upload(directory: str = Query(None,
     :type directory: str
 
     curl -X 'POST' \
-        'http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
+        'http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
         -H 'accept: application/json' \
         -d ''
 
@@ -660,7 +660,7 @@ def upload(directory: str = Query(None,
     :type archive: str
 
     curl -X 'POST' \
-        'http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile' \
+        'http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile' \
         -H 'accept: application/json' \
         -d ''
 
@@ -668,7 +668,7 @@ def upload(directory: str = Query(None,
     :type yaml: str
 
     curl -X 'POST' \
-        'http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
+        'http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
         -H 'accept: application/json' \
         -d ''
 
@@ -790,7 +790,7 @@ def upload(directory: str = Query(None,
 
 # import requests
 #
-# url = 'http://127.0.0.1:8000/upload'
+# url = 'http://127.0.0.1:8000/workflow/upload'
 # file = {'file': open('images/1.png', 'rb')}
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
@@ -1084,7 +1084,7 @@ def serve_table(request: Request, name: str):
     return EventSourceResponse(event_generator)
 
 
-@app.get("/run/{name}", tags=['workflow'])
+@app.get("/workflow/run/{name}", tags=['workflow'])
 def run_workflow(request: Request, name: str, run_type: str = "topo",
                  redirect: str = None):
     """
@@ -1093,7 +1093,7 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
     example curl:
     we need to have first uploaded workflow-example for this curl to work!
     curl -X 'GET' \
-        'http://127.0.0.1:8000/run/workflow-example?run_type=topo' \
+        'http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo' \
         -H 'accept: application/json'
 
     :param request:
@@ -1198,8 +1198,7 @@ def watch_running_workflow(request: Request,
                                        "preferences": preferences})
 
 
-@app.get("/add-job/{name_of_workflow}",
-         tags=['workflow'])
+@app.get("/workflow/job/{name_of_workflow}", tags=['workflow'])
 def add_job(name_of_workflow: str,
             job: str,
             user: str = None,
@@ -1212,6 +1211,30 @@ def add_job(name_of_workflow: str,
             label: str = None,
             parent: str = None):
     """
+    This command adds a node to a workflow. with the specified arguments. A check
+    is returned and the user is alerted if arguments are missing
+    arguments are passed in ATTRIBUTE=VALUE fashion.
+    if the name of the workflow is omitted, the default workflow is used.
+    If no job name is specified, an automated number that is kept in the
+    config.yaml file will be used and the name will be job-n
+
+    **Example curl Script**
+
+    We need to have first uploaded workflow-example for this curl to work:
+
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+        -H 'accept: application/json'
+
+    Create an item with all the information:
+
+    - **TBD**: each item must have a name
+    - **TBD**: a long description
+    - **TBD**: required
+    - **TBD**: if the item doesn't have tax, you can omit this
+    - **TBD**: a set of unique tag strings for this item
+
+    
     :param name_of_workflow: the name of the workflow
     :type name_of_workflow: str
     :param job: the specifications and characteristics of the job
@@ -1237,28 +1260,6 @@ def add_job(name_of_workflow: str,
     :return: returns jobs within the specified workflow
     :rtype:
 
-    This command adds a node to a workflow. with the specified arguments. A check
-    is returned and the user is alerted if arguments are missing
-    arguments are passed in ATTRIBUTE=VALUE fashion.
-    if the name of the workflow is omitted, the default workflow is used.
-    If no job name is specified, an automated number that is kept in the
-    config.yaml file will be used and the name will be job-n
-
-    **Example curl Script**
-
-    We need to have first uploaded workflow-example for this curl to work:
-
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
-        -H 'accept: application/json'
-
-    Create an item with all the information:
-
-    - **TBD**: each item must have a name
-    - **TBD**: a long description
-    - **TBD**: required
-    - **TBD**: if the item doesn't have tax, you can omit this
-    - **TBD**: a set of unique tag strings for this item
 
     """
 
@@ -1405,3 +1406,4 @@ def generate_example_workflow(request: Request):
     print(w.yaml)
     return RedirectResponse('/home', status_code=302)
 
+B

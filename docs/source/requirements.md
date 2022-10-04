@@ -1,8 +1,14 @@
 # Requirements
 
-The scripts must leverage some format of cloudmesh.progress
-to run successfully. Otherwise, the Workflow class cannot tell
-if the scripts are done, breaking the functionality.
+When running scripts/jobs inside a workflow, the scripts must 
+leverage some format of cloudmesh.progress to run successfully. 
+Otherwise, the Workflow class cannot tell
+if the scripts are done, breaking the progress functionality.
+
+The examples that are provided with cloudmesh-cc are
+already augmented with cloudmesh.progress. Thus, if a user is
+running self-made jobs and workflows, they must adhere to the
+guidelines as follows.
 
 ## Shell and Slurm Scripts
 
@@ -42,6 +48,7 @@ progress(progress=100, filename=filename)
 The statements do not need to be at the absolute beginning
 or end of the script, but the progress must:
 
-- be written to a filename with the same name as the script 
+- be written to a filename with the same name as the script,
+ending in `.log`
 - begin at progress=1
 - and end at progress=100

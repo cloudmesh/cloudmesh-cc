@@ -124,7 +124,7 @@ follows:
 .. code:: bash
 
    curl -X 'POST' \
-     'http://127.0.0.1:8000/upload?archive=workflow-example.tar' \
+     'http://127.0.0.1:8000/workflow/upload?archive=workflow-example.tar' \
      -H 'accept: application/json' \
      -d ''
 
@@ -155,7 +155,7 @@ this upload feature.
 
    import requests
 
-   r = requests.post('http://127.0.0.1:8000/upload?archive=workflow-example.tar')
+   r = requests.post('http://127.0.0.1:8000/workflow/upload?archive=workflow-example.tar')
    print(r)
    print(r.text)
 
@@ -194,7 +194,7 @@ line. On the command line execute:
 .. code:: bash
 
    curl -X 'POST' \
-     'http://127.0.0.1:8000/upload?directory=/tmp/workflow-example' \
+     'http://127.0.0.1:8000/workflow/upload?directory=/tmp/workflow-example' \
      -H 'accept: application/json' \
      -d ''
 
@@ -222,7 +222,7 @@ python requests to demonstrate the upload of the workflow.
 
    import requests
 
-   r = requests.post('http://127.0.0.1:8000/upload?directory=/tmp/workflow-example')
+   r = requests.post('http://127.0.0.1:8000/workflow/upload?directory=/tmp/workflow-example')
    print(r)
    print(r.text)
 

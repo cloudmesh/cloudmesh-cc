@@ -37,7 +37,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /upload:
+  /workflow/upload:
     post:
       tags:
         - workflow
@@ -52,7 +52,7 @@ paths:
         :type directory: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example'        
+        'http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example'        
         -H 'accept: application/json'         -d ''
 
         :param archive: tgz, xz, tar.gz, or tar file with workflow files
@@ -60,7 +60,7 @@ paths:
         :type archive: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile'        
+        'http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile'        
         -H 'accept: application/json'         -d ''
 
         :param yaml: yaml file with workflow specifications
@@ -68,7 +68,7 @@ paths:
         :type yaml: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml'        
+        'http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml'        
         -H 'accept: application/json'         -d ''
 
         :return: success or failure message
@@ -303,7 +303,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /add-job/{name_of_workflow}:
+  /workflow/job/{name_of_workflow}:
     get:
       tags:
         - workflow
@@ -322,7 +322,7 @@ paths:
         we need to have first uploaded workflow-example for this curl to work!
 
         curl -X 'GET'        
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel'        
+        'http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel'        
         -H 'accept: application/json'
 
 

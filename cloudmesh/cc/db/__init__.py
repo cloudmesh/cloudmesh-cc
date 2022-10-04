@@ -1,1 +1,1 @@
-"""Cloudmesh cc datbase."""
+"""Cloudmesh cc database."""

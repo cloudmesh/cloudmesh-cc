@@ -35,11 +35,11 @@ DELETE. The syntax is similar but parameters are slightly different.
 The following are a list of the methods used in the service.
 
 * GET `/workflows` List Workflows
-* POST `/upload` Upload Workflow
+* POST `/workflow/upload` Upload Workflow
 * GET `/workflow/{name}` Get Workflow
 * POST `/workflow/{name}` Add Job
 * DELETE `/workflow/{name}` Delete Workflow
-* GET `/run/{name}` Run Workflow
+* GET `/workflow/run/{name}` Run Workflow
 
 To use any of these methods, you must import requests.
 
@@ -51,9 +51,9 @@ import requests
 r = requests.get("/workflows")
 print(r.json()) # prints the name of all the workflows
 
-# POST `/upload` Upload Workflow
+# POST `/workflow/upload` Upload Workflow
 files = {"file": open("{FILENAME}","rb")} # replace the file with the file name you want to use
-r = requests.post("/upload",files=files)
+r = requests.post("/workflow/upload",files=files)
 
 # GET `/workflow/{name}` Get Workflow
 r = requests.get("/workflow/{WORKFLOW_NAME}?job={JOB_NAME}") # to access a single job
@@ -80,7 +80,7 @@ r = requests.post("/workflow/{WORKFLOW_NAME}",data=job,headers=headers)
 # DELETE `/workflow/{name}` Delete Workflow
 r = requests.delete("/workflow/{WORKFLOW_NAME}")
 
-# GET `/run/{name}` Run Workflow
-r = requests.get("/run/{WORKFLOW_NAME}")
+# GET `/workflow/run/{name}` Run Workflow
+r = requests.get("/workflow/run/{WORKFLOW_NAME}")
 ```
 
