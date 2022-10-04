@@ -21,6 +21,7 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.variables import Variables
 from cloudmesh.vpn.vpn import Vpn
 from utilities import create_dest
+from utilities import set_remote_host_user
 
 create_dest()
 
@@ -31,7 +32,13 @@ variables = Variables()
 
 name = "run"
 
+# ----------------------------------
+# GET remote host from cms variables
+#
+# host, user = set_remote_host_user()
 host = "rivanna.hpc.virginia.edu"
+# ----------------------------------
+
 username = variables["username"]
 
 if username is None:

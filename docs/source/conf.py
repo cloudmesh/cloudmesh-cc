@@ -43,6 +43,7 @@ extensions.append('sphinxcontrib.openapi')
 # extensions.append('sphinxcontrib.fulltoc')
 extensions.append('sphinx_copybutton')
 
+todo_include_todos=True
 numfig=True
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
