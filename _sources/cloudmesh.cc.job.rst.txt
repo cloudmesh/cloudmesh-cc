@@ -13,17 +13,6 @@ Subpackages
    cloudmesh.cc.job.ssh
    cloudmesh.cc.job.wsl
 
-Submodules
-----------
-
-cloudmesh.cc.job.AbstractJob module
------------------------------------
-
-.. automodule:: cloudmesh.cc.job.AbstractJob
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

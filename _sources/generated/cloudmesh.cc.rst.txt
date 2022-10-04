@@ -33,7 +33,6 @@
    cloudmesh.cc.job
    cloudmesh.cc.labelmaker
    cloudmesh.cc.manager
-   cloudmesh.cc.queue
    cloudmesh.cc.service
    cloudmesh.cc.workflow
    cloudmesh.cc.workflowrest

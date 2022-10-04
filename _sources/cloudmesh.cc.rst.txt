@@ -39,14 +39,6 @@ cloudmesh.cc.manager module
    :undoc-members:
    :show-inheritance:
 
-cloudmesh.cc.queue module
--------------------------
-
-.. automodule:: cloudmesh.cc.queue
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 cloudmesh.cc.workflow module
 ----------------------------
 

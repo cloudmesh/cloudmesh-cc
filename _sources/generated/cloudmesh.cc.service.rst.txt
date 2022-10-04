@@ -27,6 +27,5 @@ cloudmesh.cc.service
    :toctree:
    :recursive:
 
-   cloudmesh.cc.service.queue_service
    cloudmesh.cc.service.service
 

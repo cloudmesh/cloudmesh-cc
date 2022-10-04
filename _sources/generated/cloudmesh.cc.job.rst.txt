@@ -13,12 +13,6 @@ cloudmesh.cc.job
 
    
    
-   .. rubric:: Classes
-
-   .. autosummary::
-   
-      Queue
-   
    
 
    
@@ -33,7 +27,6 @@ cloudmesh.cc.job
    :toctree:
    :recursive:
 
-   cloudmesh.cc.job.AbstractJob
    cloudmesh.cc.job.localhost
    cloudmesh.cc.job.lsf
    cloudmesh.cc.job.slurm
