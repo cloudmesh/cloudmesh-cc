@@ -48,8 +48,10 @@ live status updates.
    :caption: Contributors Guide
 
    contributing
+   todos
    acknowledgements
    [https://github.com/cloudmesh/cloudmesh-cc/issues]
+
 
 
 Indices and tables
