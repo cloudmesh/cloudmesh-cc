@@ -189,7 +189,7 @@ config.yaml file will be used and the name will be job-n</p>
 </dl>
 <p>example curl:
 we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel">http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel</a>’         -H ‘accept: application/json’</p>
+curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel">http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel</a>’         -H ‘accept: application/json’</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

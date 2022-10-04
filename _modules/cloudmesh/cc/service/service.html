@@ -1300,7 +1300,7 @@
                                        <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">preferences</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="add_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/add-job/</span><span class="si">{name_of_workflow}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="add_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/job/</span><span class="si">{name_of_workflow}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">job</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1323,7 +1323,7 @@
 <span class="sd">    example curl:</span>
 <span class="sd">    we need to have first uploaded workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;GET&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
 <span class="sd">    :param name_of_workflow: the name of the workflow</span>
