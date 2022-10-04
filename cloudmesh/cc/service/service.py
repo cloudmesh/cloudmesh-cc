@@ -1198,7 +1198,7 @@ def watch_running_workflow(request: Request,
                                        "preferences": preferences})
 
 
-@app.get("/add-job/{name_of_workflow}", tags=['workflow'])
+@app.get("/workflow/job/{name_of_workflow}", tags=['workflow'])
 def add_job(name_of_workflow: str,
             job: str,
             user: str = None,
@@ -1221,7 +1221,7 @@ def add_job(name_of_workflow: str,
     example curl:
     we need to have first uploaded workflow-example for this curl to work!
     curl -X 'GET' \
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel' \
+        'http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel' \
         -H 'accept: application/json'
 
     :param name_of_workflow: the name of the workflow

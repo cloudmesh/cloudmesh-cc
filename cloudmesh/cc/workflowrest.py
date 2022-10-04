@@ -34,7 +34,7 @@ class RESTWorkflow:
         user = kwargs['user']
         host = kwargs['host']
         kind = kwargs['kind']
-        url = f'''http://127.0.0.1:8000/add-job/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
+        url = f'''http://127.0.0.1:8000/workflow/job/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
         if 'status' in kwargs:
             status = kwargs['status']
         else:

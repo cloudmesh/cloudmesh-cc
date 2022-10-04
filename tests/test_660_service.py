@@ -216,7 +216,7 @@ class TestService:
             'Content-Type': 'application/json'
         }
 
-        response = client.get(f"/add-job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
+        response = client.get(f"/workflow/job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
         print(response)
         print(response.text)
         assert response.ok
