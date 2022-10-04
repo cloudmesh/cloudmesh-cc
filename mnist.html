@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MNIST Workflows &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>MNIST Workflow &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -66,7 +66,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">MNIST Workflows</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MNIST Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cloudmask.html">Cloudmask</a></li>
 <li class="toctree-l1"><a class="reference internal" href="earthquake.html">Earthquake</a></li>
 </ul>
@@ -90,7 +90,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>MNIST Workflows</li>
+      <li>MNIST Workflow</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/api/source/mnist.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -100,8 +100,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="mnist-workflows">
-<h1>MNIST Workflows<a class="headerlink" href="#mnist-workflows" title="Permalink to this heading"></a></h1>
+  <section id="mnist-workflow">
+<h1>MNIST Workflow<a class="headerlink" href="#mnist-workflow" title="Permalink to this heading"></a></h1>
 <p>For this example we use UVA’s Rivanna machine. Please adopt
 it to your HPC machine.</p>
 <p>We can test Rivanna’s GPUs and benchmark
@@ -109,14 +109,16 @@ their runtimes for running several MNIST
 Python programs. These programs include
 machine learning processing, convolutional
 neural network, long short-term memory,
-recurrent neural network, and others.</p>
+recurrent neural network, and others.
+The programs can be found at
+<a class="reference external" href="https://github.com/cybertraining-dsc/reu2022/tree/main/code/deeplearning/mnist">https://github.com/cybertraining-dsc/reu2022/tree/main/code/deeplearning/mnist</a></p>
 <p>To run the MNIST remote workflow on
 Rivanna, first ensure that your UVA computing
-ID is set with</p>
+ID is set with the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cms <span class="nb">set</span> <span class="nv">username</span><span class="o">=</span>XXXXXX
 </pre></div>
 </div>
-<p>where  the X’s are substituted with your computing ID.</p>
+<p>where the X’s are substituted with your computing ID.</p>
 <p>Then, issue commands:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
 pytest -v -x --capture<span class="o">=</span>no examples/example_run_mnist_workflow_exec.py
