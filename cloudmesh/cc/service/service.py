@@ -26,7 +26,6 @@ from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
 from cloudmesh.cc.__version__ import version as cm_version
-from cloudmesh.cc.queue import Queues
 from cloudmesh.cc.workflow import Workflow
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.Shell import Shell
@@ -64,24 +63,24 @@ debug = True
 include_in_schema_portal_tag = False
 
 
-def test_run():
-    """
-    creates a test queue with several different jobs
-    :return: Queues object
-    :rtype: Queues
-    """
-    kind = 'yamldb'
-    q = Queues(filename='~/.cloudmesh/queue/queuetest1')
-    q.create(name='local')
-    q.create(name='rivanna')
-    q.add(name='local', job='job01', command='pwd')
-    q.add(name='local', job='job02', command='ls')
-    q.add(name='local', job='job03', command='hostname')
-    q.add(name='rivanna', job='job04', command='pwd')
-    q.add(name='rivanna', job='job05', command='ls - a')
-    q.add(name='rivanna', job='job06', command='hostname')
-    q.add(name='rivanna', job='job07', command='git status')
-    return q
+# def test_run():
+#     """
+#     creates a test queue with several different jobs
+#     :return: Queues object
+#     :rtype: Queues
+#     """
+#     kind = 'yamldb'
+#     q = Queues(filename='~/.cloudmesh/queue/queuetest1')
+#     q.create(name='local')
+#     q.create(name='rivanna')
+#     q.add(name='local', job='job01', command='pwd')
+#     q.add(name='local', job='job02', command='ls')
+#     q.add(name='local', job='job03', command='hostname')
+#     q.add(name='rivanna', job='job04', command='pwd')
+#     q.add(name='rivanna', job='job05', command='ls - a')
+#     q.add(name='rivanna', job='job06', command='hostname')
+#     q.add(name='rivanna', job='job07', command='git status')
+#     return q
 
 
 def get_available_workflows():
@@ -141,7 +140,7 @@ class Jobpy(BaseModel):
     parent: str | None = None
 
 
-q = test_run()
+# q = test_run()
 
 app = FastAPI(title="cloudmesh-cc", version=cm_version)
 
