@@ -8,7 +8,7 @@ import shutil
 
 
 class Host:
-
+    """A host class that configures remote and local hosts."""
     def __int__(self, location):
         self.user = None
         self.host = None
