@@ -1406,4 +1406,4 @@ def generate_example_workflow(request: Request):
     print(w.yaml)
     return RedirectResponse('/home', status_code=302)
 
-B
+
