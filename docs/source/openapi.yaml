@@ -37,7 +37,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /upload:
+  /workflow/upload:
     post:
       tags:
         - workflow
@@ -52,7 +52,7 @@ paths:
         :type directory: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example'        
+        'http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example'        
         -H 'accept: application/json'         -d ''
 
         :param archive: tgz, xz, tar.gz, or tar file with workflow files
@@ -60,7 +60,7 @@ paths:
         :type archive: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?archive=ThePathToYourArchiveFile'        
+        'http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile'        
         -H 'accept: application/json'         -d ''
 
         :param yaml: yaml file with workflow specifications
@@ -68,7 +68,7 @@ paths:
         :type yaml: str
 
         curl -X 'POST'        
-        'http://127.0.0.1:8000/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml'        
+        'http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml'        
         -H 'accept: application/json'         -d ''
 
         :return: success or failure message

@@ -75,7 +75,7 @@ class RESTWorkflow:
 
         :return:
         """
-        url = 'http://127.0.0.1:8000/upload'
+        url = 'http://127.0.0.1:8000/workflow/upload'
         if directory:
             url += f'?directory={directory}'
         if archive:
@@ -106,7 +106,7 @@ class RESTWorkflow:
 
         :return:
         """
-        url = f'http://127.0.0.1:8000/run/{workflow_name}?type={run_type}'
+        url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?type={run_type}'
         r = requests.get(url)
         return r
 

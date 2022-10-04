@@ -175,7 +175,7 @@ class TestService:
         #workflow_service_dir = Path(workflow_service_dir).as_posix()
         workflow_service_dir = '~/cm/cloudmesh-cc/tests/workflow-service'
 
-        response = client.post(f"/upload?directory={workflow_service_dir}")
+        response = client.post(f"/workflow/upload?directory={workflow_service_dir}")
         Benchmark.Stop()
         assert response.status_code == 200
 
@@ -191,7 +191,7 @@ class TestService:
     def test_run(self):
         HEADING()
         Benchmark.Start()
-        response = client.get("/run/workflow-service")
+        response = client.get("/workflow/run/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
 
