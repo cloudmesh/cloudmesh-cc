@@ -1,4 +1,4 @@
-# MNIST Workflows
+# MNIST Workflow
 
 For this example we use UVA's Rivanna machine. Please adopt 
 it to your HPC machine.
@@ -9,15 +9,17 @@ Python programs. These programs include
 machine learning processing, convolutional
 neural network, long short-term memory,
 recurrent neural network, and others.
+The programs can be found at
+<https://github.com/cybertraining-dsc/reu2022/tree/main/code/deeplearning/mnist>
 
 To run the MNIST remote workflow on
 Rivanna, first ensure that your UVA computing
-ID is set with 
+ID is set with the following command:
 
 ```bash
 cms set username=XXXXXX
 ```
-where  the X's are substituted with your computing ID.
+where the X's are substituted with your computing ID.
 
 Then, issue commands:
 
