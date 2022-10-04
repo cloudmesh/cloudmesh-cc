@@ -77,15 +77,10 @@ from cloudmesh.cc.labelmaker import Labelmaker
 from datetime import datetime
 from cloudmesh.common.variables import Variables
 
-if os_is_windows():
-    import pygetwindow as gw
-
-
 
 class Graph:
-    """This is the Graph class TEST TEST TEST.
-
-    ppppp
+    """The Graph class handles the generation of workflow diagrams,
+    showing the order and status of the jobs.
     """
 
     def __init__(self, name="graph", filename=None, clear=True):
@@ -1293,9 +1288,9 @@ class Workflow:
                     Shell.open(filename=filename)
                 else:
                     Shell.browser(filename)
-                    if os_is_windows():
-                        win = gw.getWindowsWithTitle('MINGW64:')
-                        win.activate()
+                    # if os_is_windows():
+                    #     win = gw.getWindowsWithTitle('MINGW64:')
+                    #     win.activate()
 
             time.sleep(period)
             finished = len(completed) == len(self.jobs)
