@@ -1198,7 +1198,8 @@ def watch_running_workflow(request: Request,
                                        "preferences": preferences})
 
 
-@app.get("/add-job/{name_of_workflow}", tags=['workflow'])
+@app.get("/add-job/{name_of_workflow}",
+         tags=['workflow'])
 def add_job(name_of_workflow: str,
             job: str,
             user: str = None,
@@ -1211,27 +1212,14 @@ def add_job(name_of_workflow: str,
             label: str = None,
             parent: str = None):
     """
-    This command adds a node to a workflow. with the specified arguments. A check
-                is returned and the user is alerted if arguments are missing
-                arguments are passed in ATTRIBUTE=VALUE fashion.
-                if the name of the workflow is omitted, the default workflow is used.
-                If no job name is specified, an automated number that is kept in the
-                config.yaml file will be used and the name will be job-n
-
-    example curl:
-    we need to have first uploaded workflow-example for this curl to work!
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel' \
-        -H 'accept: application/json'
-
     :param name_of_workflow: the name of the workflow
     :type name_of_workflow: str
     :param job: the specifications and characteristics of the job
     :type job: Jobpy
-    :param user:
-    :type user:
-    :param host:
-    :type host:
+    :param user: TTTTT
+    :type user: str
+    :param host: the hostname
+    :type host: str
     :param kind:
     :type kind:
     :param status:
@@ -1248,6 +1236,30 @@ def add_job(name_of_workflow: str,
     :type parent:
     :return: returns jobs within the specified workflow
     :rtype:
+
+    This command adds a node to a workflow. with the specified arguments. A check
+    is returned and the user is alerted if arguments are missing
+    arguments are passed in ATTRIBUTE=VALUE fashion.
+    if the name of the workflow is omitted, the default workflow is used.
+    If no job name is specified, an automated number that is kept in the
+    config.yaml file will be used and the name will be job-n
+
+    **Example curl Script**
+
+    We need to have first uploaded workflow-example for this curl to work:
+
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+        -H 'accept: application/json'
+
+    Create an item with all the information:
+
+    - **TBD**: each item must have a name
+    - **TBD**: a long description
+    - **TBD**: required
+    - **TBD**: if the item doesn't have tax, you can omit this
+    - **TBD**: a set of unique tag strings for this item
+
     """
 
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
