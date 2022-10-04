@@ -46,25 +46,20 @@ class CcCommand(PluginCommand):
 
           Arguments:
               FILENAME   a file name
-              QUEUE  the name of the queue object as a variable in code
-              QUEUES the name of the queues (dictionary of queues) object
               JOB  the name of a job that has been created
               COMMAND  the command that is associated with the job name
               SCHEDULER  designation of how jobs should be pulled from the queue
-              QUEUES  the name of the queues object that has been created
 
           Options:
               --reload               reload for debugging
               --host=HOST            the host ip [default: 127.0.0.1]
               --port=PORT            the port [default: 8000]
               -c                     flag to set host and port to 0.0.0.0:8000
-              --queue=QUEUE          queue that you want to access
               --filename=FILENAME    file that contains a workflow specification
               --name=NAME            the workflow name
               --job=JOB              the job name
               --command=COMMAND      a command to be added to a job
               --scheduler=SCHEDULER  the scheduling technique that is to be used
-              --queues=QUEUES        the queues object that is to be used
               
           Description:
 
@@ -216,11 +211,9 @@ class CcCommand(PluginCommand):
 
         map_parameters(arguments,
                        "filename",
-                       "queue",
                        "job",
                        "command",
-                       "scheduler",
-                       "queues"
+                       "scheduler"
                        )
 
         # VERBOSE(arguments)
@@ -339,14 +332,14 @@ class CcCommand(PluginCommand):
             else:
                 Shell.run('kill $(pgrep -f "cms cc start")')
 
-        elif arguments.create and \
-                arguments.queues and \
-                arguments.database:
-            #  cc create --queue=a,b into the correct database: yaml or shelve
-            names = Parameter.expand(arguments.queues)
-            queues = Queues()
-            for name in names:
-                queues.create(name)
+        # elif arguments.create and \
+        #         arguments.queues and \
+        #         arguments.database:
+        #     #  cc create --queue=a,b into the correct database: yaml or shelve
+        #     names = Parameter.expand(arguments.queues)
+        #     queues = Queues()
+        #     for name in names:
+        #         queues.create(name)
 
         elif arguments.workflow and arguments.add and arguments.service:
             # cc workflow service add [--name=NAME] FILENAME
