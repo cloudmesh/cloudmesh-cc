@@ -33,16 +33,14 @@ live status updates.
 
    api
    OpenAPI <openapi3.html#http://>
-   openapi
+   OpenAPI (json) <openapi.json#http://>
+   OpenAPI (yaml) <openapi.yaml#http://>
 
 .. toctree::
    :maxdepth: 1
    :caption: Examples
 
    mnist
-   cloudmask
-   earthquake
-
 
 .. toctree::
    :maxdepth: 1
