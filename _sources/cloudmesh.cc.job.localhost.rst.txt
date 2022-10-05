@@ -12,14 +12,6 @@ cloudmesh.cc.job.localhost.Job module
    :undoc-members:
    :show-inheritance:
 
-cloudmesh.cc.job.localhost.Queue module
----------------------------------------
-
-.. automodule:: cloudmesh.cc.job.localhost.Queue
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
