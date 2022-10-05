@@ -1,3 +1,4 @@
+"""Unused cloudmesh cc class for YamlDB database."""
 import os
 
 from yamldb import YamlDB
@@ -7,7 +8,7 @@ from cloudmesh.common.util import path_expand
 
 
 class Database:
-
+    """Unused cloudmesh cc class for YamlDB database."""
     def __init__(self, name="queue", filename=None, debug=False):
         """
         Initializes a yaml database in which each element is a string
