@@ -1388,19 +1388,29 @@
 
 <div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;topo&quot;</span><span class="p">,</span>
-                 <span class="n">redirect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;topo&quot;</span><span class="p">,</span>
+                 <span class="n">redirect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    runs a specified workflow according to provided run type</span>
 
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **name**: (str) name of workflow to run</span>
+<span class="sd">    - **run_type**: (str) how to run workflow. only topo is implemented</span>
+<span class="sd">    (topological sort of jobs)</span>
+<span class="sd">    - **redirect**: (str) where to redirect after initializing the run.</span>
+<span class="sd">    only graph is implemented for web interface. None will disable redirect</span>
+<span class="sd">    - **show**: (bool) whether to show the graph as the workflow is run</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    example curl:</span>
 <span class="sd">    we need to have first uploaded workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;GET&#39; \</span>
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    :param request: request that is supplied when using web interface</span>
-<span class="sd">    :type request: Request</span>
 <span class="sd">    :param name: name of workflow</span>
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param run_type: type of run, either topo or parallel</span>
