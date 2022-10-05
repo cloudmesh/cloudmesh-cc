@@ -12,21 +12,36 @@ Background
 ----------
 
 High-performance computing (HPC) is for decades a very important tool
-for science. Scientific tasks can be leveraging the processing power of
-a supercomputer so they can run at previously unobtainable high speeds
-or utilize specialized hardware for acceleration that otherwise are not
-available to the user. HPC can be used for analytic programs that
+for science. Scientific applications often consist of multiple tasks
+tasks can be leveraging the processing power of requiring considerable
+computational needs. Often a supercomputer is needed to execute
+the tasks at high speeds while
+utilizing the specialized hardware for acceleration that otherwise are not
+available to the user. However, these systems can be difficult to use when conducting
+analytic programs that
 leverage machine learning applied to large data sets to, for example,
-predict future values or to model current states. For such
-high-complexity projects, there are often multiple complex programs that
-may be running repeatedly in either competition or cooperation.
-Leveraging for example computational GPUs leads to several times higher
-performance when applied to deep learning algorithms. With such
-projects, program execution is submitted as a job to a typically remote
-HPC center, where time is billed as node hours. Such projects must have
-a service that lets the user manage and execute without supervision. We
-have created a service that lets the user run jobs across multiple
-platforms in a dynamic queue with visualization and data storage.
+predict future values or model current states. For such
+highly complex analytics tasks, there are often multiple steps that
+need to be run repeatedly either to combine analytics tasks in competition
+or cooperation to achieve the best results. Although leveraging
+computational GPUs lead to several times higher performance when applied to
+deep learning algorithms, may be not possible at the time as the resources are
+either too expensive or simply not available. The analytics task is to simplify
+this dilemma and introduce a level of abstraction that focuses on the
+analytics task while at the same time allowing sophisticated compute resources to
+solve the task for the scientist in the background. Hence, the scientist should be
+presented with a function call that automatically puts together the needed resources
+and stage the jobs on the HPC environment without the need of too many details of
+the HPC environment. Instead, the science user should access
+analytics REST services that the user can easily integrate into their
+scientific code as functions or services. To facilitate the need to coordinate
+the many tasks behind such an abstraction we have developed a specialized analytics
+Workflow abstraction and service allowing the execution of multiple analytics tasks
+in a parallel workflow, The workflow can be controlled by the user and is
+asynchronously executed including the possibility to utilize multiple HPC
+computing centers via user-controlled services.
+
+
 
 See :numref:`fastapi-service` for the OpenAPI interface of such service.
 
@@ -39,36 +54,48 @@ See :numref:`fastapi-service` for the OpenAPI interface of such service.
 Workflow Controlled Computing
 -----------------------------
 
-This software was developed end enhancing Cloudmesh, a suite of software
-to make using cloud and HPC resources easier. Specifically, we have
-added a library called Cloudmesh Controlled Computing (cloudmesh-cc)
+The Cloudmesh cc Workflow is enhancing Cloudmesh by integrating an API and service to
+make using cloud and HPC resources easier. The enhancement is focused on
+a library called Cloudmesh Controlled Computing (cloudmesh-cc)
 that adds workflow features to control the execution of jobs on remote
-compute resources.
+compute resources including clouds, desktop computers, and batch-controlled HPC with
+and without GPUs. Effectively we access remote, and hybrid resources by integrating cloud,
+ and on-premise resources.
 
-The goal is to provide numerous methods of specifying the workflows on a
-local computer and running them on remote services such as HPC and cloud
-computing resources. This includes REST services and command line tools.
+The goal is to provide an easy way to access these resources, while at the same time providing
+the ability to integrate the computational power enabled through a
+parallel workflow framework  Access to these complex resources is provided through easy to use
+interfaces such as a python API, REST services, and command line tools. Through these interfaces, the framework is universal and can be integrated into the science application or other higher level
+frameworks and even different programming languages.
+
 The software developed is freely available and can easily be installed
 with standard python tools so integration in the python ecosystem using
 virtualenv’s and anaconda is simple.
 
+
 Workflow Functionality
 ----------------------
 
-A hybrid multi-cloud analytics service framework was created to manage
-heterogeneous and remote workflows, queues, and jobs. It was designed
-for access through both the command line and REST services to simplify
-the coordination of tasks on remote computers. In addition, this service
+The framwork supports workflow functionality to (a) execute workflow tasks
+in parralel (b) manage the creation of the workflow by adding graphs, tasks, and edges
+(c) controll the execution and (d) monitor the execution
+The impcit design to
+access the workflow through an API, a REST services, and the commandline
+allows easy integration into other frameworks.
+
+ In addition, the framework
 supports multiple operating systems like macOS, Linux, and Windows 10
-and 11, on various hosts: the computer’s localhost, remote computers,
+and 11. This not only includes the ability to run the workflow on remote
+computers, but also integrate tasks that can be run locally on the
+various operating systems to integrate their computational capabilities.
+Hence we support easy acces to host capabilities, such as the computer’s localhost, remote computers,
 and the Linux-based virtual image WSL. Jobs can be visualized and saved
-as a YAML and SVG data file. This workflow was extensively tested for
-functionality and reproducibility.
+as a YAML and SVG data file.
 
 Quickstart
 ----------
 
-To test the workflow program, prepare a cm directory in your home
+To utilize the workflow program, prepare a cm directory in your home
 directory by executing the following commands in a terminal:
 
 .. code:: bash
@@ -82,9 +109,10 @@ directory by executing the following commands in a terminal:
    cd cloudmesh-cc
    pip install -e .
    pip install -r requirements.txt
-   pytest -v -x --capture=no tests/test_080_workflow_clean.py
+   pytest -v -x --capture=no tests/test_131_workflow_local.py
 
-This test runs three jobs within a singular workflow: the first job runs
+This test runs a number of jobs on the local machine
+within a singular workflow: the first job runs
 a local shell script, the second runs a local Python script, and the
 third runs a local Jupyter notebook.
 
