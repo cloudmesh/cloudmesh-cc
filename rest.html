@@ -210,8 +210,8 @@ the name of the job. The other optional parameters include the
 user, host, label, kind, status, progress, and script. To use
 the command, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow you
 wish to change. Additionally, change the other parameters, as desired.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39;</span> <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39;</span> <span class="se">\</span>
     -H <span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>

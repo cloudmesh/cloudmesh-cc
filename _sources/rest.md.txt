@@ -112,7 +112,7 @@ the command, replace `workflow-example` with the workflow you
 wish to change. Additionally, change the other parameters, as desired.
 
 ```bash
-curl -X 'GET' \
-    'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+curl -X 'POST' \
+    'http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
     -H 'accept: application/json'
 ```
