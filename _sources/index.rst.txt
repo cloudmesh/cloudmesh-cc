@@ -32,7 +32,7 @@ live status updates.
    :caption: API
 
    api
-   OpenAPI Specification 3 (OAS3) <openapi3.html#http://>
+   OpenAPI <openapi3.html#http://>
    openapi
 
 .. toctree::
