@@ -794,8 +794,7 @@
 <div class="viewcode-block" id="list_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflows&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This command returns a list of workflows that is found within</span>
-<span class="sd">    the server.</span>
+<span class="sd">    returns a list of all workflows found on local computer</span>
 
 <span class="sd">    curl -X &#39;GET&#39; \</span>
 <span class="sd">        &#39;http://127.0.0.1:8000/workflows&#39; \</span>
@@ -1425,7 +1424,9 @@
             <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">parent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This command adds a node to a workflow. with the specified arguments. A check</span>
+<span class="sd">    adds a node/job to a workflow</span>
+
+<span class="sd">    A check</span>
 <span class="sd">    is returned and the user is alerted if arguments are missing</span>
 <span class="sd">    arguments are passed in ATTRIBUTE=VALUE fashion.</span>
 <span class="sd">    if the name of the workflow is omitted, the default workflow is used.</span>
