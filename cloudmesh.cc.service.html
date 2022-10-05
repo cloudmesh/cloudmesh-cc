@@ -348,9 +348,15 @@ as initialized workflows inside a dict
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_available_workflows">
 <span class="sig-name descname"><span class="pre">get_available_workflows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_available_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_available_workflows" title="Permalink to this definition"></a></dt>
-<dd><p>returns workflow dirs found in .cloudmesh directory
-:return: names of workflows found
-:rtype: list</p>
+<dd><p>returns workflow dirs found in .cloudmesh directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>names of workflows found</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -552,27 +558,102 @@ curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_done">
 <span class="sig-name descname"><span class="pre">serve_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_done" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>give the number of done jobs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event source response for server side event</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EventSourceResponse</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_failed">
 <span class="sig-name descname"><span class="pre">serve_failed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_failed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_failed" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>give the number of failed jobs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event source response for server side event</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EventSourceResponse</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_ready">
 <span class="sig-name descname"><span class="pre">serve_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_ready" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>give the number of ready jobs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event source response for server side event</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EventSourceResponse</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_running">
 <span class="sig-name descname"><span class="pre">serve_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_running" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>give the number of running jobs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event source response for server side event</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EventSourceResponse</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_submitted">
 <span class="sig-name descname"><span class="pre">serve_submitted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#serve_submitted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.serve_submitted" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>give the number of submitted jobs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event source response for server side event</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EventSourceResponse</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.serve_table">

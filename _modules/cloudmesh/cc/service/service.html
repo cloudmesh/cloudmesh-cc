@@ -170,6 +170,7 @@
 <div class="viewcode-block" id="get_available_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows">[docs]</a><span class="k">def</span> <span class="nf">get_available_workflows</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns workflow dirs found in .cloudmesh directory</span>
+
 <span class="sd">    :return: names of workflows found</span>
 <span class="sd">    :rtype: list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -613,6 +614,16 @@
 <div class="viewcode-block" id="serve_done"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/done-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_done</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    give the number of done jobs</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: event source response for server side event</span>
+<span class="sd">    :rtype: EventSourceResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
@@ -620,6 +631,16 @@
 <div class="viewcode-block" id="serve_ready"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ready-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_ready</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    give the number of ready jobs</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: event source response for server side event</span>
+<span class="sd">    :rtype: EventSourceResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
@@ -627,6 +648,16 @@
 <div class="viewcode-block" id="serve_failed"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/failed-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_failed</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    give the number of failed jobs</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: event source response for server side event</span>
+<span class="sd">    :rtype: EventSourceResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
@@ -634,6 +665,16 @@
 <div class="viewcode-block" id="serve_submitted"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/submitted-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_submitted</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    give the number of submitted jobs</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: event source response for server side event</span>
+<span class="sd">    :rtype: EventSourceResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
@@ -641,6 +682,16 @@
 <div class="viewcode-block" id="serve_running"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/running-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_running</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    give the number of running jobs</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: event source response for server side event</span>
+<span class="sd">    :rtype: EventSourceResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
