@@ -50,3 +50,7 @@ colors:
     done: '#CCFFCC'
     failed: '#FFCCCC'
     running: '#CCE5FF'
+
+table:
+  column: id,name,status,progress
+  order: id,name,status,progress
