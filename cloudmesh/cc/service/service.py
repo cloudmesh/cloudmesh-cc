@@ -1,3 +1,4 @@
+"""Cloudmesh cc FastAPI service for REST and web interfaces."""
 import glob
 import io
 import json
@@ -57,7 +58,7 @@ variables = Variables()
 debug = True
 
 #
-# set if portal routs should be displayed in teh documentation
+# set if portal routes should be displayed in the documentation
 #
 # include_in_schema_portal_tag = debug
 include_in_schema_portal_tag = False

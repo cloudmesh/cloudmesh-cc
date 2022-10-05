@@ -3,7 +3,7 @@ import requests
 
 
 class RESTWorkflow:
-
+    """Class which interfaces with cc FastAPI server using REST."""
     def __init__(self):
         self.address = "http://127.0.0.1:8000"
 

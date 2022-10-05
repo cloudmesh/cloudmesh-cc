@@ -586,7 +586,7 @@ class Graph:
 
 
 class Workflow:
-    """Workflow documentation.
+    """Workflow class that runs all jobs, handles dependencies, etc.
 
     ::
 

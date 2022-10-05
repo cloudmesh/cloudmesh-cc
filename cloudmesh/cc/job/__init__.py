@@ -1,2 +1,2 @@
-"""General job class."""
+"""General job class for running jobs in workflows."""
 

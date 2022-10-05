@@ -1,1 +1,1 @@
-"""Cloudmesh cc localhost job."""
+"""Cloudmesh cc localhost job for running jobs on local computer."""

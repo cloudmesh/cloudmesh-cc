@@ -1,1 +1,1 @@
-"""Cloudmesh cc SLURM job."""
+"""Cloudmesh cc SLURM job for running SLURM workload manager scripts."""
