@@ -32,8 +32,8 @@ live status updates.
    :caption: API
 
    api
+   OpenAPI Specification 3 (OAS3) <openapi3.html#http://>
    openapi
-   Live OpenAPI Example <openapi3.html#http://>
 
 .. toctree::
    :maxdepth: 1

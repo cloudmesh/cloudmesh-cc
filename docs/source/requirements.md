@@ -1,4 +1,4 @@
-# Requirements
+# Specifying Workflows
 
 To use cloudmesh-cc, the user must first follow the 
 [Installation](https://cloudmesh.github.io/cloudmesh-cc/installation.html)
