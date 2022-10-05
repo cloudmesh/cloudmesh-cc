@@ -773,8 +773,9 @@ def upload(directory: str = Query(None,
     upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
 
-    **directory** (str) path to directory with workflow files
-    
+    * *directory** (str) path to directory with workflow files
+    """
+    """
     :param directory: path to directory with workflow files
     :type directory: str
 
