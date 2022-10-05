@@ -186,9 +186,6 @@ arguments are passed in ATTRIBUTE=VALUE fashion.
 if the name of the workflow is omitted, the default workflow is used.
 If no job name is specified, an automated number that is kept in the
 config.yaml file will be used and the name will be job-n</p>
-<p><strong>Example curl Script</strong></p>
-<p>We need to have first uploaded workflow-example for this curl to work:</p>
-<p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel">http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel</a>’         -H ‘accept: application/json’</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>name_of_workflow</strong>: (str) the name of workflow</p></li>
@@ -204,29 +201,6 @@ config.yaml file will be used and the name will be job-n</p>
 - <strong>progress</strong>: (str) value of job progress from 0 to 100
 - <strong>label</strong>: (str) text to be shown on node in the graph
 - <strong>parent</strong>: (str) parent job</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name_of_workflow</strong> (<em>str</em>) – the name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – the name of the job</p></li>
-<li><p><strong>user</strong> (<em>str</em>) – name of user of the job</p></li>
-<li><p><strong>host</strong> (<em>str</em>) – name of the host of the job</p></li>
-<li><p><strong>kind</strong> (<em>str</em>) – the kind of job, like ssh, slurm, local</p></li>
-<li><p><strong>status</strong> (<em>str</em>) – the status of the job, such as ready</p></li>
-<li><p><strong>script</strong> (<em>str</em>) – the name of the script to be run, including file extension</p></li>
-<li><p><strong>exec</strong> (<em>str</em>) – command(s) to execute</p></li>
-<li><p><strong>progress</strong> (<em>str</em>) – value of job progress from 0 to 100</p></li>
-<li><p><strong>label</strong> (<em>str</em>) – text to be shown on node in the graph</p></li>
-<li><p><strong>parent</strong> (<em>str</em>) – parent job</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>returns jobs within the specified workflow</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -443,7 +417,6 @@ sidebar</p>
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.list_workflows">
 <span class="sig-name descname"><span class="pre">list_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#list_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.list_workflows" title="Permalink to this definition"></a></dt>
 <dd><p>returns a list of all workflows found on local computer</p>
-<p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflows">http://127.0.0.1:8000/workflows</a>’         -H ‘accept: application/json’</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>output</strong>: (str) format to print available workflows, which can be</p></li>
