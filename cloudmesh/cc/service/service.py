@@ -221,12 +221,12 @@ def penultimate_status_watcher(request, name_of_workflow: str):
     """
     watches a runtime yaml for status changes
 
-    :param request:
-    :type request:
-    :param name_of_workflow:
-    :type name_of_workflow:
-    :return:
-    :rtype:
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve statuses for
+    :type name_of_workflow: str
+    :return: dictionary/Counter of statuses
+    :rtype: dict
     """
     interval = 0.2
 
@@ -254,6 +254,16 @@ def penultimate_status_watcher(request, name_of_workflow: str):
 
 
 async def datatable_server(request, name_of_workflow: str):
+    """
+    server side event watcher that returns datatable when changes are detected
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve datatable for
+    :type name_of_workflow: str
+    :return: the datatable as html
+    :rtype: str
+    """
     interval = 0.2
     runtime_yaml_filepath = path_expand(
         f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.yaml')
@@ -926,8 +936,8 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
         'http://127.0.0.1:8000/workflow/workflow-example' \
         -H 'accept: application/json'
 
-    :param request:
-    :type request:
+    :param request: request that is supplied when using web interface
+    :type request: Request
     :param name: name of the workflow
     :type name: str
     :param job: name of the job
@@ -935,7 +945,7 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
     :param output: how to print workflow. can be html or table
     :type output: str
     :return: success or failure message
-    :rtype:
+    :rtype: dict
 
     """
     try:
@@ -1087,7 +1097,7 @@ def get_workflow_graph(request: Request, name: str):
     """
     see the graph embedded within web interface
 
-    :param request: type of request (api does this automatically in browser)
+    :param request: request that is supplied when using web interface
     :type request: Request
     :param name: name of workflow to retrieve the graph for
     :type name: str
@@ -1147,8 +1157,8 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
         'http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo' \
         -H 'accept: application/json'
 
-    :param request:
-    :type request:
+    :param request: request that is supplied when using web interface
+    :type request: Request
     :param name: name of workflow
     :type name: str
     :param run_type: type of run, either topo or parallel
@@ -1405,6 +1415,14 @@ def preferences_post(request: Request,
          response_class=RedirectResponse,
          include_in_schema=include_in_schema_portal_tag)
 def generate_example_workflow(request: Request):
+    """
+    create example workflow for testing
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :return: failure message or a redirection to homepage upon success
+    :rtype: dict or RedirectResponse
+    """
     workflow_example_dir = Shell.map_filename(
         '~/.cloudmesh/workflow/workflow-example').path
     if os.path.isdir(workflow_example_dir):
