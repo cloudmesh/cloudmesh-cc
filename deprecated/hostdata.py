@@ -80,17 +80,17 @@ rivanna:
   nothing  
 
 step 3
-cms data upload ~/tmp/a/1.txt
-cms data list rivanna:~/tmp
+cms cc data upload ~/tmp/a/1.txt
+cms cc data list rivanna:~/tmp
 
-cms data upload ~/tmp/b/3.txt
-cms data list rivanna:~/tmp
+cms cc data upload ~/tmp/b/3.txt
+cms cc data list rivanna:~/tmp
 
-cms data upload ~/tmp/a
-cms data list rivanna:~/tmp
+cms cc data upload ~/tmp/a
+cms cc data list rivanna:~/tmp
 
-cms data upload ~/tmp
-cms data list rivanna:~/tmp
+cms cc data upload ~/tmp
+cms cc data list rivanna:~/tmp
 
 output
 rivanna:
