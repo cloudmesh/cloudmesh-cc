@@ -45,6 +45,8 @@ workflow:
 
 ## Example Workflows
 
+Sample yaml files can be found at the following link:
+
 <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml>
 
 ## Defining nodes in the workflow
@@ -81,7 +83,7 @@ workflow:
     b:
        name: b
     c:
-      name: c
+       name: c
   dependencies:
     - a,b,c
 ```
