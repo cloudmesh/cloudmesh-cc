@@ -10,7 +10,8 @@ import os
 
 
 class WorkflowCLIManager:
-
+    """Class that handles the workflow commands given from command line
+    interface."""
     def __init__(self, name: str = None):
         self.filename = None
         self.filename = None
@@ -91,7 +92,8 @@ class WorkflowCLIManager:
 
 
 class WorkflowServiceManager:
-
+    """Command line interface class for FastAPI service that may be
+    deprecated by WorkflowREST. """
     def __init__(self, name=None, port=8000, host="127.0.0.1"):
         self.name = name
         self.host = host

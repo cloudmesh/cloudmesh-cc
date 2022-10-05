@@ -105,6 +105,7 @@ rivanna:
 
 class Data:
     """
+    Class for communicating data with remote host.
     local and remote have the form
 
     username@host:directory

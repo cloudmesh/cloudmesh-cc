@@ -1,4 +1,4 @@
-"""Cloudmesh CcCommand."""
+"""Cloudmesh cc command for command line interface."""
 import os
 
 import pkg_resources

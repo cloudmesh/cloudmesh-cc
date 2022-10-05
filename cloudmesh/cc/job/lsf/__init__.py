@@ -1,1 +1,1 @@
-"""Cloudmesh cc LSF job. Not yet Implemented."""
+"""Cloudmesh cc LSF job that is not yet implemented."""
