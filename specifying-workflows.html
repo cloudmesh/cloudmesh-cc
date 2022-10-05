@@ -54,6 +54,14 @@
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Specifying Workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-yaml-format">Workflow YAML format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-workflows">Example Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-nodes-in-the-workflow">Defining nodes in the workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-labels-for-the-workflow">Defining labels for the workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-dependencies-in-the-workflow">Defining dependencies in the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creporting-progress">Creporting Progress</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shell-and-slurm-scripts">Shell and Slurm Scripts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#python-scripts-and-jupyter-notebooks">Python Scripts and Jupyter Notebooks</a></li>
 </ul>
@@ -107,6 +115,42 @@
              
   <section id="specifying-workflows">
 <h1>Specifying Workflows<a class="headerlink" href="#specifying-workflows" title="Permalink to this heading"></a></h1>
+<section id="workflow-yaml-format">
+<h2>Workflow YAML format<a class="headerlink" href="#workflow-yaml-format" title="Permalink to this heading"></a></h2>
+</section>
+<section id="example-workflows">
+<h2>Example Workflows<a class="headerlink" href="#example-workflows" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>http links here</p></li>
+</ul>
+</section>
+<section id="defining-nodes-in-the-workflow">
+<h2>Defining nodes in the workflow<a class="headerlink" href="#defining-nodes-in-the-workflow" title="Permalink to this heading"></a></h2>
+<section id="defining-labels-for-the-workflow">
+<h3>Defining labels for the workflow<a class="headerlink" href="#defining-labels-for-the-workflow" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">progress</span></code></p></li>
+<li><p>time</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">%now</span></code> now</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%tc</span></code> created</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%tm</span></code> modified</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%dt0</span></code> time since start of first node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%dt</span></code> time since start of current node
+(duration once finished)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="defining-dependencies-in-the-workflow">
+<h2>Defining dependencies in the workflow<a class="headerlink" href="#defining-dependencies-in-the-workflow" title="Permalink to this heading"></a></h2>
+</section>
+<section id="creporting-progress">
+<h2>Creporting Progress<a class="headerlink" href="#creporting-progress" title="Permalink to this heading"></a></h2>
 <p>When running scripts/jobs inside a workflow, the scripts must
 leverage some format of cloudmesh.progress to run successfully.
 Otherwise, the Workflow class cannot tell
@@ -115,6 +159,7 @@ if the scripts are done, breaking the progress functionality.</p>
 already augmented with cloudmesh.progress. Thus, if a user is
 running self-made jobs and workflows, they must adhere to the
 guidelines as follows.</p>
+</section>
 <section id="shell-and-slurm-scripts">
 <h2>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h2>
 <p>For shell and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, the script must contain:</p>
