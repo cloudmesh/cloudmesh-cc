@@ -177,9 +177,15 @@ doc: requirements-dev man
 	cp openapi.json docs/build/html/openapi3.json
 	cp openapi.json docs/build/html/openapi.json
 
+swagger:
+	-cms cc start --reload &
+	sleep 6
+	curl http://127.0.0.1:8000/openapi.json > openapi.json
+	cms cc stop
+	python -c 'import sys, yaml, json; print(yaml.dump(json.loads(sys.stdin.read())))' <openapi.json > openapi.yaml
 
 latex:
-	cd api; make latexpdf
+	cd docs; make latexpdf
 
 #docs:
 #	rsync --size-only -av api/build/html/* docs
