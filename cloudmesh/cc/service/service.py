@@ -60,9 +60,8 @@ debug = True
 #
 # set if portal routes should be displayed in the documentation
 #
-# include_in_schema_portal_tag = debug
-include_in_schema_portal_tag = False
-
+# include_portal_tag_in_schema = debug
+include_portal_tag_in_schema = False
 
 
 def get_available_workflows():
@@ -236,7 +235,6 @@ def penultimate_status_watcher(request, name_of_workflow: str):
     original_yaml = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml').path
     if not os.path.isfile(runtime_yaml):
-        print('runtimeyamldidntexist')
         Shell.copy(original_yaml, runtime_yaml)
 
     runtime_dict = yaml.safe_load(Path(runtime_yaml).read_text())
@@ -510,10 +508,14 @@ def status_returner(name_of_workflow: str):
 
 
 @app.get("/done-count/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_done(request: Request, name: str):
     """
     give the number of done jobs
+
+    **request** (Request) that is supplied when using web interface
+    **name** (str) name of workflow
+    **return** (EventSourceResponse) event source response for server side event
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -527,7 +529,7 @@ def serve_done(request: Request, name: str):
 
 
 @app.get("/ready-count/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_ready(request: Request, name: str):
     """
     give the number of ready jobs
@@ -544,7 +546,7 @@ def serve_ready(request: Request, name: str):
 
 
 @app.get("/failed-count/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_failed(request: Request, name: str):
     """
     give the number of failed jobs
@@ -561,7 +563,7 @@ def serve_failed(request: Request, name: str):
 
 
 @app.get("/submitted-count/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_submitted(request: Request, name: str):
     """
     give the number of submitted jobs
@@ -578,7 +580,7 @@ def serve_submitted(request: Request, name: str):
 
 
 @app.get("/running-count/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_running(request: Request, name: str):
     """
     give the number of running jobs
@@ -598,8 +600,12 @@ def serve_running(request: Request, name: str):
 # HOME
 #
 
-@app.get("/", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
-@app.get("/home", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
+@app.get("/home",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 async def home_page(request: Request):
     """
     home function that features html and
@@ -623,7 +629,9 @@ async def home_page(request: Request):
 # CONTACT
 #
 
-@app.get("/contact", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/contact",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 async def contact_page(request: Request):
     """
     page that lists contact information
@@ -643,7 +651,9 @@ async def contact_page(request: Request):
                                        "html": html})
 
 
-@app.get("/manpage", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/manpage",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 async def man_page(request: Request):
     """
     page that lists contact information
@@ -664,7 +674,9 @@ async def man_page(request: Request):
                                        "html": html})
 
 
-@app.get("/about", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/about",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 async def about_page(request: Request):
     """
     page that lists readme as html
@@ -689,7 +701,8 @@ async def about_page(request: Request):
 #
 
 
-@app.get("/workflows", tags=['workflow'])
+@app.get("/workflows",
+         tags=['workflow'])
 def list_workflows(request: Request, output: str = None):
     """
     returns a list of all workflows found on local computer
@@ -744,7 +757,8 @@ def list_workflows(request: Request, output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/workflow/upload", tags=['workflow'])
+@app.post("/workflow/upload",
+          tags=['workflow'])
 def upload(directory: str = Query(None,
                                   description='path to workflow dir '
                                               'that contains scripts '
@@ -906,8 +920,9 @@ def upload(directory: str = Query(None,
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.get("/delete/{name}", tags=['workflow'],
-         include_in_schema=include_in_schema_portal_tag)
+@app.get("/delete/{name}",
+         tags=['workflow'],
+         include_in_schema=include_portal_tag_in_schema)
 def delete_workflow_direct_url(name: str):
     """
     :param name: name of workflow
@@ -927,7 +942,8 @@ def delete_workflow_direct_url(name: str):
             "message": f"There was an error deleting the workflow '{name}'"}
 
 
-@app.delete("/workflow/{name}", tags=['workflow'])
+@app.delete("/workflow/{name}",
+            tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
     """
     deletes the job in the specified workflow if specified.
@@ -968,9 +984,11 @@ def delete_workflow(name: str, job: str = None):
             return {"message": f"There was an error deleting the workflow '{name}'"}
 
 
-@app.get("/edit/{name}", tags=['workflow'], status_code=204,
+@app.get("/edit/{name}",
+         tags=['workflow'],
+         status_code=204,
          response_class=Response,
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def edit_workflow_direct_url(name: str):
     """
     :param name: name of workflow
@@ -988,7 +1006,8 @@ def edit_workflow_direct_url(name: str):
             "message": f"There was an error deleting the workflow '{name}'"}
 
 
-@app.get("/workflow/{name}", tags=['workflow'])
+@app.get("/workflow/{name}",
+         tags=['workflow'])
 def get_workflow(request: Request, name: str, job: str = None, output: str = None):
     """
     retrieves a job in a workflow, if specified. if not specified,
@@ -1155,7 +1174,9 @@ def get_workflow(request: Request, name: str, job: str = None, output: str = Non
             return {"message": f"There was an error with getting the workflow '{name}'"}
 
 
-@app.get("/workflow-graph/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/workflow-graph/{name}",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 def get_workflow_graph(request: Request, name: str):
     """
     see the graph embedded within web interface
@@ -1191,7 +1212,8 @@ def get_workflow_graph(request: Request, name: str):
     return EventSourceResponse(event_generator)
 
 
-@app.get("/watcher/{name}", include_in_schema=include_in_schema_portal_tag)
+@app.get("/watcher/{name}",
+         include_in_schema=include_portal_tag_in_schema)
 def serve_watcher(request: Request, name: str):
     """
 
@@ -1211,7 +1233,7 @@ def serve_watcher(request: Request, name: str):
 
 
 @app.get("/serve-datatable/{name}",
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def serve_table(request: Request, name: str):
     """
 
@@ -1226,7 +1248,8 @@ def serve_table(request: Request, name: str):
     return EventSourceResponse(event_generator)
 
 
-@app.get("/workflow/run/{name}", tags=['workflow'])
+@app.get("/workflow/run/{name}",
+         tags=['workflow'])
 def run_workflow(request: Request, name: str, run_type: str = "topo",
                  redirect: str = None):
     """
@@ -1285,7 +1308,9 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
         print("Exception:", e)
 
 
-@app.get("/workflow-running/{name}", tags=['portal'], include_in_schema=include_in_schema_portal_tag)
+@app.get("/workflow-running/{name}",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
 def watch_running_workflow(request: Request,
                            name: str):
     """
@@ -1340,7 +1365,8 @@ def watch_running_workflow(request: Request,
                                        "preferences": preferences})
 
 
-@app.get("/workflow/job/{name_of_workflow}", tags=['workflow'])
+@app.get("/workflow/job/{name_of_workflow}",
+         tags=['workflow'])
 def add_job(name_of_workflow: str,
             job: str,
             user: str = None,
@@ -1441,7 +1467,8 @@ def add_job(name_of_workflow: str,
     return {"jobs": w.jobs}
 
 
-@app.get('/preferences', include_in_schema=include_in_schema_portal_tag)
+@app.get('/preferences',
+         include_in_schema=include_portal_tag_in_schema)
 def preferences_post(request: Request):
     """
     preferences page
@@ -1474,8 +1501,10 @@ def preferences_post(request: Request):
     return r
 
 
-@app.post('/preferences', status_code=204, response_class=Response,
-          include_in_schema=include_in_schema_portal_tag)
+@app.post('/preferences',
+          status_code=204,
+          response_class=Response,
+          include_in_schema=include_portal_tag_in_schema)
 def preferences_post(request: Request,
                      id: bool = Form(False),
                      name: bool = Form(False),
@@ -1523,9 +1552,10 @@ def preferences_post(request: Request,
                   sort_keys=False)
 
 
-@app.get('/generate-example', status_code=302,
+@app.get('/generate-example',
+         status_code=302,
          response_class=RedirectResponse,
-         include_in_schema=include_in_schema_portal_tag)
+         include_in_schema=include_portal_tag_in_schema)
 def generate_example_workflow(request: Request):
     """
     create example workflow for testing
@@ -1562,11 +1592,6 @@ def generate_example_workflow(request: Request):
     yaml_location = path_expand(
         f"~/.cloudmesh/workflow/{name}/{name}.yaml")
     Shell.mkdir(runtime_directory)
-    # command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
-    #
-    # print(command)
-    # os.system(command)
-    # Shell.rm(f'{tar_location}')
     expanded_dir_path = posixpath.join(expanded_dir_path, '')
     # expanded_dir_path = Path(expanded_dir_path).as_posix()
 
