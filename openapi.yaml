@@ -53,6 +53,16 @@ paths:
         config.yaml file will be used and the name will be job-n
 
 
+        **Example curl Script**
+
+
+        We need to have first uploaded workflow-example for this curl to work:
+
+
+        curl -X ''GET''         ''http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel''         -H
+        ''accept: application/json''
+
+
         Parameters:
 
 
@@ -78,7 +88,57 @@ paths:
 
         - **label**: (str) text to be shown on node in the graph
 
-        - **parent**: (str) parent job'
+        - **parent**: (str) parent job
+
+
+
+        :param name_of_workflow: the name of the workflow
+
+        :type name_of_workflow: str
+
+        :param job: the name of the job
+
+        :type job: str
+
+        :param user: name of user of the job
+
+        :type user: str
+
+        :param host: name of the host of the job
+
+        :type host: str
+
+        :param kind: the kind of job, like ssh, slurm, local
+
+        :type kind: str
+
+        :param status: the status of the job, such as ready
+
+        :type status: str
+
+        :param script: the name of the script to be run, including file extension
+
+        :type script: str
+
+        :param exec: command(s) to execute
+
+        :type exec: str
+
+        :param progress: value of job progress from 0 to 100
+
+        :type progress: str
+
+        :param label: text to be shown on node in the graph
+
+        :type label: str
+
+        :param parent: parent job
+
+        :type parent: str
+
+        :return: returns jobs within the specified workflow
+
+        :rtype: dict'
       operationId: add_job_workflow_job__name_of_workflow__get
       parameters:
       - in: path
@@ -378,6 +438,10 @@ paths:
   /workflows:
     get:
       description: 'returns a list of all workflows found on local computer
+
+
+        curl -X ''GET''         ''http://127.0.0.1:8000/workflows''         -H ''accept:
+        application/json''
 
 
         Parameters:
