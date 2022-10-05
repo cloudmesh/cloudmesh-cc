@@ -1287,19 +1287,29 @@ def serve_table(request: Request, name: str):
 
 @app.get("/workflow/run/{name}",
          tags=['workflow'])
-def run_workflow(request: Request, name: str, run_type: str = "topo",
-                 redirect: str = None, show: bool = False):
+def run_workflow(name: str,
+                 run_type: str = "topo",
+                 redirect: str = None,
+                 show: bool = False):
     """
     runs a specified workflow according to provided run type
 
+    Parameters:
+
+    - **name**: (str) name of workflow to run
+    - **run_type**: (str) how to run workflow. only topo is implemented
+    (topological sort of jobs)
+    - **redirect**: (str) where to redirect after initializing the run.
+    only graph is implemented for web interface. None will disable redirect
+    - **show**: (bool) whether to show the graph as the workflow is run
+    """
+    """
     example curl:
     we need to have first uploaded workflow-example for this curl to work!
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo' \
         -H 'accept: application/json'
 
-    :param request: request that is supplied when using web interface
-    :type request: Request
     :param name: name of workflow
     :type name: str
     :param run_type: type of run, either topo or parallel
