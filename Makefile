@@ -171,6 +171,7 @@ requirements-dev:
 	pip install -r requirements-dev.txt
 
 doc: requirements-dev man
+	cp openapi.html docs/source/openapi3.html
 	cd docs; sphinx-apidoc ../cloudmesh -o source
 	cd docs; make html
 	cp openapi.html docs/build/html/openapi3.html

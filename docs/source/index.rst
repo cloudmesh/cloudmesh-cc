@@ -33,7 +33,7 @@ live status updates.
 
    api
    openapi
-   Live OpenAPI Example <../html/openapi3.html#http://>
+   Live OpenAPI Example <openapi3.html#http://>
 
 .. toctree::
    :maxdepth: 1
