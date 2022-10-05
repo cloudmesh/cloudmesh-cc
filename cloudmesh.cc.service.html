@@ -191,19 +191,19 @@ config.yaml file will be used and the name will be job-n</p>
 <p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel">http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel</a>’         -H ‘accept: application/json’</p>
 <p>Parameters:</p>
 <ul class="simple">
-<li><p><strong>name_of_workflow</strong>: the name of workflow as a string</p></li>
-<li><p><strong>job</strong>: the name of the job to add as a string</p></li>
-<li><p><strong>user</strong>: name of user of the job as a string</p></li>
-<li><p><strong>host</strong>: name of the host of the job as a string</p></li>
-<li><p><strong>kind</strong>: the kind of job, like ssh, slurm, local, as a string</p></li>
-<li><p><strong>status</strong>: the status of the job, such as ready, as a string</p></li>
-<li><p><strong>script</strong>: the name of the script to be run, including file extension,</p></li>
+<li><p><strong>name_of_workflow</strong>: (str) the name of workflow</p></li>
+<li><p><strong>job</strong>: (str) the name of the job to add</p></li>
+<li><p><strong>user</strong>: (str) name of user of the job</p></li>
+<li><p><strong>host</strong>: (str) name of the host of the job</p></li>
+<li><p><strong>kind</strong>: (str) the kind of job, like ssh, slurm, local,</p></li>
+<li><p><strong>status</strong>: (str) the status of the job, such as ready,</p></li>
+<li><p><strong>script</strong>: (str) the name of the script to be run,</p></li>
 </ul>
-<p>as a string
-- <strong>exec</strong>: command(s) to execute as a string
-- <strong>progress</strong>: value of job progress from 0 to 100 as a string
-- <strong>label</strong>: text to be shown on node in the graph as a string
-- <strong>parent</strong>: parent job as a string</p>
+<p>including file extension
+- <strong>exec</strong>: (str) command(s) to execute
+- <strong>progress</strong>: (str) value of job progress from 0 to 100
+- <strong>label</strong>: (str) text to be shown on node in the graph
+- <strong>parent</strong>: (str) parent job</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -265,20 +265,11 @@ config.yaml file will be used and the name will be job-n</p>
 <span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#delete_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.delete_workflow" title="Permalink to this definition"></a></dt>
 <dd><p>deletes the job in the specified workflow if specified.
 If the job is not specified, it deletes entire workflow.</p>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘DELETE’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – name of the job</p></li>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) name of workflow to delete</p></li>
+<li><p><strong>job</strong>: (str) name of job to delete in a workflow, if specified</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>success or failure message</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -393,24 +384,13 @@ as initialized workflows inside a dict
 <span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
 <dd><p>retrieves a job in a workflow, if specified. if not specified,
 retrieves an entire workflow</p>
-<p>you need to have first uploaded the workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<em>Request</em>) – request that is supplied when using web interface</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – name of the job</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – how to print workflow. can be html or table</p></li>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) name of workflow to retrieve</p></li>
+<li><p><strong>job</strong>: (str) name of job to retrieve, if specified (optional)</p></li>
+<li><p><strong>output</strong>: (str) how to print workflow, which can be</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>success or failure message</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
+<p>html, graph, json, table, or csv. if not specified, then returned as dict</p>
 </dd></dl>
 
 <dl class="py function">
@@ -461,9 +441,21 @@ sidebar</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.list_workflows">
-<span class="sig-name descname"><span class="pre">list_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#list_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.list_workflows" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">list_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#list_workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.list_workflows" title="Permalink to this definition"></a></dt>
 <dd><p>returns a list of all workflows found on local computer</p>
-<p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflows">http://127.0.0.1:8000/workflows</a>’         -H ‘accept: application/json’
+<p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflows">http://127.0.0.1:8000/workflows</a>’         -H ‘accept: application/json’</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>output</strong>: (str) format to print available workflows, which can be</p></li>
+</ul>
+<p>json, csv, or none which prints it as dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – format to print available workflows, which can be</p>
+</dd>
+</dl>
+<p>json, csv, or none which prints it as dict
+:type output: str
 :return: list of workflow names</p>
 </dd></dl>
 
@@ -783,9 +775,13 @@ curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.
 <span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Query(None)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.upload" title="Permalink to this definition"></a></dt>
 <dd><p>upload a workflow to the ~/.cloudmesh/workflow directory for running
 or editing.</p>
+<p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>directory</strong>: (str) path to directory with workflow files</p></li>
+<li><p><strong>archive</strong>: (str) path to archive file, which can be tgx, xz, tar.gz,</p></li>
 </ul>
+<p>or tar, that contains workflow files
+- <strong>yaml</strong>: (str) path to yaml file that specifies workflow configuration</p>
 </dd></dl>
 
 <dl class="py function">

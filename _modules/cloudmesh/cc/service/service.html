@@ -804,13 +804,22 @@
 
 <div class="viewcode-block" id="list_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflows&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns a list of all workflows found on local computer</span>
 
 <span class="sd">    curl -X &#39;GET&#39; \</span>
 <span class="sd">        &#39;http://127.0.0.1:8000/workflows&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **output**: (str) format to print available workflows, which can be</span>
+<span class="sd">    json, csv, or none which prints it as dict</span>
+
+<span class="sd">    :param output: format to print available workflows, which can be</span>
+<span class="sd">    json, csv, or none which prints it as dict</span>
+<span class="sd">    :type output: str</span>
 <span class="sd">    :return: list of workflow names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -874,7 +883,12 @@
 <span class="sd">    upload a workflow to the ~/.cloudmesh/workflow directory for running</span>
 <span class="sd">    or editing.</span>
 
+<span class="sd">    Parameters:</span>
+
 <span class="sd">    - **directory**: (str) path to directory with workflow files</span>
+<span class="sd">    - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,</span>
+<span class="sd">    or tar, that contains workflow files</span>
+<span class="sd">    - **yaml**: (str) path to yaml file that specifies workflow configuration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1054,6 +1068,13 @@
 <span class="sd">    deletes the job in the specified workflow if specified.</span>
 <span class="sd">    If the job is not specified, it deletes entire workflow.</span>
 
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **name**: (str) name of workflow to delete</span>
+<span class="sd">    - **job**: (str) name of job to delete in a workflow, if specified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="sd">    example curl:</span>
 <span class="sd">    we need to have first uploaded workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;DELETE&#39; \</span>
@@ -1113,10 +1134,22 @@
 
 <div class="viewcode-block" id="get_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    retrieves a job in a workflow, if specified. if not specified,</span>
 <span class="sd">    retrieves an entire workflow</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **name**: (str) name of workflow to retrieve</span>
+<span class="sd">    - **job**: (str) name of job to retrieve, if specified (optional)</span>
+<span class="sd">    - **output**: (str) how to print workflow, which can be</span>
+<span class="sd">    html, graph, json, table, or csv. if not specified, then returned as dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    you need to have first uploaded the workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;GET&#39; \</span>
@@ -1507,18 +1540,18 @@
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">    - **name_of_workflow**: the name of workflow as a string</span>
-<span class="sd">    - **job**: the name of the job to add as a string</span>
-<span class="sd">    - **user**: name of user of the job as a string</span>
-<span class="sd">    - **host**: name of the host of the job as a string</span>
-<span class="sd">    - **kind**: the kind of job, like ssh, slurm, local, as a string</span>
-<span class="sd">    - **status**: the status of the job, such as ready, as a string</span>
-<span class="sd">    - **script**: the name of the script to be run, including file extension,</span>
-<span class="sd">    as a string</span>
-<span class="sd">    - **exec**: command(s) to execute as a string</span>
-<span class="sd">    - **progress**: value of job progress from 0 to 100 as a string</span>
-<span class="sd">    - **label**: text to be shown on node in the graph as a string</span>
-<span class="sd">    - **parent**: parent job as a string</span>
+<span class="sd">    - **name_of_workflow**: (str) the name of workflow</span>
+<span class="sd">    - **job**: (str) the name of the job to add</span>
+<span class="sd">    - **user**: (str) name of user of the job</span>
+<span class="sd">    - **host**: (str) name of the host of the job</span>
+<span class="sd">    - **kind**: (str) the kind of job, like ssh, slurm, local,</span>
+<span class="sd">    - **status**: (str) the status of the job, such as ready,</span>
+<span class="sd">    - **script**: (str) the name of the script to be run,</span>
+<span class="sd">    including file extension</span>
+<span class="sd">    - **exec**: (str) command(s) to execute</span>
+<span class="sd">    - **progress**: (str) value of job progress from 0 to 100</span>
+<span class="sd">    - **label**: (str) text to be shown on node in the graph</span>
+<span class="sd">    - **parent**: (str) parent job</span>
 
 <span class="sd">    </span>
 <span class="sd">    :param name_of_workflow: the name of the workflow</span>
