@@ -237,8 +237,8 @@ config.yaml file will be used and the name will be job-n</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.delete_workflow">
 <span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#delete_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.delete_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>deletes the job in the specified workflow if specified.
-If the job is not specified, it deletes entire workflow.</p>
+<dd><p>deletes an entire workflow. if the job is specified, then deletes
+just the job in the workflow.</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>name</strong>: (str) name of workflow to delete</p></li>
@@ -356,8 +356,8 @@ as initialized workflows inside a dict
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_workflow">
 <span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves a job in a workflow, if specified. if not specified,
-retrieves an entire workflow</p>
+<dd><p>retrieves a workflow by its name. if the job is specified, retrieves
+just the job in the specified workflow</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>name</strong>: (str) name of workflow to retrieve</p></li>

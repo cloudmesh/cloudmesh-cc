@@ -61,7 +61,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#defining-dependencies-in-the-workflow">Defining dependencies in the workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#creporting-progress">Creporting Progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reporting-progress">Reporting Progress</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shell-and-slurm-scripts">Shell and Slurm Scripts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#python-scripts-and-jupyter-notebooks">Python Scripts and Jupyter Notebooks</a></li>
 </ul>
@@ -115,24 +115,62 @@
              
   <section id="specifying-workflows">
 <h1>Specifying Workflows<a class="headerlink" href="#specifying-workflows" title="Permalink to this heading"></a></h1>
+<p>Users of cloudmesh cc must follow a certain
+configuration style to best specify how a
+workflow should be run. Customization options
+include specifying the job types, the order of
+how the jobs should be run, and the portrayal
+of the graph.</p>
 <section id="workflow-yaml-format">
 <h2>Workflow YAML format<a class="headerlink" href="#workflow-yaml-format" title="Permalink to this heading"></a></h2>
+<p>A workflow yaml file with three Shell script
+jobs <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> is as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    a:
+       name: a
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: test-a.sh
+    b:
+       name: b
+       user: gregor
+       host: localhost
+       kind: <span class="nb">local</span>
+       status: ready
+       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       script: test-b.sh
+    c:
+      name: c
+      user: gregor
+      host: localhost
+      kind: <span class="nb">local</span>
+      status: ready
+      label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+      script: test-c.sh
+  dependencies:
+    - a,b,c
+</pre></div>
+</div>
 </section>
 <section id="example-workflows">
 <h2>Example Workflows<a class="headerlink" href="#example-workflows" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p>http links here</p></li>
-</ul>
+<p><a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml</a></p>
 </section>
 <section id="defining-nodes-in-the-workflow">
 <h2>Defining nodes in the workflow<a class="headerlink" href="#defining-nodes-in-the-workflow" title="Permalink to this heading"></a></h2>
 <section id="defining-labels-for-the-workflow">
 <h3>Defining labels for the workflow<a class="headerlink" href="#defining-labels-for-the-workflow" title="Permalink to this heading"></a></h3>
+<p>These variables must be in curly braces.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">progress</span></code></p></li>
 <li><p>time</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">%now</span></code> now</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now.%m/%d/%Y,</span> <span class="pre">%H:%M:%S</span></code> now in particular format</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">%tc</span></code> created</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">%tm</span></code> modified</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">%dt0</span></code> time since start of first node</p></li>
@@ -148,9 +186,24 @@
 </section>
 <section id="defining-dependencies-in-the-workflow">
 <h2>Defining dependencies in the workflow<a class="headerlink" href="#defining-dependencies-in-the-workflow" title="Permalink to this heading"></a></h2>
+<p>Dependencies are specified in the order which jobs should be
+run, from left to right. They are listed under the workflow
+in the yaml file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    a:
+       name: a
+    b:
+       name: b
+    c:
+      name: c
+  dependencies:
+    - a,b,c
+</pre></div>
+</div>
 </section>
-<section id="creporting-progress">
-<h2>Creporting Progress<a class="headerlink" href="#creporting-progress" title="Permalink to this heading"></a></h2>
+<section id="reporting-progress">
+<h2>Reporting Progress<a class="headerlink" href="#reporting-progress" title="Permalink to this heading"></a></h2>
 <p>When running scripts/jobs inside a workflow, the scripts must
 leverage some format of cloudmesh.progress to run successfully.
 Otherwise, the Workflow class cannot tell

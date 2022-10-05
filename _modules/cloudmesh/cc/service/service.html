@@ -1066,8 +1066,8 @@
             <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    deletes the job in the specified workflow if specified.</span>
-<span class="sd">    If the job is not specified, it deletes entire workflow.</span>
+<span class="sd">    deletes an entire workflow. if the job is specified, then deletes</span>
+<span class="sd">    just the job in the workflow.</span>
 
 <span class="sd">    Parameters:</span>
 
@@ -1140,8 +1140,8 @@
                  <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    retrieves a job in a workflow, if specified. if not specified,</span>
-<span class="sd">    retrieves an entire workflow</span>
+<span class="sd">    retrieves a workflow by its name. if the job is specified, retrieves</span>
+<span class="sd">    just the job in the specified workflow</span>
 
 <span class="sd">    Parameters:</span>
 
