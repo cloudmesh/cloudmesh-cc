@@ -177,6 +177,8 @@ doc: requirements-dev man
 	cp openapi.html docs/build/html/openapi3.html
 	cp openapi.json docs/build/html/openapi3.json
 	cp openapi.json docs/build/html/openapi.json
+	cp openapi.yaml docs/build/html/openapi3.yaml
+	cp openapi.yaml docs/build/html/openapi.yaml
 
 openapi:
 	-cms cc start --reload &
