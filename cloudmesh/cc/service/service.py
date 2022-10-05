@@ -1417,9 +1417,9 @@ def watch_running_workflow(request: Request,
                                        "preferences": preferences})
 
 
-@app.get("/workflow/job/{name_of_workflow}",
+@app.post("/workflow/job/{name}",
          tags=['workflow'])
-def add_job(name_of_workflow: str,
+def add_job(name: str,
             job: str,
             user: str = None,
             host: str = None,
@@ -1442,7 +1442,7 @@ def add_job(name_of_workflow: str,
 
     Parameters:
 
-    - **name_of_workflow**: (str) the name of workflow
+    - **name**: (str) the name of workflow
     - **job**: (str) the name of the job to add
     - **user**: (str) name of user of the job
     - **host**: (str) name of the host of the job
@@ -1460,12 +1460,12 @@ def add_job(name_of_workflow: str,
 
     We need to have first uploaded workflow-example for this curl to work:
 
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+    curl -X 'POST' \
+        'http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
         -H 'accept: application/json'
     
-    :param name_of_workflow: the name of the workflow
-    :type name_of_workflow: str
+    :param name: the name of the workflow
+    :type name: str
     :param job: the name of the job
     :type job: str
     :param user: name of user of the job
@@ -1493,7 +1493,7 @@ def add_job(name_of_workflow: str,
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-    w = load_workflow(name=name_of_workflow)
+    w = load_workflow(name=name)
 
     try:
         if type(progress) == str:
