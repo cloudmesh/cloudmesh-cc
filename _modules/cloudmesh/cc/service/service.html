@@ -1011,6 +1011,13 @@
 <div class="viewcode-block" id="delete_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">delete_workflow_direct_url</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># w = load_workflow(name)</span>
         <span class="n">directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1067,6 +1074,12 @@
          <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">edit_workflow_direct_url</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># w = load_workflow(name)</span>
         <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
@@ -1282,6 +1295,15 @@
 
 <div class="viewcode-block" id="serve_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/watcher/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :type request:</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
     <span class="c1"># w = load_workflow(name)</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;watcher.html&quot;</span><span class="p">,</span>
@@ -1293,6 +1315,15 @@
 <div class="viewcode-block" id="serve_table"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/serve-datatable/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_table</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :type request:</span>
+<span class="sd">    :param name: name of workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_generator</span> <span class="o">=</span> <span class="n">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
@@ -1517,6 +1548,9 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    preferences page</span>
 
+<span class="sd">    :param request:</span>
+<span class="sd">    :type request:</span>
+
 <span class="sd">    :return: preferences page</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
@@ -1551,6 +1585,25 @@
                      <span class="n">host</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">script</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :type request:</span>
+<span class="sd">    :param id:</span>
+<span class="sd">    :type id:</span>
+<span class="sd">    :param name: Name of the Workflow</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param status:</span>
+<span class="sd">    :type status:</span>
+<span class="sd">    :param host:</span>
+<span class="sd">    :type host:</span>
+<span class="sd">    :param progress:</span>
+<span class="sd">    :type progress:</span>
+<span class="sd">    :param script:</span>
+<span class="sd">    :type script:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
     <span class="c1"># print(preferences)</span>
     <span class="n">table_preferences</span> <span class="o">=</span> <span class="p">{</span>
