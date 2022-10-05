@@ -692,8 +692,7 @@ async def about_page(request: Request):
 @app.get("/workflows", tags=['workflow'])
 def list_workflows(request: Request, output: str = None):
     """
-    This command returns a list of workflows that is found within
-    the server.
+    returns a list of all workflows found on local computer
 
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflows' \
@@ -1323,7 +1322,9 @@ def add_job(name_of_workflow: str,
             label: str = None,
             parent: str = None):
     """
-    This command adds a node to a workflow. with the specified arguments. A check
+    adds a node/job to a workflow
+
+    A check
     is returned and the user is alerted if arguments are missing
     arguments are passed in ATTRIBUTE=VALUE fashion.
     if the name of the workflow is omitted, the default workflow is used.
