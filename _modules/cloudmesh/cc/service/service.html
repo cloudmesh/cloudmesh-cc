@@ -275,8 +275,12 @@
 
 <div class="viewcode-block" id="image_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">image_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    watches a svg for changes</span>
-<span class="sd">    :return:</span>
+<span class="sd">    watches an svg for changes</span>
+
+<span class="sd">    :param name_of_workflow: name of workflow to get svg for</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: svg as text form</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.2</span>
 
@@ -318,6 +322,7 @@
 <div class="viewcode-block" id="penultimate_status_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher">[docs]</a><span class="k">def</span> <span class="nf">penultimate_status_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    watches a runtime yaml for status changes</span>
+
 <span class="sd">    :param request:</span>
 <span class="sd">    :type request:</span>
 <span class="sd">    :param name_of_workflow:</span>
@@ -432,6 +437,15 @@
 
 
 <div class="viewcode-block" id="done_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.done_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that yields number of jobs that are done</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve done count</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: number of jobs done</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.05</span>
     <span class="n">placeholder_status_count</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -450,6 +464,15 @@
 
 
 <div class="viewcode-block" id="ready_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that yields number of jobs that are ready</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve ready count</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: number of jobs ready</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.05</span>
     <span class="n">placeholder_status_count</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -468,6 +491,15 @@
 
 
 <div class="viewcode-block" id="failed_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.failed_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that yields number of jobs that are failed</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve failed count</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: number of jobs failed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.05</span>
     <span class="n">placeholder_status_count</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -486,6 +518,15 @@
 
 
 <div class="viewcode-block" id="submitted_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that yields number of jobs that are submitted</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve submitted count</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: number of jobs submitted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.05</span>
     <span class="n">placeholder_status_count</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -504,6 +545,15 @@
 
 
 <div class="viewcode-block" id="running_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that yields number of jobs that are running</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve running count</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: number of jobs running</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.05</span>
     <span class="n">placeholder_status_count</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
