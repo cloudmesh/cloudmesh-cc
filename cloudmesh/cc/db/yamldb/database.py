@@ -16,9 +16,9 @@ class Database:
         :param name: name of the database. If set it is stored in
                      ~/.cloudmesh/name/name.yaml if not overwritten by filename
         :type name: string
-        :param filename: the filename. The default is   "~/.cloudmesh/queue/queues.yaml"
+        :param filename: the filename. The default is "~/.cloudmesh/queue/queues.yaml"
         :type filename: string
-        :param debug: prints debug messages if TRue
+        :param debug: prints debug messages if true
         :type debug: bool
         """
         self.debug = debug
