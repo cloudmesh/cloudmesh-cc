@@ -1,4 +1,3 @@
-"""Not yet implemented."""
 
 
 class Queue:

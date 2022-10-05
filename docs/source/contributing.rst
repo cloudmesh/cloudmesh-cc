@@ -6,8 +6,16 @@ GitHub
 
 The code is maintained on GitHub
 
-* `GitHub Issues <https://github.com/cloudmesh/cloudmesh-cc/issues>`_
-* `GitHub Pull Requests <https://github.com/cloudmesh/cloudmesh-cc/pulls>`_
+* `Code  <https://github.com/cloudmesh/cloudmesh-cc>`_
+* `Issues <https://github.com/cloudmesh/cloudmesh-cc/issues>`_
+* `Pull Requests <https://github.com/cloudmesh/cloudmesh-cc/pulls>`_
+* `Actions <https://github.com/cloudmesh/cloudmesh-cc/actions>`_
+* `Insights <https://github.com/cloudmesh/cloudmesh-cc/pulse>`_
+
+The code was developed by Gregor von Laszewski and J.P. Fleischer.
+Other contributors to a pre alpha version are listed at
+
+* `Contributors <https://github.com/cloudmesh/cloudmesh-cc/graphs/contributors>`_
 
 Management
 ----------
