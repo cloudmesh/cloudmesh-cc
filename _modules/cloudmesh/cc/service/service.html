@@ -323,12 +323,12 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    watches a runtime yaml for status changes</span>
 
-<span class="sd">    :param request:</span>
-<span class="sd">    :type request:</span>
-<span class="sd">    :param name_of_workflow:</span>
-<span class="sd">    :type name_of_workflow:</span>
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve statuses for</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: dictionary/Counter of statuses</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.2</span>
 
@@ -356,6 +356,16 @@
 
 
 <div class="viewcode-block" id="datatable_server"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.datatable_server">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    server side event watcher that returns datatable when changes are detected</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :param name_of_workflow: name of workflow to retrieve datatable for</span>
+<span class="sd">    :type name_of_workflow: str</span>
+<span class="sd">    :return: the datatable as html</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">interval</span> <span class="o">=</span> <span class="mf">0.2</span>
     <span class="n">runtime_yaml_filepath</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
@@ -1028,8 +1038,8 @@
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    :param request:</span>
-<span class="sd">    :type request:</span>
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
 <span class="sd">    :param name: name of the workflow</span>
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param job: name of the job</span>
@@ -1037,7 +1047,7 @@
 <span class="sd">    :param output: how to print workflow. can be html or table</span>
 <span class="sd">    :type output: str</span>
 <span class="sd">    :return: success or failure message</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :rtype: dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1189,7 +1199,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    see the graph embedded within web interface</span>
 
-<span class="sd">    :param request: type of request (api does this automatically in browser)</span>
+<span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
 <span class="sd">    :param name: name of workflow to retrieve the graph for</span>
 <span class="sd">    :type name: str</span>
@@ -1249,8 +1259,8 @@
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    :param request:</span>
-<span class="sd">    :type request:</span>
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
 <span class="sd">    :param name: name of workflow</span>
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param run_type: type of run, either topo or parallel</span>
@@ -1507,6 +1517,14 @@
          <span class="n">response_class</span><span class="o">=</span><span class="n">RedirectResponse</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_in_schema_portal_tag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">generate_example_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    create example workflow for testing</span>
+
+<span class="sd">    :param request: request that is supplied when using web interface</span>
+<span class="sd">    :type request: Request</span>
+<span class="sd">    :return: failure message or a redirection to homepage upon success</span>
+<span class="sd">    :rtype: dict or RedirectResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">workflow_example_dir</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="s1">&#39;~/.cloudmesh/workflow/workflow-example&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">workflow_example_dir</span><span class="p">):</span>
