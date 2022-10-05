@@ -1456,29 +1456,41 @@ provided workflow_name string.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow">
 <span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflowrest.html#RESTWorkflow.delete_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>delete a workflow by using REST.
-:type workflow_name: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param workflow_name: name of workflow to delete
-:type workflow_name: str
-:type job_name: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
-:param job_name: name of job to delete inside specified workflow
-:type job_name: str
-:return: success or failure message
-:rtype: dict</p>
+<dd><p>delete a workflow by using REST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_name</strong> (<em>str</em>) – name of workflow to delete</p></li>
+<li><p><strong>job_name</strong> (<em>str</em>) – name of job to delete inside specified workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>success or failure message</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow">
 <span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflowrest.html#RESTWorkflow.get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>retrieve a workflow by using REST.
-:type workflow_name: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param workflow_name: name of workflow to be retrieved
-:type workflow_name: str
-:type job_name: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
-:param job_name: name of job to be retrieved inside specified workflow
-:type job_name: str
-:return: contents of workflow
-:rtype: str</p>
+<dd><p>retrieve a workflow by using REST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_name</strong> (<em>str</em>) – name of workflow to be retrieved</p></li>
+<li><p><strong>job_name</strong> (<em>str</em>) – name of job to be retrieved inside specified workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>contents of workflow</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1500,25 +1512,33 @@ provided workflow_name string.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflowrest.RESTWorkflow.run_workflow">
 <span class="sig-name descname"><span class="pre">run_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'topo'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflowrest.html#RESTWorkflow.run_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflowrest.RESTWorkflow.run_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>run a workflow by using REST.
-:return:</p>
+<dd><p>run a workflow by using REST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow">
 <span class="sig-name descname"><span class="pre">upload_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflowrest.html#RESTWorkflow.upload_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>upload a workflow by using REST.
-:type directory: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
-:param directory: path to a folder of scripts and/or yaml
-:type directory: str
-:type archive: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
-:param archive: path to an archive file of scripts and/or yaml
-:type archive: str
-:type yaml: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
-:param yaml: path to a yaml file that specifies workflow configuration
-:type yaml: str
-:return: success or failure message
-:rtype: dict</p>
+<dd><p>upload a workflow by using REST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>str</em>) – path to a folder of scripts and/or yaml</p></li>
+<li><p><strong>archive</strong> (<em>str</em>) – path to an archive file of scripts and/or yaml</p></li>
+<li><p><strong>yaml</strong> (<em>str</em>) – path to a yaml file that specifies workflow configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>success or failure message</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
