@@ -297,7 +297,7 @@ paths:
         or editing.
 
 
-        * *directory** (str) path to directory with workflow files'
+        **directory** (str) path to directory with workflow files'
       operationId: upload_workflow_upload_post
       parameters:
       - description: path to workflow dir that contains scripts and yaml file
