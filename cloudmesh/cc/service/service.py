@@ -68,6 +68,7 @@ include_in_schema_portal_tag = False
 def get_available_workflows():
     """
     returns workflow dirs found in .cloudmesh directory
+
     :return: names of workflows found
     :rtype: list
     """
@@ -511,6 +512,16 @@ def status_returner(name_of_workflow: str):
 @app.get("/done-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_done(request: Request, name: str):
+    """
+    give the number of done jobs
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: event source response for server side event
+    :rtype: EventSourceResponse
+    """
     event_generator = done_watcher(request, name)
     return EventSourceResponse(event_generator)
 
@@ -518,6 +529,16 @@ def serve_done(request: Request, name: str):
 @app.get("/ready-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_ready(request: Request, name: str):
+    """
+    give the number of ready jobs
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: event source response for server side event
+    :rtype: EventSourceResponse
+    """
     event_generator = ready_watcher(request, name)
     return EventSourceResponse(event_generator)
 
@@ -525,6 +546,16 @@ def serve_ready(request: Request, name: str):
 @app.get("/failed-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_failed(request: Request, name: str):
+    """
+    give the number of failed jobs
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: event source response for server side event
+    :rtype: EventSourceResponse
+    """
     event_generator = failed_watcher(request, name)
     return EventSourceResponse(event_generator)
 
@@ -532,6 +563,16 @@ def serve_failed(request: Request, name: str):
 @app.get("/submitted-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_submitted(request: Request, name: str):
+    """
+    give the number of submitted jobs
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: event source response for server side event
+    :rtype: EventSourceResponse
+    """
     event_generator = submitted_watcher(request, name)
     return EventSourceResponse(event_generator)
 
@@ -539,6 +580,16 @@ def serve_submitted(request: Request, name: str):
 @app.get("/running-count/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_running(request: Request, name: str):
+    """
+    give the number of running jobs
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name: name of workflow
+    :type name: str
+    :return: event source response for server side event
+    :rtype: EventSourceResponse
+    """
     event_generator = running_watcher(request, name)
     return EventSourceResponse(event_generator)
 
