@@ -909,6 +909,13 @@ def upload(directory: str = Query(None,
 @app.get("/delete/{name}", tags=['workflow'],
          include_in_schema=include_in_schema_portal_tag)
 def delete_workflow_direct_url(name: str):
+    """
+    :param name: name of workflow
+    :type name: str
+
+    :return:
+    :rtype:
+    """
     try:
         # w = load_workflow(name)
         directory = path_expand(f"~/.cloudmesh/workflow/{name}")
@@ -965,6 +972,12 @@ def delete_workflow(name: str, job: str = None):
          response_class=Response,
          include_in_schema=include_in_schema_portal_tag)
 def edit_workflow_direct_url(name: str):
+    """
+    :param name: name of workflow
+    :type name: str
+    :return:
+    :rtype:
+    """
     try:
         # w = load_workflow(name)
         yaml_file = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
@@ -1180,6 +1193,15 @@ def get_workflow_graph(request: Request, name: str):
 
 @app.get("/watcher/{name}", include_in_schema=include_in_schema_portal_tag)
 def serve_watcher(request: Request, name: str):
+    """
+
+    :param request:
+    :type request:
+    :param name: name of workflow
+    :type name: str
+    :return:
+    :rtype:
+    """
     folders = get_available_workflows()
     # w = load_workflow(name)
     return templates.TemplateResponse("watcher.html",
@@ -1191,6 +1213,15 @@ def serve_watcher(request: Request, name: str):
 @app.get("/serve-datatable/{name}",
          include_in_schema=include_in_schema_portal_tag)
 def serve_table(request: Request, name: str):
+    """
+
+    :param request:
+    :type request:
+    :param name: name of workflow
+    :type name: str
+    :return:
+    :rtype:
+    """
     event_generator = datatable_server(request, name)
     return EventSourceResponse(event_generator)
 
@@ -1408,6 +1439,9 @@ def preferences_post(request: Request):
     """
     preferences page
 
+    :param request:
+    :type request:
+
     :return: preferences page
     """
     folders = get_available_workflows()
@@ -1442,6 +1476,25 @@ def preferences_post(request: Request,
                      host: bool = Form(False),
                      progress: bool = Form(False),
                      script: bool = Form(False)):
+    """
+
+    :param request:
+    :type request:
+    :param id:
+    :type id:
+    :param name: Name of the Workflow
+    :type name: str
+    :param status:
+    :type status:
+    :param host:
+    :type host:
+    :param progress:
+    :type progress:
+    :param script:
+    :type script:
+    :return:
+    :rtype:
+    """
     folders = get_available_workflows()
     # print(preferences)
     table_preferences = {
