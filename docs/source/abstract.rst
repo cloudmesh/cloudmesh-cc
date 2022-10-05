@@ -76,10 +76,10 @@ virtualenv’s and anaconda is simple.
 Workflow Functionality
 ----------------------
 
-The framwork supports workflow functionality to (a) execute workflow tasks
-in parralel (b) manage the creation of the workflow by adding graphs, tasks, and edges
-(c) controll the execution and (d) monitor the execution
-The impcit design to
+The framework supports workflow functionality to (a) execute workflow tasks
+in parallel (b) manage the creation of the workflow by adding graphs, tasks, and edges
+(c) control the execution and (d) monitor the execution
+The implicit design to
 access the workflow through an API, a REST services, and the commandline
 allows easy integration into other frameworks.
 
