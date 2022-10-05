@@ -173,8 +173,12 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
 
 async def image_watcher(request, name_of_workflow: str):
     """
-    watches a svg for changes
-    :return:
+    watches an svg for changes
+
+    :param name_of_workflow: name of workflow to get svg for
+    :type name_of_workflow: str
+    :return: svg as text form
+    :rtype: str
     """
     interval = 0.2
 
@@ -216,6 +220,7 @@ async def image_watcher(request, name_of_workflow: str):
 def penultimate_status_watcher(request, name_of_workflow: str):
     """
     watches a runtime yaml for status changes
+
     :param request:
     :type request:
     :param name_of_workflow:
@@ -330,6 +335,15 @@ async def datatable_server(request, name_of_workflow: str):
 
 
 async def done_watcher(request, name_of_workflow: str):
+    """
+    server side event watcher that yields number of jobs that are done
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve done count
+    :type name_of_workflow: str
+    :return: number of jobs done
+    """
     interval = 0.05
     placeholder_status_count = None
     while True:
@@ -348,6 +362,15 @@ async def done_watcher(request, name_of_workflow: str):
 
 
 async def ready_watcher(request, name_of_workflow: str):
+    """
+    server side event watcher that yields number of jobs that are ready
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve ready count
+    :type name_of_workflow: str
+    :return: number of jobs ready
+    """
     interval = 0.05
     placeholder_status_count = None
     while True:
@@ -366,6 +389,15 @@ async def ready_watcher(request, name_of_workflow: str):
 
 
 async def failed_watcher(request, name_of_workflow: str):
+    """
+    server side event watcher that yields number of jobs that are failed
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve failed count
+    :type name_of_workflow: str
+    :return: number of jobs failed
+    """
     interval = 0.05
     placeholder_status_count = None
     while True:
@@ -384,6 +416,15 @@ async def failed_watcher(request, name_of_workflow: str):
 
 
 async def submitted_watcher(request, name_of_workflow: str):
+    """
+    server side event watcher that yields number of jobs that are submitted
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve submitted count
+    :type name_of_workflow: str
+    :return: number of jobs submitted
+    """
     interval = 0.05
     placeholder_status_count = None
     while True:
@@ -402,6 +443,15 @@ async def submitted_watcher(request, name_of_workflow: str):
 
 
 async def running_watcher(request, name_of_workflow: str):
+    """
+    server side event watcher that yields number of jobs that are running
+
+    :param request: request that is supplied when using web interface
+    :type request: Request
+    :param name_of_workflow: name of workflow to retrieve running count
+    :type name_of_workflow: str
+    :return: number of jobs running
+    """
     interval = 0.05
     placeholder_status_count = None
     while True:
