@@ -703,13 +703,22 @@ async def about_page(request: Request):
 
 @app.get("/workflows",
          tags=['workflow'])
-def list_workflows(request: Request, output: str = None):
+def list_workflows(output: str = None):
     """
     returns a list of all workflows found on local computer
 
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflows' \
         -H 'accept: application/json'
+
+    Parameters:
+
+    - **output**: (str) format to print available workflows, which can be
+    json, csv, or none which prints it as dict
+
+    :param output: format to print available workflows, which can be
+    json, csv, or none which prints it as dict
+    :type output: str
     :return: list of workflow names
     """
 
@@ -773,7 +782,12 @@ def upload(directory: str = Query(None,
     upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
 
+    Parameters:
+
     - **directory**: (str) path to directory with workflow files
+    - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,
+    or tar, that contains workflow files
+    - **yaml**: (str) path to yaml file that specifies workflow configuration
     """
 
     """
@@ -953,6 +967,13 @@ def delete_workflow(name: str, job: str = None):
     deletes the job in the specified workflow if specified.
     If the job is not specified, it deletes entire workflow.
 
+    Parameters:
+
+    - **name**: (str) name of workflow to delete
+    - **job**: (str) name of job to delete in a workflow, if specified
+    """
+    """
+
     example curl:
     we need to have first uploaded workflow-example for this curl to work!
     curl -X 'DELETE' \
@@ -1012,10 +1033,22 @@ def edit_workflow_direct_url(name: str):
 
 @app.get("/workflow/{name}",
          tags=['workflow'])
-def get_workflow(request: Request, name: str, job: str = None, output: str = None):
+def get_workflow(request: Request,
+                 name: str,
+                 job: str = None,
+                 output: str = None):
     """
     retrieves a job in a workflow, if specified. if not specified,
     retrieves an entire workflow
+
+    Parameters:
+
+    - **name**: (str) name of workflow to retrieve
+    - **job**: (str) name of job to retrieve, if specified (optional)
+    - **output**: (str) how to print workflow, which can be
+    html, graph, json, table, or csv. if not specified, then returned as dict
+    """
+    """
 
     you need to have first uploaded the workflow-example for this curl to work!
     curl -X 'GET' \
@@ -1406,18 +1439,18 @@ def add_job(name_of_workflow: str,
 
     Parameters:
 
-    - **name_of_workflow**: the name of workflow as a string
-    - **job**: the name of the job to add as a string
-    - **user**: name of user of the job as a string
-    - **host**: name of the host of the job as a string
-    - **kind**: the kind of job, like ssh, slurm, local, as a string
-    - **status**: the status of the job, such as ready, as a string
-    - **script**: the name of the script to be run, including file extension,
-    as a string
-    - **exec**: command(s) to execute as a string
-    - **progress**: value of job progress from 0 to 100 as a string
-    - **label**: text to be shown on node in the graph as a string
-    - **parent**: parent job as a string
+    - **name_of_workflow**: (str) the name of workflow
+    - **job**: (str) the name of the job to add
+    - **user**: (str) name of user of the job
+    - **host**: (str) name of the host of the job
+    - **kind**: (str) the kind of job, like ssh, slurm, local,
+    - **status**: (str) the status of the job, such as ready,
+    - **script**: (str) the name of the script to be run,
+    including file extension
+    - **exec**: (str) command(s) to execute
+    - **progress**: (str) value of job progress from 0 to 100
+    - **label**: (str) text to be shown on node in the graph
+    - **parent**: (str) parent job
 
     
     :param name_of_workflow: the name of the workflow
