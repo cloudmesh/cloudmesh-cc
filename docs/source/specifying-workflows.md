@@ -1,5 +1,38 @@
 # Specifying Workflows
 
+
+
+## Workflow YAML format
+
+## Example Workflows
+
+* http links here
+
+
+
+## Defining nodes in the workflow
+
+### Defining labels for the workflow
+
+* `progress`
+* time
+  * `%now` now
+  * `%tc` created
+  * `%tm` modified
+  * `%dt0` time since start of first node
+  * `%dt` time since start of current node
+    (duration once finished)
+  * `name`
+  * `label`
+  * `host`
+  
+
+## Defining dependencies in the workflow
+
+
+
+## Creporting Progress
+
 When running scripts/jobs inside a workflow, the scripts must 
 leverage some format of cloudmesh.progress to run successfully. 
 Otherwise, the Workflow class cannot tell
