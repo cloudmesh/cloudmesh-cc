@@ -1441,39 +1441,46 @@
 <span class="sd">        &#39;http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    Create an item with all the information:</span>
+<span class="sd">    Parameters:</span>
 
-<span class="sd">    - **TBD**: each item must have a name</span>
-<span class="sd">    - **TBD**: a long description</span>
-<span class="sd">    - **TBD**: required</span>
-<span class="sd">    - **TBD**: if the item doesn&#39;t have tax, you can omit this</span>
-<span class="sd">    - **TBD**: a set of unique tag strings for this item</span>
+<span class="sd">    - **name_of_workflow**: the name of workflow as a string</span>
+<span class="sd">    - **job**: the name of the job to add as a string</span>
+<span class="sd">    - **user**: name of user of the job as a string</span>
+<span class="sd">    - **host**: name of the host of the job as a string</span>
+<span class="sd">    - **kind**: the kind of job, like ssh, slurm, local, as a string</span>
+<span class="sd">    - **status**: the status of the job, such as ready, as a string</span>
+<span class="sd">    - **script**: the name of the script to be run, including file extension,</span>
+<span class="sd">    as a string</span>
+<span class="sd">    - **exec**: command(s) to execute as a string</span>
+<span class="sd">    - **progress**: value of job progress from 0 to 100 as a string</span>
+<span class="sd">    - **label**: text to be shown on node in the graph as a string</span>
+<span class="sd">    - **parent**: parent job as a string</span>
 
 <span class="sd">    </span>
 <span class="sd">    :param name_of_workflow: the name of the workflow</span>
 <span class="sd">    :type name_of_workflow: str</span>
-<span class="sd">    :param job: the specifications and characteristics of the job</span>
-<span class="sd">    :type job: Jobpy</span>
-<span class="sd">    :param user: TTTTT</span>
+<span class="sd">    :param job: the name of the job</span>
+<span class="sd">    :type job: str</span>
+<span class="sd">    :param user: name of user of the job</span>
 <span class="sd">    :type user: str</span>
-<span class="sd">    :param host: the hostname</span>
+<span class="sd">    :param host: name of the host of the job</span>
 <span class="sd">    :type host: str</span>
-<span class="sd">    :param kind:</span>
-<span class="sd">    :type kind:</span>
-<span class="sd">    :param status:</span>
-<span class="sd">    :type status:</span>
-<span class="sd">    :param script:</span>
-<span class="sd">    :type script:</span>
-<span class="sd">    :param exec:</span>
-<span class="sd">    :type exec:</span>
-<span class="sd">    :param progress:</span>
-<span class="sd">    :type progress:</span>
-<span class="sd">    :param label:</span>
-<span class="sd">    :type label:</span>
-<span class="sd">    :param parent:</span>
-<span class="sd">    :type parent:</span>
+<span class="sd">    :param kind: the kind of job, like ssh, slurm, local</span>
+<span class="sd">    :type kind: str</span>
+<span class="sd">    :param status: the status of the job, such as ready</span>
+<span class="sd">    :type status: str</span>
+<span class="sd">    :param script: the name of the script to be run, including file extension</span>
+<span class="sd">    :type script: str</span>
+<span class="sd">    :param exec: command(s) to execute</span>
+<span class="sd">    :type exec: str</span>
+<span class="sd">    :param progress: value of job progress from 0 to 100</span>
+<span class="sd">    :type progress: str</span>
+<span class="sd">    :param label: text to be shown on node in the graph</span>
+<span class="sd">    :type label: str</span>
+<span class="sd">    :param parent: parent job</span>
+<span class="sd">    :type parent: str</span>
 <span class="sd">    :return: returns jobs within the specified workflow</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :rtype: dict</span>
 
 
 <span class="sd">    &quot;&quot;&quot;</span>

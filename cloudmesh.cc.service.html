@@ -190,35 +190,42 @@ config.yaml file will be used and the name will be job-n</p>
 <p><strong>Example curl Script</strong></p>
 <p>We need to have first uploaded workflow-example for this curl to work:</p>
 <p>curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel">http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel</a>’         -H ‘accept: application/json’</p>
-<p>Create an item with all the information:</p>
+<p>Parameters:</p>
 <ul class="simple">
-<li><p><strong>TBD</strong>: each item must have a name</p></li>
-<li><p><strong>TBD</strong>: a long description</p></li>
-<li><p><strong>TBD</strong>: required</p></li>
-<li><p><strong>TBD</strong>: if the item doesn’t have tax, you can omit this</p></li>
-<li><p><strong>TBD</strong>: a set of unique tag strings for this item</p></li>
+<li><p><strong>name_of_workflow</strong>: the name of workflow as a string</p></li>
+<li><p><strong>job</strong>: the name of the job to add as a string</p></li>
+<li><p><strong>user</strong>: name of user of the job as a string</p></li>
+<li><p><strong>host</strong>: name of the host of the job as a string</p></li>
+<li><p><strong>kind</strong>: the kind of job, like ssh, slurm, local, as a string</p></li>
+<li><p><strong>status</strong>: the status of the job, such as ready, as a string</p></li>
+<li><p><strong>script</strong>: the name of the script to be run, including file extension,</p></li>
 </ul>
+<p>as a string
+- <strong>exec</strong>: command(s) to execute as a string
+- <strong>progress</strong>: value of job progress from 0 to 100 as a string
+- <strong>label</strong>: text to be shown on node in the graph as a string
+- <strong>parent</strong>: parent job as a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name_of_workflow</strong> (<em>str</em>) – the name of the workflow</p></li>
-<li><p><strong>job</strong> (<a class="reference internal" href="#cloudmesh.cc.service.service.Jobpy" title="cloudmesh.cc.service.service.Jobpy"><em>Jobpy</em></a>) – the specifications and characteristics of the job</p></li>
-<li><p><strong>user</strong> (<em>str</em>) – TTTTT</p></li>
-<li><p><strong>host</strong> (<em>str</em>) – the hostname</p></li>
-<li><p><strong>kind</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>status</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>script</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>exec</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>progress</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>label</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>parent</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
+<li><p><strong>job</strong> (<em>str</em>) – the name of the job</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – name of user of the job</p></li>
+<li><p><strong>host</strong> (<em>str</em>) – name of the host of the job</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – the kind of job, like ssh, slurm, local</p></li>
+<li><p><strong>status</strong> (<em>str</em>) – the status of the job, such as ready</p></li>
+<li><p><strong>script</strong> (<em>str</em>) – the name of the script to be run, including file extension</p></li>
+<li><p><strong>exec</strong> (<em>str</em>) – command(s) to execute</p></li>
+<li><p><strong>progress</strong> (<em>str</em>) – value of job progress from 0 to 100</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – text to be shown on node in the graph</p></li>
+<li><p><strong>parent</strong> (<em>str</em>) – parent job</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>returns jobs within the specified workflow</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p></p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
