@@ -965,8 +965,8 @@ def delete_workflow_direct_url(name: str):
             tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
     """
-    deletes the job in the specified workflow if specified.
-    If the job is not specified, it deletes entire workflow.
+    deletes an entire workflow. if the job is specified, then deletes
+    just the job in the workflow.
 
     Parameters:
 
@@ -1039,8 +1039,8 @@ def get_workflow(request: Request,
                  job: str = None,
                  output: str = None):
     """
-    retrieves a job in a workflow, if specified. if not specified,
-    retrieves an entire workflow
+    retrieves a workflow by its name. if the job is specified, retrieves
+    just the job in the specified workflow
 
     Parameters:
 

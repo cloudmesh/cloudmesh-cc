@@ -1,22 +1,62 @@
 # Specifying Workflows
 
-
+Users of cloudmesh cc must follow a certain
+configuration style to best specify how a
+workflow should be run. Customization options
+include specifying the job types, the order of
+how the jobs should be run, and the portrayal
+of the graph.
 
 ## Workflow YAML format
 
+A workflow yaml file with three Shell script
+jobs `a`, `b`, and `c` is as follows:
+
+```bash
+workflow:
+  nodes:
+    a:
+       name: a
+       user: gregor
+       host: localhost
+       kind: local
+       status: ready
+       label: '{name}\nprogress={progress}'
+       script: test-a.sh
+    b:
+       name: b
+       user: gregor
+       host: localhost
+       kind: local
+       status: ready
+       label: '{name}\nprogress={progress}'
+       script: test-b.sh
+    c:
+      name: c
+      user: gregor
+      host: localhost
+      kind: local
+      status: ready
+      label: '{name}\nprogress={progress}'
+      script: test-c.sh
+  dependencies:
+    - a,b,c
+```
+
 ## Example Workflows
 
-* http links here
-
-
+<https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml>
 
 ## Defining nodes in the workflow
 
 ### Defining labels for the workflow
 
+These variables must be in curly braces.
+
 * `progress`
 * time
   * `%now` now
+  * `now.%m/%d/%Y, %H:%M:%S` now in particular format
   * `%tc` created
   * `%tm` modified
   * `%dt0` time since start of first node
@@ -29,9 +69,24 @@
 
 ## Defining dependencies in the workflow
 
+Dependencies are specified in the order which jobs should be
+run, from left to right. They are listed under the workflow
+in the yaml file.
 
+```bash
+workflow:
+  nodes:
+    a:
+       name: a
+    b:
+       name: b
+    c:
+      name: c
+  dependencies:
+    - a,b,c
+```
 
-## Creporting Progress
+## Reporting Progress
 
 When running scripts/jobs inside a workflow, the scripts must 
 leverage some format of cloudmesh.progress to run successfully. 
