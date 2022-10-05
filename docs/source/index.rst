@@ -21,7 +21,7 @@ live status updates.
    :maxdepth: 1
    :caption: User Guide
 
-   requirements
+   specifying-workflows
    manual/cc
    rest
    rest-gui

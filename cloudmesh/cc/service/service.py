@@ -1370,39 +1370,46 @@ def add_job(name_of_workflow: str,
         'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
         -H 'accept: application/json'
 
-    Create an item with all the information:
+    Parameters:
 
-    - **TBD**: each item must have a name
-    - **TBD**: a long description
-    - **TBD**: required
-    - **TBD**: if the item doesn't have tax, you can omit this
-    - **TBD**: a set of unique tag strings for this item
+    - **name_of_workflow**: the name of workflow as a string
+    - **job**: the name of the job to add as a string
+    - **user**: name of user of the job as a string
+    - **host**: name of the host of the job as a string
+    - **kind**: the kind of job, like ssh, slurm, local, as a string
+    - **status**: the status of the job, such as ready, as a string
+    - **script**: the name of the script to be run, including file extension,
+    as a string
+    - **exec**: command(s) to execute as a string
+    - **progress**: value of job progress from 0 to 100 as a string
+    - **label**: text to be shown on node in the graph as a string
+    - **parent**: parent job as a string
 
     
     :param name_of_workflow: the name of the workflow
     :type name_of_workflow: str
-    :param job: the specifications and characteristics of the job
-    :type job: Jobpy
-    :param user: TTTTT
+    :param job: the name of the job
+    :type job: str
+    :param user: name of user of the job
     :type user: str
-    :param host: the hostname
+    :param host: name of the host of the job
     :type host: str
-    :param kind:
-    :type kind:
-    :param status:
-    :type status:
-    :param script:
-    :type script:
-    :param exec:
-    :type exec:
-    :param progress:
-    :type progress:
-    :param label:
-    :type label:
-    :param parent:
-    :type parent:
+    :param kind: the kind of job, like ssh, slurm, local
+    :type kind: str
+    :param status: the status of the job, such as ready
+    :type status: str
+    :param script: the name of the script to be run, including file extension
+    :type script: str
+    :param exec: command(s) to execute
+    :type exec: str
+    :param progress: value of job progress from 0 to 100
+    :type progress: str
+    :param label: text to be shown on node in the graph
+    :type label: str
+    :param parent: parent job
+    :type parent: str
     :return: returns jobs within the specified workflow
-    :rtype:
+    :rtype: dict
 
 
     """
