@@ -66,29 +66,29 @@ paths:
         Parameters:
 
 
-        - **name_of_workflow**: the name of workflow as a string
+        - **name_of_workflow**: (str) the name of workflow
 
-        - **job**: the name of the job to add as a string
+        - **job**: (str) the name of the job to add
 
-        - **user**: name of user of the job as a string
+        - **user**: (str) name of user of the job
 
-        - **host**: name of the host of the job as a string
+        - **host**: (str) name of the host of the job
 
-        - **kind**: the kind of job, like ssh, slurm, local, as a string
+        - **kind**: (str) the kind of job, like ssh, slurm, local,
 
-        - **status**: the status of the job, such as ready, as a string
+        - **status**: (str) the status of the job, such as ready,
 
-        - **script**: the name of the script to be run, including file extension,
+        - **script**: (str) the name of the script to be run,
 
-        as a string
+        including file extension
 
-        - **exec**: command(s) to execute as a string
+        - **exec**: (str) command(s) to execute
 
-        - **progress**: value of job progress from 0 to 100 as a string
+        - **progress**: (str) value of job progress from 0 to 100
 
-        - **label**: text to be shown on node in the graph as a string
+        - **label**: (str) text to be shown on node in the graph
 
-        - **parent**: parent job as a string
+        - **parent**: (str) parent job
 
 
 
@@ -227,33 +227,20 @@ paths:
       description: 'runs a specified workflow according to provided run type
 
 
-        example curl:
-
-        we need to have first uploaded workflow-example for this curl to work!
-
-        curl -X ''GET''         ''http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo''         -H
-        ''accept: application/json''
+        Parameters:
 
 
-        :param request: request that is supplied when using web interface
+        - **name**: (str) name of workflow to run
 
-        :type request: Request
+        - **run_type**: (str) how to run workflow. only topo is implemented
 
-        :param name: name of workflow
+        (topological sort of jobs)
 
-        :type name: str
+        - **redirect**: (str) where to redirect after initializing the run.
 
-        :param run_type: type of run, either topo or parallel
+        only graph is implemented for web interface. None will disable redirect
 
-        :type run_type: str
-
-        :param redirect:
-
-        :type redirect:
-
-        :return: success or exception message
-
-        :rtype:'
+        - **show**: (bool) whether to show the graph as the workflow is run'
       operationId: run_workflow_workflow_run__name__get
       parameters:
       - in: path
@@ -275,6 +262,13 @@ paths:
         schema:
           title: Redirect
           type: string
+      - in: query
+        name: show
+        required: false
+        schema:
+          default: false
+          title: Show
+          type: boolean
       responses:
         '200':
           content:
@@ -297,7 +291,16 @@ paths:
         or editing.
 
 
-        **directory** (str) path to directory with workflow files'
+        Parameters:
+
+
+        - **directory**: (str) path to directory with workflow files
+
+        - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,
+
+        or tar, that contains workflow files
+
+        - **yaml**: (str) path to yaml file that specifies workflow configuration'
       operationId: upload_workflow_upload_post
       parameters:
       - description: path to workflow dir that contains scripts and yaml file
@@ -346,23 +349,12 @@ paths:
         If the job is not specified, it deletes entire workflow.
 
 
-        example curl:
-
-        we need to have first uploaded workflow-example for this curl to work!
-
-        curl -X ''DELETE''         ''http://127.0.0.1:8000/workflow/workflow-example''         -H
-        ''accept: application/json''
+        Parameters:
 
 
-        :param name: name of the workflow
+        - **name**: (str) name of workflow to delete
 
-        :type name: str
-
-        :param job: name of the job
-
-        :type job: str
-
-        :return: success or failure message'
+        - **job**: (str) name of job to delete in a workflow, if specified'
       operationId: delete_workflow_workflow__name__delete
       parameters:
       - in: path
@@ -398,31 +390,16 @@ paths:
         retrieves an entire workflow
 
 
-        you need to have first uploaded the workflow-example for this curl to work!
-
-        curl -X ''GET''         ''http://127.0.0.1:8000/workflow/workflow-example''         -H
-        ''accept: application/json''
+        Parameters:
 
 
-        :param request: request that is supplied when using web interface
+        - **name**: (str) name of workflow to retrieve
 
-        :type request: Request
+        - **job**: (str) name of job to retrieve, if specified (optional)
 
-        :param name: name of the workflow
+        - **output**: (str) how to print workflow, which can be
 
-        :type name: str
-
-        :param job: name of the job
-
-        :type job: str
-
-        :param output: how to print workflow. can be html or table
-
-        :type output: str
-
-        :return: success or failure message
-
-        :rtype: dict'
+        html, graph, json, table, or csv. if not specified, then returned as dict'
       operationId: get_workflow_workflow__name__get
       parameters:
       - in: path
@@ -465,6 +442,21 @@ paths:
 
         curl -X ''GET''         ''http://127.0.0.1:8000/workflows''         -H ''accept:
         application/json''
+
+
+        Parameters:
+
+
+        - **output**: (str) format to print available workflows, which can be
+
+        json, csv, or none which prints it as dict
+
+
+        :param output: format to print available workflows, which can be
+
+        json, csv, or none which prints it as dict
+
+        :type output: str
 
         :return: list of workflow names'
       operationId: list_workflows_workflows_get
