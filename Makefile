@@ -177,7 +177,7 @@ doc: requirements-dev man
 	cp openapi.json docs/build/html/openapi3.json
 	cp openapi.json docs/build/html/openapi.json
 
-swagger:
+openapi:
 	-cms cc start --reload &
 	sleep 6
 	curl http://127.0.0.1:8000/openapi.json > openapi.json
