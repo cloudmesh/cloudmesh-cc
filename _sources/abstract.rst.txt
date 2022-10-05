@@ -93,14 +93,13 @@ also available as OpenAPI document.
 
    OpenAPI Description of the REST Interface to the Workflow
 
-In addition, the framework
-supports multiple operating systems like macOS, Linux, and Windows 10
-and 11. This not only includes the ability to run the workflow on remote
-computers but also integrates tasks that can be run locally on the
-various operating systems to integrate their computational capabilities.
-Hence we support easy access to host capabilities, such as the computer’s localhost, remote computers,
-and the Linux-based virtual image WSL. Jobs can be visualized and saved
-as a YAML and SVG data file.
+In addition, the framework supports multiple operating systems like macOS,
+Linux, and Windows 10 and 11. This not only includes the ability to run
+the workflow on remote computers but also integrates tasks that can be run
+locally on the various operating systems to integrate their computational
+capabilities. Hence we support easy access to host capabilities, such as
+the computer’s localhost, remote computers, and the Linux-based virtual
+image WSL. Jobs can be visualized and saved as a YAML and SVG data file.
 
 Quickstart
 ----------

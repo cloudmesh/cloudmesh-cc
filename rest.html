@@ -55,7 +55,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="specifying-workflows.html">Specifying Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual/cc.html">Command cc</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">REST</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#list-workflows-available-on-local-computer">List Workflows Available on Local Computer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upload-a-workflow">Upload a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-a-workflow">Delete a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retrieve-a-workflow">Retrieve a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-a-workflow">Run a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-a-job-to-a-workflow">Add a Job to a Workflow</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="rest-gui.html">REST GUI Web Browser Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 </ul>
@@ -93,7 +101,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>REST</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/rest.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/rest.md" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -103,6 +111,111 @@
              
   <section id="rest">
 <h1>REST<a class="headerlink" href="#rest" title="Permalink to this heading"></a></h1>
+<p>Cloudmesh cc can be interfaced with Representational
+State Transfer (REST) by using Curl commands. REST
+is advantageous as it can be used with programming
+languages other than Python.</p>
+<p>To use this feature, ensure that the FastAPI server is
+online with the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
+cms cc start
+</pre></div>
+</div>
+<section id="list-workflows-available-on-local-computer">
+<h2>List Workflows Available on Local Computer<a class="headerlink" href="#list-workflows-available-on-local-computer" title="Permalink to this heading"></a></h2>
+<p>The following command returns a dict that lists each
+available workflow.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflows&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="upload-a-workflow">
+<h2>Upload a Workflow<a class="headerlink" href="#upload-a-workflow" title="Permalink to this heading"></a></h2>
+<p>There are different ways to upload a new workflow to
+cloudmesh-cc, by specifying one of the following:</p>
+<ul class="simple">
+<li><p>a directory that contains the scripts and yaml</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+    -d <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>an archive file in tgz, xz, tar.gz, or tar format that contains the scripts
+and yaml</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+    -d <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>or a yaml file that specifies what jobs to run.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+    -d <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-a-workflow">
+<h2>Delete a Workflow<a class="headerlink" href="#delete-a-workflow" title="Permalink to this heading"></a></h2>
+<p>The following command deletes a preexisting workflow
+from the local computer.</p>
+<p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
+you wish to delete.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;DELETE&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="retrieve-a-workflow">
+<h2>Retrieve a Workflow<a class="headerlink" href="#retrieve-a-workflow" title="Permalink to this heading"></a></h2>
+<p>The following command retrieves a workflow and its
+configuration, such as the directory where it resides,
+the jobs that it contains, the colors of the statuses,
+and more.</p>
+<p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
+you wish to retrieve.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="run-a-workflow">
+<h2>Run a Workflow<a class="headerlink" href="#run-a-workflow" title="Permalink to this heading"></a></h2>
+<p>The following command runs a workflow.</p>
+<p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
+you wish to run. Additionally, to hide the graph of the
+workflow as it is run, replace <code class="docutils literal notranslate"><span class="pre">show=True</span></code> with <code class="docutils literal notranslate"><span class="pre">show=False</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow/run/workflow-example?show=True&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="add-a-job-to-a-workflow">
+<h2>Add a Job to a Workflow<a class="headerlink" href="#add-a-job-to-a-workflow" title="Permalink to this heading"></a></h2>
+<p>The following command adds a new job to a preexisting workflow.</p>
+<p>The only required parameter is the job parameter, which specifies
+the name of the job. The other optional parameters include the
+user, host, label, kind, status, progress, and script. To use
+the command, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow you
+wish to change. Additionally, change the other parameters, as desired.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/add-job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;accept: application/json&#39;</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
