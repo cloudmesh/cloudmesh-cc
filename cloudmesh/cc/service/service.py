@@ -707,10 +707,6 @@ def list_workflows(output: str = None):
     """
     returns a list of all workflows found on local computer
 
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/workflows' \
-        -H 'accept: application/json'
-
     Parameters:
 
     - **output**: (str) format to print available workflows, which can be
@@ -720,6 +716,11 @@ def list_workflows(output: str = None):
     json, csv, or none which prints it as dict
     :type output: str
     :return: list of workflow names
+    """
+    """    
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/workflows' \
+        -H 'accept: application/json'
     """
 
     dict_of_workflow_dicts = dict_of_available_workflows()
@@ -1439,14 +1440,6 @@ def add_job(name_of_workflow: str,
     If no job name is specified, an automated number that is kept in the
     config.yaml file will be used and the name will be job-n
 
-    **Example curl Script**
-
-    We need to have first uploaded workflow-example for this curl to work:
-
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
-        -H 'accept: application/json'
-
     Parameters:
 
     - **name_of_workflow**: (str) the name of workflow
@@ -1461,7 +1454,15 @@ def add_job(name_of_workflow: str,
     - **progress**: (str) value of job progress from 0 to 100
     - **label**: (str) text to be shown on node in the graph
     - **parent**: (str) parent job
+    """
+    """
+    **Example curl Script**
 
+    We need to have first uploaded workflow-example for this curl to work:
+
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/add-job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+        -H 'accept: application/json'
     
     :param name_of_workflow: the name of the workflow
     :type name_of_workflow: str
@@ -1487,8 +1488,6 @@ def add_job(name_of_workflow: str,
     :type parent: str
     :return: returns jobs within the specified workflow
     :rtype: dict
-
-
     """
 
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
