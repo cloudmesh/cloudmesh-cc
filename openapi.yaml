@@ -35,8 +35,8 @@ info:
   version: 4.3.7
 openapi: 3.0.2
 paths:
-  /workflow/job/{name_of_workflow}:
-    get:
+  /workflow/job/{name}:
+    post:
       description: 'adds a node/job to a workflow
 
 
@@ -56,7 +56,7 @@ paths:
         Parameters:
 
 
-        - **name_of_workflow**: (str) the name of workflow
+        - **name**: (str) the name of workflow
 
         - **job**: (str) the name of the job to add
 
@@ -79,13 +79,13 @@ paths:
         - **label**: (str) text to be shown on node in the graph
 
         - **parent**: (str) parent job'
-      operationId: add_job_workflow_job__name_of_workflow__get
+      operationId: add_job_workflow_job__name__post
       parameters:
       - in: path
-        name: name_of_workflow
+        name: name
         required: true
         schema:
-          title: Name Of Workflow
+          title: Name
           type: string
       - in: query
         name: job
@@ -284,9 +284,9 @@ paths:
       - workflow
   /workflow/{name}:
     delete:
-      description: 'deletes the job in the specified workflow if specified.
+      description: 'deletes an entire workflow. if the job is specified, then deletes
 
-        If the job is not specified, it deletes entire workflow.
+        just the job in the workflow.
 
 
         Parameters:
@@ -325,9 +325,9 @@ paths:
       tags:
       - workflow
     get:
-      description: 'retrieves a job in a workflow, if specified. if not specified,
+      description: 'retrieves a workflow by its name. if the job is specified, retrieves
 
-        retrieves an entire workflow
+        just the job in the specified workflow
 
 
         Parameters:
