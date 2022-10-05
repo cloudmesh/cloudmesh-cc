@@ -60,7 +60,7 @@ html_context = {
   'display_github': True,
   'github_user': 'cloudmesh',
   'github_repo': 'cloudmesh-cc',
-  'github_version': 'main/api/source/',
+  'github_version': 'main/docs/source/',
 }
 templates_path = ['_templates']
 exclude_patterns = []
