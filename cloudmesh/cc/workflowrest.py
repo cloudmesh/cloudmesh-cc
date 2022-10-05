@@ -72,8 +72,15 @@ class RESTWorkflow:
 
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):
         """
-
-        :return:
+        upload a workflow by using REST.
+        :param directory: path to a folder of scripts and/or yaml
+        :type directory: str
+        :param archive: path to an archive file of scripts and/or yaml
+        :type archive: str
+        :param yaml: path to a yaml file that specifies workflow configuration
+        :type yaml: str
+        :return: success or failure message
+        :rtype: dict
         """
         url = 'http://127.0.0.1:8000/workflow/upload'
         if directory:
@@ -88,12 +95,15 @@ class RESTWorkflow:
         r = requests.post(url)
         return r
 
-
-    def get_workflow(self, workflow_name: str, job_name: str=None):
+    def get_workflow(self, workflow_name: str, job_name: str = None):
         """
-
-        :param workflow_name:
-        :return:
+        retrieve a workflow by using REST.
+        :param workflow_name: name of workflow to be retrieved
+        :type workflow_name: str
+        :param job_name: name of job to be retrieved inside specified workflow
+        :type job_name: str
+        :return: contents of workflow
+        :rtype: str
         """
         url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
         if job_name:
@@ -103,14 +113,23 @@ class RESTWorkflow:
 
     def run_workflow(self, workflow_name: str, run_type: str='topo'):
         """
-
+        run a workflow by using REST.
         :return:
         """
         url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?type={run_type}'
         r = requests.get(url)
         return r
 
-    def delete_workflow(self, workflow_name: str, job_name: str=None):
+    def delete_workflow(self, workflow_name: str, job_name: str = None):
+        """
+        delete a workflow by using REST.
+        :param workflow_name: name of workflow to delete
+        :type workflow_name: str
+        :param job_name: name of job to delete inside specified workflow
+        :type job_name: str
+        :return: success or failure message
+        :rtype: dict
+        """
         url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
         if job_name:
             url += f'?job={job_name}'
