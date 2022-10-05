@@ -1,10 +1,6 @@
 # Specifying Workflows
 
-To use cloudmesh-cc, the user must first follow the 
-[Installation](https://cloudmesh.github.io/cloudmesh-cc/installation.html)
-page.
-
-Additionally, when running scripts/jobs inside a workflow, the scripts must 
+When running scripts/jobs inside a workflow, the scripts must 
 leverage some format of cloudmesh.progress to run successfully. 
 Otherwise, the Workflow class cannot tell
 if the scripts are done, breaking the progress functionality.
