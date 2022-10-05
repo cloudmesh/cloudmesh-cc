@@ -73,6 +73,7 @@ class RESTWorkflow:
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):
         """
         upload a workflow by using REST.
+
         :param directory: path to a folder of scripts and/or yaml
         :type directory: str
         :param archive: path to an archive file of scripts and/or yaml
@@ -98,6 +99,7 @@ class RESTWorkflow:
     def get_workflow(self, workflow_name: str, job_name: str = None):
         """
         retrieve a workflow by using REST.
+
         :param workflow_name: name of workflow to be retrieved
         :type workflow_name: str
         :param job_name: name of job to be retrieved inside specified workflow
@@ -114,6 +116,7 @@ class RESTWorkflow:
     def run_workflow(self, workflow_name: str, run_type: str='topo'):
         """
         run a workflow by using REST.
+
         :return:
         """
         url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?type={run_type}'
@@ -123,6 +126,7 @@ class RESTWorkflow:
     def delete_workflow(self, workflow_name: str, job_name: str = None):
         """
         delete a workflow by using REST.
+
         :param workflow_name: name of workflow to delete
         :type workflow_name: str
         :param job_name: name of job to delete inside specified workflow
