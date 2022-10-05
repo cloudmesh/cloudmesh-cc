@@ -12,14 +12,6 @@ cloudmesh.cc.job.lsf.Job module
    :undoc-members:
    :show-inheritance:
 
-cloudmesh.cc.job.lsf.Queue module
----------------------------------
-
-.. automodule:: cloudmesh.cc.job.lsf.Queue
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

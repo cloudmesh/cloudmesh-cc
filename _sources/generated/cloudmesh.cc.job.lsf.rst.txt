@@ -28,5 +28,4 @@ cloudmesh.cc.job.lsf
    :recursive:
 
    cloudmesh.cc.job.lsf.Job
-   cloudmesh.cc.job.lsf.Queue
 
