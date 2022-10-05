@@ -1255,7 +1255,7 @@ def serve_table(request: Request, name: str):
 @app.get("/workflow/run/{name}",
          tags=['workflow'])
 def run_workflow(request: Request, name: str, run_type: str = "topo",
-                 redirect: str = None):
+                 redirect: str = None, show: bool = False):
     """
     runs a specified workflow according to provided run type
 
@@ -1271,8 +1271,10 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
     :type name: str
     :param run_type: type of run, either topo or parallel
     :type run_type: str
-    :param redirect:
-    :type redirect:
+    :param redirect: where to redirect after initiating run
+    :type redirect: str
+    :param show: whether to display the graph as the workflow runs
+    :type show: bool
     :return: success or exception message
     :rtype:
     """
@@ -1299,10 +1301,12 @@ def run_workflow(request: Request, name: str, run_type: str = "topo",
 
     try:
         if run_type == "topo":
-            threading.Thread(target=w.run_topo, kwargs={'show': False}).start()
+            threading.Thread(
+                target=w.run_topo, kwargs={'show': show}).start()
             # w.run_topo(show=True)
         else:
-            threading.Thread(target=w.run_parallel, kwargs={'show': False}).start()
+            threading.Thread(
+                target=w.run_parallel, kwargs={'show': show}).start()
             # w.run_parallel(show=True)
         # return {"Success": "Workflow ran successfully"}
         if redirect == 'graph':
