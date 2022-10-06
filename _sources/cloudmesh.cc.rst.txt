@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    cloudmesh.cc.command
-   cloudmesh.cc.db
    cloudmesh.cc.job
    cloudmesh.cc.service
 
