@@ -680,12 +680,11 @@ class Workflow:
         if not os.path.isdir(self.runtime_dir):
             Shell.mkdir(self.runtime_dir)
         self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
-
-        if load:
+        self.times_filename = f"{self.runtime_dir}{self.name}.dat"
+        if not os.path.isfile(self.runtime_filename):
             Shell.copy(self.filename, self.runtime_filename)
-
-        self.user = user
-        self.host = host
+        if not os.path.isfile(self.times_filename):
+            writefile(self.times_filename, '')
 
         try:
             print("Workflow Filename:", self.filename)
@@ -702,11 +701,29 @@ class Workflow:
             Console.error(e, traceflag=True)
             pass
 
-
         self.created_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        cms_created_name = 'created_time_' + self.name
-        cms_variables.__setitem__(
-            cms_created_name, self.created_time)
+
+        times_dict = yaml.safe_load(
+            Path(self.times_filename).read_text())
+        if times_dict is None:
+            times_dict = {}
+        if 'times' in times_dict:
+            if 'created_time' not in times_dict['times']:
+                times_dict['times']['created_time'] = self.created_time
+                d = str(yaml.dump(times_dict, indent=2))
+                writefile(self.times_filename, d)
+        else:
+            times_dict.setdefault('times', {})[
+                'created_time'] = self.created_time
+            d = str(yaml.dump(times_dict, indent=2))
+            writefile(self.times_filename, d)
+
+        self.user = user
+        self.host = host
+
+        # cms_created_name = 'created_time_' + self.name
+        # cms_variables.__setitem__(
+        #     cms_created_name, self.created_time)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -1036,6 +1053,24 @@ class Workflow:
             venv=venv,
             instance=None
         )
+        # update the times dat file to show created
+        job_created_time = datetime.now().strftime(
+            "%m/%d/%Y, %H:%M:%S")
+        times_dict = yaml.safe_load(
+            Path(self.times_filename).read_text())
+        if times_dict is None:
+            times_dict = {}
+        if 'times' in times_dict:
+            if f'created_time_{name}' not in times_dict['times']:
+                times_dict['times'][
+                    f'created_time_{name}'] = job_created_time
+                d = str(yaml.dump(times_dict, indent=2))
+                writefile(self.times_filename, d)
+        else:
+            times_dict.setdefault('times', {})[
+                f'created_time_{name}'] = job_created_time
+            d = str(yaml.dump(times_dict, indent=2))
+            writefile(self.times_filename, d)
         self.save(filename=filename)
 
     def add_dependency(self, source, destination):
@@ -1417,6 +1452,64 @@ class Workflow:
                     self.jobs[name]['progress'] = progress
                     self.graph.save_to_yaml(filename=self.runtime_filename)
                     if (progress != placeholder_progress) or (status != placeholder_status):
+                        # update the times dat file to show modified
+                        job_modified_time = datetime.now().strftime(
+                            "%m/%d/%Y, %H:%M:%S")
+                        times_dict = yaml.safe_load(
+                            Path(self.times_filename).read_text())
+                        if times_dict is None:
+                            times_dict = {}
+                        if 'times' in times_dict:
+                            times_dict['times'][
+                                f'modified_time_{name}'] = job_modified_time
+                            d = str(yaml.dump(times_dict, indent=2))
+                            writefile(self.times_filename, d)
+                        else:
+                            times_dict.setdefault('times', {})[
+                                f'modified_time_{name}'] = job_modified_time
+                            d = str(yaml.dump(times_dict, indent=2))
+                            writefile(self.times_filename, d)
+
+                        # update the times dat file if the job just started
+                        job_started_time = datetime.now().strftime(
+                            "%m/%d/%Y, %H:%M:%S")
+                        times_dict = yaml.safe_load(
+                            Path(self.times_filename).read_text())
+                        if times_dict is None:
+                            times_dict = {}
+                        if 'times' in times_dict:
+                            if f'start_time_{name}' not in times_dict['times']:
+                                times_dict['times'][
+                                    f'start_time_{name}'] = job_started_time
+                                d = str(yaml.dump(times_dict, indent=2))
+                                writefile(self.times_filename, d)
+                        else:
+                            times_dict.setdefault('times', {})[
+                                f'start_time_{name}'] = job_started_time
+                            d = str(yaml.dump(times_dict, indent=2))
+                            writefile(self.times_filename, d)
+
+                        # show end time if job just ended
+                        if (progress == 100) and (status == 'done'):
+                            job_end_time = datetime.now().strftime(
+                                "%m/%d/%Y, %H:%M:%S")
+                            times_dict = yaml.safe_load(
+                                Path(self.times_filename).read_text())
+                            if times_dict is None:
+                                times_dict = {}
+                            if 'times' in times_dict:
+                                if f'end_time_{name}' not in times_dict[
+                                    'times']:
+                                    times_dict['times'][
+                                        f'end_time_{name}'] = job_end_time
+                                    d = str(yaml.dump(times_dict, indent=2))
+                                    writefile(self.times_filename, d)
+                            else:
+                                times_dict.setdefault('times', {})[
+                                    f'end_time_{name}'] = job_end_time
+                                d = str(yaml.dump(times_dict, indent=2))
+                                writefile(self.times_filename, d)
+
                         save_graph_to_file()
                         if show:
                             display_in_browser()
