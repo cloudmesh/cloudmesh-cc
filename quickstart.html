@@ -59,7 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#option-4-upload-with-a-third-party-rest-framework">Option 4: Upload with a third party REST framework</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#c-upload-a-dir-that-contains-workflow-directory">C. Upload a dir that contains workflow directory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#b-upload-a-dir-that-contains-workflow-directory">B. Upload a dir that contains workflow directory</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#option-1-upload-via-curl-1">Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#option-2-upload-via-docs-1">Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#option-3-upload-via-the-python-api-1">Option 3: Upload via the Python API</a></li>
@@ -223,15 +223,13 @@ define a workflow:</p>
 service. We showcase here how to</p>
 <ul class="simple">
 <li><ol class="upperalpha simple">
-<li><p>upload workflows as tar/xz file of a self containing directory,</p></li>
+<li><p>upload workflows as tar/xz file of a self containing directory, or</p></li>
 </ol>
 </li>
 <li><ol class="upperalpha simple" start="2">
-<li><p>upload all files in a directory recursively, or</p></li>
+<li><p>upload all files in a directory recursively</p></li>
 </ol>
 </li>
-<li><p>C. upload the workflow and the scripts referred to in the workflow
-individually.</p></li>
 </ul>
 </section>
 <section id="a-upload-and-run-a-workflow-embedded-in-an-archive-file">
@@ -300,8 +298,8 @@ choose the framework of your choice to interact with the REST service,
 popular choices are JavaScript, Go, C/C++, matlab, and R, to name a few.</p>
 </section>
 </section>
-<section id="c-upload-a-dir-that-contains-workflow-directory">
-<h2>C. Upload a dir that contains workflow directory<a class="headerlink" href="#c-upload-a-dir-that-contains-workflow-directory" title="Permalink to this heading"></a></h2>
+<section id="b-upload-a-dir-that-contains-workflow-directory">
+<h2>B. Upload a dir that contains workflow directory<a class="headerlink" href="#b-upload-a-dir-that-contains-workflow-directory" title="Permalink to this heading"></a></h2>
 <p>To increase flexibility and allow quick experiments, users can specify a
 workflow directory which contains the yaml specification file and the
 scripts. This way, pre-archival of the directory is not needed. The

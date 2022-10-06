@@ -90,10 +90,8 @@ define a workflow:
 Now we can test a selected number of ways on how to interact with the
 service. We showcase here how to
 
--  A. upload workflows as tar/xz file of a self containing directory,
--  B. upload all files in a directory recursively, or
--  C. upload the workflow and the scripts referred to in the workflow
-   individually.
+-  A. upload workflows as tar/xz file of a self containing directory, or
+-  B. upload all files in a directory recursively
 
 A. Upload and run a workflow embedded in an archive file
 --------------------------------------------------------
@@ -171,7 +169,7 @@ also use different programming languages and we leave it up to you to
 choose the framework of your choice to interact with the REST service,
 popular choices are JavaScript, Go, C/C++, matlab, and R, to name a few.
 
-C. Upload a dir that contains workflow directory
+B. Upload a dir that contains workflow directory
 ------------------------------------------------
 
 To increase flexibility and allow quick experiments, users can specify a
