@@ -1,4 +1,4 @@
-# Cloudmask
+# Cloudmask Workflow
 
 Cloudmesh cc comes with an example workflow
 that runs Cloudmask, which is a program that
