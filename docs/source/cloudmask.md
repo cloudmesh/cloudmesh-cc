@@ -45,8 +45,8 @@ me@mycomputer $ pytest -v -x --capture=no benchmarks/cloudmask/target/rivanna/ru
 The workflow iterates through the five GPUs available
 on Rivanna— A100, V100, P100, RTX2080, and K80— and 
 runs the program three times on each GPU. Each run 
-trains the model with either 10, 30, or 50
-epochs.
+trains the model with 10, 30, and 50 epochs for
+benchmarking.
 
 Upon completing a run, the logs and benchmarks of the
 program can be found in the target folder:
