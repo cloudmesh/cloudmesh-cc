@@ -38,6 +38,7 @@ and run the workflow:
 ```bash
 me@mycomputer $ cd ~/cm
 me@mycomputer $ git clone https://github.com/laszewsk/mlcommons.git
+me@mycomputer $ cd mlcommons
 me@mycomputer $ pytest -v -x --capture=no benchmarks/cloudmask/target/rivanna/run_cloudmask_workflow.py
 ```
 
