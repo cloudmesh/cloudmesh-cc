@@ -18,7 +18,6 @@ cloudmesh.cc.manager
    .. autosummary::
    
       WorkflowCLIManager
-      WorkflowServiceManager
    
    
 
