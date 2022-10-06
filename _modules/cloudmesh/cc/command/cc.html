@@ -231,7 +231,7 @@
 <span class="sd">                If we specify a workflow name only that workflow will be listed</span>
 <span class="sd">                If we also specify a job the job will be listed.</span>
 <span class="sd">                If we only specif the job name, all jobs with that name from all </span>
-<span class="sd">                workflows will be returned.</span>
+<span class="sd">                workflows will be returned. # this feature not implemented</span>
 <span class="sd">                            </span>
 <span class="sd">            cc workflow service add [--name=NAME] --job=JOB ARGS...</span>
 <span class="sd">                This command adds a job. with the specified arguments. A check </span>
@@ -311,6 +311,7 @@
         <span class="c1"># parameter, and experiment&quot;, color=&quot;RED&quot;)</span>
 
         <span class="n">map_parameters</span><span class="p">(</span><span class="n">arguments</span><span class="p">,</span>
+                       <span class="s2">&quot;name&quot;</span><span class="p">,</span>
                        <span class="s2">&quot;filename&quot;</span><span class="p">,</span>
                        <span class="s2">&quot;job&quot;</span><span class="p">,</span>
                        <span class="s2">&quot;command&quot;</span><span class="p">,</span>
@@ -441,19 +442,44 @@
         <span class="c1">#     queues = Queues()</span>
         <span class="c1">#     for name in names:</span>
         <span class="c1">#         queues.create(name)</span>
+        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">service</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">cloudmesh.cc.workflowrest</span> <span class="kn">import</span> <span class="n">RESTWorkflow</span>
+            <span class="n">restinstance</span> <span class="o">=</span> <span class="n">RESTWorkflow</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">add</span><span class="p">:</span>
+                <span class="c1"># cc workflow service add [--name=NAME] FILENAME</span>
+                <span class="k">if</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">get_workflow_name</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+                    <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Filename to the yaml is not provided.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
 
-        <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">add</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">service</span><span class="p">:</span>
-            <span class="c1"># cc workflow service add [--name=NAME] FILENAME</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">get_workflow_name</span><span class="p">()</span>
+                <span class="kn">from</span> <span class="nn">cloudmesh.cc.workflowrest</span> <span class="kn">import</span> <span class="n">RESTWorkflow</span>
 
-            <span class="kn">from</span> <span class="nn">cloudmesh.cc.manager</span> <span class="kn">import</span> <span class="n">WorkflowServiceManager</span>
+                <span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">upload_workflow</span><span class="p">(</span>
+                    <span class="n">yaml</span><span class="o">=</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="n">arguments</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
-            <span class="n">manager</span> <span class="o">=</span> <span class="n">WorkflowServiceManager</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">manager</span><span class="o">.</span><span class="n">add_from_filename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">workflow</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">list</span><span class="p">:</span>
+                <span class="c1"># cc workflow service list [--name=NAME] [--job=JOB]</span>
 
-        <span class="c1"># cc workflow service list [--name=NAME] [--job=JOB]</span>
-        <span class="c1"># cc workflow service job add [--name=NAME] --job=JOB ARGS...</span>
-        <span class="c1"># cc workflow service run --name=NAME</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">list_workflows</span><span class="p">(</span><span class="n">restinstance</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">get_workflow</span><span class="p">(</span><span class="n">restinstance</span><span class="p">,</span>
+                          <span class="n">workflow_name</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">job_name</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">get_workflow</span><span class="p">(</span><span class="n">restinstance</span><span class="p">,</span>
+                                                    <span class="n">workflow_name</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">job</span> <span class="ow">and</span> <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;--add&#39;</span><span class="p">]:</span>
+                <span class="c1"># cc workflow service job add [--name=NAME] --job=JOB ARGS...</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">restinstance</span><span class="p">,</span>
+                      <span class="n">workflow_name</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">jobname</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">job</span><span class="p">))</span>
+                <span class="c1"># needs additional implementation to add command, status, etc.</span>
+            <span class="k">elif</span> <span class="n">arguments</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="n">arguments</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                <span class="c1"># cc workflow service run --name=NAME</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">RESTWorkflow</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">restinstance</span><span class="p">,</span>
+                      <span class="n">workflow_name</span><span class="o">=</span><span class="n">arguments</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+
 
         <span class="c1">#</span>
         <span class="c1"># IMPLEMENT THESE</span>
