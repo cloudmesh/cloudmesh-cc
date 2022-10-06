@@ -113,13 +113,15 @@ class RESTWorkflow:
         r = requests.get(url)
         return r
 
-    def run_workflow(self, workflow_name: str, run_type: str='topo'):
+    def run_workflow(self, workflow_name: str,
+                     run_type: str = 'topo',
+                     show: bool = True):
         """
         run a workflow by using REST.
 
         :return:
         """
-        url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?type={run_type}'
+        url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?show={show}'
         r = requests.get(url)
         return r
 

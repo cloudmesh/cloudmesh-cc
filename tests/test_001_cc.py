@@ -27,15 +27,15 @@ class TestConfig:
         assert "cc workflow add" in result
         assert "start" in result
 
-    def test_queue_create(self):
-        HEADING()
-        Benchmark.Start()
-        result = Shell.execute("cms cc create --queue=a,b,c --database=yamldb", shell=True)
-        Benchmark.Stop()
-        VERBOSE(result)
-        print(result)
-        assert "a" in result
-        assert "b" in result
+    # def test_queue_create(self):
+    #     HEADING()
+    #     Benchmark.Start()
+    #     result = Shell.execute("cms cc create --queue=a,b,c --database=yamldb", shell=True)
+    #     Benchmark.Stop()
+    #     VERBOSE(result)
+    #     print(result)
+    #     assert "a" in result
+    #     assert "b" in result
 
     def test_benchmark(self):
         HEADING()

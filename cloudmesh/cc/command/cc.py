@@ -130,7 +130,7 @@ class CcCommand(PluginCommand):
                 If we specify a workflow name only that workflow will be listed
                 If we also specify a job the job will be listed.
                 If we only specif the job name, all jobs with that name from all 
-                workflows will be returned.
+                workflows will be returned. # this feature not implemented
                             
             cc workflow service add [--name=NAME] --job=JOB ARGS...
                 This command adds a job. with the specified arguments. A check 
@@ -210,6 +210,7 @@ class CcCommand(PluginCommand):
         # parameter, and experiment", color="RED")
 
         map_parameters(arguments,
+                       "name",
                        "filename",
                        "job",
                        "command",
@@ -340,19 +341,44 @@ class CcCommand(PluginCommand):
         #     queues = Queues()
         #     for name in names:
         #         queues.create(name)
+        elif arguments.service:
+            from cloudmesh.cc.workflowrest import RESTWorkflow
+            restinstance = RESTWorkflow()
+            if arguments.workflow and arguments.add:
+                # cc workflow service add [--name=NAME] FILENAME
+                if arguments.name:
+                    name = get_workflow_name()
+                if not arguments.filename:
+                    Console.error("Filename to the yaml is not provided.")
+                    return
 
-        elif arguments.workflow and arguments.add and arguments.service:
-            # cc workflow service add [--name=NAME] FILENAME
-            name = get_workflow_name()
+                from cloudmesh.cc.workflowrest import RESTWorkflow
 
-            from cloudmesh.cc.manager import WorkflowServiceManager
+                RESTWorkflow.upload_workflow(
+                    yaml=Shell.map_filename(arguments.filename).path)
 
-            manager = WorkflowServiceManager(name)
-            manager.add_from_filename(name)
+            elif arguments.workflow and arguments.list:
+                # cc workflow service list [--name=NAME] [--job=JOB]
 
-        # cc workflow service list [--name=NAME] [--job=JOB]
-        # cc workflow service job add [--name=NAME] --job=JOB ARGS...
-        # cc workflow service run --name=NAME
+                if not arguments.name and not arguments.job:
+                    print(RESTWorkflow.list_workflows(restinstance).text)
+                elif arguments.name and arguments.job:
+                    print(RESTWorkflow.get_workflow(restinstance,
+                          workflow_name=arguments.name, job_name=arguments.job).text)
+                elif arguments.name and not arguments.job:
+                    print(RESTWorkflow.get_workflow(restinstance,
+                                                    workflow_name=arguments.name).text)
+            elif arguments.job and arguments['--add']:
+                # cc workflow service job add [--name=NAME] --job=JOB ARGS...
+                print(RESTWorkflow.add_job(restinstance,
+                      workflow_name=arguments.name, jobname=arguments.job))
+                # needs additional implementation to add command, status, etc.
+            elif arguments.name and arguments.run:
+                # cc workflow service run --name=NAME
+                print(RESTWorkflow.run_workflow(restinstance,
+                      workflow_name=arguments.name))
+
+
 
         #
         # IMPLEMENT THESE
