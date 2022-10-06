@@ -781,12 +781,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">):</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_dir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_dir</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span>
-
-        <span class="k">if</span> <span class="n">load</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_dir</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.dat&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">):</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">):</span>
+            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Workflow Filename:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
@@ -803,11 +802,29 @@
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">pass</span>
 
-
         <span class="bp">self</span><span class="o">.</span><span class="n">created_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
-        <span class="n">cms_created_name</span> <span class="o">=</span> <span class="s1">&#39;created_time_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">cms_variables</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span>
-            <span class="n">cms_created_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_time</span><span class="p">)</span>
+
+        <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;created_time&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_time</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_time</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+
+        <span class="c1"># cms_created_name = &#39;created_time_&#39; + self.name</span>
+        <span class="c1"># cms_variables.__setitem__(</span>
+        <span class="c1">#     cms_created_name, self.created_time)</span>
 
         <span class="c1"># should this go into graph?</span>
         <span class="c1"># if Path.exists(filename):</span>
@@ -1137,6 +1154,24 @@
             <span class="n">venv</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">)</span>
+        <span class="c1"># update the times dat file to show created</span>
+        <span class="n">job_created_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+            <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;created_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                    <span class="sa">f</span><span class="s1">&#39;created_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_created_time</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                <span class="sa">f</span><span class="s1">&#39;created_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_created_time</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Workflow.add_dependency"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
@@ -1518,6 +1553,64 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">progress</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save_to_yaml</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">)</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">progress</span> <span class="o">!=</span> <span class="n">placeholder_progress</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="n">placeholder_status</span><span class="p">):</span>
+                        <span class="c1"># update the times dat file to show modified</span>
+                        <span class="n">job_modified_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+                            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+                            <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                <span class="sa">f</span><span class="s1">&#39;modified_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_modified_time</span>
+                            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                                <span class="sa">f</span><span class="s1">&#39;modified_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_modified_time</span>
+                            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+                        <span class="c1"># update the times dat file if the job just started</span>
+                        <span class="n">job_started_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+                            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;start_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                                <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                    <span class="sa">f</span><span class="s1">&#39;start_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_started_time</span>
+                                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                                <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                                <span class="sa">f</span><span class="s1">&#39;start_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_started_time</span>
+                            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+                        <span class="c1"># show end time if job just ended</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="mi">100</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">):</span>
+                            <span class="n">job_end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                                <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                            <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+                                <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+                            <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                            <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;end_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span>
+                                    <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                                    <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                        <span class="sa">f</span><span class="s1">&#39;end_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_end_time</span>
+                                    <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                                    <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                                    <span class="sa">f</span><span class="s1">&#39;end_time_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_end_time</span>
+                                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                                <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
                         <span class="n">save_graph_to_file</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
                             <span class="n">display_in_browser</span><span class="p">()</span>
