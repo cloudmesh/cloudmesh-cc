@@ -45,7 +45,7 @@ jobs:
         # If you remove, the cc test cases for commands without --nocm will fail.
         cms debug on
         python -m pip install -e .
-        coverage run -m pytest tests/test_001_cc.py tests/test_002_cc_labelmaker.py tests/test_003_db_yaml.py
+        coverage run -m pytest tests/test_001_cc.py tests/test_002_cc_labelmaker.py
     - name: Create wheel
       run: |
         python setup.py sdist bdist_wheel
