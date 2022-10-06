@@ -118,7 +118,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
 <div class="viewcode-block" id="WorkflowCLIManager.add_from_filename"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -127,41 +134,98 @@
         <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.add_from_arguments"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
-        <span class="c1"># cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow add [--name=NAME] [--job=JOB] ARGS...</span>
+
+<span class="sd">        :param job: name of job</span>
+<span class="sd">        :type job: str</span>
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :param argv: other arguments</span>
+<span class="sd">        :type argv: list</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">argv</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.delete_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_job">[docs]</a>    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow delete [--name=NAME] --job=JOB</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow delete [--name=NAME] --job=JOB</span>
+
+<span class="sd">        :param job: name of job to delete</span>
+<span class="sd">        :type job: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">remove_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow delete [--name=NAME] --job=JOB</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow delete [--name=NAME] --job=JOB</span>
+
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">remove_workflow</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.list_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_job">[docs]</a>    <span class="k">def</span> <span class="nf">list_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow list [--name=NAME] [--job=JOB]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow list [--name=NAME] [--job=JOB]</span>
+
+<span class="sd">        :param job: name of job</span>
+<span class="sd">        :type job: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">j</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.list_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow list [--name=NAME] [--filename=FILENAME]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow list [--name=NAME] [--filename=FILENAME]</span>
+
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">jobs</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.run"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+<div class="viewcode-block" id="WorkflowCLIManager.run"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]</span>
+
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">w</span><span class="o">.</span><span class="n">run_parallel</span><span class="p">()</span></div>
+        <span class="n">w</span><span class="o">.</span><span class="n">run_topo</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dependency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                      <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow NAME DEPENDENCIES</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow NAME DEPENDENCIES</span>
+
+<span class="sd">        :param name: name of workflow</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param dependency: name of dependency</span>
+<span class="sd">        :type dependency: str</span>
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -169,9 +233,17 @@
         <span class="c1"># I think that the dependencies are separated by commas and will call this function a few times</span>
         <span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">dependency</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.status_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.status_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">status_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]</span>
+<div class="viewcode-block" id="WorkflowCLIManager.status_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.status_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">status_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]</span>
+
+<span class="sd">        :param name: name of workflow</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -180,7 +252,14 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WorkflowCLIManager.graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># cc workflow graph --name=NAME</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # cc workflow graph --name=NAME</span>
+
+<span class="sd">        :param filename: path to yaml of workflow</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
