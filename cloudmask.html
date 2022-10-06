@@ -114,14 +114,16 @@ X’s with your ID:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>me@mycomputer $ cms <span class="nb">set</span> <span class="nv">username</span><span class="o">=</span>XXXXXX
 </pre></div>
 </div>
-<p>Then, download the satellite data on Rivanna,
-in your <a class="reference external" href="https://www.rc.virginia.edu/userinfo/storage/non-sensitive-data/#scratch">scratch</a>
-directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>me@mycomputer $ ssh rivanna
+<p>Then, connect to the UVA Anywhere VPN and then
+download the satellite data into your <a class="reference external" href="https://www.rc.virginia.edu/userinfo/storage/non-sensitive-data/#scratch">scratch</a>
+directory on Rivanna:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>me@mycomputer $ cms vpn connect
+me@mycomputer $ ssh rivanna
 rivanna $ <span class="nb">cd</span> /scratch/<span class="nv">$USER</span>
 rivanna $ git clone https://github.com/laszewsk/mlcommons.git
 rivanna $ <span class="nb">cd</span> mlcommons/benchmarks/cloudmask/target/rivanna
 rivanna $ make data
+<span class="c1"># downloading the data will take a while.</span>
 rivanna $ <span class="nb">exit</span>
 </pre></div>
 </div>
