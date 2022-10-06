@@ -21,17 +21,16 @@ live status updates.
    :maxdepth: 1
    :caption: User Guide
 
-   specifying-workflows
    manual/cc
    rest
    rest-gui
    python
+   specifying-workflows
 
 .. toctree::
    :maxdepth: 1
    :caption: API
 
-   api
    OpenAPI <openapi3.html#http://>
    OpenAPI (json) <openapi.json#http://>
    OpenAPI (yaml) <openapi.yaml#http://>
