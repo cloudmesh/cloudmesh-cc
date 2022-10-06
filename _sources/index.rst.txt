@@ -40,7 +40,7 @@ live status updates.
    :caption: Examples
 
    mnist
-	cloudmask
+   cloudmask
 
 .. toctree::
    :maxdepth: 1
