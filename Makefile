@@ -186,8 +186,12 @@ openapi:
 	curl http://127.0.0.1:8000/openapi.json > openapi.json
 	cms cc stop
 	python -c 'import sys, yaml, json; print(yaml.dump(json.loads(sys.stdin.read())))' <openapi.json > openapi.yaml
-	git commit -m "update openapi" ./openapi.json
-	git commit -m "update openapi" ./openapi.yaml
+	python -m json.tool openapi.json > openapi1.json
+	rm openapi.json
+	mv openapi1.json openapi.json
+	git pull
+	-git commit -m "update openapi" ./openapi.json
+	-git commit -m "update openapi" ./openapi.yaml
 	git push
 
 latex:
