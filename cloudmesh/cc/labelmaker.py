@@ -29,7 +29,9 @@ class Labelmaker:
             .replace("{tstart.", "{tstart_")\
             .replace("{tend.", "{tend_")\
             .replace("{t0.", "{t0_")\
-            .replace("{dt0.", "{dt0_")
+            .replace("{dt0.", "{dt0_")\
+            .replace("{t1.", "{t1_")\
+            .replace("{dt1.", "{dt1_")
         self.variables = re.findall(r'{(.*?)}', self.template)
 
         self.workflow_name = workflow_name
@@ -137,7 +139,21 @@ class Labelmaker:
                     else:
                         replacements[variable] = times_dict['times'][f't0_{self.workflow_name}']
 
+            elif variable.startswith("t1_"):
+                template = variable.split("t1_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f't1_{self.workflow_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        replacements[variable] = times_dict['times'][f't1_{self.workflow_name}']
+
             elif variable.startswith("dt0_"):
+                #time since beginning of workflow
                 template = variable.split("dt0_", 1)[1]
 
                 times_dict = yaml.safe_load(
@@ -153,6 +169,28 @@ class Labelmaker:
                                 start_time, "%m/%d/%Y, %H:%M:%S")
                         dt = now - t0
                         elapsed = time.strftime("%H:%M:%S", time.gmtime(dt.seconds))
+                        replacements[variable] = elapsed
+
+            elif variable.startswith("dt1_"):
+                #difference of time from beginning to end of workflow
+                template = variable.split("dt1_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f't0_{self.workflow_name}' not in times_dict['times'] or f't1_{self.workflow_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        start_time = times_dict['times'][f't0_{self.workflow_name}']
+                        end_time = times_dict['times'][f't1_{self.workflow_name}']
+                        start = datetime.strptime(
+                                start_time, "%m/%d/%Y, %H:%M:%S")
+                        end = datetime.strptime(
+                                end_time, "%m/%d/%Y, %H:%M:%S")
+                        delta = end - start
+                        elapsed = time.strftime("%H:%M:%S", time.gmtime(delta.seconds))
                         replacements[variable] = elapsed
 
             elif variable.startswith("dt_"):

@@ -9,7 +9,7 @@ workflow:
       exec: 'echo hello'
       name: start
     end:
-      label: end
+      label: 'end\nWorkflow Ended={t1.}\nTotal Time={dt1.}'
       kind: local
       user: grey
       host: local

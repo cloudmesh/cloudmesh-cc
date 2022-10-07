@@ -1390,7 +1390,7 @@ class Workflow:
 
         filename = filename or path_expand(f"runtime/{self.name}.svg")
 
-        for name in order():
+        for i, name in enumerate(order()):
             job = self.job(name=name)
 
             if not dryrun:
@@ -1510,7 +1510,7 @@ class Workflow:
 
                         # show end time if job just ended
                         if (progress == 100) and (status == 'done'):
-                            job_end_time = datetime.now().strftime(
+                            job_end_time = workflow_end_time = datetime.now().strftime(
                                 "%m/%d/%Y, %H:%M:%S")
                             times_dict = yaml.safe_load(
                                 Path(self.times_filename).read_text())
@@ -1521,13 +1521,21 @@ class Workflow:
                                     'times']:
                                     times_dict['times'][
                                         f'tend_{name}'] = job_end_time
-                                    d = str(yaml.dump(times_dict, indent=2))
-                                    writefile(self.times_filename, d)
+
+                                # if this is the last job and it just finished
+                                if i == len(order()) - 1:
+                                    if f't1_{self.name}' not in times_dict[
+                                        'times']:
+                                        times_dict['times'][
+                                            f't1_{self.name}'] = workflow_end_time
                             else:
                                 times_dict.setdefault('times', {})[
                                     f'tend_{name}'] = job_end_time
-                                d = str(yaml.dump(times_dict, indent=2))
-                                writefile(self.times_filename, d)
+                                if i == len(order()) - 1:
+                                    times_dict.setdefault('times', {})[
+                                        f't1_{self.name}'] = workflow_end_time
+                            d = str(yaml.dump(times_dict, indent=2))
+                            writefile(self.times_filename, d)
 
                         save_graph_to_file()
                         if show:
@@ -1559,11 +1567,6 @@ class Workflow:
             else:
                 # banner(f"Job: {name}")
                 Console.msg(f"running {name}")
-
-
-
-
-
 
     def display(self, filename=None, name='workflow', first=True):
         """
