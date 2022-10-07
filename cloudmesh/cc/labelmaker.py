@@ -9,6 +9,7 @@ from datetime import datetime
 from cloudmesh.common.DateTime import DateTime
 import time
 
+
 class Labelmaker:
     """Class that creates labels for the jobs in the graph display."""
     def __init__(self,
