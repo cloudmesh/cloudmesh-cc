@@ -26,6 +26,7 @@ live status updates.
    rest-gui
    python
    specifying-workflows
+   service
 
 .. toctree::
    :maxdepth: 1

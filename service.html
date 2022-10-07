@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What Is Cloudmesh cc? &mdash; cloudmesh-cc 4.3.7 documentation</title>
+  <title>Service &mdash; cloudmesh-cc 4.3.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
-    <link rel="prev" title="Cloudmesh Compute Cluster" href="index.html" /> 
+    <link rel="next" title="MNIST Workflow" href="mnist.html" />
+    <link rel="prev" title="Specifying Workflows" href="specifying-workflows.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,20 +45,25 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">What Is Cloudmesh cc?</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">What Is Cloudmesh cc?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="abstract.html">Extended Abstract</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="manual/cc.html">Command cc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rest.html">REST</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rest-gui.html">REST GUI Web Browser Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python.html">Python Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="specifying-workflows.html">Specifying Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="service.html">Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management">Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#table-view">Table View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graph-view">Graph View</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -92,9 +97,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>What Is Cloudmesh cc?</li>
+      <li>Service</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/introduction.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/service.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -102,38 +107,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="what-is-cloudmesh-cc">
-<h1>What Is Cloudmesh cc?<a class="headerlink" href="#what-is-cloudmesh-cc" title="Permalink to this heading"></a></h1>
-<p>Cloudmesh Compute Cluster (cc for short) is a repository
-of Python code within the Cloudmesh suite that enables
-the creation of workflows. The repository is compatible
-with Windows, macOS, and Linux.</p>
-<p>Workflows are compilations of jobs to be run on nodes.
-These workflows report information on the status of jobs
-as they are run, whether locally or remotely. These jobs
-can be bash scripts, Python scripts, Jupyter notebooks,
-or Slurm scripts. These types of jobs can be mixed with
-one another in a single workflow.</p>
-<p>The advantage that Cloudmesh cc provides is an interface
-to view the progress of a workflow as it is being run in
-realtime. The workflow can be monitored as a graph or a
-datatable. These interfaces report the statuses of the jobs.
-Additionally, the order in which the jobs are run can be
-specified, enabling prerequisite jobs and the segmentation
-of a workflow.</p>
-<p>Cloudmesh cc is bundled with pytests and examples that
-can be run on your local machine or on HPC centers such
-as UVA’s Rivanna supercomputer (authentication is required
-for the latter). We encourage you to adapt these tests
-to fit your HPC environment.</p>
+  <section id="service">
+<h1>Service<a class="headerlink" href="#service" title="Permalink to this heading"></a></h1>
+<section id="management">
+<h2>Management<a class="headerlink" href="#management" title="Permalink to this heading"></a></h2>
+<p>To start the service use the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cms</span> <span class="n">cc</span> <span class="n">start</span>
+</pre></div>
+</div>
+<p>For debugging purposes with outorelod on code canges, you can use the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cms</span> <span class="n">cc</span> <span class="n">start</span> <span class="o">--</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>To stop the service use the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cms</span> <span class="n">cc</span> <span class="n">stop</span>
+</pre></div>
+</div>
+<p>To view the interface to the service use the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cms</span> <span class="n">cc</span> <span class="n">view</span>
+</pre></div>
+</div>
+</section>
+<section id="table-view">
+<h2>Table View<a class="headerlink" href="#table-view" title="Permalink to this heading"></a></h2>
+<p>include image and description</p>
+</section>
+<section id="graph-view">
+<h2>Graph View<a class="headerlink" href="#graph-view" title="Permalink to this heading"></a></h2>
+<p>include image and description</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Cloudmesh Compute Cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="specifying-workflows.html" class="btn btn-neutral float-left" title="Specifying Workflows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mnist.html" class="btn btn-neutral float-right" title="MNIST Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
