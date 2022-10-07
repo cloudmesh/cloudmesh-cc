@@ -102,22 +102,90 @@
              
   <section id="openapi-old">
 <h1>OpenAPI (Old)<a class="headerlink" href="#openapi-old" title="Permalink to this heading"></a></h1>
-<dl class="http get">
-<dt class="sig sig-object http" id="get--workflows">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflows</span></span><a class="headerlink" href="#get--workflows" title="Permalink to this definition"></a></dt>
-<dd><p><strong>List Workflows</strong></p>
-<p>This command returns a list of workflows that is found within
-the server.
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflows">http://127.0.0.1:8000/workflows</a>’         -H ‘accept: application/json’
-:return: list of workflow names</p>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--workflow-job-name">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/workflow/job/{name}</span></span><a class="headerlink" href="#post--workflow-job-name" title="Permalink to this definition"></a></dt>
+<dd><p><strong>Add Job</strong></p>
+<p>adds a node/job to a workflow</p>
+<p>A check
+is returned and the user is alerted if arguments are missing
+arguments are passed in ATTRIBUTE=VALUE fashion.
+if the name of the workflow is omitted, the default workflow is used.
+If no job name is specified, an automated number that is kept in the
+config.yaml file will be used and the name will be job-n</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) the name of workflow</p></li>
+<li><p><strong>job</strong>: (str) the name of the job to add</p></li>
+<li><p><strong>user</strong>: (str) name of user of the job</p></li>
+<li><p><strong>host</strong>: (str) name of the host of the job</p></li>
+<li><p><strong>kind</strong>: (str) the kind of job, like ssh, slurm, local,</p></li>
+<li><p><strong>status</strong>: (str) the status of the job, such as ready,</p></li>
+<li><p><strong>script</strong>: (str) the name of the script to be run,</p></li>
+</ul>
+<p>including file extension
+- <strong>exec</strong>: (str) command(s) to execute
+- <strong>progress</strong>: (str) value of job progress from 0 to 100
+- <strong>label</strong>: (str) text to be shown on node in the graph
+- <strong>parent</strong>: (str) parent job</p>
 <dl class="field-list simple">
-<dt class="field-odd">Query Parameters</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>output</strong> (<em>string</em>) – </p></li>
+<li><p><strong>name</strong> (<em>string</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Status Codes</dt>
+<dt class="field-even">Query Parameters</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><strong>job</strong> (<em>string</em>) – (Required)</p></li>
+<li><p><strong>user</strong> (<em>string</em>) – </p></li>
+<li><p><strong>host</strong> (<em>string</em>) – </p></li>
+<li><p><strong>kind</strong> (<em>string</em>) – </p></li>
+<li><p><strong>status</strong> (<em>string</em>) – </p></li>
+<li><p><strong>script</strong> (<em>string</em>) – </p></li>
+<li><p><strong>exec</strong> (<em>string</em>) – </p></li>
+<li><p><strong>progress</strong> (<em>string</em>) – </p></li>
+<li><p><strong>label</strong> (<em>string</em>) – </p></li>
+<li><p><strong>parent</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--workflow-run-name">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflow/run/{name}</span></span><a class="headerlink" href="#get--workflow-run-name" title="Permalink to this definition"></a></dt>
+<dd><p><strong>Run Workflow</strong></p>
+<p>runs a specified workflow according to provided run type</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) name of workflow to run</p></li>
+<li><p><strong>run_type</strong>: (str) how to run workflow. only topo is implemented</p></li>
+</ul>
+<p>(topological sort of jobs)
+- <strong>redirect</strong>: (str) where to redirect after initializing the run.
+only graph is implemented for web interface. None will disable redirect
+- <strong>show</strong>: (bool) whether to show the graph as the workflow is run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Query Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>run_type</strong> (<em>string</em>) – </p></li>
+<li><p><strong>redirect</strong> (<em>string</em>) – </p></li>
+<li><p><strong>show</strong> (<em>boolean</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
 <li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
 </ul>
@@ -130,17 +198,14 @@ curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.
 <span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/workflow/upload</span></span><a class="headerlink" href="#post--workflow-upload" title="Permalink to this definition"></a></dt>
 <dd><p><strong>Upload</strong></p>
 <p>upload a workflow to the ~/.cloudmesh/workflow directory for running
-or editing.
-:param directory: path to directory with workflow files
-:type directory: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example">http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example</a>’         -H ‘accept: application/json’         -d ‘’
-:param archive: tgz, xz, tar.gz, or tar file with workflow files
-:type archive: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile">http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile</a>’         -H ‘accept: application/json’         -d ‘’
-:param yaml: yaml file with workflow specifications
-:type yaml: str
-curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml">http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</a>’         -H ‘accept: application/json’         -d ‘’
-:return: success or failure message</p>
+or editing.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>directory</strong>: (str) path to directory with workflow files</p></li>
+<li><p><strong>archive</strong>: (str) path to archive file, which can be tgx, xz, tar.gz,</p></li>
+</ul>
+<p>or tar, that contains workflow files
+- <strong>yaml</strong>: (str) path to yaml file that specifies workflow configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Query Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -158,58 +223,17 @@ curl -X ‘POST’         ‘<a class="reference external" href="http://127.0.0
 </dl>
 </dd></dl>
 
-<dl class="http get">
-<dt class="sig sig-object http" id="get--workflow-name">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflow/{name}</span></span><a class="headerlink" href="#get--workflow-name" title="Permalink to this definition"></a></dt>
-<dd><p><strong>Get Workflow</strong></p>
-<p>retrieves a job in a workflow, if specified. if not specified,
-retrieves an entire workflow</p>
-<p>you need to have first uploaded the workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> – </p></li>
-<li><p><strong>name</strong> (<em>string</em>) – name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>str</em>) – name of the job</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – how to print workflow. can be html or table</p></li>
-<li><p><strong>name</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return</dt>
-<dd class="field-even"><p>success or failure message</p>
-</dd>
-<dt class="field-odd">Rtype</dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Query Parameters</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>job</strong> (<em>string</em>) – </p></li>
-<li><p><strong>output</strong> (<em>string</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Status Codes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="http delete">
 <dt class="sig sig-object http" id="delete--workflow-name">
 <span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/workflow/{name}</span></span><a class="headerlink" href="#delete--workflow-name" title="Permalink to this definition"></a></dt>
 <dd><p><strong>Delete Workflow</strong></p>
-<p>deletes the job in the specified workflow if specified.
-If the job is not specified, it deletes entire workflow.</p>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘DELETE’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/workflow-example">http://127.0.0.1:8000/workflow/workflow-example</a>’         -H ‘accept: application/json’
-:param name: name of the workflow
-:type name: str
-:param job: name of the job
-:type job: str
-:return: success or failure message</p>
+<p>deletes an entire workflow. if the job is specified, then deletes
+just the job in the workflow.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) name of workflow to delete</p></li>
+<li><p><strong>job</strong>: (str) name of job to delete in a workflow, if specified</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -231,32 +255,28 @@ curl -X ‘DELETE’         ‘<a class="reference external" href="http://127.0
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--run-name">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/run/{name}</span></span><a class="headerlink" href="#get--run-name" title="Permalink to this definition"></a></dt>
-<dd><p><strong>Run Workflow</strong></p>
-<p>runs a specified workflow according to provided run type</p>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/run/workflow-example?run_type=topo">http://127.0.0.1:8000/run/workflow-example?run_type=topo</a>’         -H ‘accept: application/json’</p>
+<dt class="sig sig-object http" id="get--workflow-name">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflow/{name}</span></span><a class="headerlink" href="#get--workflow-name" title="Permalink to this definition"></a></dt>
+<dd><p><strong>Get Workflow</strong></p>
+<p>retrieves a workflow by its name. if the job is specified, retrieves
+just the job in the specified workflow</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>name</strong>: (str) name of workflow to retrieve</p></li>
+<li><p><strong>job</strong>: (str) name of job to retrieve, if specified (optional)</p></li>
+<li><p><strong>output</strong>: (str) how to print workflow, which can be</p></li>
+</ul>
+<p>html, graph, json, table, or csv. if not specified, then returned as dict</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> – </p></li>
-<li><p><strong>name</strong> (<em>string</em>) – name of workflow</p></li>
-<li><p><strong>run_type</strong> (<em>str</em>) – type of run, either topo or parallel</p></li>
-<li><p><strong>redirect</strong> – </p></li>
-<li><p><strong>name</strong> – </p></li>
+<li><p><strong>name</strong> (<em>string</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Return</dt>
-<dd class="field-even"><p>success or exception message</p>
-</dd>
-<dt class="field-odd">Rtype</dt>
-<dd class="field-odd"><p></p></dd>
 <dt class="field-even">Query Parameters</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>run_type</strong> (<em>string</em>) – </p></li>
-<li><p><strong>redirect</strong> (<em>string</em>) – </p></li>
+<li><p><strong>job</strong> (<em>string</em>) – </p></li>
+<li><p><strong>output</strong> (<em>string</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-odd">Status Codes</dt>
@@ -269,58 +289,33 @@ curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--workflow-job-name_of_workflow">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflow/job/{name_of_workflow}</span></span><a class="headerlink" href="#get--workflow-job-name_of_workflow" title="Permalink to this definition"></a></dt>
-<dd><p><strong>Add Job</strong></p>
-<dl class="simple">
-<dt>This command adds a node to a workflow. with the specified arguments. A check</dt><dd><p>is returned and the user is alerted if arguments are missing
-arguments are passed in ATTRIBUTE=VALUE fashion.
-if the name of the workflow is omitted, the default workflow is used.
-If no job name is specified, an automated number that is kept in the
-config.yaml file will be used and the name will be job-n</p>
-</dd>
-</dl>
-<p>example curl:
-we need to have first uploaded workflow-example for this curl to work!
-curl -X ‘GET’         ‘<a class="reference external" href="http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel">http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&amp;user=CoolPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=coolJob.sh&amp;progress=0&amp;label=CoolLabel</a>’         -H ‘accept: application/json’</p>
+<dt class="sig sig-object http" id="get--workflows">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/workflows</span></span><a class="headerlink" href="#get--workflows" title="Permalink to this definition"></a></dt>
+<dd><p><strong>List Workflows</strong></p>
+<p>returns a list of all workflows found on local computer</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>output</strong>: (str) format to print available workflows, which can be</p></li>
+</ul>
+<p>json, csv, or none which prints it as dict</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name_of_workflow</strong> (<em>string</em>) – the name of the workflow</p></li>
-<li><p><strong>job</strong> (<em>Jobpy</em>) – the specifications and characteristics of the job</p></li>
-<li><p><strong>user</strong> – </p></li>
-<li><p><strong>host</strong> – </p></li>
-<li><p><strong>kind</strong> – </p></li>
-<li><p><strong>status</strong> – </p></li>
-<li><p><strong>script</strong> – </p></li>
-<li><p><strong>exec</strong> – </p></li>
-<li><p><strong>progress</strong> – </p></li>
-<li><p><strong>label</strong> – </p></li>
-<li><p><strong>parent</strong> – </p></li>
-<li><p><strong>name_of_workflow</strong> – </p></li>
+<li><p><strong>output</strong> – format to print available workflows, which can be</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return</dt>
-<dd class="field-even"><p>returns jobs within the specified workflow</p>
-</dd>
-<dt class="field-odd">Rtype</dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Query Parameters</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>job</strong> (<em>string</em>) – (Required)</p></li>
-<li><p><strong>user</strong> (<em>string</em>) – </p></li>
-<li><p><strong>host</strong> (<em>string</em>) – </p></li>
-<li><p><strong>kind</strong> (<em>string</em>) – </p></li>
-<li><p><strong>status</strong> (<em>string</em>) – </p></li>
-<li><p><strong>script</strong> (<em>string</em>) – </p></li>
-<li><p><strong>exec</strong> (<em>string</em>) – </p></li>
-<li><p><strong>progress</strong> (<em>string</em>) – </p></li>
-<li><p><strong>label</strong> (<em>string</em>) – </p></li>
-<li><p><strong>parent</strong> (<em>string</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Status Codes</dt>
+</dl>
+<p>json, csv, or none which prints it as dict
+:type output: str
+:return: list of workflow names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
 <li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
 <li><p><span><a class="reference external" href="https://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
 </ul>

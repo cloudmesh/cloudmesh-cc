@@ -109,33 +109,29 @@
    <h1>HTTP Routing Table</h1>
 
    <div class="modindex-jumpbox">
-   <a href="#cap-/run"><strong>/run</strong></a> | 
    <a href="#cap-/workflow"><strong>/workflow</strong></a> | 
    <a href="#cap-/workflows"><strong>/workflows</strong></a>
    </div>
 
    <table class="indextable modindextable">
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-/run"><td></td><td>
-       <strong>/run</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="openapi.html#get--run-name"><code class="xref">GET /run/{name}</code></a></td><td>
-       <em>Run Workflow</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-/workflow"><td></td><td>
        <strong>/workflow</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="openapi.html#get--workflow-job-name_of_workflow"><code class="xref">GET /workflow/job/{name_of_workflow}</code></a></td><td>
-       <em>Add Job</em></td></tr>
+       <a href="openapi.html#get--workflow-run-name"><code class="xref">GET /workflow/run/{name}</code></a></td><td>
+       <em>Run Workflow</em></td></tr>
      <tr>
        <td></td>
        <td>
        <a href="openapi.html#get--workflow-name"><code class="xref">GET /workflow/{name}</code></a></td><td>
        <em>Get Workflow</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="openapi.html#post--workflow-job-name"><code class="xref">POST /workflow/job/{name}</code></a></td><td>
+       <em>Add Job</em></td></tr>
      <tr>
        <td></td>
        <td>
