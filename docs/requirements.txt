@@ -3,6 +3,7 @@ cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
+cloudmesh-cc
 psutil
 yamldb
 docker-compose

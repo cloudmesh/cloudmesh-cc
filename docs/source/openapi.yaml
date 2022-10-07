@@ -1,487 +1,421 @@
-openapi: 3.0.2
-info:
-  title: cloudmesh-cc
-  version: 4.3.6
-paths:
-  /workflows:
-    get:
-      tags:
-        - workflow
-      summary: List Workflows
-      description: >-
-        This command returns a list of workflows that is found within
-
-        the server.
-
-        curl -X 'GET'         'http://127.0.0.1:8000/workflows'         -H
-        'accept: application/json'
-
-        :return: list of workflow names
-      operationId: list_workflows_workflows_get
-      parameters:
-        - required: false
-          schema:
-            title: Output
-            type: string
-          name: output
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /workflow/upload:
-    post:
-      tags:
-        - workflow
-      summary: Upload
-      description: >-
-        upload a workflow to the ~/.cloudmesh/workflow directory for running
-
-        or editing.
-
-        :param directory: path to directory with workflow files
-
-        :type directory: str
-
-        curl -X 'POST'        
-        'http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example'        
-        -H 'accept: application/json'         -d ''
-
-        :param archive: tgz, xz, tar.gz, or tar file with workflow files
-
-        :type archive: str
-
-        curl -X 'POST'        
-        'http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile'        
-        -H 'accept: application/json'         -d ''
-
-        :param yaml: yaml file with workflow specifications
-
-        :type yaml: str
-
-        curl -X 'POST'        
-        'http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml'        
-        -H 'accept: application/json'         -d ''
-
-        :return: success or failure message
-      operationId: upload_upload_post
-      parameters:
-        - description: path to workflow dir that contains scripts and yaml file
-          required: false
-          schema:
-            title: Directory
-            type: string
-            description: path to workflow dir that contains scripts and yaml file
-          name: directory
-          in: query
-        - description: path to archive file that can be tgx, xz, tar.gz, or tar
-          required: false
-          schema:
-            title: Archive
-            type: string
-            description: path to archive file that can be tgx, xz, tar.gz, or tar
-          name: archive
-          in: query
-        - description: path to yaml file for workflow
-          required: false
-          schema:
-            title: Yaml
-            type: string
-            description: path to yaml file for workflow
-          name: yaml
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /workflow/{name}:
-    get:
-      tags:
-        - workflow
-      summary: Get Workflow
-      description: >-
-        retrieves a job in a workflow, if specified. if not specified,
-
-        retrieves an entire workflow
-
-
-        you need to have first uploaded the workflow-example for this curl to
-        work!
-
-        curl -X 'GET'        
-        'http://127.0.0.1:8000/workflow/workflow-example'         -H 'accept:
-        application/json'
-
-
-        :param request:
-
-        :type request:
-
-        :param name: name of the workflow
-
-        :type name: str
-
-        :param job: name of the job
-
-        :type job: str
-
-        :param output: how to print workflow. can be html or table
-
-        :type output: str
-
-        :return: success or failure message
-
-        :rtype:
-      operationId: get_workflow_workflow__name__get
-      parameters:
-        - required: true
-          schema:
-            title: Name
-            type: string
-          name: name
-          in: path
-        - required: false
-          schema:
-            title: Job
-            type: string
-          name: job
-          in: query
-        - required: false
-          schema:
-            title: Output
-            type: string
-          name: output
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    delete:
-      tags:
-        - workflow
-      summary: Delete Workflow
-      description: >-
-        deletes the job in the specified workflow if specified.
-
-        If the job is not specified, it deletes entire workflow.
-
-
-        example curl:
-
-        we need to have first uploaded workflow-example for this curl to work!
-
-        curl -X 'DELETE'        
-        'http://127.0.0.1:8000/workflow/workflow-example'         -H 'accept:
-        application/json'
-
-        :param name: name of the workflow
-
-        :type name: str
-
-        :param job: name of the job
-
-        :type job: str
-
-        :return: success or failure message
-      operationId: delete_workflow_workflow__name__delete
-      parameters:
-        - required: true
-          schema:
-            title: Name
-            type: string
-          name: name
-          in: path
-        - required: false
-          schema:
-            title: Job
-            type: string
-          name: job
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /run/{name}:
-    get:
-      tags:
-        - workflow
-      summary: Run Workflow
-      description: >-
-        runs a specified workflow according to provided run type
-
-
-        example curl:
-
-        we need to have first uploaded workflow-example for this curl to work!
-
-        curl -X 'GET'        
-        'http://127.0.0.1:8000/run/workflow-example?run_type=topo'         -H
-        'accept: application/json'
-
-
-        :param request:
-
-        :type request:
-
-        :param name: name of workflow
-
-        :type name: str
-
-        :param run_type: type of run, either topo or parallel
-
-        :type run_type: str
-
-        :param redirect:
-
-        :type redirect:
-
-        :return: success or exception message
-
-        :rtype:
-      operationId: run_workflow_run__name__get
-      parameters:
-        - required: true
-          schema:
-            title: Name
-            type: string
-          name: name
-          in: path
-        - required: false
-          schema:
-            title: Run Type
-            type: string
-            default: topo
-          name: run_type
-          in: query
-        - required: false
-          schema:
-            title: Redirect
-            type: string
-          name: redirect
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /workflow/job/{name_of_workflow}:
-    get:
-      tags:
-        - workflow
-      summary: Add Job
-      description: >-
-        This command adds a node to a workflow. with the specified arguments. A
-        check
-                    is returned and the user is alerted if arguments are missing
-                    arguments are passed in ATTRIBUTE=VALUE fashion.
-                    if the name of the workflow is omitted, the default workflow is used.
-                    If no job name is specified, an automated number that is kept in the
-                    config.yaml file will be used and the name will be job-n
-
-        example curl:
-
-        we need to have first uploaded workflow-example for this curl to work!
-
-        curl -X 'GET'        
-        'http://127.0.0.1:8000/workflow/job/workflow-example?job=myCoolJob&user=CoolPerson&host=local&kind=local&status=ready&script=coolJob.sh&progress=0&label=CoolLabel'        
-        -H 'accept: application/json'
-
-
-        :param name_of_workflow: the name of the workflow
-
-        :type name_of_workflow: str
-
-        :param job: the specifications and characteristics of the job
-
-        :type job: Jobpy
-
-        :param user:
-
-        :type user:
-
-        :param host:
-
-        :type host:
-
-        :param kind:
-
-        :type kind:
-
-        :param status:
-
-        :type status:
-
-        :param script:
-
-        :type script:
-
-        :param exec:
-
-        :type exec:
-
-        :param progress:
-
-        :type progress:
-
-        :param label:
-
-        :type label:
-
-        :param parent:
-
-        :type parent:
-
-        :return: returns jobs within the specified workflow
-
-        :rtype:
-      operationId: add_job_add_job__name_of_workflow__get
-      parameters:
-        - required: true
-          schema:
-            title: Name Of Workflow
-            type: string
-          name: name_of_workflow
-          in: path
-        - required: true
-          schema:
-            title: Job
-            type: string
-          name: job
-          in: query
-        - required: false
-          schema:
-            title: User
-            type: string
-          name: user
-          in: query
-        - required: false
-          schema:
-            title: Host
-            type: string
-          name: host
-          in: query
-        - required: false
-          schema:
-            title: Kind
-            type: string
-          name: kind
-          in: query
-        - required: false
-          schema:
-            title: Status
-            type: string
-          name: status
-          in: query
-        - required: false
-          schema:
-            title: Script
-            type: string
-          name: script
-          in: query
-        - required: false
-          schema:
-            title: Exec
-            type: string
-          name: exec
-          in: query
-        - required: false
-          schema:
-            title: Progress
-            type: string
-          name: progress
-          in: query
-        - required: false
-          schema:
-            title: Label
-            type: string
-          name: label
-          in: query
-        - required: false
-          schema:
-            title: Parent
-            type: string
-          name: parent
-          in: query
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
     HTTPValidationError:
-      title: HTTPValidationError
-      type: object
       properties:
         detail:
-          title: Detail
-          type: array
           items:
             $ref: '#/components/schemas/ValidationError'
-    ValidationError:
-      title: ValidationError
-      required:
-        - loc
-        - msg
-        - type
+          title: Detail
+          type: array
+      title: HTTPValidationError
       type: object
+    ValidationError:
       properties:
         loc:
-          title: Location
-          type: array
           items:
             anyOf:
-              - type: string
-              - type: integer
+            - type: string
+            - type: integer
+          title: Location
+          type: array
         msg:
           title: Message
           type: string
         type:
           title: Error Type
           type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  title: cloudmesh-cc
+  version: 4.3.7
+openapi: 3.0.2
+paths:
+  /workflow/job/{name}:
+    post:
+      description: 'adds a node/job to a workflow
+
+
+        A check
+
+        is returned and the user is alerted if arguments are missing
+
+        arguments are passed in ATTRIBUTE=VALUE fashion.
+
+        if the name of the workflow is omitted, the default workflow is used.
+
+        If no job name is specified, an automated number that is kept in the
+
+        config.yaml file will be used and the name will be job-n
+
+
+        Parameters:
+
+
+        - **name**: (str) the name of workflow
+
+        - **job**: (str) the name of the job to add
+
+        - **user**: (str) name of user of the job
+
+        - **host**: (str) name of the host of the job
+
+        - **kind**: (str) the kind of job, like ssh, slurm, local,
+
+        - **status**: (str) the status of the job, such as ready,
+
+        - **script**: (str) the name of the script to be run,
+
+        including file extension
+
+        - **exec**: (str) command(s) to execute
+
+        - **progress**: (str) value of job progress from 0 to 100
+
+        - **label**: (str) text to be shown on node in the graph
+
+        - **parent**: (str) parent job'
+      operationId: add_job_workflow_job__name__post
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      - in: query
+        name: job
+        required: true
+        schema:
+          title: Job
+          type: string
+      - in: query
+        name: user
+        required: false
+        schema:
+          title: User
+          type: string
+      - in: query
+        name: host
+        required: false
+        schema:
+          title: Host
+          type: string
+      - in: query
+        name: kind
+        required: false
+        schema:
+          title: Kind
+          type: string
+      - in: query
+        name: status
+        required: false
+        schema:
+          title: Status
+          type: string
+      - in: query
+        name: script
+        required: false
+        schema:
+          title: Script
+          type: string
+      - in: query
+        name: exec
+        required: false
+        schema:
+          title: Exec
+          type: string
+      - in: query
+        name: progress
+        required: false
+        schema:
+          title: Progress
+          type: string
+      - in: query
+        name: label
+        required: false
+        schema:
+          title: Label
+          type: string
+      - in: query
+        name: parent
+        required: false
+        schema:
+          title: Parent
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Add Job
+      tags:
+      - workflow
+  /workflow/run/{name}:
+    get:
+      description: 'runs a specified workflow according to provided run type
+
+
+        Parameters:
+
+
+        - **name**: (str) name of workflow to run
+
+        - **run_type**: (str) how to run workflow. only topo is implemented
+
+        (topological sort of jobs)
+
+        - **redirect**: (str) where to redirect after initializing the run.
+
+        only graph is implemented for web interface. None will disable redirect
+
+        - **show**: (bool) whether to show the graph as the workflow is run'
+      operationId: run_workflow_workflow_run__name__get
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      - in: query
+        name: run_type
+        required: false
+        schema:
+          default: topo
+          title: Run Type
+          type: string
+      - in: query
+        name: redirect
+        required: false
+        schema:
+          title: Redirect
+          type: string
+      - in: query
+        name: show
+        required: false
+        schema:
+          default: false
+          title: Show
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Run Workflow
+      tags:
+      - workflow
+  /workflow/upload:
+    post:
+      description: 'upload a workflow to the ~/.cloudmesh/workflow directory for running
+
+        or editing.
+
+
+        Parameters:
+
+
+        - **directory**: (str) path to directory with workflow files
+
+        - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,
+
+        or tar, that contains workflow files
+
+        - **yaml**: (str) path to yaml file that specifies workflow configuration'
+      operationId: upload_workflow_upload_post
+      parameters:
+      - description: path to workflow dir that contains scripts and yaml file
+        in: query
+        name: directory
+        required: false
+        schema:
+          description: path to workflow dir that contains scripts and yaml file
+          title: Directory
+          type: string
+      - description: path to archive file that can be tgx, xz, tar.gz, or tar
+        in: query
+        name: archive
+        required: false
+        schema:
+          description: path to archive file that can be tgx, xz, tar.gz, or tar
+          title: Archive
+          type: string
+      - description: path to yaml file for workflow
+        in: query
+        name: yaml
+        required: false
+        schema:
+          description: path to yaml file for workflow
+          title: Yaml
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Upload
+      tags:
+      - workflow
+  /workflow/{name}:
+    delete:
+      description: 'deletes an entire workflow. if the job is specified, then deletes
+
+        just the job in the workflow.
+
+
+        Parameters:
+
+
+        - **name**: (str) name of workflow to delete
+
+        - **job**: (str) name of job to delete in a workflow, if specified'
+      operationId: delete_workflow_workflow__name__delete
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      - in: query
+        name: job
+        required: false
+        schema:
+          title: Job
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Workflow
+      tags:
+      - workflow
+    get:
+      description: 'retrieves a workflow by its name. if the job is specified, retrieves
+
+        just the job in the specified workflow
+
+
+        Parameters:
+
+
+        - **name**: (str) name of workflow to retrieve
+
+        - **job**: (str) name of job to retrieve, if specified (optional)
+
+        - **output**: (str) how to print workflow, which can be
+
+        html, graph, json, table, or csv. if not specified, then returned as dict'
+      operationId: get_workflow_workflow__name__get
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      - in: query
+        name: job
+        required: false
+        schema:
+          title: Job
+          type: string
+      - in: query
+        name: output
+        required: false
+        schema:
+          title: Output
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Workflow
+      tags:
+      - workflow
+  /workflows:
+    get:
+      description: 'returns a list of all workflows found on local computer
+
+
+        Parameters:
+
+
+        - **output**: (str) format to print available workflows, which can be
+
+        json, csv, or none which prints it as dict
+
+
+        :param output: format to print available workflows, which can be
+
+        json, csv, or none which prints it as dict
+
+        :type output: str
+
+        :return: list of workflow names'
+      operationId: list_workflows_workflows_get
+      parameters:
+      - in: query
+        name: output
+        required: false
+        schema:
+          title: Output
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Workflows
+      tags:
+      - workflow
+
