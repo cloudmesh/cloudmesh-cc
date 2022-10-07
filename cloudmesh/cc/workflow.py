@@ -447,8 +447,8 @@ class Graph:
     def create_label(self, name):
         """
         creates the text to appear on a node in the graph
-        :param name: name of node to add text to.
 
+        :param name: name of node to add text to.
         :type name: str
         :return: the text that will appear on node in string format
         :rtype: str
@@ -1429,6 +1429,44 @@ class Workflow:
                 _job.sync()
                 _job.run()
 
+                #add time beginning of workflow if not in times dat file
+                workflow_started_time = datetime.now().strftime(
+                    "%m/%d/%Y, %H:%M:%S")
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    times_dict = {}
+                if 'times' in times_dict:
+                    if f't0_{self.name}' not in times_dict['times']:
+                        times_dict['times'][
+                            f't0_{self.name}'] = workflow_started_time
+                        d = str(yaml.dump(times_dict, indent=2))
+                        writefile(self.times_filename, d)
+                else:
+                    times_dict.setdefault('times', {})[
+                        f't0_{self.name}'] = workflow_started_time
+                    d = str(yaml.dump(times_dict, indent=2))
+                    writefile(self.times_filename, d)
+
+                # update the times dat file if the job just started
+                job_started_time = datetime.now().strftime(
+                    "%m/%d/%Y, %H:%M:%S")
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    times_dict = {}
+                if 'times' in times_dict:
+                    if f'tstart_{name}' not in times_dict['times']:
+                        times_dict['times'][
+                            f'tstart_{name}'] = job_started_time
+                        d = str(yaml.dump(times_dict, indent=2))
+                        writefile(self.times_filename, d)
+                else:
+                    times_dict.setdefault('times', {})[
+                        f'tstart_{name}'] = job_started_time
+                    d = str(yaml.dump(times_dict, indent=2))
+                    writefile(self.times_filename, d)
+
                 wait_interval = 0.5
                 finished = False
 
@@ -1470,25 +1508,6 @@ class Workflow:
                             d = str(yaml.dump(times_dict, indent=2))
                             writefile(self.times_filename, d)
 
-                        # update the times dat file if the job just started
-                        job_started_time = datetime.now().strftime(
-                            "%m/%d/%Y, %H:%M:%S")
-                        times_dict = yaml.safe_load(
-                            Path(self.times_filename).read_text())
-                        if times_dict is None:
-                            times_dict = {}
-                        if 'times' in times_dict:
-                            if f'start_time_{name}' not in times_dict['times']:
-                                times_dict['times'][
-                                    f'start_time_{name}'] = job_started_time
-                                d = str(yaml.dump(times_dict, indent=2))
-                                writefile(self.times_filename, d)
-                        else:
-                            times_dict.setdefault('times', {})[
-                                f'start_time_{name}'] = job_started_time
-                            d = str(yaml.dump(times_dict, indent=2))
-                            writefile(self.times_filename, d)
-
                         # show end time if job just ended
                         if (progress == 100) and (status == 'done'):
                             job_end_time = datetime.now().strftime(
@@ -1498,15 +1517,15 @@ class Workflow:
                             if times_dict is None:
                                 times_dict = {}
                             if 'times' in times_dict:
-                                if f'end_time_{name}' not in times_dict[
+                                if f'tend_{name}' not in times_dict[
                                     'times']:
                                     times_dict['times'][
-                                        f'end_time_{name}'] = job_end_time
+                                        f'tend_{name}'] = job_end_time
                                     d = str(yaml.dump(times_dict, indent=2))
                                     writefile(self.times_filename, d)
                             else:
                                 times_dict.setdefault('times', {})[
-                                    f'end_time_{name}'] = job_end_time
+                                    f'tend_{name}'] = job_end_time
                                 d = str(yaml.dump(times_dict, indent=2))
                                 writefile(self.times_filename, d)
 
