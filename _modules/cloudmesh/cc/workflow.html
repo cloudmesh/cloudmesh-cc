@@ -1492,7 +1492,7 @@
 
         <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="ow">or</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.svg&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">order</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">order</span><span class="p">()):</span>
             <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
@@ -1612,7 +1612,7 @@
 
                         <span class="c1"># show end time if job just ended</span>
                         <span class="k">if</span> <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="mi">100</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">):</span>
-                            <span class="n">job_end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="n">job_end_time</span> <span class="o">=</span> <span class="n">workflow_end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
                                 <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
                             <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                                 <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
@@ -1623,13 +1623,21 @@
                                     <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                                     <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
                                         <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_end_time</span>
-                                    <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-                                    <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+                                <span class="c1"># if this is the last job and it just finished</span>
+                                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span>
+                                        <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                                        <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                            <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workflow_end_time</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
                                     <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_end_time</span>
-                                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-                                <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                                    <span class="n">times_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="p">{})[</span>
+                                        <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workflow_end_time</span>
+                            <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">times_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+                            <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
                         <span class="n">save_graph_to_file</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
@@ -1661,11 +1669,6 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># banner(f&quot;Job: {name}&quot;)</span>
                 <span class="n">Console</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
-
-
-
-
-
 
 <div class="viewcode-block" id="Workflow.display"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
