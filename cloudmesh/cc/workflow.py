@@ -460,7 +460,7 @@ class Graph:
             label = self.nodes[name]["label"]
         if label is None:
             label = name
-        replacement = Labelmaker(label)
+        replacement = Labelmaker(label, self.name, name)
         msg = replacement.get(**self.nodes[name])
         return msg
 

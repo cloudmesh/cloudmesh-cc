@@ -17,7 +17,7 @@ workflow:
       exec: 'echo hello'
       name: end
     fetch-data:
-      label: '{name}\nprogress={progress}'
+      label: '{name}\nprogress={progress}\ncreated={created.}\nmodified={modified.}\nstart={start.}\nend={end.}'
       kind: local
       user: grey
       host: local
@@ -25,7 +25,7 @@ workflow:
       exec: 'echo hello'
       name: fetch-data
     compute:
-      label: '{name}\nprogress={progress}'
+      label: '{name}\nprogress={progress}\ncreated={created.}\nmodified={modified.}\nstart={start.}\nend={end.}'
       kind: local
       user: grey
       host: local
@@ -33,7 +33,7 @@ workflow:
       exec: 'echo hello'
       name: compute
     analyze:
-      label: '{name}\nprogress={progress}'
+      label: '{name}\nprogress={progress}\ncreated={created.}\nmodified={modified.}\nstart={start.}\nend={end.}'
       kind: local
       user: grey
       host: local

@@ -1,25 +1,40 @@
 """Cloudmesh cc labelmaker."""
+from pathlib import Path
+import yaml
 import os
 import re
 from cloudmesh.common.variables import Variables
-from cloudmesh.common.Shell import Console
+from cloudmesh.common.Shell import Shell
 from datetime import datetime
 from cloudmesh.common.DateTime import DateTime
 import time
 
 class Labelmaker:
     """Class that creates labels for the jobs in the graph display."""
-    def __init__(self, template, node=None, t0=None):
+    def __init__(self,
+                 template,
+                 workflow_name: str,
+                 job_name: str,
+                 t0=None):
         self.cms_variables = Variables()
         self.t0 = t0
         self.template = template\
             .replace("{os.", "{os_")\
             .replace("{cm.", "{cm_")\
             .replace("{now.", "{now_")\
-            .replace("{dt.", "{dt_")
-        # .replace("{created.", "{created_") \
-        # .replace("{modified.", "{modified_") \
+            .replace("{dt.", "{dt_")\
+            .replace("{created.", "{created_")\
+            .replace("{modified.", "{modified_")\
+            .replace("{start.", "{start_")\
+            .replace("{end.", "{end_")
         self.variables = re.findall(r'{(.*?)}', self.template)
+
+        self.workflow_name = workflow_name
+        self.job_name = job_name
+
+        self.times_filename = Path(Shell.map_filename(
+            f'~/.cloudmesh/workflow/{self.workflow_name}/runtime/{self.workflow_name}.dat'
+        ).path).as_posix()
 
     def get(self, **data):
         """
@@ -54,19 +69,58 @@ class Labelmaker:
                 value = variable.split("now_", 1)[1]
                 self.template = self.template.replace(variable, "now")
                 replacements["now"] = now.strftime(value)
-            # elif variable.startswith("created_"):
-            #     template = variable.split("created_", 1)[1]
-            #     self.template = self.template.replace(template, "created")
-            #     replacements["created"] = now.strftime(value)
-            #     del data["created"]
-            # elif variable.startswith("modified_"):
-            #     template = variable.split("modified_", 1)[1]
-            #     self.template = self.template.replace(template, "modified")
-            #     replacements["modified"] = now.strftime(value)
-            #     del data["modified"]
-            #     print (data)
-            #     print (replacements)
-            #     print (variables)
+            elif variable.startswith("created_"):
+                template = variable.split("created_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f'created_time_{self.job_name}' not in times_dict['times']:
+                        raise ValueError
+                    else:
+                        replacements[variable] = times_dict['times'][f'created_time_{self.job_name}']
+
+            elif variable.startswith("modified_"):
+                template = variable.split("modified_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f'modified_time_{self.job_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        replacements[variable] = times_dict['times'][f'modified_time_{self.job_name}']
+
+            elif variable.startswith("start_"):
+                template = variable.split("start_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f'start_time_{self.job_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        replacements[variable] = times_dict['times'][f'start_time_{self.job_name}']
+
+            elif variable.startswith("end_"):
+                template = variable.split("end_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f'end_time_{self.job_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        replacements[variable] = times_dict['times'][f'end_time_{self.job_name}']
+
             elif variable.startswith("dt_"):
                 # template = variable.split("dt_", 1)[1]
                 dummy, name, template = variable.split('_', 2)
