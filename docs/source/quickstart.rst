@@ -76,16 +76,17 @@ it into a temporary directory:
    cp tests/workflow-example/*.sh /tmp/workflow-example
 
 We like you to inspect the example so you get an overview of how to
-define a workflow:
+define a workflow that is located in `GitHub <https://github.com/cloudmesh/cloudmesh-cc/tree/main/tests/workflow-example>`_:
+and is located in the folder *tests/workflow-example/*
 
--  workflow-example.yaml
-   https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml
--  fetch-data
-   https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/fetch-data.sh
--  compute
-   https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/compute.sh
--  analyze
-   https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/analyze.sh
+-  `workflow-example.yaml
+   <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml>`_
+-  `fetch-data.sh
+   <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/fetch-data.sh>`_
+-  `compute.sh
+   <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/compute.sh>`_
+-  `analyze.sh
+   <https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/analyze.sh>`_
 
 Now we can test a selected number of ways on how to interact with the
 service. We showcase here how to
