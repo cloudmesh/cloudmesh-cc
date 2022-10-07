@@ -1,7 +1,12 @@
 Service
 =======
 
-.. todo: add the documentation of the service here
+A convenient Web service is included in Cloudmesh cc. It allows the user to manage and
+visualize the status of workflows through a Web browser interface. At this time the focus is that
+the interface can be run by a singleuser on the local machine.
+This allows that remote executions of workflow nodes run completely independent
+from cloudmesh cc and interaction is possible in asynchronous mode.
+
 
 Management
 ----------
