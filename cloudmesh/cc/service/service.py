@@ -656,7 +656,7 @@ async def contact_page(request: Request):
          include_in_schema=include_portal_tag_in_schema)
 async def man_page(request: Request):
     """
-    page that lists contact information
+    page that shows manual of cms cc command
 
     :return: contact page
     """
@@ -664,11 +664,18 @@ async def man_page(request: Request):
     os.chdir(os.path.dirname(__file__))
     os.chdir(Path('../../..').as_posix())
     folders = get_available_workflows()
-    page = "cloudmesh/cc/service/markdown/contact.md"
 
-    contact = readfile(page)
-    html = markdown.markdown(contact)
-    return templates.TemplateResponse("contact.html",
+    r = Shell.run('cms help cc | grep -v "# Timer" | grep -v "patch enabled so applying the patch" | grep -v "Alpha Channel fix"')
+
+    page = "cloudmesh/cc/service/markdown/manpage.md"
+
+    manpage = readfile(page)
+    manpage += '```bash\n'
+    manpage += r
+    manpage += '```'
+    print(manpage)
+    html = markdown.markdown(manpage, extensions=['fenced_code'])
+    return templates.TemplateResponse("manpage.html",
                                       {"request": request,
                                        "workflowlist": folders,
                                        "html": html})
