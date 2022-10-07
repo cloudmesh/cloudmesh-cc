@@ -26,8 +26,10 @@ class Labelmaker:
             .replace("{dt.", "{dt_")\
             .replace("{created.", "{created_")\
             .replace("{modified.", "{modified_")\
-            .replace("{start.", "{start_")\
-            .replace("{end.", "{end_")
+            .replace("{tstart.", "{tstart_")\
+            .replace("{tend.", "{tend_")\
+            .replace("{t0.", "{t0_")\
+            .replace("{dt0.", "{dt0_")
         self.variables = re.findall(r'{(.*?)}', self.template)
 
         self.workflow_name = workflow_name
@@ -96,31 +98,62 @@ class Labelmaker:
                     else:
                         replacements[variable] = times_dict['times'][f'modified_time_{self.job_name}']
 
-            elif variable.startswith("start_"):
-                template = variable.split("start_", 1)[1]
+            elif variable.startswith("tstart_"):
+                template = variable.split("tstart_", 1)[1]
 
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
                     raise ValueError
                 if 'times' in times_dict:
-                    if f'start_time_{self.job_name}' not in times_dict['times']:
+                    if f'tstart_{self.job_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f'start_time_{self.job_name}']
+                        replacements[variable] = times_dict['times'][f'tstart_{self.job_name}']
 
-            elif variable.startswith("end_"):
-                template = variable.split("end_", 1)[1]
+            elif variable.startswith("tend_"):
+                template = variable.split("tend_", 1)[1]
 
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
                     raise ValueError
                 if 'times' in times_dict:
-                    if f'end_time_{self.job_name}' not in times_dict['times']:
+                    if f'tend_{self.job_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f'end_time_{self.job_name}']
+                        replacements[variable] = times_dict['times'][f'tend_{self.job_name}']
+
+            elif variable.startswith("t0_"):
+                template = variable.split("t0_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f't0_{self.workflow_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        replacements[variable] = times_dict['times'][f't0_{self.workflow_name}']
+
+            elif variable.startswith("dt0_"):
+                template = variable.split("dt0_", 1)[1]
+
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f't0_{self.workflow_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        start_time = times_dict['times'][f't0_{self.workflow_name}']
+                        t0 = datetime.strptime(
+                                start_time, "%m/%d/%Y, %H:%M:%S")
+                        dt = now - t0
+                        elapsed = time.strftime("%H:%M:%S", time.gmtime(dt.seconds))
+                        replacements[variable] = elapsed
 
             elif variable.startswith("dt_"):
                 # template = variable.split("dt_", 1)[1]
