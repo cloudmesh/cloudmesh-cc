@@ -18,7 +18,7 @@ from utilities import create_dest
 
 create_dest()
 
-banner(Path(__file__).name, c = "#", color="RED")
+banner(Path(__file__).name, c="#", color="RED")
 
 @pytest.mark.incremental
 class TestLabelmaker:
@@ -28,7 +28,9 @@ class TestLabelmaker:
 
         Benchmark.Start()
 
-        label = Labelmaker("name={name} home={os.HOME} debug={cm.debug} date={now.%m/%d/%Y, %H:%M:%S}")
+        label = Labelmaker("name={name} home={os.HOME} debug={cm.debug} date={now.%m/%d/%Y, %H:%M:%S}",
+                           'sample-workflow',
+                           'sample-job')
 
         d = {"name": "gregor"}
         r = label.get(**d)
