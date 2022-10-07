@@ -561,7 +561,7 @@
             <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">replacement</span> <span class="o">=</span> <span class="n">Labelmaker</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">Labelmaker</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">replacement</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">msg</span></div>
 
