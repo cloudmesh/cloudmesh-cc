@@ -248,14 +248,12 @@
 <span class="c1">#</span>
 
 
-<div class="viewcode-block" id="load_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow">[docs]</a><span class="k">def</span> <span class="nf">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load_with_graph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Workflow</span><span class="p">:</span>
+<div class="viewcode-block" id="load_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow">[docs]</a><span class="k">def</span> <span class="nf">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Workflow</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    loads a workflow corresponding to given name</span>
 
 <span class="sd">    :param name: name of workflow</span>
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param load_with_graph:</span>
-<span class="sd">    :type load_with_graph:</span>
 <span class="sd">    :param load:</span>
 <span class="sd">    :type load:</span>
 <span class="sd">    :return: loaded workflow</span>
@@ -265,9 +263,6 @@
     <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">)</span>
     <span class="c1"># w.__init__(filename=filename)</span>
     <span class="c1"># w.load(filename=filename)</span>
-    <span class="k">if</span> <span class="n">load_with_graph</span><span class="p">:</span>
-        <span class="k">pass</span>
-        <span class="c1"># w.graph.save_to_file(filename=f&quot;{name}.svg&quot;)</span>
     <span class="c1"># w.load(filename)</span>
     <span class="c1"># print(w.yaml)</span>
     <span class="k">return</span> <span class="n">w</span></div>
@@ -286,12 +281,12 @@
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name_of_workflow</span><span class="p">,</span> <span class="n">load_with_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+    <span class="c1"># w = load_workflow(name=name_of_workflow, load=False)</span>
+    <span class="c1"># w.graph.load(filename=filename)</span>
     <span class="n">svg_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-    <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
-                 <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
+    <span class="c1"># w.graph.save(filename=svg_file, colors=&quot;status&quot;,</span>
+    <span class="c1">#              layout=nx.circular_layout, engine=&quot;dot&quot;)</span>
 
     <span class="n">runtime_graph_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">.svg&#39;</span>
@@ -1146,7 +1141,8 @@
 <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">initialized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    retrieves a workflow by its name. if the job is specified, retrieves</span>
 <span class="sd">    just the job in the specified workflow</span>
@@ -1154,9 +1150,11 @@
 <span class="sd">    Parameters:</span>
 
 <span class="sd">    - **name**: (str) name of workflow to retrieve</span>
-<span class="sd">    - **job**: (str) name of job to retrieve, if specified (optional)</span>
+<span class="sd">    - **job**: (str) name of job to retrieve, if specified</span>
 <span class="sd">    - **output**: (str) how to print workflow, which can be</span>
 <span class="sd">    html, graph, json, table, or csv. if not specified, then returned as dict</span>
+<span class="sd">    - **initialized**: (bool) indicates whether workflow has already been</span>
+<span class="sd">    loaded for the first time. should be True when switching views</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1180,7 +1178,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
             <span class="c1"># #result = [os.path.basename(e) for e in result]</span>
-            <span class="c1"># w = load_workflow(name=name, load_with_graph=True)</span>
+            <span class="c1"># w = load_workflow(name=name)</span>
             <span class="c1"># print(w.dict_of_workflow)</span>
             <span class="c1"># df = pd.DataFrame(w.dict_of_workflow)</span>
             <span class="c1"># df_html = df.to_html()</span>
@@ -1190,7 +1188,7 @@
             <span class="c1"># script_dir = os.path.join(script_dir, f&#39;{name}-html.html&#39;)</span>
             <span class="c1"># writefile(script_dir, df_html)</span>
             <span class="c1"># return templates.TemplateResponse(f&quot;{name}-html.html&quot;, {&quot;request&quot;: request})</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">load_with_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
             <span class="n">test</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">table</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
             <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
@@ -1215,7 +1213,7 @@
                 <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">runtime_svg</span><span class="p">)</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">load_with_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
             <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
             <span class="n">svg_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
@@ -1251,7 +1249,8 @@
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">table_preferences</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                               <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">initialized</span><span class="p">:</span>
+                <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
             <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
                      <span class="s1">&#39;host&#39;</span><span class="p">,</span>
@@ -1263,15 +1262,7 @@
                      <span class="s1">&#39;parent&#39;</span><span class="p">,</span>
                      <span class="s1">&#39;kind&#39;</span><span class="p">]</span>
 
-            <span class="n">w</span><span class="o">.</span><span class="n">create_topological_order</span><span class="p">()</span>
-
-            <span class="c1"># this following line temporarily causes the web table</span>
-            <span class="c1"># view to show incorrect job status values, because the</span>
-            <span class="c1"># yaml is completely overwritten. this can be improved</span>
-            <span class="c1"># by only writing the number values to runtime filename yaml.</span>
-            <span class="c1"># not implemented...</span>
-            <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save_to_yaml</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">)</span>
-            <span class="n">workflow_dict</span> <span class="o">=</span> <span class="n">Printer</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+            <span class="c1"># workflow_dict = Printer.dict(w.graph.nodes, order=order)</span>
 
             <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
                 <span class="s1">&#39;~/.cloudmesh/workflow/table-preferences.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
@@ -1372,6 +1363,19 @@
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
+
+    <span class="n">runtime_svg</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">runtime_svg</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">svg_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
+                     <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
+
     <span class="c1"># w = load_workflow(name)</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;watcher.html&quot;</span><span class="p">,</span>
                                       <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>

@@ -356,16 +356,18 @@ as initialized workflows inside a dict
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_workflow">
-<span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
 <dd><p>retrieves a workflow by its name. if the job is specified, retrieves
 just the job in the specified workflow</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>name</strong>: (str) name of workflow to retrieve</p></li>
-<li><p><strong>job</strong>: (str) name of job to retrieve, if specified (optional)</p></li>
+<li><p><strong>job</strong>: (str) name of job to retrieve, if specified</p></li>
 <li><p><strong>output</strong>: (str) how to print workflow, which can be</p></li>
 </ul>
-<p>html, graph, json, table, or csv. if not specified, then returned as dict</p>
+<p>html, graph, json, table, or csv. if not specified, then returned as dict
+- <strong>initialized</strong>: (bool) indicates whether workflow has already been
+loaded for the first time. should be True when switching views</p>
 </dd></dl>
 
 <dl class="py function">
@@ -435,13 +437,12 @@ sidebar</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.load_workflow">
-<span class="sig-name descname"><span class="pre">load_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_with_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#load_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.load_workflow" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#load_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.load_workflow" title="Permalink to this definition"></a></dt>
 <dd><p>loads a workflow corresponding to given name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – name of workflow</p></li>
-<li><p><strong>load_with_graph</strong> – </p></li>
 <li><p><strong>load</strong> – </p></li>
 </ul>
 </dd>

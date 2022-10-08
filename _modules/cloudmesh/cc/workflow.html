@@ -748,7 +748,6 @@
         <span class="c1"># name may not be defined properly</span>
         <span class="c1">#</span>
 
-        <span class="n">cms_variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -823,9 +822,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
 
-        <span class="c1"># cms_created_name = &#39;created_time_&#39; + self.name</span>
-        <span class="c1"># cms_variables.__setitem__(</span>
-        <span class="c1">#     cms_created_name, self.created_time)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_topological_order</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save_to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">)</span>
 
         <span class="c1"># should this go into graph?</span>
         <span class="c1"># if Path.exists(filename):</span>
@@ -1027,9 +1025,9 @@
         <span class="c1">#</span>
         <span class="c1"># # for name, node in graph[&quot;workflow&quot;][&quot;nodes&quot;].items():</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-             <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
-                 <span class="n">node</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-             <span class="bp">self</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">node</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">node</span><span class="p">)</span></div>
         <span class="c1">#</span>
         <span class="c1"># for edge in dependencies:</span>
         <span class="c1">#     self.add_dependencies(edge)</span>
@@ -1619,15 +1617,14 @@
                             <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                                 <span class="n">times_dict</span> <span class="o">=</span> <span class="p">{}</span>
                             <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
-                                <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span>
-                                    <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                                <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                                     <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
                                         <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_end_time</span>
 
                                 <span class="c1"># if this is the last job and it just finished</span>
                                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span>
-                                        <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                                            <span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                                         <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
                                             <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workflow_end_time</span>
                             <span class="k">else</span><span class="p">:</span>
