@@ -223,6 +223,8 @@
             if (column == 'script') {
                 script_hidden = !script_hidden;
             }
+            window.location.href = `/preferences-changer?redirect=/workflow-running/{{name_of_workflow}}&column=${column}`;
+            //return false;
         }
 
     </script>

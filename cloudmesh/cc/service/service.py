@@ -1060,6 +1060,32 @@ def edit_workflow_direct_url(name: str):
         return {
             "message": f"There was an error deleting the workflow '{name}'"}
 
+@app.get("/preferences-changer",
+         status_code=302,
+         response_class=Response,
+         include_in_schema=include_portal_tag_in_schema)
+def preferences_changer(redirect: str, column: str):
+    """Change a preference to show a column from within datatable viewer.
+
+    :param column:
+    :type column:
+    :return:
+    :rtype:
+    """
+    configuration_file = Shell.map_filename(
+        '~/.cloudmesh/workflow/table-preferences.yaml').path
+    loaded_preferences = yaml.safe_load(Path(configuration_file).read_text())
+    try:
+        if column not in loaded_preferences:
+            raise ValueError
+        loaded_preferences[column] = not loaded_preferences[column]
+    except:
+        pass
+    with open(configuration_file, 'w') as f:
+        yaml.dump(loaded_preferences, f, default_flow_style=False,
+                  sort_keys=False)
+    return RedirectResponse(redirect, status_code=302)
+
 
 @app.get("/workflow/{name}",
          tags=['workflow'])
