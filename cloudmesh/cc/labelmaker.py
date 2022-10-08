@@ -12,11 +12,24 @@ import time
 
 class Labelmaker:
     """Class that creates labels for the jobs in the graph display."""
+
     def __init__(self,
                  template,
                  workflow_name: str,
                  job_name: str,
                  t0=None):
+        """
+        Initialize the labelmaker.
+
+        :param template: The labelmaker tamplate string
+        :type template: str
+        :param workflow_name: The workflow name
+        :type workflow_name: str
+        :param job_name: The job name
+        :type job_name: str
+        :param t0: The time t0
+        :type t0: str
+        """
         self.cms_variables = Variables()
         self.t0 = t0
         self.template = template\
@@ -43,8 +56,9 @@ class Labelmaker:
 
     def get(self, **data):
         """
-        If now is followed by any of them its uste as strfmt
-        Example: now.%m/%d/%Y, %H:%M:%S"
+        If now is followed by any of them its uste as strfmt.
+
+        Example: now.%m/%d/%Y, %H:%M:%S
 
         :param data:
         :type data:
