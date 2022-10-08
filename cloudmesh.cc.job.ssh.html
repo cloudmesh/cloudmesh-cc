@@ -107,10 +107,13 @@
 </section>
 <section id="module-cloudmesh.cc.job.ssh.Job">
 <span id="cloudmesh-cc-job-ssh-job-module"></span><h2>cloudmesh.cc.job.ssh.Job module<a class="headerlink" href="#module-cloudmesh.cc.job.ssh.Job" title="Permalink to this heading"></a></h2>
+<p>SSH Job.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SSH Job.</p>
+<p>Initialize the job.</p>
 <p>cms set username=abc123</p>
 <p>creates a job by passing either a dict with **dict or named arguments
 attribute1 = value1, …</p>
@@ -129,7 +132,8 @@ attribute1 = value1, …</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.chmod">
 <span class="sig-name descname"><span class="pre">chmod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.chmod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.chmod" title="Permalink to this definition"></a></dt>
-<dd><p>changes the permissions and flags of the script to be
+<dd><p>Fix permissions.</p>
+<p>changes the permissions and flags of the script to be
 run (shell or py file, ipynb not yet supported) so that
 the system can successfully execute the script</p>
 <dl class="field-list simple">
@@ -145,7 +149,8 @@ the system can successfully execute the script</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.clear" title="Permalink to this definition"></a></dt>
-<dd><p>clears all leftover log files from past runs</p>
+<dd><p>Clear all leftover log files from past runs.</p>
+<p>clears all leftover log files from past runs</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>does not return anything</p>
@@ -159,8 +164,7 @@ the system can successfully execute the script</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.create_script">
 <span class="sig-name descname"><span class="pre">create_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.create_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.create_script" title="Permalink to this definition"></a></dt>
-<dd><p>creates a template
-for the script</p>
+<dd><p>Create a template for the script.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>exec</strong> (<em>str</em>) – command to be executed</p>
@@ -177,7 +181,8 @@ for the script</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.exists">
 <span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.exists" title="Permalink to this definition"></a></dt>
-<dd><p>used to check if the file is existing within the remote experiment
+<dd><p>Check if the filname exists.</p>
+<p>used to check if the file is existing within the remote experiment
 directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -195,7 +200,8 @@ directory</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.get_log">
 <span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.get_log" title="Permalink to this definition"></a></dt>
-<dd><p>copy the remote log file and read the contents of the file to
+<dd><p>Get the log file of the job.</p>
+<p>copy the remote log file and read the contents of the file to
 return the contents as a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -210,7 +216,8 @@ return the contents as a string</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.get_pid">
 <span class="sig-name descname"><span class="pre">get_pid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.get_pid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.get_pid" title="Permalink to this definition"></a></dt>
-<dd><p>get the pid that the job is running within</p>
+<dd><p>Watch the job and check for changes in the given period.</p>
+<p>get the pid that the job is running within</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to retrieve the latest log</p>
@@ -227,7 +234,8 @@ return the contents as a string</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.get_progress">
 <span class="sig-name descname"><span class="pre">get_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.get_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.get_progress" title="Permalink to this definition"></a></dt>
-<dd><p>fetches the log file of the job and reads the log file to check
+<dd><p>Get the progress of the job.</p>
+<p>fetches the log file of the job and reads the log file to check
 for the current completeness of the job</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -245,7 +253,8 @@ for the current completeness of the job</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.get_status">
 <span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.get_status" title="Permalink to this definition"></a></dt>
-<dd><p>fetches the log file of the job and returns the status of
+<dd><p>Get the status of the job.</p>
+<p>fetches the log file of the job and returns the status of
 the job, which can be undefined, running, or done</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,7 +272,7 @@ the job, which can be undefined, running, or done</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.kill">
 <span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.kill" title="Permalink to this definition"></a></dt>
-<dd><p>kills the job</p>
+<dd><p>Kill the job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>period</strong> (<em>float</em>) – interval to use for waiting for log/pid</p>
@@ -281,7 +290,8 @@ the job, which can be undefined, running, or done</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.mkdir_experimentdir">
 <span class="sig-name descname"><span class="pre">mkdir_experimentdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.mkdir_experimentdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.mkdir_experimentdir" title="Permalink to this definition"></a></dt>
-<dd><p>creates remote experiment directory to contain job files such as
+<dd><p>Create the experiment directory.</p>
+<p>creates remote experiment directory to contain job files such as
 yaml file, log file, and pertinent script to be run
 like sh script or ipynb or py</p>
 <dl class="field-list simple">
@@ -297,7 +307,8 @@ like sh script or ipynb or py</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.run" title="Permalink to this definition"></a></dt>
-<dd><p>runs the job by making script executable and running the
+<dd><p>Run the Job.</p>
+<p>runs the job by making script executable and running the
 job remotely.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -313,7 +324,8 @@ job remotely.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.script_type">
 <span class="sig-name descname"><span class="pre">script_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.script_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.script_type" title="Permalink to this definition"></a></dt>
-<dd><p>Uses the inputted name of script to return the
+<dd><p>Return the filename type based on the ending.</p>
+<p>Uses the inputted name of script to return the
 corresponding file extension that is run, such as
 shell script, jupyter notebook, or python file</p>
 <dl class="field-list simple">
@@ -332,7 +344,8 @@ shell script, jupyter notebook, or python file</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.status">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.status" title="Permalink to this definition"></a></dt>
-<dd><p>exactly the same as get_status but duplicated to provide as
+<dd><p>Return the status.
+exactly the same as get_status but duplicated to provide as
 a shortened-named, alternative call</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -347,7 +360,8 @@ a shortened-named, alternative call</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.sync">
 <span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.sync" title="Permalink to this definition"></a></dt>
-<dd><p>makes experiment dir and changes permissions, and then
+<dd><p>Syncronise the current directory with the remote.</p>
+<p>makes experiment dir and changes permissions, and then
 copies the shell script to remote host</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>

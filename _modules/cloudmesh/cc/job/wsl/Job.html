@@ -100,7 +100,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for cloudmesh.cc.job.wsl.Job</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;Use Jobs in WSL.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">time</span>
@@ -115,9 +116,11 @@
 
 
 <div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job">[docs]</a><span class="k">class</span> <span class="nc">Job</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The WSL Job.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the job.</span>
+
 <span class="sd">        cms set username=abc123</span>
 
 <span class="sd">        creates a job by passing either a dict with \*\*dict or named arguments</span>
@@ -128,7 +131,6 @@
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">argv</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -172,7 +174,8 @@
         <span class="c1">#    Console.warning(&quot;either exec or script must be set&quot;)</span>
 
 <div class="viewcode-block" id="Job.script_type"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.script_type">[docs]</a>    <span class="k">def</span> <span class="nf">script_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the filename type based on the ending.</span>
+
 <span class="sd">        Uses the inputted name of script to return the</span>
 <span class="sd">        corresponding file extension that is run, such as</span>
 <span class="sd">        shell script, jupyter notebook, or python file</span>
@@ -190,7 +193,8 @@
         <span class="k">return</span> <span class="s2">&quot;os&quot;</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the string object of the job.</span>
+
 <span class="sd">        returns pertinent information of job in string format,</span>
 <span class="sd">        including host, username, name of job, and other characteristics</span>
 
@@ -213,7 +217,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the status.</span>
+
 <span class="sd">        exactly the same as get_status but duplicated to provide as</span>
 <span class="sd">        a shortened-named, alternative call</span>
 
@@ -223,7 +228,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Job.mkdir_experimentdir"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.mkdir_experimentdir">[docs]</a>    <span class="k">def</span> <span class="nf">mkdir_experimentdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create the experiment directory.</span>
+
 <span class="sd">        creates experiment directory to contain job files such as</span>
 <span class="sd">        yaml file, log file, and pertinent script to be run</span>
 <span class="sd">        like sh script or ipynb or py</span>
@@ -234,9 +240,9 @@
         <span class="n">directory</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
         <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span></div>
 
-    <span class="c1"># move from current directory to remote</span>
 <div class="viewcode-block" id="Job.sync"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Syncronise the current directory with the remote.</span>
+
 <span class="sd">        changes permissions and makes experiment dir, and then</span>
 <span class="sd">        copies the shell script to experiment dir</span>
 
@@ -253,7 +259,8 @@
         <span class="k">return</span> <span class="n">r</span></div>
 
 <div class="viewcode-block" id="Job.chmod"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.chmod">[docs]</a>    <span class="k">def</span> <span class="nf">chmod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Fix permissions.</span>
+
 <span class="sd">        changes the permissions and flags of the script to be</span>
 <span class="sd">        run (shell or py file, ipynb not yet supported) so that</span>
 <span class="sd">        the system can successfully execute the script</span>
@@ -267,7 +274,8 @@
         <span class="k">return</span> <span class="n">r</span></div>
 
 <div class="viewcode-block" id="Job.exists"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Check if the filname exists.</span>
+
 <span class="sd">        used to check if the file is existing within the experiment</span>
 <span class="sd">        directory</span>
 
@@ -279,7 +287,8 @@
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Job.run"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Run the Job.</span>
+
 <span class="sd">        runs the job by making script executable and running the</span>
 <span class="sd">        script within wsl. only works for shell scripts, as .sh is</span>
 <span class="sd">        hardcoded within the commands</span>
@@ -327,8 +336,7 @@
         <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">log</span></div>
 
 <div class="viewcode-block" id="Job.clear"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        clears all leftover log files from past runs</span>
+        <span class="sd">&quot;&quot;&quot;Clear all leftover log files from past runs.</span>
 
 <span class="sd">        :return: does not return anything</span>
 <span class="sd">        :rtype: None</span>
@@ -343,7 +351,8 @@
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Job.get_log"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_log">[docs]</a>    <span class="k">def</span> <span class="nf">get_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get the log file of the job.</span>
+
 <span class="sd">        copy the log file and read the contents of the file to</span>
 <span class="sd">        return the contents as a string</span>
 
@@ -365,7 +374,8 @@
         <span class="k">return</span> <span class="n">content</span></div>
 
 <div class="viewcode-block" id="Job.get_status"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get the status of the job.</span>
+
 <span class="sd">        fetches the log file of the job and returns the status of</span>
 <span class="sd">        the job, which can be undefined, running, or done</span>
 
@@ -387,7 +397,8 @@
         <span class="k">return</span> <span class="n">status</span></div>
 
 <div class="viewcode-block" id="Job.get_progress"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_progress">[docs]</a>    <span class="k">def</span> <span class="nf">get_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get the progress of the job.</span>
+
 <span class="sd">        fetches the log file of the job and reads the log file to check</span>
 <span class="sd">        for the current completeness of the job</span>
 
@@ -413,7 +424,8 @@
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Job.watch"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.watch">[docs]</a>    <span class="k">def</span> <span class="nf">watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Watch the job and check for changes in the given period.</span>
+
 <span class="sd">        waits and watches for progress to reach 100, on interval basis</span>
 <span class="sd">        specified in the period in seconds,</span>
 <span class="sd">        until the job has completed</span>
@@ -432,8 +444,7 @@
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Job.get_pid"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.get_pid">[docs]</a>    <span class="k">def</span> <span class="nf">get_pid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        get the pid that the job is running within</span>
+        <span class="sd">&quot;&quot;&quot;Get the pid that the job is running within.</span>
 
 <span class="sd">        :param refresh: whether to retrieve the latest log</span>
 <span class="sd">        :type refresh: bool</span>
@@ -452,8 +463,7 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Job.kill"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.wsl.html#cloudmesh.cc.job.wsl.Job.Job.kill">[docs]</a>    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        kills the job</span>
+        <span class="sd">&quot;&quot;&quot;Kill the job.</span>
 
 <span class="sd">        :param period: interval to use for waiting for log/pid</span>
 <span class="sd">        :type period: float</span>

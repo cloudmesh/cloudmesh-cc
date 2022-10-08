@@ -107,10 +107,13 @@
 </section>
 <section id="module-cloudmesh.cc.job.wsl.Job">
 <span id="cloudmesh-cc-job-wsl-job-module"></span><h2>cloudmesh.cc.job.wsl.Job module<a class="headerlink" href="#module-cloudmesh.cc.job.wsl.Job" title="Permalink to this heading"></a></h2>
+<p>Use Jobs in WSL.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The WSL Job.</p>
+<p>Initialize the job.</p>
 <p>cms set username=abc123</p>
 <p>creates a job by passing either a dict with **dict or named arguments
 attribute1 = value1, …</p>
@@ -128,7 +131,8 @@ attribute1 = value1, …</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.chmod">
 <span class="sig-name descname"><span class="pre">chmod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.chmod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.chmod" title="Permalink to this definition"></a></dt>
-<dd><p>changes the permissions and flags of the script to be
+<dd><p>Fix permissions.</p>
+<p>changes the permissions and flags of the script to be
 run (shell or py file, ipynb not yet supported) so that
 the system can successfully execute the script</p>
 <dl class="field-list simple">
@@ -144,7 +148,7 @@ the system can successfully execute the script</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.clear" title="Permalink to this definition"></a></dt>
-<dd><p>clears all leftover log files from past runs</p>
+<dd><p>Clear all leftover log files from past runs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>does not return anything</p>
@@ -158,7 +162,8 @@ the system can successfully execute the script</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.exists">
 <span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.exists" title="Permalink to this definition"></a></dt>
-<dd><p>used to check if the file is existing within the experiment
+<dd><p>Check if the filname exists.</p>
+<p>used to check if the file is existing within the experiment
 directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,7 +181,8 @@ directory</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.get_log">
 <span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.get_log" title="Permalink to this definition"></a></dt>
-<dd><p>copy the log file and read the contents of the file to
+<dd><p>Get the log file of the job.</p>
+<p>copy the log file and read the contents of the file to
 return the contents as a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -194,7 +200,7 @@ return the contents as a string</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.get_pid">
 <span class="sig-name descname"><span class="pre">get_pid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.get_pid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.get_pid" title="Permalink to this definition"></a></dt>
-<dd><p>get the pid that the job is running within</p>
+<dd><p>Get the pid that the job is running within.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>refresh</strong> (<em>bool</em>) – whether to retrieve the latest log</p>
@@ -211,7 +217,8 @@ return the contents as a string</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.get_progress">
 <span class="sig-name descname"><span class="pre">get_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.get_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.get_progress" title="Permalink to this definition"></a></dt>
-<dd><p>fetches the log file of the job and reads the log file to check
+<dd><p>Get the progress of the job.</p>
+<p>fetches the log file of the job and reads the log file to check
 for the current completeness of the job</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -229,7 +236,8 @@ for the current completeness of the job</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.get_status">
 <span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.get_status" title="Permalink to this definition"></a></dt>
-<dd><p>fetches the log file of the job and returns the status of
+<dd><p>Get the status of the job.</p>
+<p>fetches the log file of the job and returns the status of
 the job, which can be undefined, running, or done</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -247,7 +255,7 @@ the job, which can be undefined, running, or done</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.kill">
 <span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.kill" title="Permalink to this definition"></a></dt>
-<dd><p>kills the job</p>
+<dd><p>Kill the job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>period</strong> (<em>float</em>) – interval to use for waiting for log/pid</p>
@@ -265,7 +273,8 @@ the job, which can be undefined, running, or done</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.mkdir_experimentdir">
 <span class="sig-name descname"><span class="pre">mkdir_experimentdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.mkdir_experimentdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.mkdir_experimentdir" title="Permalink to this definition"></a></dt>
-<dd><p>creates experiment directory to contain job files such as
+<dd><p>Create the experiment directory.</p>
+<p>creates experiment directory to contain job files such as
 yaml file, log file, and pertinent script to be run
 like sh script or ipynb or py</p>
 <dl class="field-list simple">
@@ -281,7 +290,8 @@ like sh script or ipynb or py</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.run" title="Permalink to this definition"></a></dt>
-<dd><p>runs the job by making script executable and running the
+<dd><p>Run the Job.</p>
+<p>runs the job by making script executable and running the
 script within wsl. only works for shell scripts, as .sh is
 hardcoded within the commands</p>
 <dl class="field-list simple">
@@ -298,7 +308,8 @@ hardcoded within the commands</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.script_type">
 <span class="sig-name descname"><span class="pre">script_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.script_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.script_type" title="Permalink to this definition"></a></dt>
-<dd><p>Uses the inputted name of script to return the
+<dd><p>Return the filename type based on the ending.</p>
+<p>Uses the inputted name of script to return the
 corresponding file extension that is run, such as
 shell script, jupyter notebook, or python file</p>
 <dl class="field-list simple">
@@ -317,7 +328,8 @@ shell script, jupyter notebook, or python file</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.status">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.status" title="Permalink to this definition"></a></dt>
-<dd><p>exactly the same as get_status but duplicated to provide as
+<dd><p>Return the status.</p>
+<p>exactly the same as get_status but duplicated to provide as
 a shortened-named, alternative call</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -332,7 +344,8 @@ a shortened-named, alternative call</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.sync">
 <span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.sync" title="Permalink to this definition"></a></dt>
-<dd><p>changes permissions and makes experiment dir, and then
+<dd><p>Syncronise the current directory with the remote.</p>
+<p>changes permissions and makes experiment dir, and then
 copies the shell script to experiment dir</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -347,7 +360,8 @@ copies the shell script to experiment dir</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.wsl.Job.Job.watch">
 <span class="sig-name descname"><span class="pre">watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/wsl/Job.html#Job.watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.wsl.Job.Job.watch" title="Permalink to this definition"></a></dt>
-<dd><p>waits and watches for progress to reach 100, on interval basis
+<dd><p>Watch the job and check for changes in the given period.</p>
+<p>waits and watches for progress to reach 100, on interval basis
 specified in the period in seconds,
 until the job has completed</p>
 <dl class="field-list simple">

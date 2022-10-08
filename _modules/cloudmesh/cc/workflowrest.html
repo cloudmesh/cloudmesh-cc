@@ -106,13 +106,15 @@
 
 <div class="viewcode-block" id="RESTWorkflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow">[docs]</a><span class="k">class</span> <span class="nc">RESTWorkflow</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class which interfaces with cc FastAPI server using REST.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the service.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000&quot;</span>
 
     <span class="c1"># @app.get(&quot;/workflows&quot;)</span>
 <div class="viewcode-block" id="RESTWorkflow.list_workflows"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.list_workflows">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This command returns a list of workflows that is found within the server.</span>
+<span class="sd">        Return a list of workflows that is found within the server.</span>
 
 <span class="sd">        You can invoke this function also with a curl command:</span>
 
@@ -125,8 +127,9 @@
         <span class="k">return</span> <span class="n">content</span>  <span class="c1"># likely a dict</span></div>
 
 <div class="viewcode-block" id="RESTWorkflow.add_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.add_job">[docs]</a>    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This command adds a job to a workflow that is specified in the</span>
+        <span class="sd">&quot;&quot;&quot;Add a job to the workflow.</span>
+
+<span class="sd">        Adds a job to a workflow that is specified in the</span>
 <span class="sd">        provided workflow_name string.</span>
 
 <span class="sd">        :return: all jobs within workflow</span>
@@ -174,7 +177,7 @@
 
 <div class="viewcode-block" id="RESTWorkflow.upload_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">upload_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        upload a workflow by using REST.</span>
+<span class="sd">        Upload a workflow by using REST.</span>
 
 <span class="sd">        :param directory: path to a folder of scripts and/or yaml</span>
 <span class="sd">        :type directory: str</span>
@@ -200,7 +203,7 @@
 
 <div class="viewcode-block" id="RESTWorkflow.get_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        retrieve a workflow by using REST.</span>
+<span class="sd">        Retrieve a workflow by using REST.</span>
 
 <span class="sd">        :param workflow_name: name of workflow to be retrieved</span>
 <span class="sd">        :type workflow_name: str</span>
@@ -219,7 +222,7 @@
                      <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;topo&#39;</span><span class="p">,</span>
                      <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        run a workflow by using REST.</span>
+<span class="sd">        Run a workflow by using REST.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -229,7 +232,7 @@
 
 <div class="viewcode-block" id="RESTWorkflow.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        delete a workflow by using REST.</span>
+<span class="sd">        Delete a workflow by using REST.</span>
 
 <span class="sd">        :param workflow_name: name of workflow to delete</span>
 <span class="sd">        :type workflow_name: str</span>
