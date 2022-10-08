@@ -114,11 +114,24 @@
 
 <div class="viewcode-block" id="Labelmaker"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.labelmaker.Labelmaker">[docs]</a><span class="k">class</span> <span class="nc">Labelmaker</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class that creates labels for the jobs in the graph display.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">template</span><span class="p">,</span>
                  <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the labelmaker.</span>
+
+<span class="sd">        :param template: The labelmaker tamplate string</span>
+<span class="sd">        :type template: str</span>
+<span class="sd">        :param workflow_name: The workflow name</span>
+<span class="sd">        :type workflow_name: str</span>
+<span class="sd">        :param job_name: The job name</span>
+<span class="sd">        :type job_name: str</span>
+<span class="sd">        :param t0: The time t0</span>
+<span class="sd">        :type t0: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cms_variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">t0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>\
@@ -145,8 +158,9 @@
 
 <div class="viewcode-block" id="Labelmaker.get"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.labelmaker.Labelmaker.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        If now is followed by any of them its uste as strfmt</span>
-<span class="sd">        Example: now.%m/%d/%Y, %H:%M:%S&quot;</span>
+<span class="sd">        If now is followed by any of them its uste as strfmt.</span>
+
+<span class="sd">        Example: now.%m/%d/%Y, %H:%M:%S</span>
 
 <span class="sd">        :param data:</span>
 <span class="sd">        :type data:</span>

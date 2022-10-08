@@ -181,14 +181,11 @@
 
 
 <div class="viewcode-block" id="Graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph">[docs]</a><span class="k">class</span> <span class="nc">Graph</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The Graph class handles the generation of workflow diagrams,</span>
-<span class="sd">    showing the order and status of the jobs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The Graph class handles the generation of workflow diagrams.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the graph with characteristics such as edges, nodes</span>
-<span class="sd">        and colors.</span>
+<span class="sd">        Initialize the graph with characteristics such as edges, nodes and colors.</span>
 
 <span class="sd">        :param name: name of the graph</span>
 <span class="sd">        :type name: str</span>
@@ -197,7 +194,6 @@
 <span class="sd">        :param clear: whether to reload from scratch</span>
 <span class="sd">        :type clear: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">dotdict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">dotdict</span><span class="p">()</span>
@@ -217,7 +213,7 @@
 
 <div class="viewcode-block" id="Graph.clear"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        resets the graph characteristics to a clean slate.</span>
+<span class="sd">        Reset the graph characteristics to a clean slate.</span>
 
 <span class="sd">        :return: nothing</span>
 <span class="sd">        :rtype: None</span>
@@ -233,7 +229,7 @@
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the specified variable from the nodes.</span>
+<span class="sd">        Return the specified variable from the nodes.</span>
 
 <span class="sd">        :param name: the variable to be retrieved</span>
 <span class="sd">        :type name: str</span>
@@ -242,9 +238,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Graph.set_status_colors"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status_colors">[docs]</a>    <span class="k">def</span> <span class="nf">set_status_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds the ready, undefined, done, failed, and running colors</span>
-<span class="sd">        as hex values.</span>
+        <span class="sd">&quot;&quot;&quot;Add the ready, undefined, done, failed, and running colors as hex values.</span>
 
 <span class="sd">        :return: nothing</span>
 <span class="sd">        :rtype: None</span>
@@ -263,7 +257,7 @@
 
 <div class="viewcode-block" id="Graph.add_color"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_color">[docs]</a>    <span class="k">def</span> <span class="nf">add_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">colors</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds specified color(s).</span>
+<span class="sd">        Add specified color(s).</span>
 
 <span class="sd">        :param key: the status whose color will be changed</span>
 <span class="sd">        :type key: str</span>
@@ -279,9 +273,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">colors</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the graph in string format with its</span>
-<span class="sd">        characteristics and specifications.</span>
+        <span class="sd">&quot;&quot;&quot;Return the graph in string format.</span>
 
 <span class="sd">        :return: graph in string format</span>
 <span class="sd">        :rtype: str</span>
@@ -299,7 +291,7 @@
 
 <div class="viewcode-block" id="Graph.load"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        loads a graph for a workflow.</span>
+<span class="sd">        Load a graph for a workflow.</span>
 
 <span class="sd">        :param filename: the graph to load</span>
 <span class="sd">        :type filename: str</span>
@@ -333,7 +325,7 @@
 
 <div class="viewcode-block" id="Graph.add_node"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds node(s) to the graph.</span>
+<span class="sd">        Add node(s) to the graph.</span>
 
 <span class="sd">        :param name: the name of the node</span>
 <span class="sd">        :type name: str</span>
@@ -357,7 +349,7 @@
 
 <div class="viewcode-block" id="Graph.add_edge"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds edge(s) to the graph.</span>
+<span class="sd">        Add edge(s) to the graph.</span>
 
 <span class="sd">        :param source: beginning edge</span>
 <span class="sd">        :type source: str</span>
@@ -389,7 +381,7 @@
 
 <div class="viewcode-block" id="Graph.done"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        removes from all nodes the names parent.</span>
+<span class="sd">        Remove from all nodes the named parent.</span>
 
 <span class="sd">        :param parent: originating node</span>
 <span class="sd">        :type parent: str</span>
@@ -403,7 +395,7 @@
 
 <div class="viewcode-block" id="Graph.todo"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.todo">[docs]</a>    <span class="k">def</span> <span class="nf">todo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        finds all nodes with no parents and progress != 100.</span>
+<span class="sd">        Find all nodes with no parents and progress != 100.</span>
 
 <span class="sd">        :return: list of node names with no parents</span>
 <span class="sd">        :rtype: list</span>
@@ -420,7 +412,7 @@
 
 <div class="viewcode-block" id="Graph.set_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status">[docs]</a>    <span class="k">def</span> <span class="nf">set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        sets the status of a specified node.</span>
+<span class="sd">        Set the status of a specified node.</span>
 
 <span class="sd">        :param name: node whose status will be changed</span>
 <span class="sd">        :type name: str</span>
@@ -433,7 +425,7 @@
 
 <div class="viewcode-block" id="Graph.get_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        retrieves status of a specified node.</span>
+<span class="sd">        Retrieve status of a specified node.</span>
 
 <span class="sd">        :param name: node whose status will be retrieved</span>
 <span class="sd">        :type name: str</span>
@@ -443,8 +435,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Graph.add_dependency"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds a dependency for a node. a dependency enforces</span>
+        <span class="sd">&quot;&quot;&quot;Add dependency between source and destination.</span>
+
+<span class="sd">        Add a dependency for a node. a dependency enforces</span>
 <span class="sd">        the completion of a previous node in order for the</span>
 <span class="sd">        next to be run.</span>
 
@@ -458,8 +451,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Graph.add_dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">nodedata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgedata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        adds dependencies for nodes. a dependency enforces</span>
+        <span class="sd">&quot;&quot;&quot;Add multiple dependencies betwee several nodes.</span>
+
+<span class="sd">        Add dependencies for nodes. a dependency enforces</span>
 <span class="sd">        the completion of a previous node in order for the</span>
 <span class="sd">        next to be run.</span>
 
@@ -490,8 +484,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">edgedata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Graph.export"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;show,a.png,a.svg,a.pdf&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        takes the inputted filename, expands it into list</span>
+        <span class="sd">&quot;&quot;&quot;Export the graph.</span>
+
+<span class="sd">        Take the inputted filename, expands it into list</span>
 <span class="sd">        if commas and brackets are present, and saves the</span>
 <span class="sd">        graph into specified filenames. this function seems</span>
 <span class="sd">        to be incomplete.</span>
@@ -513,8 +508,9 @@
             <span class="c1"># and so on</span>
 
 <div class="viewcode-block" id="Graph.save_to_yaml"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.save_to_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        saves the graph to a specified filename and</span>
+        <span class="sd">&quot;&quot;&quot;Save the graph.</span>
+
+<span class="sd">        Save the graph to a specified filename and</span>
 <span class="sd">        excludes nodes if exclude is specified.</span>
 <span class="sd">        meant to be used to save as yaml, not svg.</span>
 
@@ -547,8 +543,7 @@
         <span class="n">writefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Graph.create_label"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_label">[docs]</a>    <span class="k">def</span> <span class="nf">create_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        creates the text to appear on a node in the graph</span>
+        <span class="sd">&quot;&quot;&quot;Create the text to appear on a node in the graph.</span>
 
 <span class="sd">        :param name: name of node to add text to.</span>
 <span class="sd">        :type name: str</span>
@@ -572,7 +567,7 @@
              <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">,</span>
              <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;networkx&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        generates and saves the graph.</span>
+<span class="sd">        Generate and saves the graph.</span>
 
 <span class="sd">        :param filename: file to save the graph to</span>
 <span class="sd">        :type filename: str</span>
@@ -658,7 +653,7 @@
 
 <div class="viewcode-block" id="Graph.get_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">get_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a list of the topological order of the workflow.</span>
+<span class="sd">        Return a list of the topological order of the workflow.</span>
 
 <span class="sd">        :return: list depicting the workflow</span>
 <span class="sd">        :rtype: list</span>
@@ -672,7 +667,7 @@
 
 <div class="viewcode-block" id="Graph.create_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        update the graph while each node bget a number determined from get_sequential_order.</span>
+<span class="sd">        Update the graph while each node bget a number determined from get_sequential_order.</span>
 
 <span class="sd">        :return: list depicting the workflow</span>
 <span class="sd">        :rtype: list</span>
@@ -723,7 +718,7 @@
                  <span class="n">clear_runtime_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">runtime</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initializes workflow with specified characteristics.</span>
+<span class="sd">        Initialize a workflow with specified characteristics.</span>
 
 <span class="sd">        :param name: name of workflow</span>
 <span class="sd">        :type name: str</span>
@@ -841,7 +836,7 @@
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns workflow and its characteristics in string format.</span>
+<span class="sd">        Return workflow and its characteristics in string format.</span>
 
 <span class="sd">        :return: string format of workflow</span>
 <span class="sd">        :rtype: str</span>
@@ -851,7 +846,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        retrieves the jobs of the workflow.</span>
+<span class="sd">        Retrieve the jobs of the workflow.</span>
 
 <span class="sd">        :return: the jobs that belong to the workflow</span>
 <span class="sd">        :rtype: dotdict</span>
@@ -860,7 +855,8 @@
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the details of an item within the workflow</span>
+<span class="sd">        Return the details of an item within the workflow.</span>
+
 <span class="sd">        :param name: name of item</span>
 <span class="sd">        :type name: str</span>
 <span class="sd">        :return: details of an item within the workflow</span>
@@ -870,7 +866,7 @@
 
 <div class="viewcode-block" id="Workflow.job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.job">[docs]</a>    <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the details of a job within the workflow.</span>
+<span class="sd">        Return the details of a job within the workflow.</span>
 
 <span class="sd">        :param name: name of job</span>
 <span class="sd">        :type name: str</span>
@@ -881,8 +877,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        retrieves the dependencies of the workflow.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the dependencies of the workflow.</span>
 
 <span class="sd">        :return: the dependencies of the workflow</span>
 <span class="sd">        :rtype: dotdict</span>
@@ -892,8 +887,7 @@
 
 <div class="viewcode-block" id="Workflow.predecessor"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        retrieves the jobs that must be run before the specified job</span>
-<span class="sd">        (the pre-requisites).</span>
+<span class="sd">        Retrieve the jobs that must be run before the specified job.</span>
 
 <span class="sd">        :param name: name of a job</span>
 <span class="sd">        :type name: str</span>
@@ -910,8 +904,9 @@
         <span class="k">return</span> <span class="n">predecessors</span></div>
 
 <div class="viewcode-block" id="Workflow.get_predecessors"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.get_predecessors">[docs]</a>    <span class="k">def</span> <span class="nf">get_predecessors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        figure out all the dependencies of the name node</span>
+        <span class="sd">&quot;&quot;&quot;Return the predecessors.</span>
+
+<span class="sd">        Figure out all the dependencies of the name node</span>
 <span class="sd">        then test if each node in front (parent) has progress of 100</span>
 <span class="sd">        if the parent has progress 100, remove those nodes.</span>
 
@@ -934,7 +929,7 @@
 
 <div class="viewcode-block" id="Workflow.save_with_state"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save_with_state">[docs]</a>    <span class="k">def</span> <span class="nf">save_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        save the workflow with state.</span>
+<span class="sd">        Save the workflow with state.</span>
 
 <span class="sd">        :param filename: which file to save the workflow</span>
 <span class="sd">        :type filename: str</span>
@@ -959,7 +954,7 @@
 
 <div class="viewcode-block" id="Workflow.load_with_state"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load_with_state">[docs]</a>    <span class="k">def</span> <span class="nf">load_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        load the workflow with state.</span>
+<span class="sd">        Load the workflow with state.</span>
 
 <span class="sd">        :param filename: which file to load the workflow from</span>
 <span class="sd">        :type filename: str</span>
@@ -976,8 +971,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;colors&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Workflow.load"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Loads a workflow graph from file. However, the file is still stored in</span>
+        <span class="sd">&quot;&quot;&quot;Load the workflow.</span>
+
+<span class="sd">        Load a workflow graph from file. However, the file is still stored in</span>
 <span class="sd">        the filename that was used when the Workflow was created. This allows to</span>
 <span class="sd">        load in a saved workflow in another file, but continue working on it in</span>
 <span class="sd">        the file used in init.</span>
@@ -1035,7 +1031,7 @@
 
 <div class="viewcode-block" id="Workflow.save"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        save the workflow.</span>
+<span class="sd">        Save the workflow.</span>
 
 <span class="sd">        :param filename: where to save the workflow</span>
 <span class="sd">        :type filename: str</span>
@@ -1097,8 +1093,7 @@
                 <span class="n">venv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span>
                 <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        add a job to the workflow.</span>
+        <span class="sd">&quot;&quot;&quot;Add a job to the workflow.</span>
 
 <span class="sd">        :param name: name of job</span>
 <span class="sd">        :type name: str</span>
@@ -1127,7 +1122,6 @@
 <span class="sd">        :return: nothing</span>
 <span class="sd">        :rtype: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">name</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">user</span><span class="p">()</span>
         <span class="n">host</span> <span class="o">=</span> <span class="n">host</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">host</span><span class="p">()</span>
@@ -1175,7 +1169,7 @@
 
 <div class="viewcode-block" id="Workflow.add_dependency"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        add a job dependency to the workflow (and the graph).</span>
+<span class="sd">        Add a job dependency to the workflow (and the graph).</span>
 
 <span class="sd">        :param source: job to be completed first</span>
 <span class="sd">        :type source: str</span>
@@ -1188,7 +1182,7 @@
 
 <div class="viewcode-block" id="Workflow.add_dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        add a job dependency to the workflow (and the graph).</span>
+<span class="sd">        Add a job dependency to the workflow (and the graph).</span>
 
 <span class="sd">        :param dependency: the dependency to be added</span>
 <span class="sd">        :type dependency: str</span>
@@ -1199,7 +1193,7 @@
 
 <div class="viewcode-block" id="Workflow.update_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_status">[docs]</a>    <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        manually update a job&#39;s status.</span>
+<span class="sd">        Manually update a job&#39;s status.</span>
 
 <span class="sd">        :param name: the job whose status will be updated</span>
 <span class="sd">        :type name: str</span>
@@ -1212,7 +1206,7 @@
 
 <div class="viewcode-block" id="Workflow.set_progress"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.set_progress">[docs]</a>    <span class="k">def</span> <span class="nf">set_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">percent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        manually update a job&#39;s progress.</span>
+<span class="sd">        Manually update a job&#39;s progress.</span>
 
 <span class="sd">        :param name: name of the job</span>
 <span class="sd">        :type name: str</span>
@@ -1225,7 +1219,7 @@
 
 <div class="viewcode-block" id="Workflow.update_progress"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_progress">[docs]</a>    <span class="k">def</span> <span class="nf">update_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        manually update the progress of a job according to its log file.</span>
+<span class="sd">        Manually update the progress of a job according to its log file.</span>
 
 <span class="sd">        :param name: name of job</span>
 <span class="sd">        :type name: str</span>
@@ -1244,7 +1238,7 @@
                      <span class="n">period</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
                      <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        run a workflow in a parallel fashion.</span>
+<span class="sd">        Run a workflow in a parallel fashion.</span>
 
 <span class="sd">        :param directory: where the workflow should be run</span>
 <span class="sd">        :type directory: str</span>
@@ -1271,7 +1265,7 @@
 
         <span class="k">def</span> <span class="nf">info</span><span class="p">():</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            gives information about the jobs of the workflow.</span>
+<span class="sd">            Give information about the jobs of the workflow.</span>
 
 <span class="sd">            :return: nothing</span>
 <span class="sd">            :rtype: None</span>
@@ -1287,7 +1281,7 @@
 
         <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            update the jobs status and progress.</span>
+<span class="sd">            Update the jobs status and progress.</span>
 
 <span class="sd">            :param name: name of job</span>
 <span class="sd">            :type name: str</span>
@@ -1324,7 +1318,7 @@
 
         <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            runs the job.</span>
+<span class="sd">            Run the job.</span>
 
 <span class="sd">            :param name: name of job</span>
 <span class="sd">            :type name: str</span>
@@ -1445,7 +1439,7 @@
                  <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        runs the workflow in a topological fashion.</span>
+<span class="sd">        Run the workflow in a topological fashion.</span>
 
 <span class="sd">        :param order: how the jobs should be run chronologically</span>
 <span class="sd">        :type order:</span>
@@ -1669,7 +1663,7 @@
 
 <div class="viewcode-block" id="Workflow.display"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        show the graph of the workflow.</span>
+<span class="sd">        Show the graph of the workflow.</span>
 
 <span class="sd">        :param filename: location of the graph</span>
 <span class="sd">        :type filename: str</span>
@@ -1696,7 +1690,7 @@
 <div class="viewcode-block" id="Workflow.create_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.create_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
         <span class="c1"># or put it in workflow or in both # mey need to be in workflow.</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        update the graph while each node bget a number determined from get_sequential_order.</span>
+<span class="sd">        Update the graph while each node bget a number determined from get_sequential_order.</span>
 
 <span class="sd">        :return: list depicting the workflow</span>
 <span class="sd">        :rtype: list</span>
@@ -1729,7 +1723,7 @@
 
 <div class="viewcode-block" id="Workflow.sequential_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.sequential_order">[docs]</a>    <span class="k">def</span> <span class="nf">sequential_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a list of the topological order of the workflow.</span>
+<span class="sd">        Return a list of the topological order of the workflow.</span>
 
 <span class="sd">        :return: list depicting the workflow</span>
 <span class="sd">        :rtype: list</span>
@@ -1744,7 +1738,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a yaml dump of the nodes and dependencies of the workflow.</span>
+<span class="sd">        Return a yaml dump of the nodes and dependencies of the workflow.</span>
 
 <span class="sd">        :return: yaml dump of workflow as string</span>
 <span class="sd">        :rtype: str</span>
@@ -1758,7 +1752,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dict_of_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a dict of the nodes and dependencies of the workflow.</span>
+<span class="sd">        Return a dict of the nodes and dependencies of the workflow.</span>
 
 <span class="sd">        :return: dict of workflow</span>
 <span class="sd">        :rtype: dict</span>
@@ -1771,7 +1765,7 @@
 
 <div class="viewcode-block" id="Workflow.json"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the workflow as json string.</span>
+<span class="sd">        Return the workflow as json string.</span>
 
 <span class="sd">        :param filepath: where the file is located</span>
 <span class="sd">        :type filepath: str</span>
@@ -1787,7 +1781,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a table of the workflow.</span>
+<span class="sd">        Return a table of the workflow.</span>
 
 <span class="sd">        :return: a table of the workflow</span>
 <span class="sd">        :rtype: None or PrettyTable or str or dict</span>
@@ -1829,7 +1823,7 @@
 
 <div class="viewcode-block" id="Workflow.table2"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.table2">[docs]</a>    <span class="k">def</span> <span class="nf">table2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_label</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a table of the workflow.</span>
+<span class="sd">        Return a table of the workflow.</span>
 
 <span class="sd">        :param with_label: whether to include label in table</span>
 <span class="sd">        :type with_label: bool</span>
@@ -1873,7 +1867,7 @@
 
 <div class="viewcode-block" id="Workflow.remove_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">remove_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        deletes workflow from the local file system.</span>
+<span class="sd">        Delete workflow from the local file system.</span>
 
 <span class="sd">        :return: nothing</span>
 <span class="sd">        :rtype: None</span>
@@ -1888,7 +1882,7 @@
 
 <div class="viewcode-block" id="Workflow.remove_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_job">[docs]</a>    <span class="k">def</span> <span class="nf">remove_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        removes a particular job from the workflow.</span>
+<span class="sd">        Remove a particular job from the workflow.</span>
 
 <span class="sd">        :param name: name of job to be removed from workflow</span>
 <span class="sd">        :type name: str</span>
@@ -1920,7 +1914,7 @@
 
 <div class="viewcode-block" id="Workflow.status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.status">[docs]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns details of the workflow in dict format.</span>
+<span class="sd">        Return details of the workflow in dict format.</span>
 
 <span class="sd">        :return: details of workflow in dict format</span>
 <span class="sd">        :rtype: dict</span>
@@ -1949,7 +1943,7 @@
 
 <div class="viewcode-block" id="Workflow.analyze_states"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.analyze_states">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a wordcount on status.</span>
+<span class="sd">        Return a wordcount on status.</span>
 
 <span class="sd">        :return: dict of occurrences of each status</span>
 <span class="sd">        :rtype: dict</span>

@@ -225,11 +225,22 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Labelmaker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/labelmaker.html#Labelmaker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.labelmaker.Labelmaker" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that creates labels for the jobs in the graph display.</p>
+<p>Initialize the labelmaker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template</strong> (<em>str</em>) – The labelmaker tamplate string</p></li>
+<li><p><strong>workflow_name</strong> (<em>str</em>) – The workflow name</p></li>
+<li><p><strong>job_name</strong> (<em>str</em>) – The job name</p></li>
+<li><p><strong>t0</strong> (<em>str</em>) – The time t0</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.labelmaker.Labelmaker.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/labelmaker.html#Labelmaker.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.labelmaker.Labelmaker.get" title="Permalink to this definition"></a></dt>
-<dd><p>If now is followed by any of them its uste as strfmt
-Example: now.%m/%d/%Y, %H:%M:%S”</p>
+<dd><p>If now is followed by any of them its uste as strfmt.</p>
+<p>Example: now.%m/%d/%Y, %H:%M:%S</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>data</strong> – </p>
@@ -490,10 +501,8 @@ for the node status. To display the graph you can say:</p>
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'graph'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>The Graph class handles the generation of workflow diagrams,
-showing the order and status of the jobs.</p>
-<p>initialize the graph with characteristics such as edges, nodes
-and colors.</p>
+<p>The Graph class handles the generation of workflow diagrams.</p>
+<p>Initialize the graph with characteristics such as edges, nodes and colors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -506,7 +515,7 @@ and colors.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.add_color">
 <span class="sig-name descname"><span class="pre">add_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">colors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.add_color" title="Permalink to this definition"></a></dt>
-<dd><p>adds specified color(s).</p>
+<dd><p>Add specified color(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -526,7 +535,8 @@ and colors.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.add_dependencies">
 <span class="sig-name descname"><span class="pre">add_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodedata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgedata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.add_dependencies" title="Permalink to this definition"></a></dt>
-<dd><p>adds dependencies for nodes. a dependency enforces
+<dd><p>Add multiple dependencies betwee several nodes.</p>
+<p>Add dependencies for nodes. a dependency enforces
 the completion of a previous node in order for the
 next to be run.</p>
 <dl class="field-list simple">
@@ -549,7 +559,8 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.add_dependency">
 <span class="sig-name descname"><span class="pre">add_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.add_dependency" title="Permalink to this definition"></a></dt>
-<dd><p>adds a dependency for a node. a dependency enforces
+<dd><p>Add dependency between source and destination.</p>
+<p>Add a dependency for a node. a dependency enforces
 the completion of a previous node in order for the
 next to be run.</p>
 <dl class="field-list simple">
@@ -571,7 +582,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.add_edge">
 <span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.add_edge" title="Permalink to this definition"></a></dt>
-<dd><p>adds edge(s) to the graph.</p>
+<dd><p>Add edge(s) to the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -592,7 +603,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.add_node">
 <span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.add_node" title="Permalink to this definition"></a></dt>
-<dd><p>adds node(s) to the graph.</p>
+<dd><p>Add node(s) to the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -612,7 +623,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.clear" title="Permalink to this definition"></a></dt>
-<dd><p>resets the graph characteristics to a clean slate.</p>
+<dd><p>Reset the graph characteristics to a clean slate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>nothing</p>
@@ -626,7 +637,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.create_label">
 <span class="sig-name descname"><span class="pre">create_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.create_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.create_label" title="Permalink to this definition"></a></dt>
-<dd><p>creates the text to appear on a node in the graph</p>
+<dd><p>Create the text to appear on a node in the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of node to add text to.</p>
@@ -643,7 +654,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.create_topological_order">
 <span class="sig-name descname"><span class="pre">create_topological_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.create_topological_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.create_topological_order" title="Permalink to this definition"></a></dt>
-<dd><p>update the graph while each node bget a number determined from get_sequential_order.</p>
+<dd><p>Update the graph while each node bget a number determined from get_sequential_order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list depicting the workflow</p>
@@ -657,7 +668,7 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.done">
 <span class="sig-name descname"><span class="pre">done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.done" title="Permalink to this definition"></a></dt>
-<dd><p>removes from all nodes the names parent.</p>
+<dd><p>Remove from all nodes the named parent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>parent</strong> (<em>str</em>) – originating node</p>
@@ -674,7 +685,8 @@ next to be run.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.export">
 <span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'show,a.png,a.svg,a.pdf'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.export" title="Permalink to this definition"></a></dt>
-<dd><p>takes the inputted filename, expands it into list
+<dd><p>Export the graph.</p>
+<p>Take the inputted filename, expands it into list
 if commas and brackets are present, and saves the
 graph into specified filenames. this function seems
 to be incomplete.</p>
@@ -694,7 +706,7 @@ to be incomplete.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.get_status">
 <span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.get_status" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves status of a specified node.</p>
+<dd><p>Retrieve status of a specified node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – node whose status will be retrieved</p>
@@ -711,7 +723,7 @@ to be incomplete.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.get_topological_order">
 <span class="sig-name descname"><span class="pre">get_topological_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.get_topological_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.get_topological_order" title="Permalink to this definition"></a></dt>
-<dd><p>returns a list of the topological order of the workflow.</p>
+<dd><p>Return a list of the topological order of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list depicting the workflow</p>
@@ -725,7 +737,7 @@ to be incomplete.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.load" title="Permalink to this definition"></a></dt>
-<dd><p>loads a graph for a workflow.</p>
+<dd><p>Load a graph for a workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – the graph to load</p>
@@ -742,7 +754,7 @@ to be incomplete.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename='test.svg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout=&lt;function</span> <span class="pre">spring_layout&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine='networkx'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.save" title="Permalink to this definition"></a></dt>
-<dd><p>generates and saves the graph.</p>
+<dd><p>Generate and saves the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -764,7 +776,8 @@ to be incomplete.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.save_to_yaml">
 <span class="sig-name descname"><span class="pre">save_to_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.save_to_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.save_to_yaml" title="Permalink to this definition"></a></dt>
-<dd><p>saves the graph to a specified filename and
+<dd><p>Save the graph.</p>
+<p>Save the graph to a specified filename and
 excludes nodes if exclude is specified.
 meant to be used to save as yaml, not svg.</p>
 <dl class="field-list simple">
@@ -786,7 +799,7 @@ meant to be used to save as yaml, not svg.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.set_status">
 <span class="sig-name descname"><span class="pre">set_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.set_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.set_status" title="Permalink to this definition"></a></dt>
-<dd><p>sets the status of a specified node.</p>
+<dd><p>Set the status of a specified node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -806,8 +819,7 @@ meant to be used to save as yaml, not svg.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.set_status_colors">
 <span class="sig-name descname"><span class="pre">set_status_colors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.set_status_colors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.set_status_colors" title="Permalink to this definition"></a></dt>
-<dd><p>adds the ready, undefined, done, failed, and running colors
-as hex values.</p>
+<dd><p>Add the ready, undefined, done, failed, and running colors as hex values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>nothing</p>
@@ -821,7 +833,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Graph.todo">
 <span class="sig-name descname"><span class="pre">todo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Graph.todo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Graph.todo" title="Permalink to this definition"></a></dt>
-<dd><p>finds all nodes with no parents and progress != 100.</p>
+<dd><p>Find all nodes with no parents and progress != 100.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of node names with no parents</p>
@@ -859,7 +871,7 @@ as hex values.</p>
 <span class="n">w</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>initializes workflow with specified characteristics.</p>
+<p>Initialize a workflow with specified characteristics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -875,7 +887,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.add_dependencies">
 <span class="sig-name descname"><span class="pre">add_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.add_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.add_dependencies" title="Permalink to this definition"></a></dt>
-<dd><p>add a job dependency to the workflow (and the graph).</p>
+<dd><p>Add a job dependency to the workflow (and the graph).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dependency</strong> (<em>str</em>) – the dependency to be added</p>
@@ -892,7 +904,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.add_dependency">
 <span class="sig-name descname"><span class="pre">add_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.add_dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.add_dependency" title="Permalink to this definition"></a></dt>
-<dd><p>add a job dependency to the workflow (and the graph).</p>
+<dd><p>Add a job dependency to the workflow (and the graph).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -912,7 +924,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.add_job">
 <span class="sig-name descname"><span class="pre">add_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'local'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ready'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">venv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.add_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.add_job" title="Permalink to this definition"></a></dt>
-<dd><p>add a job to the workflow.</p>
+<dd><p>Add a job to the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -942,7 +954,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.analyze_states">
 <span class="sig-name descname"><span class="pre">analyze_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.analyze_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.analyze_states" title="Permalink to this definition"></a></dt>
-<dd><p>returns a wordcount on status.</p>
+<dd><p>Return a wordcount on status.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>dict of occurrences of each status</p>
@@ -956,7 +968,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.create_topological_order">
 <span class="sig-name descname"><span class="pre">create_topological_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.create_topological_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.create_topological_order" title="Permalink to this definition"></a></dt>
-<dd><p>update the graph while each node bget a number determined from get_sequential_order.</p>
+<dd><p>Update the graph while each node bget a number determined from get_sequential_order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list depicting the workflow</p>
@@ -970,7 +982,7 @@ as hex values.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.dependencies">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dependencies</span></span><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.dependencies" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves the dependencies of the workflow.</p>
+<dd><p>Retrieve the dependencies of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the dependencies of the workflow</p>
@@ -984,7 +996,7 @@ as hex values.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.dict_of_workflow">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dict_of_workflow</span></span><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.dict_of_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>returns a dict of the nodes and dependencies of the workflow.</p>
+<dd><p>Return a dict of the nodes and dependencies of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>dict of workflow</p>
@@ -998,7 +1010,7 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.display">
 <span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'workflow'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.display" title="Permalink to this definition"></a></dt>
-<dd><p>show the graph of the workflow.</p>
+<dd><p>Show the graph of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1019,7 +1031,8 @@ as hex values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.get_predecessors">
 <span class="sig-name descname"><span class="pre">get_predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.get_predecessors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.get_predecessors" title="Permalink to this definition"></a></dt>
-<dd><p>figure out all the dependencies of the name node
+<dd><p>Return the predecessors.</p>
+<p>Figure out all the dependencies of the name node
 then test if each node in front (parent) has progress of 100
 if the parent has progress 100, remove those nodes.</p>
 <dl class="field-list simple">
@@ -1038,7 +1051,7 @@ if the parent has progress 100, remove those nodes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.job">
 <span class="sig-name descname"><span class="pre">job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.job" title="Permalink to this definition"></a></dt>
-<dd><p>returns the details of a job within the workflow.</p>
+<dd><p>Return the details of a job within the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of job</p>
@@ -1055,7 +1068,7 @@ if the parent has progress 100, remove those nodes.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.jobs">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jobs</span></span><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.jobs" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves the jobs of the workflow.</p>
+<dd><p>Retrieve the jobs of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the jobs that belong to the workflow</p>
@@ -1069,7 +1082,7 @@ if the parent has progress 100, remove those nodes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.json">
 <span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.json" title="Permalink to this definition"></a></dt>
-<dd><p>returns the workflow as json string.</p>
+<dd><p>Return the workflow as json string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – where the file is located</p>
@@ -1086,7 +1099,8 @@ if the parent has progress 100, remove those nodes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.load" title="Permalink to this definition"></a></dt>
-<dd><p>Loads a workflow graph from file. However, the file is still stored in
+<dd><p>Load the workflow.</p>
+<p>Load a workflow graph from file. However, the file is still stored in
 the filename that was used when the Workflow was created. This allows to
 load in a saved workflow in another file, but continue working on it in
 the file used in init.</p>
@@ -1109,7 +1123,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.load_with_state">
 <span class="sig-name descname"><span class="pre">load_with_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.load_with_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.load_with_state" title="Permalink to this definition"></a></dt>
-<dd><p>load the workflow with state.</p>
+<dd><p>Load the workflow with state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – which file to load the workflow from</p>
@@ -1126,8 +1140,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.predecessor">
 <span class="sig-name descname"><span class="pre">predecessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.predecessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.predecessor" title="Permalink to this definition"></a></dt>
-<dd><p>retrieves the jobs that must be run before the specified job
-(the pre-requisites).</p>
+<dd><p>Retrieve the jobs that must be run before the specified job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of a job</p>
@@ -1144,7 +1157,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.remove_job">
 <span class="sig-name descname"><span class="pre">remove_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.remove_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.remove_job" title="Permalink to this definition"></a></dt>
-<dd><p>removes a particular job from the workflow.</p>
+<dd><p>Remove a particular job from the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1164,7 +1177,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.remove_workflow">
 <span class="sig-name descname"><span class="pre">remove_workflow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.remove_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.remove_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>deletes workflow from the local file system.</p>
+<dd><p>Delete workflow from the local file system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>nothing</p>
@@ -1178,7 +1191,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.run_parallel">
 <span class="sig-name descname"><span class="pre">run_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'~/experiment'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dryrun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.run_parallel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.run_parallel" title="Permalink to this definition"></a></dt>
-<dd><p>run a workflow in a parallel fashion.</p>
+<dd><p>Run a workflow in a parallel fashion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1202,7 +1215,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.run_topo">
 <span class="sig-name descname"><span class="pre">run_topo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dryrun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.run_topo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.run_topo" title="Permalink to this definition"></a></dt>
-<dd><p>runs the workflow in a topological fashion.</p>
+<dd><p>Run the workflow in a topological fashion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1224,7 +1237,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.save" title="Permalink to this definition"></a></dt>
-<dd><p>save the workflow.</p>
+<dd><p>Save the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – where to save the workflow</p>
@@ -1241,7 +1254,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.save_with_state">
 <span class="sig-name descname"><span class="pre">save_with_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.save_with_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.save_with_state" title="Permalink to this definition"></a></dt>
-<dd><p>save the workflow with state.</p>
+<dd><p>Save the workflow with state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1261,7 +1274,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.sequential_order">
 <span class="sig-name descname"><span class="pre">sequential_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.sequential_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.sequential_order" title="Permalink to this definition"></a></dt>
-<dd><p>returns a list of the topological order of the workflow.</p>
+<dd><p>Return a list of the topological order of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list depicting the workflow</p>
@@ -1275,7 +1288,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.set_progress">
 <span class="sig-name descname"><span class="pre">set_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.set_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.set_progress" title="Permalink to this definition"></a></dt>
-<dd><p>manually update a job’s progress.</p>
+<dd><p>Manually update a job’s progress.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1295,7 +1308,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.status">
 <span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.status" title="Permalink to this definition"></a></dt>
-<dd><p>returns details of the workflow in dict format.</p>
+<dd><p>Return details of the workflow in dict format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>details of workflow in dict format</p>
@@ -1309,7 +1322,7 @@ the file used in init.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table</span></span><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.table" title="Permalink to this definition"></a></dt>
-<dd><p>returns a table of the workflow.</p>
+<dd><p>Return a table of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a table of the workflow</p>
@@ -1323,7 +1336,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.table2">
 <span class="sig-name descname"><span class="pre">table2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.table2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.table2" title="Permalink to this definition"></a></dt>
-<dd><p>returns a table of the workflow.</p>
+<dd><p>Return a table of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>with_label</strong> (<em>bool</em>) – whether to include label in table</p>
@@ -1340,7 +1353,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.update_progress">
 <span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.update_progress" title="Permalink to this definition"></a></dt>
-<dd><p>manually update the progress of a job according to its log file.</p>
+<dd><p>Manually update the progress of a job according to its log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of job</p>
@@ -1357,7 +1370,7 @@ the file used in init.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.update_status">
 <span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/workflow.html#Workflow.update_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.update_status" title="Permalink to this definition"></a></dt>
-<dd><p>manually update a job’s status.</p>
+<dd><p>Manually update a job’s status.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1377,7 +1390,7 @@ the file used in init.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.workflow.Workflow.yaml">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yaml</span></span><a class="headerlink" href="#cloudmesh.cc.workflow.Workflow.yaml" title="Permalink to this definition"></a></dt>
-<dd><p>returns a yaml dump of the nodes and dependencies of the workflow.</p>
+<dd><p>Return a yaml dump of the nodes and dependencies of the workflow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>yaml dump of workflow as string</p>
