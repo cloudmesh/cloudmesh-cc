@@ -45,7 +45,7 @@
             { "targets": 4, visible: progress_hidden},
             { "targets": 5, visible: start_hidden},
             { "targets": 6, visible: end_hidden},
-            { "targets": 5, visible: script_hidden}
+            { "targets": 7, visible: script_hidden}
         ],
         lengthMenu: [
             [-1, 10, 25, 50],
@@ -198,15 +198,42 @@
         let end_hidden = {{preferences['end']|tojson|safe}};
         let script_hidden = {{ preferences['script']|tojson|safe }};
 
+        function toggle_show(column){
+            if (column == 'id'){
+                id_hidden = !id_hidden;
+            }
+            if (column == 'name'){
+                name_hidden = !name_hidden;
+            }
+            if (column == 'status'){
+                status_hidden = !status_hidden;
+            }
+            if (column == 'host'){
+                host_hidden = !host_hidden;
+            }
+            if (column == 'progress'){
+                progress_hidden = !progress_hidden;
+            }
+            if (column == 'start'){
+                start_hidden = !start_hidden;
+            }
+            if (column == 'end'){
+                end_hidden = !end_hidden;
+            }
+            if (column == 'script'){
+                script_hidden = !script_hidden;
+            }
+        }
+
     </script>
-    <a class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> -
-    <a class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> -
-    <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> -
-    <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
-    <a class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
-    <a class="toggle-vis" data-column="5"><b style="color:#293C89">Start</b></a> -
-    <a class="toggle-vis" data-column="6"><b style="color:#293C89">End</b></a> -
-    <a class="toggle-vis" data-column="7"><b style="color:#293C89">Script</b></a>
+    <a onclick="toggle_show('id');" class="toggle-vis" data-column="0"><b style="color:#293C89">ID</b></a> -
+    <a onclick="toggle_show('name');" class="toggle-vis" data-column="1"><b style="color:#293C89">Name</b></a> -
+    <a onclick="toggle_show('status');" class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> -
+    <a onclick="toggle_show('host');" class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
+    <a onclick="toggle_show('progress');" class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
+    <a onclick="toggle_show('start');" class="toggle-vis" data-column="5"><b style="color:#293C89">Start</b></a> -
+    <a onclick="toggle_show('end');" class="toggle-vis" data-column="6"><b style="color:#293C89">End</b></a> -
+    <a onclick="toggle_show('script');" class="toggle-vis" data-column="7"><b style="color:#293C89">Script</b></a>
 
     <div id="datatablesubstitute"></div>
 
