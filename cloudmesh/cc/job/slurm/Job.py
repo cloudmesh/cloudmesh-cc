@@ -1,3 +1,4 @@
+"""SLURM job."""
 import os
 
 import time
@@ -10,10 +11,12 @@ from cloudmesh.common.util import writefile
 
 
 class Slurm:
+    """Slurm Job."""
 
     def __init__(self, host):
-        """
-        sets locations of slurm commands for the job
+        """Initialize the job.
+
+        Set locations of slurm commands for the job.
 
         :param host: device that the script will be run on
         :type host: str
@@ -28,9 +31,11 @@ class Slurm:
 
 
 class Job:
+    """SLURM job."""
 
     def __init__(self, **argv):
-        """
+        r"""Initialize the job.
+
         cms set username=abc123
 
         creates a job by passing either a dict with \*\*dict or named arguments
@@ -41,7 +46,6 @@ class Job:
         :return: nothing
         :rtype: None
         """
-
         self.name = None
         self.username = None
         self.host = None
@@ -72,7 +76,8 @@ class Job:
         self.slurm = Slurm(self.host)
 
     def script_type(self, name):
-        """
+        """Return the filename type based on the ending.
+
         Uses the inputted name of script to return the
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
@@ -91,7 +96,8 @@ class Job:
         return "os"
     
     def __str__(self):
-        """
+        """Return the string object of the job.
+
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
 
@@ -114,7 +120,8 @@ class Job:
 
     @property
     def status(self):
-        """
+        """Return the status.
+
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
@@ -124,8 +131,7 @@ class Job:
         return self.get_status()
 
     def clean(self):
-        """
-        deletes the remote experiment directory
+        """Delete the remote experiment directory.
 
         :return: nothing
         :rtype: None
@@ -135,7 +141,8 @@ class Job:
         os.system(command)
 
     def mkdir_experimentdir(self):
-        """
+        """Create the experiment directory.
+
         creates remote experiment directory to contain job files such as
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
@@ -148,7 +155,8 @@ class Job:
         os.system(command)
 
     def run(self):
-        """
+        """Run the job.
+
         runs the job by making script executable and running the
         slurm job remotely.
 
@@ -179,8 +187,7 @@ class Job:
         return state, job_id
 
     def clear(self):
-        """
-        clears all leftover log files from past runs
+        """Clear all leftover log files from past runs.
 
         :return: does not return anything
         :rtype: None
@@ -195,7 +202,8 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
-        """
+        """Get the status of the job.
+
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
 
@@ -218,7 +226,8 @@ class Job:
         return status
 
     def get_progress(self, refresh=False):
-        """
+        """Get the progress of the job.
+
         fetches the log file of the job and reads the log file to check
         for the current completeness of the job
 
@@ -247,7 +256,8 @@ class Job:
         return int(progress)
 
     def get_log(self, refresh=True):
-        """
+        """Get the log of the job.
+
         copy the remote log file and read the contents of the file to
         return the contents as a string
 
@@ -266,7 +276,8 @@ class Job:
         return content
 
     def sync(self):
-        """
+        """Syncronise the current directory with the remote.
+
         makes experiment dir and changes permissions, and then
         copies the shell script to remote host
 
@@ -282,7 +293,8 @@ class Job:
         return r
 
     def chmod(self):
-        """
+        """Fix permissions.
+
         changes the permissions and flags of the script to be
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
@@ -299,7 +311,8 @@ class Job:
         return r
 
     def exists(self, filename):
-        """
+        """Check if the filname exists.
+
         used to check if the file is existing within the remote experiment
         directory
 
@@ -316,7 +329,8 @@ class Job:
         return True
 
     def watch(self, period=10):
-        """
+        """Watch the job and check for changes in the given period.
+
         waits and watches for progress to reach 100, on interval basis
         specified in the period in seconds,
         until the job has completed
@@ -338,8 +352,7 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """
-        get the pid that the job is running within
+        """Get the pid that the job is running within.
 
         :param refresh: whether to retrieve the latest log
         :type refresh: bool
@@ -358,8 +371,7 @@ class Job:
         return None
 
     def kill(self, period=1, job_id=None):
-        """
-        kills the slurm job
+        """Kill the job.
 
         :param period: interval to use for waiting for log/pid
         :type period: float
@@ -409,10 +421,15 @@ class Job:
         #         f"Process {pid} not found. It is likely it already completed.")
         return r
 
-    def create(self, command, file, jobname, card_name, gpu_count, system_partition, time):
-        """
-        creates a template
-        for the slurm sbatch
+    def create(self,
+               command,
+               file,
+               jobname,
+               card_name,
+               gpu_count,
+               system_partition,
+               time):
+        """Create a template for slurm sbatch.
 
         :param command: command to be executed
         :param file: name of file
@@ -454,10 +471,7 @@ class Job:
 
 
     def create_script(self, exec=None):
-        # TODO add sbatch pragmas
-        """
-        creates a template
-        for the slurm sbatch
+        """Create a template for the slurm sbatch with progress.
 
         :param exec: command to be executed
         :type exec: str
