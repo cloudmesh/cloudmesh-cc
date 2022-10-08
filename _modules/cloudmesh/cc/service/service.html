@@ -374,10 +374,20 @@
     <span class="k">def</span> <span class="nf">runtime_dict_getter</span><span class="p">():</span>
 
         <span class="n">runtime_yaml_to_read</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">runtime_yaml_filepath</span><span class="p">)</span>
-        <span class="n">original_yaml_to_read</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">original_yaml_filepath</span><span class="p">)</span>
-
         <span class="n">runtime_yaml_file</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">runtime_yaml_to_read</span><span class="p">)</span>
+
+        <span class="n">original_yaml_to_read</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">original_yaml_filepath</span><span class="p">)</span>
         <span class="n">original_yaml_file</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">original_yaml_to_read</span><span class="p">)</span>
+
+        <span class="n">times_filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name_of_workflow</span><span class="si">}</span><span class="s1">.dat&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+        <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="n">times_dict_for_table</span> <span class="o">=</span> <span class="p">{}</span>
+
 
         <span class="c1"># we must delete the job names that are merely expanded dependencies</span>
         <span class="k">for</span> <span class="n">job_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">runtime_yaml_file</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -390,6 +400,14 @@
         <span class="c1"># banner(str(w.graph.nodes[job_name][&#39;progress&#39;]))</span>
         <span class="c1"># pprint.pprint(w.graph.nodes)</span>
 
+        <span class="c1"># add timers</span>
+        <span class="k">for</span> <span class="n">job_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">runtime_yaml_file</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">times_dict_for_table</span><span class="p">[</span><span class="n">timer</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="n">timer</span><span class="p">]</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">times_dict_for_table</span><span class="p">[</span><span class="n">timer</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
+
         <span class="n">dictionary</span> <span class="o">=</span> <span class="n">runtime_yaml_file</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
         <span class="n">table_html_template</span> <span class="o">=</span> \
             <span class="sa">fr</span><span class="s2">&quot;&quot;&quot;</span>
@@ -401,6 +419,8 @@
 <span class="s2">                        &lt;th&gt;Status&lt;/th&gt;</span>
 <span class="s2">                        &lt;th&gt;Host&lt;/th&gt;</span>
 <span class="s2">                        &lt;th&gt;Progress&lt;/th&gt;</span>
+<span class="s2">                        &lt;th&gt;Start&lt;/th&gt;</span>
+<span class="s2">                        &lt;th&gt;End&lt;/th&gt;</span>
 <span class="s2">                        &lt;th&gt;Script&lt;/th&gt;</span>
 <span class="s2">                    &lt;/tr&gt;</span>
 <span class="s2">                &lt;/thead&gt;</span>
@@ -414,7 +434,9 @@
 <span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
 <span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
 <span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
-<span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&amp;nbsp;&lt;progress value=&quot;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot; max=&quot;100&quot;&gt;&lt;/progress&gt;&lt;/td&gt;</span>
+<span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&amp;nbsp;&lt;progress value=&quot;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;progress&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot; max=&quot;100&quot;&gt;&lt;/progress&gt;&lt;/td&gt;\</span>
+<span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">times_dict_for_table</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
+<span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">times_dict_for_table</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
 <span class="s2">                        &lt;td&gt;</span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="s1">&#39;script&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/td&gt;</span>
 <span class="s2">                    &lt;/tr&gt;</span>
 <span class="s2">                &quot;&quot;&quot;</span>
@@ -1248,6 +1270,8 @@
                     <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                     <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                     <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                     <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span>
                 <span class="p">}</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -1270,11 +1294,20 @@
 
             <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
                 <span class="s1">&#39;~/.cloudmesh/workflow/table-preferences.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-            <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+            <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                           <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                           <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">):</span>
-                <span class="n">preferences</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+                <span class="c1"># check if the preferences file is outdated</span>
+                <span class="n">loaded_preferences</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">preferences</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">!=</span> <span class="n">loaded_preferences</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="c1"># delete the old preferences file and force</span>
+                    <span class="c1"># the user to use the GUI to make a new one</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">preferences</span> <span class="o">=</span> <span class="n">loaded_preferences</span>
+
 
             <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;workflow-table.html&quot;</span><span class="p">,</span>
                                               <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
@@ -1518,8 +1551,9 @@
 
     <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="s1">&#39;~/.cloudmesh/workflow/table-preferences.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-    <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                   <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">):</span>
         <span class="n">preferences</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
             <span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
@@ -1646,8 +1680,9 @@
     <span class="c1"># read this from configuration file</span>
     <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
         <span class="s1">&#39;~/.cloudmesh/workflow/table-preferences.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-    <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                   <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">):</span>
         <span class="n">preferences</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="c1"># for key, value in preferences.items():</span>
@@ -1669,33 +1704,36 @@
           <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
           <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
           <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">preferences_post</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-                     <span class="nb">id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+<span class="k">def</span> <span class="nf">preferences_post</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">host</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+                     <span class="n">start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+                     <span class="n">end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">script</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">False</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;Set preferences.</span>
 
-<span class="sd">    :param request:</span>
-<span class="sd">    :type request:</span>
-<span class="sd">    :param id:</span>
-<span class="sd">    :type id:</span>
-<span class="sd">    :param name: Name of the Workflow</span>
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param status:</span>
-<span class="sd">    :type status:</span>
-<span class="sd">    :param host:</span>
-<span class="sd">    :type host:</span>
-<span class="sd">    :param progress:</span>
-<span class="sd">    :type progress:</span>
-<span class="sd">    :param script:</span>
-<span class="sd">    :type script:</span>
+<span class="sd">    :param id: show the id of a job</span>
+<span class="sd">    :type id: bool</span>
+<span class="sd">    :param name: show the name of the job</span>
+<span class="sd">    :type name: bool</span>
+<span class="sd">    :param status: show the status of a job</span>
+<span class="sd">    :type status: bool</span>
+<span class="sd">    :param host: show the host of a job</span>
+<span class="sd">    :type host: bool</span>
+<span class="sd">    :param progress: show the progress of a job</span>
+<span class="sd">    :type progress: bool</span>
+<span class="sd">    :param script: show the script of a job</span>
+<span class="sd">    :type script: bool</span>
+<span class="sd">    :param start: show the start time of a job</span>
+<span class="sd">    :type start: bool</span>
+<span class="sd">    :param end: show the end time of a job</span>
+<span class="sd">    :type end: bool</span>
 <span class="sd">    :return:</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
+    <span class="c1"># folders = get_available_workflows()</span>
     <span class="c1"># print(preferences)</span>
     <span class="n">table_preferences</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
@@ -1703,6 +1741,8 @@
         <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
         <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
         <span class="s1">&#39;progress&#39;</span><span class="p">:</span> <span class="n">progress</span><span class="p">,</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
+        <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">,</span>
         <span class="s1">&#39;script&#39;</span><span class="p">:</span> <span class="n">script</span>
     <span class="p">}</span>
     <span class="n">dot_cloudmesh_dir</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="s1">&#39;~/.cloudmesh/workflow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
