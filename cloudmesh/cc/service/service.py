@@ -270,10 +270,20 @@ async def datatable_server(request, name_of_workflow: str):
     def runtime_dict_getter():
 
         runtime_yaml_to_read = readfile(runtime_yaml_filepath)
-        original_yaml_to_read = readfile(original_yaml_filepath)
-
         runtime_yaml_file = yaml.safe_load(runtime_yaml_to_read)
+
+        original_yaml_to_read = readfile(original_yaml_filepath)
         original_yaml_file = yaml.safe_load(original_yaml_to_read)
+
+        times_filename = Path(Shell.map_filename(
+            f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.dat'
+        ).path).as_posix()
+        times_dict = yaml.safe_load(
+            Path(times_filename).read_text())
+        if times_dict is None:
+            raise ValueError
+        times_dict_for_table = {}
+
 
         # we must delete the job names that are merely expanded dependencies
         for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
@@ -286,6 +296,14 @@ async def datatable_server(request, name_of_workflow: str):
         # banner(str(w.graph.nodes[job_name]['progress']))
         # pprint.pprint(w.graph.nodes)
 
+        # add timers
+        for job_name in list(runtime_yaml_file['workflow']['nodes'].keys()):
+            for timer in [f'tstart_{job_name}', f'tend_{job_name}']:
+                try:
+                    times_dict_for_table[timer] = times_dict['times'][timer]
+                except:
+                    times_dict_for_table[timer] = r'N/A'
+
         dictionary = runtime_yaml_file['workflow']['nodes']
         table_html_template = \
             fr"""
@@ -297,6 +315,8 @@ async def datatable_server(request, name_of_workflow: str):
                         <th>Status</th>
                         <th>Host</th>
                         <th>Progress</th>
+                        <th>Start</th>
+                        <th>End</th>
                         <th>Script</th>
                     </tr>
                 </thead>
@@ -310,7 +330,9 @@ async def datatable_server(request, name_of_workflow: str):
                         <td>{job}</td>
                         <td>{items['status']}</td>
                         <td>{items['host']}</td>
-                        <td>{items['progress']}&nbsp;<progress value="{items['progress']}" max="100"></progress></td>
+                        <td>{items['progress']}&nbsp;<progress value="{items['progress']}" max="100"></progress></td>\
+                        <td>{times_dict_for_table[f'tstart_{job}']}</td>
+                        <td>{times_dict_for_table[f'tend_{job}']}</td>
                         <td>{items['script']}</td>
                     </tr>
                 """
@@ -1142,6 +1164,8 @@ def get_workflow(request: Request,
                     'status': True,
                     'host': True,
                     'progress': True,
+                    'start': True,
+                    'end': True,
                     'script': True
                 }
                 with open(configuration_file, 'w') as f:
@@ -1164,11 +1188,20 @@ def get_workflow(request: Request,
 
             configuration_file = Shell.map_filename(
                 '~/.cloudmesh/workflow/table-preferences.yaml').path
-            preferences = {'id': True, 'name': True, 'progress': True,
-                           'status': True}
+            preferences = {'id': True, 'name': True, 'status': True,
+                           'host': True, 'progress': True, 'start': True,
+                           'end': True, 'script': True}
             if os.path.isfile(configuration_file):
-                preferences = yaml.safe_load(
+                # check if the preferences file is outdated
+                loaded_preferences = yaml.safe_load(
                     Path(configuration_file).read_text())
+                if preferences.keys() != loaded_preferences.keys():
+                    # delete the old preferences file and force
+                    # the user to use the GUI to make a new one
+                    os.remove(Path(configuration_file))
+                else:
+                    preferences = loaded_preferences
+
 
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
@@ -1414,8 +1447,9 @@ def watch_running_workflow(request: Request,
 
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
-    preferences = {'id': True, 'name': True, 'status': True, 'host': True,
-                   'progress': True, 'script': True}
+    preferences = {'id': True, 'name': True, 'status': True,
+                   'host': True, 'progress': True, 'start': True,
+                   'end': True, 'script': True}
     if os.path.isfile(configuration_file):
         preferences = yaml.safe_load(
             Path(configuration_file).read_text())
@@ -1543,8 +1577,9 @@ def preferences_post(request: Request):
     # read this from configuration file
     configuration_file = Shell.map_filename(
         '~/.cloudmesh/workflow/table-preferences.yaml').path
-    preferences = {'id': True, 'name': True, 'status': True, 'host': True,
-                   'progress': True, 'script': True}
+    preferences = {'id': True, 'name': True, 'status': True,
+                   'host': True, 'progress': True, 'start': True,
+                   'end': True, 'script': True}
     if os.path.isfile(configuration_file):
         preferences = yaml.safe_load(Path(configuration_file).read_text())
     # for key, value in preferences.items():
@@ -1566,33 +1601,36 @@ def preferences_post(request: Request):
           status_code=204,
           response_class=Response,
           include_in_schema=include_portal_tag_in_schema)
-def preferences_post(request: Request,
-                     id: bool = Form(False),
+def preferences_post(id: bool = Form(False),
                      name: bool = Form(False),
                      status: bool = Form(False),
                      host: bool = Form(False),
                      progress: bool = Form(False),
+                     start: bool = Form(False),
+                     end: bool = Form(False),
                      script: bool = Form(False)):
     """
 
-    :param request:
-    :type request:
-    :param id:
-    :type id:
-    :param name: Name of the Workflow
-    :type name: str
-    :param status:
-    :type status:
-    :param host:
-    :type host:
-    :param progress:
-    :type progress:
-    :param script:
-    :type script:
+    :param id: show the id of a job
+    :type id: bool
+    :param name: show the name of the job
+    :type name: bool
+    :param status: show the status of a job
+    :type status: bool
+    :param host: show the host of a job
+    :type host: bool
+    :param progress: show the progress of a job
+    :type progress: bool
+    :param script: show the script of a job
+    :type script: bool
+    :param start: show the start time of a job
+    :type start: bool
+    :param end: show the end time of a job
+    :type end: bool
     :return:
     :rtype:
     """
-    folders = get_available_workflows()
+    # folders = get_available_workflows()
     # print(preferences)
     table_preferences = {
         'id': id,
@@ -1600,6 +1638,8 @@ def preferences_post(request: Request,
         'status': status,
         'host': host,
         'progress': progress,
+        'start': start,
+        'end': end,
         'script': script
     }
     dot_cloudmesh_dir = Shell.map_filename('~/.cloudmesh/workflow').path

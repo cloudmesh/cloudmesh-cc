@@ -7,7 +7,9 @@ $(document).ready(function () {
             { "targets": 2, visible: status_hidden},
             { "targets": 3, visible: host_hidden},
             { "targets": 4, visible: progress_hidden},
-            { "targets": 5, visible: script_hidden}
+            { "targets": 5, visible: start_hidden},
+            { "targets": 6, visible: end_hidden},
+            { "targets": 7, visible: script_hidden}
         ],
         lengthMenu: [
             [-1, 10, 25, 50],

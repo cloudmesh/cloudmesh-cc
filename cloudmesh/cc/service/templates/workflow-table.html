@@ -43,6 +43,8 @@
             { "targets": 2, visible: status_hidden},
             { "targets": 3, visible: host_hidden},
             { "targets": 4, visible: progress_hidden},
+            { "targets": 5, visible: start_hidden},
+            { "targets": 6, visible: end_hidden},
             { "targets": 5, visible: script_hidden}
         ],
         lengthMenu: [
@@ -192,6 +194,8 @@
         let status_hidden = {{ preferences['status']|tojson|safe }};
         let host_hidden = {{ preferences['host']|tojson|safe }};
         let progress_hidden = {{preferences['progress']|tojson|safe}};
+        let start_hidden = {{preferences['start']|tojson|safe}};
+        let end_hidden = {{preferences['end']|tojson|safe}};
         let script_hidden = {{ preferences['script']|tojson|safe }};
 
     </script>
@@ -200,7 +204,9 @@
     <a class="toggle-vis" data-column="2"><b style="color:#293C89">Status</b></a> -
     <a class="toggle-vis" data-column="3"><b style="color:#293C89">Host</b></a> -
     <a class="toggle-vis" data-column="4"><b style="color:#293C89">Progress</b></a> -
-    <a class="toggle-vis" data-column="5"><b style="color:#293C89">Script</b></a>
+    <a class="toggle-vis" data-column="5"><b style="color:#293C89">Start</b></a> -
+    <a class="toggle-vis" data-column="6"><b style="color:#293C89">End</b></a> -
+    <a class="toggle-vis" data-column="7"><b style="color:#293C89">Script</b></a>
 
     <div id="datatablesubstitute"></div>
 
