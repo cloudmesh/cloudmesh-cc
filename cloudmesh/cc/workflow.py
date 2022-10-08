@@ -646,7 +646,6 @@ class Workflow:
         # name may not be defined properly
         #
 
-        cms_variables = Variables()
         try:
             if name is None and filename is not None:
                 self.name = os.path.basename(filename).split(".")[0]
@@ -721,9 +720,8 @@ class Workflow:
         self.user = user
         self.host = host
 
-        # cms_created_name = 'created_time_' + self.name
-        # cms_variables.__setitem__(
-        #     cms_created_name, self.created_time)
+        self.create_topological_order()
+        self.graph.save_to_yaml(self.runtime_filename)
 
         # should this go into graph?
         # if Path.exists(filename):
@@ -925,9 +923,9 @@ class Workflow:
         #
         # # for name, node in graph["workflow"]["nodes"].items():
         for name, node in self.graph.nodes.items():
-             if "name" not in node:
-                 node["name"] = name
-             self.add_job(filename=self.runtime_filename, **node)
+            if "name" not in node:
+                node["name"] = name
+            self.add_job(filename=self.runtime_filename, **node)
         #
         # for edge in dependencies:
         #     self.add_dependencies(edge)
@@ -1517,15 +1515,14 @@ class Workflow:
                             if times_dict is None:
                                 times_dict = {}
                             if 'times' in times_dict:
-                                if f'tend_{name}' not in times_dict[
-                                    'times']:
+                                if f'tend_{name}' not in times_dict['times']:
                                     times_dict['times'][
                                         f'tend_{name}'] = job_end_time
 
                                 # if this is the last job and it just finished
                                 if i == len(order()) - 1:
                                     if f't1_{self.name}' not in times_dict[
-                                        'times']:
+                                            'times']:
                                         times_dict['times'][
                                             f't1_{self.name}'] = workflow_end_time
                             else:

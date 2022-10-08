@@ -146,14 +146,12 @@ www = Jinja2Templates(directory=www_dir)
 #
 
 
-def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
+def load_workflow(name: str, load=True) -> Workflow:
     """
     loads a workflow corresponding to given name
 
     :param name: name of workflow
     :type name: str
-    :param load_with_graph:
-    :type load_with_graph:
     :param load:
     :type load:
     :return: loaded workflow
@@ -163,9 +161,6 @@ def load_workflow(name: str, load_with_graph=False, load=True) -> Workflow:
     w = Workflow(filename=filename, load=load)
     # w.__init__(filename=filename)
     # w.load(filename=filename)
-    if load_with_graph:
-        pass
-        # w.graph.save_to_file(filename=f"{name}.svg")
     # w.load(filename)
     # print(w.yaml)
     return w
@@ -184,12 +179,12 @@ async def image_watcher(request, name_of_workflow: str):
 
     filename = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.yaml').path
-    w = load_workflow(name=name_of_workflow, load_with_graph=True)
-    w.graph.load(filename=filename)
+    # w = load_workflow(name=name_of_workflow, load=False)
+    # w.graph.load(filename=filename)
     svg_file = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/{name_of_workflow}.svg').path
-    w.graph.save(filename=svg_file, colors="status",
-                 layout=nx.circular_layout, engine="dot")
+    # w.graph.save(filename=svg_file, colors="status",
+    #              layout=nx.circular_layout, engine="dot")
 
     runtime_graph_file = Shell.map_filename(
         f'~/.cloudmesh/workflow/{name_of_workflow}/runtime/{name_of_workflow}.svg'
@@ -1044,7 +1039,8 @@ def edit_workflow_direct_url(name: str):
 def get_workflow(request: Request,
                  name: str,
                  job: str = None,
-                 output: str = None):
+                 output: str = None,
+                 initialized: bool = False):
     """
     retrieves a workflow by its name. if the job is specified, retrieves
     just the job in the specified workflow
@@ -1052,9 +1048,11 @@ def get_workflow(request: Request,
     Parameters:
 
     - **name**: (str) name of workflow to retrieve
-    - **job**: (str) name of job to retrieve, if specified (optional)
+    - **job**: (str) name of job to retrieve, if specified
     - **output**: (str) how to print workflow, which can be
     html, graph, json, table, or csv. if not specified, then returned as dict
+    - **initialized**: (bool) indicates whether workflow has already been
+    loaded for the first time. should be True when switching views
     """
     """
 
@@ -1078,7 +1076,7 @@ def get_workflow(request: Request,
     try:
         if output == 'html':
             # #result = [os.path.basename(e) for e in result]
-            # w = load_workflow(name=name, load_with_graph=True)
+            # w = load_workflow(name=name)
             # print(w.dict_of_workflow)
             # df = pd.DataFrame(w.dict_of_workflow)
             # df_html = df.to_html()
@@ -1088,7 +1086,7 @@ def get_workflow(request: Request,
             # script_dir = os.path.join(script_dir, f'{name}-html.html')
             # writefile(script_dir, df_html)
             # return templates.TemplateResponse(f"{name}-html.html", {"request": request})
-            w = load_workflow(name=name, load_with_graph=True)
+            w = load_workflow(name=name)
             test = w.table
             data = dict(w.graph.nodes)
             order = ['number',
@@ -1113,7 +1111,7 @@ def get_workflow(request: Request,
                 return FileResponse(runtime_svg)
             filename = Shell.map_filename(
                 f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
-            w = load_workflow(name=name, load_with_graph=True)
+            w = load_workflow(name=name)
             w.graph.load(filename=filename)
             svg_file = Shell.map_filename(
                 f'~/.cloudmesh/workflow/{name}/{name}.svg').path
@@ -1149,7 +1147,8 @@ def get_workflow(request: Request,
                 with open(configuration_file, 'w') as f:
                     yaml.dump(table_preferences, f, default_flow_style=False,
                               sort_keys=False)
-            w = load_workflow(name)
+            if not initialized:
+                load_workflow(name)
 
             order = ['number',
                      'host',
@@ -1161,15 +1160,7 @@ def get_workflow(request: Request,
                      'parent',
                      'kind']
 
-            w.create_topological_order()
-
-            # this following line temporarily causes the web table
-            # view to show incorrect job status values, because the
-            # yaml is completely overwritten. this can be improved
-            # by only writing the number values to runtime filename yaml.
-            # not implemented...
-            w.graph.save_to_yaml(w.runtime_filename)
-            workflow_dict = Printer.dict(w.graph.nodes, order=order)
+            # workflow_dict = Printer.dict(w.graph.nodes, order=order)
 
             configuration_file = Shell.map_filename(
                 '~/.cloudmesh/workflow/table-preferences.yaml').path
@@ -1270,6 +1261,19 @@ def serve_watcher(request: Request, name: str):
     :rtype:
     """
     folders = get_available_workflows()
+
+    runtime_svg = Shell.map_filename(
+        f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
+    if not os.path.isfile(runtime_svg):
+        filename = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
+        w = load_workflow(name=name)
+        w.graph.load(filename=filename)
+        svg_file = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+        w.graph.save(filename=svg_file, colors="status",
+                     layout=nx.circular_layout, engine="dot")
+
     # w = load_workflow(name)
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
