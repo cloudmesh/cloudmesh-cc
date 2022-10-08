@@ -7,9 +7,10 @@ import os
 
 
 class WorkflowCLIManager:
-    """Class that handles the workflow commands given from command line
-    interface."""
+    """Manage the workflow commands given from command line interface."""
+
     def __init__(self, name: str = None):
+        """Initialize the CLI Manager."""
         self.filename = None
         self.filename = None
         self.filename = None
@@ -17,8 +18,11 @@ class WorkflowCLIManager:
         self.name = name
 
     def add_from_filename(self, filename: str = None):
-        """
-        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        """Add a job from a file.
+
+        Handles the command::
+
+            cc workflow add [--name=NAME] [--job=JOB] ARGS...
 
         :param filename: path to yaml of workflow
         :type filename: str
@@ -33,8 +37,11 @@ class WorkflowCLIManager:
         w.load(filename)
 
     def add_from_arguments(self, job: str = None, filename: str = None, **argv):
-        """
-        # cc workflow add [--name=NAME] [--job=JOB] ARGS...
+        """Add a job.
+
+        Handles the command::
+
+            cc workflow add [--name=NAME] [--job=JOB] ARGS...
 
         :param job: name of job
         :type job: str
@@ -50,8 +57,11 @@ class WorkflowCLIManager:
         w.add_job(name=self.name, label=job, **data)
 
     def delete_job(self, job: str = None):
-        """
-        # cc workflow delete [--name=NAME] --job=JOB
+        """Delete a job.
+
+        Handels the command::
+
+            cc workflow delete [--name=NAME] --job=JOB
 
         :param job: name of job to delete
         :type job: str
@@ -62,8 +72,11 @@ class WorkflowCLIManager:
         w.remove_job(name=job)
 
     def delete_workflow(self, filename: str = None):
-        """
-        # cc workflow delete [--name=NAME] --job=JOB
+        """Delete a workflow.
+
+        handles the command::
+
+            cc workflow delete [--name=NAME] --job=JOB
 
         :param filename: path to yaml of workflow
         :type filename: str
@@ -74,8 +87,11 @@ class WorkflowCLIManager:
         w.remove_workflow()
 
     def list_job(self, job: str = None):
-        """
-        # cc workflow list [--name=NAME] [--job=JOB]
+        """List the jobs.
+
+        Handles the command::
+
+            cc workflow list [--name=NAME] [--job=JOB]
 
         :param job: name of job
         :type job: str
@@ -87,8 +103,11 @@ class WorkflowCLIManager:
         print(j)
 
     def list_workflow(self, filename: str = None):
-        """
-        # cc workflow list [--name=NAME] [--filename=FILENAME]
+        """List the workflows.
+
+        Handles the command::
+
+            cc workflow list [--name=NAME] [--filename=FILENAME]
 
         :param filename: path to yaml of workflow
         :type filename: str
@@ -100,8 +119,11 @@ class WorkflowCLIManager:
         print(nodes)
 
     def run(self, filename: str = None):
-        """
-        # cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
+        """Run the workflow.
+
+        Handles the command::
+
+            cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
 
         :param filename: path to yaml of workflow
         :type filename: str
@@ -113,8 +135,11 @@ class WorkflowCLIManager:
 
     def dependencies(self, name: str = None, dependency: str = None,
                      filename: str = None):
-        """
-        # cc workflow NAME DEPENDENCIES
+        """Manage the dependencies.
+
+        Handle the command::
+
+            cc workflow NAME DEPENDENCIES
 
         :param name: name of workflow
         :type name: str
@@ -133,8 +158,11 @@ class WorkflowCLIManager:
         w.add_dependencies(dependency=dependency)
 
     def status_workflow(self, name: str, filename: str = None):
-        """
-        # cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]
+        """Retruns the status of the workflow.
+
+        Handles the command::
+
+            cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]
 
         :param name: name of workflow
         :type name: str
@@ -151,8 +179,11 @@ class WorkflowCLIManager:
         print(status)
 
     def graph(self, filename: str = None):
-        """
-        # cc workflow graph --name=NAME
+        """Create a graph from the workflow.
+
+        Handles the command::
+
+            cc workflow graph --name=NAME
 
         :param filename: path to yaml of workflow
         :type filename: str
