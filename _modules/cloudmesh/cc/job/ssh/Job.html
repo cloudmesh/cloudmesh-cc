@@ -117,7 +117,7 @@
     <span class="sd">&quot;&quot;&quot;SSH Job.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the job.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize the job.</span>
 
 <span class="sd">        cms set username=abc123</span>
 
@@ -131,7 +131,6 @@
 <span class="sd">        :param directory:</span>
 <span class="sd">        :param argv:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="kc">None</span>
@@ -217,6 +216,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the status.</span>
+
 <span class="sd">        exactly the same as get_status but duplicated to provide as</span>
 <span class="sd">        a shortened-named, alternative call</span>
 
@@ -448,7 +448,8 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Job.watch"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.ssh.html#cloudmesh.cc.job.ssh.Job.Job.watch">[docs]</a>    <span class="k">def</span> <span class="nf">watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Watch the job and check for changes in the given period.</span>
+
 <span class="sd">        waits and watches for progress to reach 100, on interval basis</span>
 <span class="sd">        specified in the period in seconds,</span>
 <span class="sd">        until the job has completed</span>

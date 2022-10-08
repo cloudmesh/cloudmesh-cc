@@ -344,8 +344,8 @@ shell script, jupyter notebook, or python file</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.status">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.status" title="Permalink to this definition"></a></dt>
-<dd><p>Return the status.
-exactly the same as get_status but duplicated to provide as
+<dd><p>Return the status.</p>
+<p>exactly the same as get_status but duplicated to provide as
 a shortened-named, alternative call</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -376,7 +376,8 @@ copies the shell script to remote host</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cloudmesh.cc.job.ssh.Job.Job.watch">
 <span class="sig-name descname"><span class="pre">watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/job/ssh/Job.html#Job.watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.job.ssh.Job.Job.watch" title="Permalink to this definition"></a></dt>
-<dd><p>waits and watches for progress to reach 100, on interval basis
+<dd><p>Watch the job and check for changes in the given period.</p>
+<p>waits and watches for progress to reach 100, on interval basis
 specified in the period in seconds,
 until the job has completed</p>
 <dl class="field-list simple">
