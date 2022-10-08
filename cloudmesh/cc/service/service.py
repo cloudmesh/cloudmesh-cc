@@ -66,7 +66,7 @@ include_portal_tag_in_schema = False
 
 def get_available_workflows():
     """
-    returns workflow dirs found in .cloudmesh directory
+    Return workflow dirs found in .cloudmesh directory.
 
     :return: names of workflows found
     :rtype: list
@@ -91,7 +91,8 @@ def get_available_workflows():
 
 
 def dict_of_available_workflows():
-    """
+    """Return a dict of available workflows.
+
     looks inside ~/.cloudmesh/workflow directory
     for available workflows and returns them
     as initialized workflows inside a dict
@@ -110,6 +111,8 @@ def dict_of_available_workflows():
 
 
 class Jobpy(BaseModel):
+    """A python job."""
+
     name: str
     user: str
     host: str
@@ -147,8 +150,7 @@ www = Jinja2Templates(directory=www_dir)
 
 
 def load_workflow(name: str, load=True) -> Workflow:
-    """
-    loads a workflow corresponding to given name
+    """Load a workflow corresponding to given name.
 
     :param name: name of workflow
     :type name: str
@@ -168,7 +170,7 @@ def load_workflow(name: str, load=True) -> Workflow:
 
 async def image_watcher(request, name_of_workflow: str):
     """
-    watches an svg for changes
+    Watch an svg for changes.
 
     :param name_of_workflow: name of workflow to get svg for
     :type name_of_workflow: str
@@ -214,7 +216,7 @@ async def image_watcher(request, name_of_workflow: str):
 
 def penultimate_status_watcher(request, name_of_workflow: str):
     """
-    watches a runtime yaml for status changes
+    Watch a runtime yaml for status changes.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -249,7 +251,7 @@ def penultimate_status_watcher(request, name_of_workflow: str):
 
 async def datatable_server(request, name_of_workflow: str):
     """
-    server side event watcher that returns datatable when changes are detected
+    Server side event watcher that returns datatable when changes are detected.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -340,7 +342,7 @@ async def datatable_server(request, name_of_workflow: str):
 
 async def done_watcher(request, name_of_workflow: str):
     """
-    server side event watcher that yields number of jobs that are done
+    Server side event watcher that yields number of jobs that are done.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -367,7 +369,7 @@ async def done_watcher(request, name_of_workflow: str):
 
 async def ready_watcher(request, name_of_workflow: str):
     """
-    server side event watcher that yields number of jobs that are ready
+    Server side event watcher that yields number of jobs that are ready.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -394,7 +396,7 @@ async def ready_watcher(request, name_of_workflow: str):
 
 async def failed_watcher(request, name_of_workflow: str):
     """
-    server side event watcher that yields number of jobs that are failed
+    Server side event watcher that yields number of jobs that are failed.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -421,7 +423,7 @@ async def failed_watcher(request, name_of_workflow: str):
 
 async def submitted_watcher(request, name_of_workflow: str):
     """
-    server side event watcher that yields number of jobs that are submitted
+    Server side event watcher that yields number of jobs that are submitted.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -448,7 +450,7 @@ async def submitted_watcher(request, name_of_workflow: str):
 
 async def running_watcher(request, name_of_workflow: str):
     """
-    server side event watcher that yields number of jobs that are running
+    Server side event watcher that yields number of jobs that are running.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -475,7 +477,7 @@ async def running_watcher(request, name_of_workflow: str):
 
 def status_returner(name_of_workflow: str):
     """
-    reads a runtime yaml file to return a dict of status of jobs.
+    Read a runtime yaml file to return a dict of status of jobs.
 
     :param name_of_workflow:
     :type name_of_workflow:
@@ -506,7 +508,7 @@ def status_returner(name_of_workflow: str):
          include_in_schema=include_portal_tag_in_schema)
 def serve_done(request: Request, name: str):
     """
-    give the number of done jobs
+    Give the number of done jobs.
 
     **request** (Request) that is supplied when using web interface
     **name** (str) name of workflow
@@ -527,7 +529,7 @@ def serve_done(request: Request, name: str):
          include_in_schema=include_portal_tag_in_schema)
 def serve_ready(request: Request, name: str):
     """
-    give the number of ready jobs
+    Give the number of ready jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -544,7 +546,7 @@ def serve_ready(request: Request, name: str):
          include_in_schema=include_portal_tag_in_schema)
 def serve_failed(request: Request, name: str):
     """
-    give the number of failed jobs
+    Give the number of failed jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -561,7 +563,7 @@ def serve_failed(request: Request, name: str):
          include_in_schema=include_portal_tag_in_schema)
 def serve_submitted(request: Request, name: str):
     """
-    give the number of submitted jobs
+    Give the number of submitted jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -578,7 +580,7 @@ def serve_submitted(request: Request, name: str):
          include_in_schema=include_portal_tag_in_schema)
 def serve_running(request: Request, name: str):
     """
-    give the number of running jobs
+    Give the number of running jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -602,7 +604,8 @@ def serve_running(request: Request, name: str):
          tags=['portal'],
          include_in_schema=include_portal_tag_in_schema)
 async def home_page(request: Request):
-    """
+    """Return the home page.
+
     home function that features html and
     sidebar
 
@@ -629,7 +632,7 @@ async def home_page(request: Request):
          include_in_schema=include_portal_tag_in_schema)
 async def contact_page(request: Request):
     """
-    page that lists contact information
+    Page that lists contact information.
 
     :return: contact page
     """
@@ -651,7 +654,7 @@ async def contact_page(request: Request):
          include_in_schema=include_portal_tag_in_schema)
 async def man_page(request: Request):
     """
-    page that shows manual of cms cc command
+    Page that shows manual of cms cc command.
 
     :return: contact page
     """
@@ -681,7 +684,7 @@ async def man_page(request: Request):
          include_in_schema=include_portal_tag_in_schema)
 async def about_page(request: Request):
     """
-    page that lists readme as html
+    Page that lists readme as html.
 
     :return: about page
     """
@@ -706,8 +709,7 @@ async def about_page(request: Request):
 @app.get("/workflows",
          tags=['workflow'])
 def list_workflows(output: str = None):
-    """
-    returns a list of all workflows found on local computer
+    """Return a list of all workflows found on local computer.
 
     Parameters:
 
@@ -719,12 +721,11 @@ def list_workflows(output: str = None):
     :type output: str
     :return: list of workflow names
     """
-    """    
-    curl -X 'GET' \
-        'http://127.0.0.1:8000/workflows' \
-        -H 'accept: application/json'
-    """
-
+    # """
+    # curl -X 'GET' \
+    #     'http://127.0.0.1:8000/workflows' \
+    #     -H 'accept: application/json'
+    # """
     dict_of_workflow_dicts = dict_of_available_workflows()
 
     try:
@@ -781,8 +782,9 @@ def upload(directory: str = Query(None,
                                             'or tar'),
            yaml: str = Query(None,
                              description='path to yaml file for workflow')):
-    """
-    upload a workflow to the ~/.cloudmesh/workflow directory for running
+    """Upload a workflow.
+
+    Upload a workflow to the ~/.cloudmesh/workflow directory for running
     or editing.
 
     Parameters:
@@ -945,7 +947,8 @@ def upload(directory: str = Query(None,
          tags=['workflow'],
          include_in_schema=include_portal_tag_in_schema)
 def delete_workflow_direct_url(name: str):
-    """
+    """Delete a workflow bu url.
+
     :param name: name of workflow
     :type name: str
 
@@ -966,7 +969,8 @@ def delete_workflow_direct_url(name: str):
 @app.delete("/workflow/{name}",
             tags=['workflow'])
 def delete_workflow(name: str, job: str = None):
-    """
+    """Delete a workflow by name.
+
     deletes an entire workflow. if the job is specified, then deletes
     just the job in the workflow.
 
@@ -1018,7 +1022,8 @@ def delete_workflow(name: str, job: str = None):
          response_class=Response,
          include_in_schema=include_portal_tag_in_schema)
 def edit_workflow_direct_url(name: str):
-    """
+    """Edit a workflow by url.
+
     :param name: name of workflow
     :type name: str
     :return:
@@ -1041,7 +1046,8 @@ def get_workflow(request: Request,
                  job: str = None,
                  output: str = None,
                  initialized: bool = False):
-    """
+    """Get the workflow.
+
     retrieves a workflow by its name. if the job is specified, retrieves
     just the job in the specified workflow
 
@@ -1055,7 +1061,6 @@ def get_workflow(request: Request,
     loaded for the first time. should be True when switching views
     """
     """
-
     you need to have first uploaded the workflow-example for this curl to work!
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflow/workflow-example' \
@@ -1071,7 +1076,6 @@ def get_workflow(request: Request,
     :type output: str
     :return: success or failure message
     :rtype: dict
-
     """
     try:
         if output == 'html':
@@ -1214,8 +1218,7 @@ def get_workflow(request: Request,
          tags=['portal'],
          include_in_schema=include_portal_tag_in_schema)
 def get_workflow_graph(request: Request, name: str):
-    """
-    see the graph embedded within web interface
+    """See the graph embedded within web interface.
 
     :param request: request that is supplied when using web interface
     :type request: Request
@@ -1284,7 +1287,7 @@ def serve_watcher(request: Request, name: str):
 @app.get("/serve-datatable/{name}",
          include_in_schema=include_portal_tag_in_schema)
 def serve_table(request: Request, name: str):
-    """
+    """See the table of the workflow.
 
     :param request:
     :type request:
@@ -1304,7 +1307,7 @@ def run_workflow(name: str,
                  redirect: str = None,
                  show: bool = False):
     """
-    runs a specified workflow according to provided run type
+    Run a specified workflow according to provided run type.
 
     Parameters:
 
@@ -1377,7 +1380,7 @@ def run_workflow(name: str,
 def watch_running_workflow(request: Request,
                            name: str):
     """
-    page for watching a workflow that has been started
+    Page for watching a workflow that has been started.
 
     :param request: type of request (api does this automatically in browser)
     :type request: Request
@@ -1385,7 +1388,6 @@ def watch_running_workflow(request: Request,
     :type name: str
     :return: html page with updating table
     """
-
     folders = get_available_workflows()
 
     runtime_yaml_filepath = path_expand(
@@ -1442,7 +1444,7 @@ def add_job(name: str,
             label: str = None,
             parent: str = None):
     """
-    adds a node/job to a workflow
+    Adds a job to a workflow.
 
     A check
     is returned and the user is alerted if arguments are missing
@@ -1500,7 +1502,6 @@ def add_job(name: str,
     :return: returns jobs within the specified workflow
     :rtype: dict
     """
-
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
     # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
@@ -1532,7 +1533,7 @@ def add_job(name: str,
          include_in_schema=include_portal_tag_in_schema)
 def preferences_post(request: Request):
     """
-    preferences page
+    Preferences page.
 
     :param request:
     :type request:
@@ -1573,7 +1574,7 @@ def preferences_post(request: Request,
                      host: bool = Form(False),
                      progress: bool = Form(False),
                      script: bool = Form(False)):
-    """
+    """Set preferences.
 
     :param request:
     :type request:
@@ -1619,7 +1620,7 @@ def preferences_post(request: Request,
          include_in_schema=include_portal_tag_in_schema)
 def generate_example_workflow(request: Request):
     """
-    create example workflow for testing
+    Create example workflow for testing.
 
     :param request: request that is supplied when using web interface
     :type request: Request
