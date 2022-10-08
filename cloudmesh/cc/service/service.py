@@ -1061,10 +1061,10 @@ def edit_workflow_direct_url(name: str):
             "message": f"There was an error deleting the workflow '{name}'"}
 
 @app.get("/preferences-changer",
-         status_code=302,
+         status_code=204,
          response_class=Response,
          include_in_schema=include_portal_tag_in_schema)
-def preferences_changer(redirect: str, column: str):
+def preferences_changer(column: str):
     """Change a preference to show a column from within datatable viewer.
 
     :param column:
@@ -1084,7 +1084,6 @@ def preferences_changer(redirect: str, column: str):
     with open(configuration_file, 'w') as f:
         yaml.dump(loaded_preferences, f, default_flow_style=False,
                   sort_keys=False)
-    return RedirectResponse(redirect, status_code=302)
 
 
 @app.get("/workflow/{name}",

@@ -223,7 +223,10 @@
             if (column == 'script') {
                 script_hidden = !script_hidden;
             }
-            window.location.href = `/preferences-changer?redirect=/workflow-running/{{name_of_workflow}}&column=${column}`;
+            //window.location.href = `/preferences-changer?redirect=/workflow-running/{{name_of_workflow}}&column=${column}`;
+            //var myChild = window.open(`/preferences-changer?column=${column}`, '','width=,height=,resizable=no');
+            //myChild.blur();
+            window.fetch(`/preferences-changer?column=${column}`)
             //return false;
         }
 
