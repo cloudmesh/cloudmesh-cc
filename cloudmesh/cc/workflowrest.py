@@ -4,13 +4,15 @@ import requests
 
 class RESTWorkflow:
     """Class which interfaces with cc FastAPI server using REST."""
+
     def __init__(self):
+        """Initialize the service."""
         self.address = "http://127.0.0.1:8000"
 
     # @app.get("/workflows")
     def list_workflows(self):
         """
-        This command returns a list of workflows that is found within the server.
+        Return a list of workflows that is found within the server.
 
         You can invoke this function also with a curl command:
 
@@ -23,8 +25,9 @@ class RESTWorkflow:
         return content  # likely a dict
 
     def add_job(self, workflow_name: str, **kwargs):
-        """
-        This command adds a job to a workflow that is specified in the
+        """Add a job to the workflow.
+
+        Adds a job to a workflow that is specified in the
         provided workflow_name string.
 
         :return: all jobs within workflow
@@ -72,7 +75,7 @@ class RESTWorkflow:
 
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):
         """
-        upload a workflow by using REST.
+        Upload a workflow by using REST.
 
         :param directory: path to a folder of scripts and/or yaml
         :type directory: str
@@ -98,7 +101,7 @@ class RESTWorkflow:
 
     def get_workflow(self, workflow_name: str, job_name: str = None):
         """
-        retrieve a workflow by using REST.
+        Retrieve a workflow by using REST.
 
         :param workflow_name: name of workflow to be retrieved
         :type workflow_name: str
@@ -117,7 +120,7 @@ class RESTWorkflow:
                      run_type: str = 'topo',
                      show: bool = True):
         """
-        run a workflow by using REST.
+        Run a workflow by using REST.
 
         :return:
         """
@@ -127,7 +130,7 @@ class RESTWorkflow:
 
     def delete_workflow(self, workflow_name: str, job_name: str = None):
         """
-        delete a workflow by using REST.
+        Delete a workflow by using REST.
 
         :param workflow_name: name of workflow to delete
         :type workflow_name: str
