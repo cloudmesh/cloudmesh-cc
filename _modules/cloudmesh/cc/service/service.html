@@ -1163,10 +1163,10 @@
             <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="preferences_changer"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/preferences-changer&quot;</span><span class="p">,</span>
-         <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
+         <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">preferences_changer</span><span class="p">(</span><span class="n">redirect</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">preferences_changer</span><span class="p">(</span><span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Change a preference to show a column from within datatable viewer.</span>
 
 <span class="sd">    :param column:</span>
@@ -1185,8 +1185,7 @@
         <span class="k">pass</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">loaded_preferences</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">redirect</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span></div>
+                  <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
