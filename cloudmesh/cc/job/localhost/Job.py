@@ -15,7 +15,9 @@ from cloudmesh.common.systeminfo import os_is_windows
 
 class Job:
     """
-    Class to submit a job to the local host. Supported operating systems:
+    Class to submit a job to the local host. Supported operating systems.
+
+    This includes:
 
     * Linux
     * MacOS
@@ -23,7 +25,8 @@ class Job:
     """
 
     def __init__(self, **argv):
-        """
+        r"""Initialize the job.
+
         cms set username=abc123
 
         creates a job by passing either a dict with \*\*dict or named arguments
@@ -76,7 +79,8 @@ class Job:
         #    Console.warning("either exec or script must be set")
 
     def script_type(self, name):
-        """
+        """Return the filename type based on the ending.
+
         Uses the inputted name of script to return the
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
@@ -95,7 +99,8 @@ class Job:
 
 
     def __str__(self):
-        """
+        """Return the string object of the job.
+
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
 
@@ -118,7 +123,8 @@ class Job:
 
     @property
     def status(self):
-        """
+        """Return the status.
+
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
@@ -128,7 +134,8 @@ class Job:
         return self.get_status()
 
     def mkdir_experimentdir(self):
-        """
+        """Create the experiment directory.
+
         creates experiment directory to contain job files such as
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
@@ -140,7 +147,8 @@ class Job:
         Shell.mkdir(directory)
 
     def run(self):
-        """
+        """Run the job.
+
         runs the job by making script executable and running the
         script locally. only works for shell scripts, as .sh is
         hardcoded within the commands
@@ -221,8 +229,7 @@ class Job:
         return state
 
     def clear(self):
-        """
-        clears all leftover log files from past runs
+        """Clear all leftover log files from past runs.
 
         :return: does not return anything
         :rtype: None
@@ -237,7 +244,8 @@ class Job:
             Console.error(e, traceflag=True)
 
     def get_status(self, refresh=False):
-        """
+        """Get the status of the job.
+
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
 
@@ -259,7 +267,8 @@ class Job:
         return status
 
     def get_progress(self, refresh=False):
-        """
+        """Get the progress of the job.
+
         fetch the log file of the job and read the log file to check
         for the current completeness of the job
 
@@ -285,7 +294,8 @@ class Job:
         return int(progress)
 
     def get_log(self, refresh=True):
-        """
+        """Get the log of the job.
+
         copy the log file, sync, and read the contents of the file to
         return the contents as a string
 
@@ -307,7 +317,8 @@ class Job:
         return content
 
     def sync(self):
-        """
+        """Syncronise the current directory with the remote.
+
         copies the shell script to the experiment directory and
         ensures that the file is copied with the sync command
 
@@ -324,7 +335,8 @@ class Job:
         return r
 
     def chmod(self):
-        """
+        """Fix permissions.
+
         changes the permissions and flags of the script to be
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
@@ -338,7 +350,8 @@ class Job:
         return r
 
     def exists(self, filename):
-        """
+        """Check if the filname exists.
+
         used to check if the file is existing within the experiment
         directory
 
@@ -350,7 +363,8 @@ class Job:
         return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
     def watch(self, period=10):
-        """
+        """Watch the job and check for changes in the given period.
+
         waits and watches for progress to reach 100, on interval basis
         specified in the period in seconds,
         till the job has completed
@@ -369,8 +383,7 @@ class Job:
                 time.sleep(period)
 
     def get_pid(self, refresh=False):
-        """
-        get the pid that the job is running within
+        """Get the pid that the job is running within.
 
         :param refresh: whether to retrieve the latest log
         :type refresh: bool
@@ -389,8 +402,7 @@ class Job:
         return None
 
     def kill(self, period=1):
-        """
-        kills the job
+        """Kill the job.
 
         :param period: interval to use for waiting for log/pid
         :type period: float
@@ -460,9 +472,7 @@ class Job:
         return pid, child
 
     def create_script(self, exec=None):
-        """
-        creates a template
-        for the slurm sbatch
+        """Create a template for the script.
 
         :param exec: command to be executed
         :type exec: str
@@ -496,9 +506,7 @@ class Job:
     # this method is deprecated ....
     @staticmethod
     def create(filename=None, script=None, exec=None):
-        """
-        creates a template
-        for the slurm sbatch
+        """Create a template for the script with progress.
 
         :param filename: name of file that the script will be written to
         :type filename: str
@@ -509,7 +517,6 @@ class Job:
         :return: the contents of the script itself
         :rtype: str
         """
-
         if script is None and exec is None:
             Console.error("Script and executable cannot be used at the same time.")
 

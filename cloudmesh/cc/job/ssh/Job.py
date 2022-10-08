@@ -15,7 +15,7 @@ class Job:
     """SSH Job."""
 
     def __init__(self, **argv):
-        """Initialize the job.
+        r"""Initialize the job.
 
         cms set username=abc123
 
@@ -29,7 +29,6 @@ class Job:
         :param directory:
         :param argv:
         """
-
         self.name = None
         self.username = None
         self.host = None
@@ -115,6 +114,7 @@ class Job:
     @property
     def status(self):
         """Return the status.
+
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
@@ -346,7 +346,8 @@ class Job:
         return True
 
     def watch(self, period=10):
-        """
+        """Watch the job and check for changes in the given period.
+
         waits and watches for progress to reach 100, on interval basis
         specified in the period in seconds,
         until the job has completed
