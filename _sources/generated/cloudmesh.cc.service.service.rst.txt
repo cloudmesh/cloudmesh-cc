@@ -1,4 +1,4 @@
-cloudmesh.cc.service.service
+﻿cloudmesh.cc.service.service
 ============================
 
 .. automodule:: cloudmesh.cc.service.service
@@ -33,6 +33,7 @@ cloudmesh.cc.service.service
       load_workflow
       man_page
       penultimate_status_watcher
+      preferences_changer
       preferences_post
       ready_watcher
       run_workflow
