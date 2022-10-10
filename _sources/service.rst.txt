@@ -16,7 +16,7 @@ To start the service use the command::
 
     cms cc start
 
-For debugging purposes with outorelod on code canges, you can use the command::
+For debugging purposes with outoreload on code changes, you can use the command::
 
     cms cc start --reload
 
@@ -38,7 +38,7 @@ An example workflow can be generated while clickon on the Example sidebar menu.
 Table View
 ----------
 
-The workflow can then be viewd while clicking on the workflow
+The workflow can then be viewed while clicking on the workflow
 name listed in the sidebar under workflows. Other workflows can be uploaded and multiple
 workflows can be managed. Management buttons for the workflow are included in this view.
 

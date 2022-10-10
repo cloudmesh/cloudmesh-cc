@@ -51,36 +51,89 @@ Sample yaml files can be found at the following link:
 
 ## Defining nodes in the workflow
 
+Nodes can be customized in various ways within the
+workflow configuration YAML file, including their
+job types (python, sh, jupyter, or slurm), their
+virtual Python environment (by specifying `venv`),
+their appearance on the graph, and other characteristics.
+
 ### Defining labels for the workflow
 
-These variables must be in curly braces.
+These variables must be in curly braces when
+defining the labels inside the yaml workflow files.
 
-* `progress`
-* time
-  * `%now` now
-  * `now.%m/%d/%Y, %H:%M:%S` now in particular format
-  * `%tc` created
-  * `%tm` modified
-  * `%dt0` time since start of first node
-  * `%dt` time since start of current node
-    (duration once finished)
-  * `name`
-  * `label`
-  * `host`
-
-## Defining format for timestamp labels
-
-## Defining graphviz shapes and styles
-
-https://graphviz.org/doc/info/shapes.html
-
-https://graphviz.org/docs/attr-types/style/
+For example, a label could be defined as follows:
 
 ```text
 workflow:
   nodes:
     start:
-      label: 'start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}'
+      label: 'start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.%Y/%m/%d, %H--%M--%S}\nNow={now.%Y/%m/%d, %H--%M--%S}\nElapsed={dt0.%M--%S}'
+```
+
+This creates a node on the graph that looks similar to
+the following example:
+
+![An example node with labels](images/labelmaker-example.png)
+
+Initially, the created and elapsed labels are `N/A` if the workflow
+has not yet started, but they are replaced during runtime. This
+can be observed by running a workflow in graph view in the web interface.
+
+Colons must be replaced with `--` and the years, months,
+days, hours, minutes, and seconds can be arranged as desired,
+as long as the corresponding letters remain consistent
+(`%Y` `%m` `%d` `%H` `%M` `%S` respectively). Also, the
+format of the time must come immediately following the period.
+
+* `name` name of job
+* `progress` progress of job from 0-100 
+* time labels:
+  * `now.` current time
+  * `now.%Y/%m/%d, %H--%M--%S` now in particular format
+    (this can be used for other times as well)
+  * `created.` time when workflow was created
+  * `t0.` workflow start time
+  * `t1.` workflow end time
+  * `dt0.` elapsed time since workflow began
+  * `dt1.` total time of workflow once complete
+  * `tstart.` job start time
+  * `tend.` job end time
+  * `modified.` job modified time
+* `os.` operating system environment variable (like os.HOME)
+* `cm.` cloudmesh variable that is read from `cms set`
+
+## Defining format for timestamp labels
+
+Various formats can be used for the timestamps, such as
+the American datetime format `%m/%d/%Y, %H--%M--%S`
+or the international datetime format `%Y/%m/%d, %H--%M--%S`.
+As long as the letters stay consistent
+(`%Y` `%m` `%d` `%H` `%M` `%S` for year, month, day, hour, minute,
+and second, respectively), any format can be created.
+
+If no format is specified following the period after the variable,
+the datetime defaults to American format.
+
+## Defining graphviz shapes and styles
+
+Any shape and style for the nodes in the graph can be
+chosen, as long as they are taken from the graphviz documentation:
+
+https://graphviz.org/doc/info/shapes.html
+
+https://graphviz.org/docs/attr-types/style/
+
+The following is an example of a node in YAML format
+that uses a box shape and an empty style. The empty style
+defaults to `filled`, which allows the node to change color
+when the job status is changed.
+
+```text
+workflow:
+  nodes:
+    start:
+      label: 'start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.}\nElapsed={dt0.}'
       kind: local
       user: grey
       host: local
@@ -90,7 +143,6 @@ workflow:
       shape: box
       style: ''
 ```
-  
 
 ## Defining dependencies in the workflow
 

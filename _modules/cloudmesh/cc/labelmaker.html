@@ -204,14 +204,15 @@
                     <span class="n">value</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;now_&quot;</span><span class="p">):</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;now_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;now&quot;</span><span class="p">)</span>
-                <span class="n">replacements</span><span class="p">[</span><span class="s2">&quot;now&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;now_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
+                <span class="c1"># self.template = self.template.replace(variable, &quot;now&quot;)</span>
+                <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;created_&quot;</span><span class="p">):</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;created_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">base</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;created_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-                <span class="n">variable</span> <span class="o">=</span> <span class="sa">fr</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                     <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
@@ -228,6 +229,8 @@
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;modified_&quot;</span><span class="p">):</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;modified_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -236,11 +239,15 @@
                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;modified_time_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                         <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;modified_time_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">modified_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;modified_time_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">modified_date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;tstart_&quot;</span><span class="p">):</span>
+                <span class="c1"># the time a job started.</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;tstart_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="c1"># if not specified then template is &quot;&quot;</span>
+
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -249,11 +256,19 @@
                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                         <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">tstart_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                            <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                <span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span>
+                            <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">tstart_date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="n">template</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;tend_&quot;</span><span class="p">):</span>
+                <span class="c1"># the time a job ended.</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;tend_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -262,11 +277,19 @@
                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                         <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">tend_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                            <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span>
+                            <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">tend_date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="n">template</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;t0_&quot;</span><span class="p">):</span>
+                <span class="c1"># the time a workflow started.</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;t0_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -275,11 +298,19 @@
                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;t0_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                         <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;t0_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">t0_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                            <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                <span class="sa">f</span><span class="s1">&#39;t0_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span>
+                            <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">t0_date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="n">template</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;t1_&quot;</span><span class="p">):</span>
+                <span class="c1"># the time a workflow ended.</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;t1_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -288,12 +319,19 @@
                     <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
                         <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">t1_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                            <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span>
+                                <span class="sa">f</span><span class="s1">&#39;t1_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span>
+                            <span class="sa">r</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1_date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                            <span class="n">template</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dt0_&quot;</span><span class="p">):</span>
                 <span class="c1"># time since beginning of workflow</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;dt0_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -306,13 +344,16 @@
                         <span class="n">t0</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
                                 <span class="n">start_time</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
                         <span class="n">dt</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">t0</span>
-                        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+                        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">,</span>
+                                                               <span class="n">elapsed</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dt1_&quot;</span><span class="p">):</span>
                 <span class="c1"># difference of time from beginning to end of workflow</span>
                 <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;dt1_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%H:%M:%S&quot;</span>
                 <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
                     <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -328,25 +369,35 @@
                         <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
                                 <span class="n">end_time</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
                         <span class="n">delta</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-                        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
-                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+                        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">,</span>
+                                                               <span class="n">elapsed</span><span class="p">)</span>
 
-            <span class="c1"># elif variable.startswith(&quot;dt_&quot;):</span>
-            <span class="c1">#     # template = variable.split(&quot;dt_&quot;, 1)[1]</span>
-            <span class="c1">#     dummy, name, template = variable.split(&#39;_&#39;, 2)</span>
-            <span class="c1">#     cms_t0_name = &#39;created_time_&#39; + name</span>
-            <span class="c1">#     if cms_t0_name not in self.cms_variables:</span>
-            <span class="c1">#         # Console.error(f&#39;workflow {name} not found in cms set&#39;,</span>
-            <span class="c1">#         #               traceflag=True)</span>
-            <span class="c1">#         self.cms_variables.__setitem__(</span>
-            <span class="c1">#             cms_t0_name, datetime.strftime(t0, &quot;%m/%d/%Y, %H:%M:%S&quot;))</span>
-            <span class="c1">#     else:</span>
-            <span class="c1">#         t0 = datetime.strptime(</span>
-            <span class="c1">#             self.cms_variables[cms_t0_name], &quot;%m/%d/%Y, %H:%M:%S&quot;)</span>
-            <span class="c1">#     dt = now - t0</span>
-            <span class="c1">#     self.template = self.template.replace(variable, &quot;dt&quot;)</span>
-            <span class="c1">#     elapsed = time.strftime(template, time.gmtime(dt.seconds))</span>
-            <span class="c1">#     replacements[&quot;dt&quot;] = elapsed</span>
+
+            <span class="k">elif</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dt_&quot;</span><span class="p">):</span>
+                <span class="c1"># the total time of a job.</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;dt_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;%H:%M:%S&quot;</span>
+                <span class="n">times_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span>
+                    <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">times_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="k">if</span> <span class="s1">&#39;times&#39;</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]:</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;N/A&#39;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">start_time</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;tstart_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">end_time</span> <span class="o">=</span> <span class="n">times_dict</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">][</span><span class="sa">f</span><span class="s1">&#39;tend_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                        <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                                <span class="n">start_time</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                                <span class="n">end_time</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+                        <span class="n">delta</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+                        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+                        <span class="n">replacements</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">template</span><span class="p">,</span>
+                                                               <span class="n">elapsed</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">replacements</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colon</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div></div>
         <span class="c1"># return self.template.format(**data, **replacements)</span>

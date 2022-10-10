@@ -167,39 +167,81 @@ jobs <code class="docutils literal notranslate"><span class="pre">a</span></code
 </section>
 <section id="defining-nodes-in-the-workflow">
 <h2>Defining nodes in the workflow<a class="headerlink" href="#defining-nodes-in-the-workflow" title="Permalink to this heading"></a></h2>
+<p>Nodes can be customized in various ways within the
+workflow configuration YAML file, including their
+job types (python, sh, jupyter, or slurm), their
+virtual Python environment (by specifying <code class="docutils literal notranslate"><span class="pre">venv</span></code>),
+their appearance on the graph, and other characteristics.</p>
 <section id="defining-labels-for-the-workflow">
 <h3>Defining labels for the workflow<a class="headerlink" href="#defining-labels-for-the-workflow" title="Permalink to this heading"></a></h3>
-<p>These variables must be in curly braces.</p>
+<p>These variables must be in curly braces when
+defining the labels inside the yaml workflow files.</p>
+<p>For example, a label could be defined as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    start:
+      label: &#39;start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.%Y/%m/%d, %H--%M--%S}\nNow={now.%Y/%m/%d, %H--%M--%S}\nElapsed={dt0.%M--%S}&#39;
+</pre></div>
+</div>
+<p>This creates a node on the graph that looks similar to
+the following example:</p>
+<p><img alt="An example node with labels" src="_images/labelmaker-example.png" /></p>
+<p>Initially, the created and elapsed labels are <code class="docutils literal notranslate"><span class="pre">N/A</span></code> if the workflow
+has not yet started, but they are replaced during runtime. This
+can be observed by running a workflow in graph view in the web interface.</p>
+<p>Colons must be replaced with <code class="docutils literal notranslate"><span class="pre">--</span></code> and the years, months,
+days, hours, minutes, and seconds can be arranged as desired,
+as long as the corresponding letters remain consistent
+(<code class="docutils literal notranslate"><span class="pre">%Y</span></code> <code class="docutils literal notranslate"><span class="pre">%m</span></code> <code class="docutils literal notranslate"><span class="pre">%d</span></code> <code class="docutils literal notranslate"><span class="pre">%H</span></code> <code class="docutils literal notranslate"><span class="pre">%M</span></code> <code class="docutils literal notranslate"><span class="pre">%S</span></code> respectively). Also, the
+format of the time must come immediately following the period.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">progress</span></code></p></li>
-<li><p>time</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> name of job</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">progress</span></code> progress of job from 0-100</p></li>
+<li><p>time labels:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">%now</span></code> now</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">now.%m/%d/%Y,</span> <span class="pre">%H:%M:%S</span></code> now in particular format</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">%tc</span></code> created</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">%tm</span></code> modified</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">%dt0</span></code> time since start of first node</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">%dt</span></code> time since start of current node
-(duration once finished)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now.</span></code> current time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now.%Y/%m/%d,</span> <span class="pre">%H--%M--%S</span></code> now in particular format
+(this can be used for other times as well)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created.</span></code> time when workflow was created</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t0.</span></code> workflow start time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t1.</span></code> workflow end time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dt0.</span></code> elapsed time since workflow began</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dt1.</span></code> total time of workflow once complete</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tstart.</span></code> job start time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tend.</span></code> job end time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modified.</span></code> job modified time</p></li>
 </ul>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">os.</span></code> operating system environment variable (like os.HOME)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cm.</span></code> cloudmesh variable that is read from <code class="docutils literal notranslate"><span class="pre">cms</span> <span class="pre">set</span></code></p></li>
 </ul>
 </section>
 </section>
 <section id="defining-format-for-timestamp-labels">
 <h2>Defining format for timestamp labels<a class="headerlink" href="#defining-format-for-timestamp-labels" title="Permalink to this heading"></a></h2>
+<p>Various formats can be used for the timestamps, such as
+the American datetime format <code class="docutils literal notranslate"><span class="pre">%m/%d/%Y,</span> <span class="pre">%H--%M--%S</span></code>
+or the international datetime format <code class="docutils literal notranslate"><span class="pre">%Y/%m/%d,</span> <span class="pre">%H--%M--%S</span></code>.
+As long as the letters stay consistent
+(<code class="docutils literal notranslate"><span class="pre">%Y</span></code> <code class="docutils literal notranslate"><span class="pre">%m</span></code> <code class="docutils literal notranslate"><span class="pre">%d</span></code> <code class="docutils literal notranslate"><span class="pre">%H</span></code> <code class="docutils literal notranslate"><span class="pre">%M</span></code> <code class="docutils literal notranslate"><span class="pre">%S</span></code> for year, month, day, hour, minute,
+and second, respectively), any format can be created.</p>
+<p>If no format is specified following the period after the variable,
+the datetime defaults to American format.</p>
 </section>
 <section id="defining-graphviz-shapes-and-styles">
 <h2>Defining graphviz shapes and styles<a class="headerlink" href="#defining-graphviz-shapes-and-styles" title="Permalink to this heading"></a></h2>
+<p>Any shape and style for the nodes in the graph can be
+chosen, as long as they are taken from the graphviz documentation:</p>
 <p>https://graphviz.org/doc/info/shapes.html</p>
 <p>https://graphviz.org/docs/attr-types/style/</p>
+<p>The following is an example of a node in YAML format
+that uses a box shape and an empty style. The empty style
+defaults to <code class="docutils literal notranslate"><span class="pre">filled</span></code>, which allows the node to change color
+when the job status is changed.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>workflow:
   nodes:
     start:
-      label: &#39;start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}&#39;
+      label: &#39;start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.}\nElapsed={dt0.}&#39;
       kind: local
       user: grey
       host: local
