@@ -1150,17 +1150,18 @@
 
 <span class="sd">    :param name: name of workflow</span>
 <span class="sd">    :type name: str</span>
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :return: failure message if it fails</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># w = load_workflow(name)</span>
         <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;emacs </span><span class="si">{</span><span class="n">yaml_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># os.system(f&quot;emacs {yaml_file}&quot;)</span>
+        <span class="n">Shell</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error editing the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="preferences_changer"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/preferences-changer&quot;</span><span class="p">,</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
