@@ -35,6 +35,7 @@ live status updates.
    OpenAPI <openapi3.html#http://>
    OpenAPI (json) <openapi.json#http://>
    OpenAPI (yaml) <openapi.yaml#http://>
+   Python API <py-modindex.html#http://>
 
 .. toctree::
    :maxdepth: 1
