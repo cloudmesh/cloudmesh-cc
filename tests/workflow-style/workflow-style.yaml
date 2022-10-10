@@ -1,5 +1,4 @@
 workflow:
-  layout: 'dummy'
   nodes:
     start:
       label: 'start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}'

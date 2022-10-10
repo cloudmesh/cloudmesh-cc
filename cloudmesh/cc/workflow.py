@@ -479,6 +479,7 @@ class Graph:
         :rtype: None
         """
         dot = graphviz.Digraph(comment='Dot Graph')
+        # dot.attr(rankdir='LR')
         dot.attr('node', shape="box")
 
         graph = nx.DiGraph()
