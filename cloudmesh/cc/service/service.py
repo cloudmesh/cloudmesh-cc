@@ -332,7 +332,7 @@ async def datatable_server(request, name_of_workflow: str):
                         <td>{job}</td>
                         <td>{items['status']}</td>
                         <td>{items['host']}</td>
-                        <td>{items['progress']}&nbsp;<progress value="{items['progress']}" max="100"></progress></td>\
+                        <td>{items['progress']}&nbsp;<progress value="{items['progress']}" max="100"></progress></td>
                         <td>{times_dict_for_table[f'tstart_{job}']}</td>
                         <td>{times_dict_for_table[f'tend_{job}']}</td>
                         <td>{items['script']}</td>
