@@ -21,7 +21,7 @@ workflow:
       shape: box
       style: ''
     fetch-data:
-      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nElapsed={dt.}'
+      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
       kind: local
       user: grey
       host: local
@@ -29,7 +29,7 @@ workflow:
       exec: 'echo hello'
       name: fetch-data
     compute:
-      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nElapsed={dt.}'
+      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
       kind: local
       user: grey
       host: local
@@ -37,7 +37,7 @@ workflow:
       exec: 'echo hello'
       name: compute
     analyze:
-      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nElapsed={dt.}'
+      label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
       kind: local
       user: grey
       host: local
