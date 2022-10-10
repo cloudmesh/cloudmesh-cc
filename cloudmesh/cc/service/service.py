@@ -1048,17 +1048,18 @@ def edit_workflow_direct_url(name: str):
 
     :param name: name of workflow
     :type name: str
-    :return:
-    :rtype:
+    :return: failure message if it fails
+    :rtype: dict
     """
     try:
         # w = load_workflow(name)
         yaml_file = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
-        os.system(f"emacs {yaml_file}")
+        # os.system(f"emacs {yaml_file}")
+        Shell.edit(yaml_file)
     except Exception as e:
         Console.error(e, traceflag=True)
         return {
-            "message": f"There was an error deleting the workflow '{name}'"}
+            "message": f"There was an error editing the workflow '{name}'"}
 
 @app.get("/preferences-changer",
          status_code=204,
