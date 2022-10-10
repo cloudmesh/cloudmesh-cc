@@ -1738,6 +1738,6 @@ def generate_example_workflow(request: Request):
     w = Workflow(name='workflow-example')
     w.load(filename=runtime_yaml_location)
     print(w.yaml)
-    return RedirectResponse('/workflow/workflow-example?output=table', status_code=302)
+    return RedirectResponse('/watcher/workflow-example', status_code=302)
 
 
