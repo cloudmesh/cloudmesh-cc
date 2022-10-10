@@ -28,7 +28,7 @@ class TestLabelmaker:
 
         Benchmark.Start()
 
-        label = Labelmaker("name={name} home={os.HOME} debug={cm.debug} date={now.%m/%d/%Y, %H:%M:%S}",
+        label = Labelmaker("name={name} home={os.HOME} debug={cm.debug} date={now.%m/%d/%Y, %H--%M--%S}",
                            'sample-workflow',
                            'sample-job')
 
