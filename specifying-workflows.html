@@ -64,6 +64,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#defining-labels-for-the-workflow">Defining labels for the workflow</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-format-for-timestamp-labels">Defining format for timestamp labels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-graphviz-shapes-and-styles">Defining graphviz shapes and styles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#defining-dependencies-in-the-workflow">Defining dependencies in the workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reporting-progress">Reporting Progress</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shell-and-slurm-scripts">Shell and Slurm Scripts</a></li>
@@ -185,6 +187,28 @@ jobs <code class="docutils literal notranslate"><span class="pre">a</span></code
 </li>
 </ul>
 </section>
+</section>
+<section id="defining-format-for-timestamp-labels">
+<h2>Defining format for timestamp labels<a class="headerlink" href="#defining-format-for-timestamp-labels" title="Permalink to this heading"></a></h2>
+</section>
+<section id="defining-graphviz-shapes-and-styles">
+<h2>Defining graphviz shapes and styles<a class="headerlink" href="#defining-graphviz-shapes-and-styles" title="Permalink to this heading"></a></h2>
+<p>https://graphviz.org/doc/info/shapes.html</p>
+<p>https://graphviz.org/docs/attr-types/style/</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>workflow:
+  nodes:
+    start:
+      label: &#39;start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}&#39;
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: &#39;echo hello&#39;
+      name: start
+      shape: box
+      style: &#39;&#39;
+</pre></div>
+</div>
 </section>
 <section id="defining-dependencies-in-the-workflow">
 <h2>Defining dependencies in the workflow<a class="headerlink" href="#defining-dependencies-in-the-workflow" title="Permalink to this heading"></a></h2>

@@ -596,17 +596,26 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">colors</span><span class="p">]</span>
                 <span class="n">color_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">colors</span><span class="p">][</span><span class="n">value</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]:</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="s2">&quot;box&quot;</span>
+                <span class="k">if</span> <span class="s1">&#39;shape&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]:</span>
                     <span class="n">shape</span> <span class="o">=</span> <span class="s2">&quot;diamond&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">shape</span> <span class="o">=</span> <span class="s2">&quot;box&quot;</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_label</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">msg</span>
 
+                <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;filled,rounded&#39;</span>
+                <span class="k">if</span> <span class="s1">&#39;style&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;style&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;filled&#39;</span>
+
                 <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
                          <span class="n">label</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
                          <span class="c1"># color=self.colors[colors][value],</span>
-                         <span class="n">style</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;filled,rounded&#39;</span><span class="p">,</span>
+                         <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span>
                          <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
                          <span class="n">fillcolor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">colors</span><span class="p">][</span><span class="n">value</span><span class="p">])</span>
 
