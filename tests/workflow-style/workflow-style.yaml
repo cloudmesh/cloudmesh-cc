@@ -1,0 +1,60 @@
+workflow:
+  layout: 'dummy'
+  nodes:
+    start:
+      label: 'start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: start
+      shape: box
+      style: ''
+    end:
+      label: 'end\nWorkflow Ended={t1.}\nTotal Time={dt1.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: end
+    fetch-data:
+      label: '\n{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data
+      shape: cylinder
+    compute:
+      label: '{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: compute
+      shape: folder
+      style: ''
+    analyze:
+      label: '{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: analyze
+      shape: note
+      style: ''
+  dependencies:
+      - start,fetch-data,compute,analyze,end
+
+colors:
+  status:
+    ready: white
+    undefined: '#DBFF33'
+    done: '#CCFFCC'
+    failed: '#FFCCCC'
+    running: '#CCE5FF'

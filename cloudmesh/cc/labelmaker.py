@@ -30,6 +30,7 @@ class Labelmaker:
         :param t0: The time t0
         :type t0: str
         """
+        self.colon = r'--'
         self.cms_variables = Variables()
         self.t0 = t0
         self.template = template\
@@ -53,6 +54,21 @@ class Labelmaker:
         self.times_filename = Path(Shell.map_filename(
             f'~/.cloudmesh/workflow/{self.workflow_name}/runtime/{self.workflow_name}.dat'
         ).path).as_posix()
+
+    def set_colon(self, value):
+        """
+        Set the quote character as colon. Single colon is not allowed.
+        The quote character is being replaced with a single colon.
+        Warning: setting the colon has not been fully implemented.
+        The reason why this is the case is because we cannot use anything
+        other than --
+
+        :param value: the value of the colon
+        :type value: str
+        :return: nothing
+        :rtype: None
+        """
+        self.colon = value
 
     def get(self, **data):
         """
@@ -90,7 +106,11 @@ class Labelmaker:
                 replacements["now"] = now.strftime(value)
             elif variable.startswith("created_"):
                 template = variable.split("created_", 1)[1]
+                base = variable.split("created_", 1)[0]
 
+                variable = fr'{variable}'
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -99,7 +119,8 @@ class Labelmaker:
                     if f'created_time_{self.job_name}' not in times_dict['times']:
                         raise ValueError
                     else:
-                        replacements[variable] = times_dict['times'][f'created_time_{self.job_name}']
+                        created_date_time = datetime.strptime(times_dict['times'][f'created_time_{self.job_name}'], r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = created_date_time.strftime(template)
 
             elif variable.startswith("modified_"):
                 template = variable.split("modified_", 1)[1]
@@ -116,7 +137,7 @@ class Labelmaker:
 
             elif variable.startswith("tstart_"):
                 template = variable.split("tstart_", 1)[1]
-
+                # if not specified then template is ""
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -167,7 +188,7 @@ class Labelmaker:
                         replacements[variable] = times_dict['times'][f't1_{self.workflow_name}']
 
             elif variable.startswith("dt0_"):
-                #time since beginning of workflow
+                # time since beginning of workflow
                 template = variable.split("dt0_", 1)[1]
 
                 times_dict = yaml.safe_load(
@@ -186,7 +207,7 @@ class Labelmaker:
                         replacements[variable] = elapsed
 
             elif variable.startswith("dt1_"):
-                #difference of time from beginning to end of workflow
+                # difference of time from beginning to end of workflow
                 template = variable.split("dt1_", 1)[1]
 
                 times_dict = yaml.safe_load(
@@ -207,20 +228,22 @@ class Labelmaker:
                         elapsed = time.strftime("%H:%M:%S", time.gmtime(delta.seconds))
                         replacements[variable] = elapsed
 
-            elif variable.startswith("dt_"):
-                # template = variable.split("dt_", 1)[1]
-                dummy, name, template = variable.split('_', 2)
-                cms_t0_name = 'created_time_' + name
-                if cms_t0_name not in self.cms_variables:
-                    # Console.error(f'workflow {name} not found in cms set',
-                    #               traceflag=True)
-                    self.cms_variables.__setitem__(
-                        cms_t0_name, datetime.strftime(t0, "%m/%d/%Y, %H:%M:%S"))
-                else:
-                    t0 = datetime.strptime(
-                        self.cms_variables[cms_t0_name], "%m/%d/%Y, %H:%M:%S")
-                dt = now - t0
-                self.template = self.template.replace(variable, "dt")
-                elapsed = time.strftime(template, time.gmtime(dt.seconds))
-                replacements["dt"] = elapsed
-        return self.template.format(**data, **replacements)
+            # elif variable.startswith("dt_"):
+            #     # template = variable.split("dt_", 1)[1]
+            #     dummy, name, template = variable.split('_', 2)
+            #     cms_t0_name = 'created_time_' + name
+            #     if cms_t0_name not in self.cms_variables:
+            #         # Console.error(f'workflow {name} not found in cms set',
+            #         #               traceflag=True)
+            #         self.cms_variables.__setitem__(
+            #             cms_t0_name, datetime.strftime(t0, "%m/%d/%Y, %H:%M:%S"))
+            #     else:
+            #         t0 = datetime.strptime(
+            #             self.cms_variables[cms_t0_name], "%m/%d/%Y, %H:%M:%S")
+            #     dt = now - t0
+            #     self.template = self.template.replace(variable, "dt")
+            #     elapsed = time.strftime(template, time.gmtime(dt.seconds))
+            #     replacements["dt"] = elapsed
+        result = self.template.format(**data, **replacements).replace(self.colon, r':')
+        return result
+        # return self.template.format(**data, **replacements)

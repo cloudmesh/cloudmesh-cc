@@ -494,17 +494,26 @@ class Graph:
             else:
                 value = e[colors]
                 color_map.append(self.colors[colors][value])
-                if name in ["start", "end"]:
+                shape = "box"
+                if 'shape' in self.nodes[name]:
+                    shape = self.nodes[name]['shape']
+                elif name in ["start", "end"]:
                     shape = "diamond"
                 else:
                     shape = "box"
                 msg = self.create_label(name)
                 self.nodes[name]["label"] = msg
 
+                style = 'filled,rounded'
+                if 'style' in self.nodes[name]:
+                    style = self.nodes[name]['style']
+                    if style == '':
+                        style = 'filled'
+
                 dot.node(name,
                          label=msg,
                          # color=self.colors[colors][value],
-                         style=f'filled,rounded',
+                         style=style,
                          shape=shape,
                          fillcolor=self.colors[colors][value])
 

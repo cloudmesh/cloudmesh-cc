@@ -67,6 +67,29 @@ These variables must be in curly braces.
   * `name`
   * `label`
   * `host`
+
+## Defining format for timestamp labels
+
+## Defining graphviz shapes and styles
+
+https://graphviz.org/doc/info/shapes.html
+
+https://graphviz.org/docs/attr-types/style/
+
+```text
+workflow:
+  nodes:
+    start:
+      label: 'start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: start
+      shape: box
+      style: ''
+```
   
 
 ## Defining dependencies in the workflow
