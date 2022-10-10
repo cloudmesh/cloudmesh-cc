@@ -1,7 +1,7 @@
 workflow:
   nodes:
     start:
-      label: 'start\nWorkflow Started={t0.}\nElapsed={dt0.}\nCreated={created.%Y/%m/%d, %H--%M--%S}'
+      label: 'start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.%Y/%m/%d, %H--%M--%S}\nNow={now.%Y/%m/%d, %H--%M--%S}\nElapsed={dt0.%M--%S}'
       kind: local
       user: grey
       host: local
@@ -11,15 +11,17 @@ workflow:
       shape: box
       style: ''
     end:
-      label: 'end\nWorkflow Ended={t1.}\nTotal Time={dt1.}'
+      label: 'end\nWorkflow Ended={t1.%Y/%m/%d, %H--%M--%S}\nTotal Time={dt1.%S} seconds'
       kind: local
       user: grey
       host: local
       status: ready
       exec: 'echo hello'
       name: end
+      shape: box
+      style: ''
     fetch-data:
-      label: '{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      label: '{name}\nprogress={progress}\nstart={tstart.%Y/%m/%d, %H--%M--%S}\nend={tend.%Y/%m/%d, %H--%M--%S}\nmodified={modified.%Y/%m/%d, %H--%M--%S}\ntotal time={dt.}'
       kind: local
       user: grey
       host: local
@@ -27,7 +29,7 @@ workflow:
       exec: 'echo hello'
       name: fetch-data
     compute:
-      label: '{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      label: '{name}\nprogress={progress}\nstart={tstart.%Y/%m/%d, %H--%M--%S}\nend={tend.%Y/%m/%d, %H--%M--%S}\nmodified={modified.%Y/%m/%d, %H--%M--%S}\ntotal time={dt.}'
       kind: local
       user: grey
       host: local
@@ -35,7 +37,7 @@ workflow:
       exec: 'echo hello'
       name: compute
     analyze:
-      label: '{name}\nprogress={progress}\nmodified={modified.}\nstart={tstart.}\nend={tend.}'
+      label: '{name}\nprogress={progress}\nstart={tstart.%Y/%m/%d, %H--%M--%S}\nend={tend.%Y/%m/%d, %H--%M--%S}\nmodified={modified.%Y/%m/%d, %H--%M--%S}\ntotal time={dt.}'
       kind: local
       user: grey
       host: local

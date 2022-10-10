@@ -1735,7 +1735,7 @@ def generate_example_workflow(request: Request):
                                          f'{name}.yaml')
     runtime_yaml_location = os.path.normpath(runtime_yaml_location)
     Shell.copy(runtime_yaml_location, yaml_location)
-    w = Workflow()
+    w = Workflow(name='workflow-example')
     w.load(filename=runtime_yaml_location)
     print(w.yaml)
     return RedirectResponse('/home', status_code=302)

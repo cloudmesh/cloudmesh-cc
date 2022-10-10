@@ -101,14 +101,15 @@ class Labelmaker:
                     value = variables[key]
                 replacements[variable] = value
             elif variable.startswith("now_"):
-                value = variable.split("now_", 1)[1]
-                self.template = self.template.replace(variable, "now")
-                replacements["now"] = now.strftime(value)
+                template = variable.split("now_", 1)[1]
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
+                # self.template = self.template.replace(variable, "now")
+                replacements[variable] = now.strftime(template)
             elif variable.startswith("created_"):
                 template = variable.split("created_", 1)[1]
                 base = variable.split("created_", 1)[0]
 
-                variable = fr'{variable}'
                 if template == "":
                     template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
@@ -125,6 +126,8 @@ class Labelmaker:
             elif variable.startswith("modified_"):
                 template = variable.split("modified_", 1)[1]
 
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -133,11 +136,15 @@ class Labelmaker:
                     if f'modified_time_{self.job_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f'modified_time_{self.job_name}']
+                        modified_date_time = datetime.strptime(times_dict['times'][f'modified_time_{self.job_name}'], r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = modified_date_time.strftime(template)
 
             elif variable.startswith("tstart_"):
+                # the time a job started.
                 template = variable.split("tstart_", 1)[1]
-                # if not specified then template is ""
+
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -146,11 +153,19 @@ class Labelmaker:
                     if f'tstart_{self.job_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f'tstart_{self.job_name}']
+                        tstart_date_time = datetime.strptime(
+                            times_dict['times'][
+                                f'tstart_{self.job_name}'],
+                            r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = tstart_date_time.strftime(
+                            template)
 
             elif variable.startswith("tend_"):
+                # the time a job ended.
                 template = variable.split("tend_", 1)[1]
 
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -159,11 +174,19 @@ class Labelmaker:
                     if f'tend_{self.job_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f'tend_{self.job_name}']
+                        tend_date_time = datetime.strptime(
+                            times_dict['times'][
+                                f'tend_{self.job_name}'],
+                            r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = tend_date_time.strftime(
+                            template)
 
             elif variable.startswith("t0_"):
+                # the time a workflow started.
                 template = variable.split("t0_", 1)[1]
 
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -172,11 +195,19 @@ class Labelmaker:
                     if f't0_{self.workflow_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f't0_{self.workflow_name}']
+                        t0_date_time = datetime.strptime(
+                            times_dict['times'][
+                                f't0_{self.workflow_name}'],
+                            r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = t0_date_time.strftime(
+                            template)
 
             elif variable.startswith("t1_"):
+                # the time a workflow ended.
                 template = variable.split("t1_", 1)[1]
 
+                if template == "":
+                    template = r"%m/%d/%Y, %H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -185,12 +216,19 @@ class Labelmaker:
                     if f't1_{self.workflow_name}' not in times_dict['times']:
                         replacements[variable] = r'N/A'
                     else:
-                        replacements[variable] = times_dict['times'][f't1_{self.workflow_name}']
+                        t1_date_time = datetime.strptime(
+                            times_dict['times'][
+                                f't1_{self.workflow_name}'],
+                            r"%m/%d/%Y, %H:%M:%S")
+                        replacements[variable] = t1_date_time.strftime(
+                            template)
 
             elif variable.startswith("dt0_"):
                 # time since beginning of workflow
                 template = variable.split("dt0_", 1)[1]
 
+                if template == "":
+                    template = r"%H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -203,13 +241,16 @@ class Labelmaker:
                         t0 = datetime.strptime(
                                 start_time, "%m/%d/%Y, %H:%M:%S")
                         dt = now - t0
-                        elapsed = time.strftime("%H:%M:%S", time.gmtime(dt.seconds))
-                        replacements[variable] = elapsed
+                        elapsed = time.gmtime(dt.seconds)
+                        replacements[variable] = time.strftime(template,
+                                                               elapsed)
 
             elif variable.startswith("dt1_"):
                 # difference of time from beginning to end of workflow
                 template = variable.split("dt1_", 1)[1]
 
+                if template == "":
+                    template = r"%H:%M:%S"
                 times_dict = yaml.safe_load(
                     Path(self.times_filename).read_text())
                 if times_dict is None:
@@ -225,25 +266,35 @@ class Labelmaker:
                         end = datetime.strptime(
                                 end_time, "%m/%d/%Y, %H:%M:%S")
                         delta = end - start
-                        elapsed = time.strftime("%H:%M:%S", time.gmtime(delta.seconds))
-                        replacements[variable] = elapsed
+                        elapsed = time.gmtime(delta.seconds)
+                        replacements[variable] = time.strftime(template,
+                                                               elapsed)
 
-            # elif variable.startswith("dt_"):
-            #     # template = variable.split("dt_", 1)[1]
-            #     dummy, name, template = variable.split('_', 2)
-            #     cms_t0_name = 'created_time_' + name
-            #     if cms_t0_name not in self.cms_variables:
-            #         # Console.error(f'workflow {name} not found in cms set',
-            #         #               traceflag=True)
-            #         self.cms_variables.__setitem__(
-            #             cms_t0_name, datetime.strftime(t0, "%m/%d/%Y, %H:%M:%S"))
-            #     else:
-            #         t0 = datetime.strptime(
-            #             self.cms_variables[cms_t0_name], "%m/%d/%Y, %H:%M:%S")
-            #     dt = now - t0
-            #     self.template = self.template.replace(variable, "dt")
-            #     elapsed = time.strftime(template, time.gmtime(dt.seconds))
-            #     replacements["dt"] = elapsed
+
+            elif variable.startswith("dt_"):
+                # the total time of a job.
+                template = variable.split("dt_", 1)[1]
+
+                if template == "":
+                    template = r"%H:%M:%S"
+                times_dict = yaml.safe_load(
+                    Path(self.times_filename).read_text())
+                if times_dict is None:
+                    raise ValueError
+                if 'times' in times_dict:
+                    if f'tstart_{self.job_name}' not in times_dict['times'] or f'tend_{self.job_name}' not in times_dict['times']:
+                        replacements[variable] = r'N/A'
+                    else:
+                        start_time = times_dict['times'][f'tstart_{self.job_name}']
+                        end_time = times_dict['times'][f'tend_{self.job_name}']
+                        start = datetime.strptime(
+                                start_time, "%m/%d/%Y, %H:%M:%S")
+                        end = datetime.strptime(
+                                end_time, "%m/%d/%Y, %H:%M:%S")
+                        delta = end - start
+                        elapsed = time.gmtime(delta.seconds)
+                        replacements[variable] = time.strftime(template,
+                                                               elapsed)
         result = self.template.format(**data, **replacements).replace(self.colon, r':')
         return result
         # return self.template.format(**data, **replacements)
