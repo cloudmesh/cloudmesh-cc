@@ -120,9 +120,9 @@ the datetime defaults to American format.
 Any shape and style for the nodes in the graph can be
 chosen, as long as they are taken from the graphviz documentation:
 
-https://graphviz.org/doc/info/shapes.html
+<https://graphviz.org/doc/info/shapes.html>
 
-https://graphviz.org/docs/attr-types/style/
+<https://graphviz.org/docs/attr-types/style/>
 
 The following is an example of a node in YAML format
 that uses a box shape and an empty style. The empty style
