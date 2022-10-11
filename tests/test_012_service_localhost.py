@@ -26,13 +26,19 @@ class TestService:
     def test_start_over(self):
         HEADING()
         Benchmark.Start()
+        list_of_workflows_to_delete = []
         example_workflow_dir = Shell.map_filename(
             '~/.cloudmesh/workflow/workflow-example/').path
-        try:
-            Shell.run(f'rm -rf {example_workflow_dir}')
-        except Exception as e:
-            print(e)
-        assert not os.path.exists(example_workflow_dir)
+        testing_workflow_dir = Shell.map_filename(
+            '~/.cloudmesh/workflow/imtesting').path
+        list_of_workflows_to_delete.append(example_workflow_dir)
+        list_of_workflows_to_delete.append(testing_workflow_dir)
+        for workflow_dir in list_of_workflows_to_delete:
+            try:
+                Shell.run(f'rm -rf {workflow_dir}')
+            except Exception as e:
+                print(e)
+            assert not os.path.exists(workflow_dir)
         Benchmark.Stop()
 
     @pytest.mark.anyio
@@ -73,9 +79,30 @@ class TestService:
         if expanded_user in example_dir:
             example_dir = example_dir.replace(expanded_user, '~')
 
-        response = client.post(f"/workflow/upload?directory={example_dir}")
+        response = client.post(f"/workflow?directory={example_dir}")
         Benchmark.Stop()
         print(response.json())
+        assert response.status_code == 200
+        assert 'Successfully uploaded' in response.json()['message']
+
+    def test_upload_two(self):
+        HEADING()
+
+        Benchmark.Start()
+
+        # we are trying out the name parameter in upload
+        test_file = Path(f'{__file__}').as_posix()
+        test_dir = Path(os.path.dirname(test_file)).as_posix()
+        example_dir = os.path.join(test_dir, 'workflow-example')
+        example_dir = example_dir.replace("\\", "/")
+        expanded_user = os.path.expanduser('~')
+        expanded_user = expanded_user.replace('\\', '/')
+        if expanded_user in example_dir:
+            example_dir = example_dir.replace(expanded_user, '~')
+
+        response = client.post(
+            f"/workflow?directory={example_dir}&name=imtesting")
+        Benchmark.Stop()
         assert response.status_code == 200
         assert 'Successfully uploaded' in response.json()['message']
 
@@ -171,5 +198,7 @@ class TestService:
         assert 'was deleted' in response.json()['message']
         assert not os.path.isdir(workflow_example_dir)
         assert response.status_code == 200
+        response = client.delete("/workflow/imtesting")
+        assert 'was deleted' in response.json()['message']
 
 

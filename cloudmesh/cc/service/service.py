@@ -792,12 +792,10 @@ def list_workflows(output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/workflow",
-          tags=['workflow'])
+@app.post("/workflow")
 @app.post("/workflow/{name}",
           tags=['workflow'])
-@app.post("/workflow/upload",
-          tags=['workflow'])
+@app.post("/workflow/upload")
 def upload(directory: str = Query(None,
                                   description='path to workflow dir '
                                               'that contains scripts '
@@ -885,10 +883,13 @@ def upload(directory: str = Query(None,
             # expanded_dir_path = Path(expanded_dir_path).as_posix()
 
             # these try excepts are needed in the case of a workflow with
-            # all py files! or all sh files! or all ipynb files!
+            # all py files, or all sh files, or all ipynb files
             for kind in ["yaml", "sh", "py", "ipynb"]:
                 try:
-                    Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}')
+                    if kind == 'yaml':
+                        Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}/{name}.yaml')
+                    else:
+                        Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}')
                 except:  # noqa: E722
                     pass
             runtime_yaml_location = os.path.join(runtime_directory,
