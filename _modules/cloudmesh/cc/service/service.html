@@ -895,12 +895,10 @@
 <span class="c1"># 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3</span>
 <span class="c1"># 4.2 they are uncompressed just as if they were to do an individual upload.</span>
 <span class="c1"># name is optional because the name is determined on what is provided</span>
-<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span>
-          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">)</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
           <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">,</span>
-          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to workflow dir &#39;</span>
                                               <span class="s1">&#39;that contains scripts &#39;</span>
@@ -988,10 +986,13 @@
             <span class="c1"># expanded_dir_path = Path(expanded_dir_path).as_posix()</span>
 
             <span class="c1"># these try excepts are needed in the case of a workflow with</span>
-            <span class="c1"># all py files! or all sh files! or all ipynb files!</span>
+            <span class="c1"># all py files, or all sh files, or all ipynb files</span>
             <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">,</span> <span class="s2">&quot;ipynb&quot;</span><span class="p">]:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;yaml&#39;</span><span class="p">:</span>
+                        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
                     <span class="k">pass</span>
             <span class="n">runtime_yaml_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">,</span>
