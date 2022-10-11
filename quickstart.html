@@ -312,7 +312,7 @@ command line, via the browser GUI, and via the Python API.</p>
 <p>A workflow can be uploaded easily with a curl command from the command
 line. On the command line execute:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-  <span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=/tmp/workflow-example&#39;</span> <span class="se">\</span>
+  <span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span> <span class="se">\</span>
   -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
   -d <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -320,10 +320,10 @@ line. On the command line execute:</p>
 </section>
 <section id="option-2-upload-via-docs-1">
 <span id="id2"></span><h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs-1" title="Permalink to this heading"></a></h3>
-<p>Also here one cane upload the needed files with the OpenAPI
+<p>Also here one can upload the needed files with the OpenAPI
 specification interface on the service. Navigate to
 <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code> and use the POST Upload method.</p>
-<p>Click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code> and then enter <code class="docutils literal notranslate"><span class="pre">/tmp/workflow-example</span></code> in the
+<p>Click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code> and then enter <code class="docutils literal notranslate"><span class="pre">~/cm/cloudmesh-cc/tests/workflow-example</span></code> in the
 directory field and then click Execute.</p>
 </section>
 <section id="option-3-upload-via-the-python-api-1">
@@ -332,7 +332,7 @@ directory field and then click Execute.</p>
 python requests to demonstrate the upload of the workflow.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=/tmp/workflow-example&#39;</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>

@@ -33,7 +33,7 @@ cloudmesh-cc, by specifying one of the following:
 
 ```bash
 curl -X 'POST' \
-    'http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
+    'http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
     -H 'accept: application/json' \
     -d ''
 ```
@@ -43,7 +43,7 @@ and yaml
 
 ```bash
 curl -X 'POST' \
-    'http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile' \
+    'http://127.0.0.1:8000/workflow?archive=ThePathToYourArchiveFile' \
     -H 'accept: application/json' \
     -d ''
 ```
@@ -52,7 +52,7 @@ curl -X 'POST' \
 
 ```bash
 curl -X 'POST' \
-    'http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
+    'http://127.0.0.1:8000/workflow?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml' \
     -H 'accept: application/json' \
     -d ''
 ```

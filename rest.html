@@ -141,7 +141,7 @@ cloudmesh-cc, by specifying one of the following:</p>
 <li><p>a directory that contains the scripts and yaml</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span> <span class="se">\</span>
     -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
     -d <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -151,7 +151,7 @@ cloudmesh-cc, by specifying one of the following:</p>
 and yaml</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?archive=ThePathToYourArchiveFile&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow?archive=ThePathToYourArchiveFile&#39;</span> <span class="se">\</span>
     -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
     -d <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -160,7 +160,7 @@ and yaml</p></li>
 <li><p>or a yaml file that specifies what jobs to run.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/upload?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;http://127.0.0.1:8000/workflow?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39;</span> <span class="se">\</span>
     -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
     -d <span class="s1">&#39;&#39;</span>
 </pre></div>
