@@ -277,6 +277,41 @@ class Graph:
             self.nodes[source]["parent"] = []
         self.nodes[destination]["parent"].append(source)
 
+    def delete_edge(self, source, destination):
+        """
+        Add edge(s) to the graph.
+
+        :param source: beginning edge
+        :type source: str
+        :param destination: end edge
+        :type destination: str
+        :return: nothing
+        :rtype: None
+        """
+        #
+        # TODO: add dependency to attribute in node dependency_in,
+        #   dependency_out, we could use a set for that. so multiple
+        #   dependencies are ignored
+        #
+        name = f"{source}{self.sep}{destination}"
+
+        del self.edges[name]
+
+        # TODO: do this somehow e.g. remove source from destination in parent
+        # if "parent" not in self.nodes[destination]:
+        #     self.nodes[destination]["parent"] = []
+        # if "parent" not in self.nodes[source]:
+        #     self.nodes[source]["parent"] = []
+        # self.nodes[destination]["parent"].append(source)
+
+    def delete_node(self, name):
+
+        pass
+        # del self.node[name]
+        # for all nodes:
+        #     if parents of node containes name:
+        #         remove the name from parents:
+
     def done(self, parent):
         """
         Remove from all nodes the named parent.
