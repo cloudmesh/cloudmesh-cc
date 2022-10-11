@@ -1348,6 +1348,7 @@ def serve_watcher(request: Request, name: str):
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
                                        "name": name,
+                                       "name_of_workflow": name,  # same as name
                                        "workflowlist": folders})
 
 
