@@ -685,10 +685,16 @@ class Workflow:
             Shell.mkdir(self.runtime_dir)
         self.runtime_filename = f"{self.runtime_dir}{self.name}.yaml"
         self.times_filename = f"{self.runtime_dir}{self.name}.dat"
-        if not os.path.isfile(self.runtime_filename):
-            Shell.copy(self.filename, self.runtime_filename)
-        if not os.path.isfile(self.times_filename):
-            writefile(self.times_filename, '')
+        try:
+            if not os.path.isfile(self.runtime_filename):
+                Shell.copy(self.filename, self.runtime_filename)
+        except:
+            pass
+        try:
+            if not os.path.isfile(self.times_filename):
+                writefile(self.times_filename, '')
+        except:
+            pass
 
         try:
             print("Workflow Filename:", self.filename)

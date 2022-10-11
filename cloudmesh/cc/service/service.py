@@ -792,6 +792,8 @@ def list_workflows(output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
+@app.post("/workflow",
+          tags=['workflow'])
 @app.post("/workflow/{name}",
           tags=['workflow'])
 @app.post("/workflow/upload",
