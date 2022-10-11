@@ -458,6 +458,12 @@
 <span class="sd">        the completion of a previous node in order for the</span>
 <span class="sd">        next to be run.</span>
 
+<span class="sd">        An example is a,b,c,d which creates dependencies between</span>
+<span class="sd">        a,b</span>
+<span class="sd">        b,c</span>
+<span class="sd">        c,d</span>
+<span class="sd">        e.g. a-&gt;b-&gt;c-&gt;d</span>
+
 <span class="sd">        :param dependency: a comma separated string with names of nodes</span>
 <span class="sd">        :type dependency: str</span>
 <span class="sd">        :param nodedata: specifications of the node such as status</span>
