@@ -25,7 +25,7 @@ html_theme = "sphinx_rtd_theme"
 
 project = 'cloudmesh-cc'
 copyright = '2022, Gregor von Laszewski and Jacques Fleischer'
-author = 'Gregor von Laszewski'
+author = 'Gregor von Laszewski and Jacques Fleischer'
 release = cc_version
 
 extensions = []
