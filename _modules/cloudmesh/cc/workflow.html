@@ -380,6 +380,41 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">source</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">destination</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Graph.delete_edge"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_edge">[docs]</a>    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add edge(s) to the graph.</span>
+
+<span class="sd">        :param source: beginning edge</span>
+<span class="sd">        :type source: str</span>
+<span class="sd">        :param destination: end edge</span>
+<span class="sd">        :type destination: str</span>
+<span class="sd">        :return: nothing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="c1"># TODO: add dependency to attribute in node dependency_in,</span>
+        <span class="c1">#   dependency_out, we could use a set for that. so multiple</span>
+        <span class="c1">#   dependencies are ignored</span>
+        <span class="c1">#</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">sep</span><span class="si">}{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+        <span class="c1"># TODO: do this somehow e.g. remove source from destination in parent</span>
+        <span class="c1"># if &quot;parent&quot; not in self.nodes[destination]:</span>
+        <span class="c1">#     self.nodes[destination][&quot;parent&quot;] = []</span>
+        <span class="c1"># if &quot;parent&quot; not in self.nodes[source]:</span>
+        <span class="c1">#     self.nodes[source][&quot;parent&quot;] = []</span>
+        <span class="c1"># self.nodes[destination][&quot;parent&quot;].append(source)</span>
+
+<div class="viewcode-block" id="Graph.delete_node"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_node">[docs]</a>    <span class="k">def</span> <span class="nf">delete_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+        <span class="k">pass</span></div>
+        <span class="c1"># del self.node[name]</span>
+        <span class="c1"># for all nodes:</span>
+        <span class="c1">#     if parents of node containes name:</span>
+        <span class="c1">#         remove the name from parents:</span>
+
 <div class="viewcode-block" id="Graph.done"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove from all nodes the named parent.</span>
