@@ -792,6 +792,8 @@ def list_workflows(output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
+@app.post("/workflow/{name}",
+          tags=['workflow'])
 @app.post("/workflow/upload",
           tags=['workflow'])
 def upload(directory: str = Query(None,
@@ -803,7 +805,9 @@ def upload(directory: str = Query(None,
                                             'can be tgx, xz, tar.gz, '
                                             'or tar'),
            yaml: str = Query(None,
-                             description='path to yaml file for workflow')):
+                             description='path to yaml file for workflow'),
+           name: str = Query(None,
+                             description='name of workflow to be uploaded')):
     """Upload a workflow.
 
     Upload a workflow to the ~/.cloudmesh/workflow directory for running
@@ -815,6 +819,7 @@ def upload(directory: str = Query(None,
     - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,
     or tar, that contains workflow files
     - **yaml**: (str) path to yaml file that specifies workflow configuration
+    - **name**: (str) name of workflow to be uploaded
     """
 
     """
@@ -855,7 +860,8 @@ def upload(directory: str = Query(None,
                 Console.error(f"{expanded_dir_path} is not a valid dir path")
                 return {
                     "message": f"{expanded_dir_path} is not a valid dir path"}
-            name = os.path.basename(expanded_dir_path)
+            if not name:
+                name = os.path.basename(expanded_dir_path)
             # try:
             #     Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
             # except Exception as e:
@@ -898,7 +904,8 @@ def upload(directory: str = Query(None,
 
     elif archive:
         try:
-            name = os.path.basename(archive).split('.')[0]
+            if not name:
+                name = os.path.basename(archive).split('.')[0]
             runtime_directory = path_expand(
                 f"~/.cloudmesh/workflow/{name}/runtime/")
             yaml_location = path_expand(
@@ -911,8 +918,8 @@ def upload(directory: str = Query(None,
                     archive.endswith('.tar.gz') or \
                     archive.endswith('.tar'):
 
-                w = Workflow()
-                Shell.mkdir(runtime_directory)
+                w = Workflow(name=name)
+                # Shell.mkdir(runtime_directory)
                 if archive.endswith('.tar') or archive.endswith('.xz'):
                     command = f'tar --strip-components 1 --force-local -xvf {archive_location} -C {runtime_directory}'
                 else:
@@ -939,7 +946,8 @@ def upload(directory: str = Query(None,
         try:
             if not yaml.endswith('.yaml'):
                 raise Exception
-            name = os.path.basename(yaml).split('.')[0]
+            if not name:
+                name = os.path.basename(yaml).split('.')[0]
             original_yaml_location = Path(Shell.map_filename(yaml).path).as_posix()
             yaml_location = Path(path_expand(
                 f"~/.cloudmesh/workflow/{name}/{name}.yaml")).as_posix()
