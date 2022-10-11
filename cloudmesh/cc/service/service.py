@@ -15,7 +15,7 @@ import pandas as pd
 import pkg_resources
 import time
 import yaml
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi import Request, Form
 from fastapi.responses import FileResponse
 from fastapi.responses import RedirectResponse
@@ -1102,7 +1102,6 @@ def preferences_changer(column: str):
          tags=['workflow'])
 def get_workflow(request: Request,
                  name: str,
-                 job: str = None,
                  output: str = None,
                  initialized: bool = False):
     """Get the workflow.
@@ -1113,7 +1112,6 @@ def get_workflow(request: Request,
     Parameters:
 
     - **name**: (str) name of workflow to retrieve
-    - **job**: (str) name of job to retrieve, if specified
     - **output**: (str) how to print workflow, which can be
     html, graph, json, table, or csv. if not specified, then returned as dict
     - **initialized**: (bool) indicates whether workflow has already been
@@ -1129,8 +1127,6 @@ def get_workflow(request: Request,
     :type request: Request
     :param name: name of the workflow
     :type name: str
-    :param job: name of the job
-    :type job: str
     :param output: how to print workflow. can be html or table
     :type output: str
     :return: success or failure message
@@ -1265,23 +1261,46 @@ def get_workflow(request: Request,
         Console.error(e, traceflag=True)
         return {"message": f"There was an error with getting the workflow '{name}'"}
 
-    if job is not None:
-        try:
-            w = load_workflow(name)
-            result = w[job]
-            return {name: result}
-        except Exception as e:
-            print(e)
-            Console.error(e, traceflag=True)
-            return {"message": f"There was an error with getting the job '{job}' in workflow '{name}'"}
-    else:
+    if not output:
+        if name not in get_available_workflows():
+            raise HTTPException(status_code=404,
+                                detail=f"Workflow '{name}' not found")
         try:
             w = load_workflow(name)
             return {name: w}
         except Exception as e:
             print(e)
             Console.error(e, traceflag=True)
-            return {"message": f"There was an error with getting the workflow '{name}'"}
+            return {
+                "message": f"There was an error with getting the workflow '{name}'"}
+
+
+@app.get("/workflow/{workflow_name}/job/{job_name}",
+         tags=['workflow'])
+def get_job(workflow_name: str,
+            job_name: str = None,
+            output: str = None):
+    try:
+        if output == 'json':
+            w = load_workflow(workflow_name)
+            job_dict = w.job(job_name)
+            json_workflow = json.dumps(job_dict)
+            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{workflow_name}/runtime/{job_name}-json.json').path
+            writefile(json_filepath, json_workflow)
+            return FileResponse(json_filepath)
+
+    except Exception as e:
+        print(e)
+        Console.error(e, traceflag=True)
+        return {"message": f"There was an error with getting the job '{job_name}' from workflow '{workflow_name}'"}
+
+    w = load_workflow(workflow_name)
+    try:
+        result = w[job_name]
+    except KeyError:
+        raise HTTPException(status_code=404,
+                            detail=f"Job '{job_name}' not in workflow '{workflow_name}'")
+    return {job_name: result}
 
 
 @app.get("/workflow-graph/{name}",
