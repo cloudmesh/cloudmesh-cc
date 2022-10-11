@@ -887,7 +887,7 @@ def upload(directory: str = Query(None,
                                                  f'{name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
             Shell.copy(runtime_yaml_location, yaml_location)
-            w = Workflow()
+            w = Workflow(filename=runtime_yaml_location)
             w.load(filename=runtime_yaml_location)
             print(w.yaml)
             return {

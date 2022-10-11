@@ -1360,6 +1360,7 @@ class Workflow:
         :return: nothing
         :rtype: None
         """
+
         experiment_dir = Path(Shell.map_filename(f'~/experiment').path).as_posix()
         Shell.rmdir(experiment_dir)
         graph_file = Path(Shell.map_filename(f'./runtime/{self.name}.svg').path).as_posix()
@@ -1427,7 +1428,8 @@ class Workflow:
                            username=username,
                            label=label,
                            label_format=label_format,
-                           venv=venv)
+                           venv=venv,
+                           workflow_name=self.name)
                 _job.sync()
                 _job.run()
 

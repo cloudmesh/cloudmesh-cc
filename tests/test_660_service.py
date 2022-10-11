@@ -162,7 +162,7 @@ class TestService:
     def test_upload_workflow(self):
         HEADING()
         Benchmark.Start()
-        #files = {"file": open("./workflow-service.yaml","rb")}
+        # files = {"file": open("./workflow-service.yaml","rb")}
         create_workflow()
         os.chdir('..')
         workflow_service_dir = path_expand(__file__)
@@ -216,7 +216,7 @@ class TestService:
             'Content-Type': 'application/json'
         }
 
-        response = client.get(f"/workflow/job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
+        response = client.post(f"/workflow/job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
         print(response)
         print(response.text)
         assert response.ok

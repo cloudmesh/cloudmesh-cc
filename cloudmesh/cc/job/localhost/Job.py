@@ -44,6 +44,7 @@ class Job:
         self.directory = None
         self.exec = None
         self.script = None
+        self.workflow_name = None
 
         # print("self.data", self.data)
         self.data = argv
@@ -317,7 +318,7 @@ class Job:
         return content
 
     def sync(self):
-        """Syncronise the current directory with the remote.
+        """Synchronise the current directory with the remote.
 
         copies the shell script to the experiment directory and
         ensures that the file is copied with the sync command
@@ -327,9 +328,17 @@ class Job:
         """
         self.mkdir_experimentdir()
         self.chmod()
+        expanded_workflow_dir = Shell.map_filename(
+            fr'~/.cloudmesh/workflow/{self.workflow_name}'
+        ).path
+        if self.workflow_name:
+            os.chdir(expanded_workflow_dir)
         command = f"cp ./runtime/{self.name}{self.filetype} {self.directory}/."
         print(command)
-        Shell.run(command)
+        try:
+            Shell.run(command)
+        except Exception as e:
+            print(e.output)
         os.system("sync")
         r = os.system(command)
         return r
