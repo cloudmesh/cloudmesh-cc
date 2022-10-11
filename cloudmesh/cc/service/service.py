@@ -45,10 +45,10 @@ all the URLs.
     ?dict
     
 @app.post("/workflow/upload", tags=['workflow'])
-@app.delete("/workflow/{name}", tags=['workflow'])
-@app.get("/workflow/{name}", tags=['workflow'])
-@app.get("/workflow/run/{name}", tags=['workflow'])
-@app.post("/workflow/{name}", tags=['workflow'])
+@app.delete("/workflow/{workflow_name}", tags=['workflow'])
+@app.get("/workflow/{workflow_name}", tags=['workflow'])
+@app.get("/workflow/run/{workflow_name}", tags=['workflow'])
+@app.post("/workflow/{workflow_name}", tags=['workflow'])
 """
 
 variables = Variables()
@@ -526,92 +526,92 @@ def status_returner(name_of_workflow: str):
     return count
 
 
-@app.get("/done-count/{name}",
+@app.get("/done-count/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_done(request: Request, name: str):
+def serve_done(request: Request, workflow_name: str):
     """
     Give the number of done jobs.
 
     **request** (Request) that is supplied when using web interface
-    **name** (str) name of workflow
+    **workflow_name** (str) name of workflow
     **return** (EventSourceResponse) event source response for server side event
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: event source response for server side event
     :rtype: EventSourceResponse
     """
-    event_generator = done_watcher(request, name)
+    event_generator = done_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/ready-count/{name}",
+@app.get("/ready-count/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_ready(request: Request, name: str):
+def serve_ready(request: Request, workflow_name: str):
     """
     Give the number of ready jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: event source response for server side event
     :rtype: EventSourceResponse
     """
-    event_generator = ready_watcher(request, name)
+    event_generator = ready_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/failed-count/{name}",
+@app.get("/failed-count/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_failed(request: Request, name: str):
+def serve_failed(request: Request, workflow_name: str):
     """
     Give the number of failed jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: event source response for server side event
     :rtype: EventSourceResponse
     """
-    event_generator = failed_watcher(request, name)
+    event_generator = failed_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/submitted-count/{name}",
+@app.get("/submitted-count/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_submitted(request: Request, name: str):
+def serve_submitted(request: Request, workflow_name: str):
     """
     Give the number of submitted jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: event source response for server side event
     :rtype: EventSourceResponse
     """
-    event_generator = submitted_watcher(request, name)
+    event_generator = submitted_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/running-count/{name}",
+@app.get("/running-count/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_running(request: Request, name: str):
+def serve_running(request: Request, workflow_name: str):
     """
     Give the number of running jobs.
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: event source response for server side event
     :rtype: EventSourceResponse
     """
-    event_generator = running_watcher(request, name)
+    event_generator = running_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
@@ -793,7 +793,7 @@ def list_workflows(output: str = None):
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
 @app.post("/workflow", include_in_schema=include_portal_tag_in_schema)
-@app.post("/workflow/{name}",
+@app.post("/workflow/{workflow_name}",
           tags=['workflow'])
 @app.post("/workflow/upload", include_in_schema=include_portal_tag_in_schema)
 def upload(directory: str = Query(None,
@@ -806,7 +806,7 @@ def upload(directory: str = Query(None,
                                             'or tar'),
            yaml: str = Query(None,
                              description='path to yaml file for workflow'),
-           name: str = Query(None,
+           workflow_name: str = Query(None,
                              description='name of workflow to be uploaded')):
     """Upload a workflow.
 
@@ -819,7 +819,7 @@ def upload(directory: str = Query(None,
     - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,
     or tar, that contains workflow files
     - **yaml**: (str) path to yaml file that specifies workflow configuration
-    - **name**: (str) name of workflow to be uploaded
+    - **workflow_name**: (str) name of workflow to be uploaded
     """
 
     """
@@ -860,8 +860,8 @@ def upload(directory: str = Query(None,
                 Console.error(f"{expanded_dir_path} is not a valid dir path")
                 return {
                     "message": f"{expanded_dir_path} is not a valid dir path"}
-            if not name:
-                name = os.path.basename(expanded_dir_path)
+            if not workflow_name:
+                workflow_name = os.path.basename(expanded_dir_path)
             # try:
             #     Shell.run(f'tar -C {expanded_dir_path} -cf {name}.tar .')
             # except Exception as e:
@@ -870,9 +870,9 @@ def upload(directory: str = Query(None,
             #     Shell.map_filename(f'./{name}.tar').path).as_posix()
             #
             runtime_directory = Path(path_expand(
-                f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
+                f"~/.cloudmesh/workflow/{workflow_name}/runtime/")).as_posix()
             yaml_location = path_expand(
-                f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+                f"~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml")
             Shell.mkdir(runtime_directory)
             # command = f'tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}'
             #
@@ -887,32 +887,32 @@ def upload(directory: str = Query(None,
             for kind in ["yaml", "sh", "py", "ipynb"]:
                 try:
                     if kind == 'yaml':
-                        Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}/{name}.yaml')
+                        Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}/{workflow_name}.yaml')
                     else:
                         Shell.run(f'cp {expanded_dir_path}*.{kind} {runtime_directory}')
                 except:  # noqa: E722
                     pass
             runtime_yaml_location = os.path.join(runtime_directory,
-                                                 f'{name}.yaml')
+                                                 f'{workflow_name}.yaml')
             runtime_yaml_location = os.path.normpath(runtime_yaml_location)
             Shell.copy(runtime_yaml_location, yaml_location)
             w = Workflow(filename=runtime_yaml_location)
             w.load(filename=runtime_yaml_location)
             print(w.yaml)
             return {
-                "message": f"Successfully uploaded {name} dir"}
+                "message": f"Successfully uploaded {workflow_name} dir"}
         except Exception as e:
             Console.error(e, traceflag=True)
             return {"message": f"There was an error uploading the file {e}"}
 
     elif archive:
         try:
-            if not name:
-                name = os.path.basename(archive).split('.')[0]
+            if not workflow_name:
+                workflow_name = os.path.basename(archive).split('.')[0]
             runtime_directory = path_expand(
-                f"~/.cloudmesh/workflow/{name}/runtime/")
+                f"~/.cloudmesh/workflow/{workflow_name}/runtime/")
             yaml_location = path_expand(
-                f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+                f"~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml")
             runtime_directory = Path(runtime_directory).as_posix()
             archive_location = Path(Shell.map_filename(archive).path).as_posix()
 
@@ -921,7 +921,7 @@ def upload(directory: str = Query(None,
                     archive.endswith('.tar.gz') or \
                     archive.endswith('.tar'):
 
-                w = Workflow(name=name)
+                w = Workflow(name=workflow_name)
                 # Shell.mkdir(runtime_directory)
                 if archive.endswith('.tar') or archive.endswith('.xz'):
                     command = f'tar --strip-components 1 --force-local -xvf {archive_location} -C {runtime_directory}'
@@ -930,7 +930,7 @@ def upload(directory: str = Query(None,
                 print(command)
                 os.system(command)
                 runtime_yaml_location = os.path.join(runtime_directory,
-                                                     f'{name}.yaml')
+                                                     f'{workflow_name}.yaml')
                 runtime_yaml_location = os.path.normpath(runtime_yaml_location)
                 Shell.copy(runtime_yaml_location, yaml_location)
                 w.load(filename=runtime_yaml_location)
@@ -949,18 +949,18 @@ def upload(directory: str = Query(None,
         try:
             if not yaml.endswith('.yaml'):
                 raise Exception
-            if not name:
-                name = os.path.basename(yaml).split('.')[0]
+            if not workflow_name:
+                workflow_name = os.path.basename(yaml).split('.')[0]
             original_yaml_location = Path(Shell.map_filename(yaml).path).as_posix()
             yaml_location = Path(path_expand(
-                f"~/.cloudmesh/workflow/{name}/{name}.yaml")).as_posix()
+                f"~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml")).as_posix()
             runtime_directory = Path(path_expand(
-                f"~/.cloudmesh/workflow/{name}/runtime/")).as_posix()
+                f"~/.cloudmesh/workflow/{workflow_name}/runtime/")).as_posix()
             Shell.mkdir(runtime_directory)
 
             print("LOG: Create Workflow at:", yaml_location)
             Shell.copy(original_yaml_location, yaml_location)
-            w = load_workflow(name)
+            w = load_workflow(workflow_name)
             print(w.yaml)
             return {"message": f"Successfully uploaded {yaml}"}
 
@@ -976,32 +976,32 @@ def upload(directory: str = Query(None,
 # resp = requests.post(url=url, files=file)
 # print(resp.json())
 
-@app.get("/delete/{name}",
+@app.get("/delete/{workflow_name}",
          tags=['workflow'],
          include_in_schema=include_portal_tag_in_schema)
-def delete_workflow_direct_url(name: str):
-    """Delete a workflow bu url.
+def delete_workflow_direct_url(workflow_name: str):
+    """Delete a workflow by url.
 
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
 
     :return:
     :rtype:
     """
     try:
-        # w = load_workflow(name)
-        directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+        # w = load_workflow(workflow_name)
+        directory = path_expand(f"~/.cloudmesh/workflow/{workflow_name}")
         os.system(f"rm -rf {directory}")
         return RedirectResponse(url=f'/home')
     except Exception as e:
         Console.error(e, traceflag=True)
         return {
-            "message": f"There was an error deleting the workflow '{name}'"}
+            "message": f"There was an error deleting the workflow '{workflow_name}'"}
 
 
-@app.delete("/workflow/{name}",
+@app.delete("/workflow/{workflow_name}",
             tags=['workflow'])
-def delete_workflow(name: str, job: str = None):
+def delete_workflow(workflow_name: str, job: str = None):
     """Delete a workflow by name.
 
     deletes an entire workflow. if the job is specified, then deletes
@@ -1009,7 +1009,7 @@ def delete_workflow(name: str, job: str = None):
 
     Parameters:
 
-    - **name**: (str) name of workflow to delete
+    - **workflow_name**: (str) name of workflow to delete
     - **job**: (str) name of job to delete in a workflow, if specified
     """
     """
@@ -1020,8 +1020,8 @@ def delete_workflow(name: str, job: str = None):
         'http://127.0.0.1:8000/workflow/workflow-example' \
         -H 'accept: application/json'
 
-    :param name: name of the workflow
-    :type name: str
+    :param workflow_name: name of the workflow
+    :type workflow_name: str
     :param job: name of the job
     :type job: str
     :return: success or failure message
@@ -1029,48 +1029,48 @@ def delete_workflow(name: str, job: str = None):
     if job is not None:
         # if we specify to delete the job
         try:
-            w = load_workflow(name)
+            w = load_workflow(workflow_name)
             # print(w[job])
             w.remove_job(job, state=True)
-            return {"message": f"The job {job} was deleted in the workflow {name}"}
+            return {"message": f"The job {job} was deleted in the workflow {workflow_name}"}
         except Exception as e:
             print(e)
             Console.error(e, traceflag=True)
-            return {"message": f"There was an error deleting the job '{job}' in workflow '{name}'"}
+            return {"message": f"There was an error deleting the job '{job}' in workflow '{workflow_name}'"}
     else:
         # if we specify to delete the workflow
         try:
-            # w = load_workflow(name)
-            directory = path_expand(f"~/.cloudmesh/workflow/{name}")
+            # w = load_workflow(workflow_name)
+            directory = path_expand(f"~/.cloudmesh/workflow/{workflow_name}")
             os.system(f"rm -rf {directory}")
-            return {"message": f"The workflow {name} was deleted and the directory {directory} was removed"}
+            return {"message": f"The workflow {workflow_name} was deleted and the directory {directory} was removed"}
         except Exception as e:
             Console.error(e, traceflag=True)
-            return {"message": f"There was an error deleting the workflow '{name}'"}
+            return {"message": f"There was an error deleting the workflow '{workflow_name}'"}
 
 
-@app.get("/edit/{name}",
+@app.get("/edit/{workflow_name}",
          tags=['workflow'],
          status_code=204,
          response_class=Response,
          include_in_schema=include_portal_tag_in_schema)
-def edit_workflow_direct_url(name: str):
+def edit_workflow_direct_url(workflow_name: str):
     """Edit a workflow by url.
 
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: failure message if it fails
     :rtype: dict
     """
     try:
-        # w = load_workflow(name)
-        yaml_file = path_expand(f"~/.cloudmesh/workflow/{name}/{name}.yaml")
+        # w = load_workflow(workflow_name)
+        yaml_file = path_expand(f"~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml")
         # os.system(f"emacs {yaml_file}")
         Shell.edit(yaml_file)
     except Exception as e:
         Console.error(e, traceflag=True)
         return {
-            "message": f"There was an error editing the workflow '{name}'"}
+            "message": f"There was an error editing the workflow '{workflow_name}'"}
 
 @app.get("/preferences-changer",
          status_code=204,
@@ -1098,10 +1098,10 @@ def preferences_changer(column: str):
                   sort_keys=False)
 
 
-@app.get("/workflow/{name}",
+@app.get("/workflow/{workflow_name}",
          tags=['workflow'])
 def get_workflow(request: Request,
-                 name: str,
+                 workflow_name: str,
                  output: str = None,
                  initialized: bool = False):
     """Get the workflow.
@@ -1111,7 +1111,7 @@ def get_workflow(request: Request,
 
     Parameters:
 
-    - **name**: (str) name of workflow to retrieve
+    - **workflow_name**: (str) name of workflow to retrieve
     - **output**: (str) how to print workflow, which can be
     html, graph, json, table, or csv. if not specified, then returned as dict
     - **initialized**: (bool) indicates whether workflow has already been
@@ -1125,8 +1125,8 @@ def get_workflow(request: Request,
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of the workflow
-    :type name: str
+    :param workflow_name: name of the workflow
+    :type workflow_name: str
     :param output: how to print workflow. can be html or table
     :type output: str
     :return: success or failure message
@@ -1135,17 +1135,17 @@ def get_workflow(request: Request,
     try:
         if output == 'html':
             # #result = [os.path.basename(e) for e in result]
-            # w = load_workflow(name=name)
+            # w = load_workflow(name=workflow_name)
             # print(w.dict_of_workflow)
             # df = pd.DataFrame(w.dict_of_workflow)
             # df_html = df.to_html()
             # #html_workflow = Printer.write(table=w_dict, output='html')
             # script_dir = os.path.dirname(os.path.realpath(__file__))
             # script_dir = os.path.join(script_dir, 'templates')
-            # script_dir = os.path.join(script_dir, f'{name}-html.html')
+            # script_dir = os.path.join(script_dir, f'{workflow_name}-html.html')
             # writefile(script_dir, df_html)
-            # return templates.TemplateResponse(f"{name}-html.html", {"request": request})
-            w = load_workflow(name=name)
+            # return templates.TemplateResponse(f"{workflow_name}-html.html", {"request": request})
+            w = load_workflow(name=workflow_name)
             test = w.table
             data = dict(w.graph.nodes)
             order = ['number',
@@ -1160,20 +1160,20 @@ def get_workflow(request: Request,
             workflow_html = Printer.dict_html(w.graph.nodes, order=order)
             script_dir = os.path.dirname(os.path.realpath(__file__))
             script_dir = os.path.join(script_dir, 'templates')
-            script_dir = os.path.join(script_dir, f'{name}-html.html')
+            script_dir = os.path.join(script_dir, f'{workflow_name}-html.html')
             writefile(script_dir, workflow_html)
-            return templates.TemplateResponse(f"{name}-html.html", {"request": request})
+            return templates.TemplateResponse(f"{workflow_name}-html.html", {"request": request})
 
         elif output == 'graph':
-            runtime_svg = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
+            runtime_svg = Shell.map_filename(f'~/.cloudmesh/workflow/{workflow_name}/runtime/{workflow_name}.svg').path
             if os.path.isfile(runtime_svg):
                 return FileResponse(runtime_svg)
             filename = Shell.map_filename(
-                f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
-            w = load_workflow(name=name)
+                f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml').path
+            w = load_workflow(name=workflow_name)
             w.graph.load(filename=filename)
             svg_file = Shell.map_filename(
-                f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+                f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.svg').path
             w.graph.save(filename=svg_file, colors="status",
                          layout=nx.circular_layout, engine="dot")
             print(w.graph)
@@ -1182,10 +1182,10 @@ def get_workflow(request: Request,
             return FileResponse(svg_file)
 
         elif output == 'json':
-            w = load_workflow(name)
+            w = load_workflow(workflow_name)
             w_dict = w.dict_of_workflow
             json_workflow = json.dumps(w_dict)
-            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{name}/{name}-json.json').path
+            json_filepath = Shell.map_filename(f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}-json.json').path
             writefile(json_filepath, json_workflow)
             return FileResponse(json_filepath)
 
@@ -1209,7 +1209,7 @@ def get_workflow(request: Request,
                     yaml.dump(table_preferences, f, default_flow_style=False,
                               sort_keys=False)
             if not initialized:
-                load_workflow(name)
+                load_workflow(workflow_name)
 
             order = ['number',
                      'host',
@@ -1242,37 +1242,37 @@ def get_workflow(request: Request,
 
             return templates.TemplateResponse("workflow-table.html",
                                               {"request": request,
-                                               "name_of_workflow": name,
+                                               "name_of_workflow": workflow_name,
                                                "workflowlist": folders,
                                                "preferences": preferences})
 
         elif output == 'csv':
-            w = load_workflow(name)
+            w = load_workflow(workflow_name)
             w_dict = w.dict_of_workflow
             df = pd.DataFrame(w_dict)
             response = StreamingResponse(io.StringIO(df.to_csv()),
                                          media_type="text/csv")
 
-            response.headers["Content-Disposition"] = f"attachment; filename={name}-csv.csv"
+            response.headers["Content-Disposition"] = f"attachment; filename={workflow_name}-csv.csv"
             return response
 
     except Exception as e:
         print(e)
         Console.error(e, traceflag=True)
-        return {"message": f"There was an error with getting the workflow '{name}'"}
+        return {"message": f"There was an error with getting the workflow '{workflow_name}'"}
 
     if not output:
-        if name not in get_available_workflows():
+        if workflow_name not in get_available_workflows():
             raise HTTPException(status_code=404,
-                                detail=f"Workflow '{name}' not found")
+                                detail=f"Workflow '{workflow_name}' not found")
         try:
-            w = load_workflow(name)
-            return {name: w}
+            w = load_workflow(workflow_name)
+            return {workflow_name: w}
         except Exception as e:
             print(e)
             Console.error(e, traceflag=True)
             return {
-                "message": f"There was an error with getting the workflow '{name}'"}
+                "message": f"There was an error with getting the workflow '{workflow_name}'"}
 
 
 @app.get("/workflow/{workflow_name}/job/{job_name}",
@@ -1303,20 +1303,20 @@ def get_job(workflow_name: str,
     return {job_name: result}
 
 
-@app.get("/workflow-graph/{name}",
+@app.get("/workflow-graph/{workflow_name}",
          tags=['portal'],
          include_in_schema=include_portal_tag_in_schema)
-def get_workflow_graph(request: Request, name: str):
+def get_workflow_graph(request: Request, workflow_name: str):
     """See the graph embedded within web interface.
 
     :param request: request that is supplied when using web interface
     :type request: Request
-    :param name: name of workflow to retrieve the graph for
-    :type name: str
+    :param workflow_name: name of workflow to retrieve the graph for
+    :type workflow_name: str
     :return: html page with graph
     """
     # folders = get_available_workflows()
-    # svg = f"http://127.0.0.1:8000/workflow/{name}?output=graph"
+    # svg = f"http://127.0.0.1:8000/workflow/{workflow_name}?output=graph"
     # import requests
     # r = requests.get(svg)
     # # r = '''
@@ -1328,7 +1328,7 @@ def get_workflow_graph(request: Request, name: str):
     # # '''
     #
     # print(r.text)
-    # w = load_workflow(name)
+    # w = load_workflow(workflow_name)
     # status_dict = w.analyze_states()
     # return templates.TemplateResponse("workflow-graph.html",
     #                                   {"request": request,
@@ -1336,63 +1336,63 @@ def get_workflow_graph(request: Request, name: str):
     #                                    "name_of_workflow": name,
     #                                    "workflowlist": folders,
     #                                    "status_dict": status_dict})
-    event_generator = image_watcher(request, name)
+    event_generator = image_watcher(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/watcher/{name}",
+@app.get("/watcher/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_watcher(request: Request, name: str):
+def serve_watcher(request: Request, workflow_name: str):
     """
 
     :param request:
     :type request:
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return:
     :rtype:
     """
     folders = get_available_workflows()
 
     runtime_svg = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/runtime/{name}.svg').path
+        f'~/.cloudmesh/workflow/{workflow_name}/runtime/{workflow_name}.svg').path
     if not os.path.isfile(runtime_svg):
         filename = Shell.map_filename(
-            f'~/.cloudmesh/workflow/{name}/{name}.yaml').path
-        w = load_workflow(name=name)
+            f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml').path
+        w = load_workflow(name=workflow_name)
         w.graph.load(filename=filename)
         svg_file = Shell.map_filename(
-            f'~/.cloudmesh/workflow/{name}/{name}.svg').path
+            f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.svg').path
         w.graph.save(filename=svg_file, colors="status",
                      layout=nx.circular_layout, engine="dot")
 
-    # w = load_workflow(name)
+    # w = load_workflow(workflow_name)
     return templates.TemplateResponse("watcher.html",
                                       {"request": request,
-                                       "name": name,
-                                       "name_of_workflow": name,  # same as name
+                                       "name": workflow_name,
+                                       "name_of_workflow": workflow_name,  # same as name
                                        "workflowlist": folders})
 
 
-@app.get("/serve-datatable/{name}",
+@app.get("/serve-datatable/{workflow_name}",
          include_in_schema=include_portal_tag_in_schema)
-def serve_table(request: Request, name: str):
+def serve_table(request: Request, workflow_name: str):
     """See the table of the workflow.
 
     :param request:
     :type request:
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return:
     :rtype:
     """
-    event_generator = datatable_server(request, name)
+    event_generator = datatable_server(request, workflow_name)
     return EventSourceResponse(event_generator)
 
 
-@app.get("/workflow/run/{name}",
+@app.get("/workflow/run/{workflow_name}",
          tags=['workflow'])
-def run_workflow(name: str,
+def run_workflow(workflow_name: str,
                  run_type: str = "topo",
                  redirect: str = None,
                  show: bool = False):
@@ -1401,7 +1401,7 @@ def run_workflow(name: str,
 
     Parameters:
 
-    - **name**: (str) name of workflow to run
+    - **workflow_name**: (str) name of workflow to run
     - **run_type**: (str) how to run workflow. only topo is implemented
     (topological sort of jobs)
     - **redirect**: (str) where to redirect after initializing the run.
@@ -1415,8 +1415,8 @@ def run_workflow(name: str,
         'http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo' \
         -H 'accept: application/json'
 
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :param run_type: type of run, either topo or parallel
     :type run_type: str
     :param redirect: where to redirect after initiating run
@@ -1428,11 +1428,11 @@ def run_workflow(name: str,
     """
     # reset the yaml and the log files
     workflow_runtime_dir = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/runtime').path
+        f'~/.cloudmesh/workflow/{workflow_name}/runtime').path
     workflow_runtime_star = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/runtime/*').path
+        f'~/.cloudmesh/workflow/{workflow_name}/runtime/*').path
     workflow_dir = Shell.map_filename(
-        f'~/.cloudmesh/workflow/{name}/').path
+        f'~/.cloudmesh/workflow/{workflow_name}/').path
     if os.path.isdir(workflow_runtime_dir):
         files = glob.glob(workflow_runtime_star)
         for file in files:
@@ -1443,7 +1443,7 @@ def run_workflow(name: str,
             if file.endswith(".yaml"):
                 Shell.copy(file, workflow_runtime_dir)
 
-    w = load_workflow(name)
+    w = load_workflow(workflow_name)
     w.create_topological_order()
     os.chdir(os.path.dirname(w.filename))
 
@@ -1464,26 +1464,26 @@ def run_workflow(name: str,
         print("Exception:", e)
 
 
-@app.get("/workflow-running/{name}",
+@app.get("/workflow-running/{workflow_name}",
          tags=['portal'],
          include_in_schema=include_portal_tag_in_schema)
 def watch_running_workflow(request: Request,
-                           name: str):
+                           workflow_name: str):
     """
     Page for watching a workflow that has been started.
 
     :param request: type of request (api does this automatically in browser)
     :type request: Request
-    :param name: name of workflow
-    :type name: str
+    :param workflow_name: name of workflow
+    :type workflow_name: str
     :return: html page with updating table
     """
     folders = get_available_workflows()
 
     runtime_yaml_filepath = path_expand(
-        f'~/.cloudmesh/workflow/{name}/runtime/{name}.yaml')
+        f'~/.cloudmesh/workflow/{workflow_name}/runtime/{workflow_name}.yaml')
     original_yaml_filepath = path_expand(
-        f'~/.cloudmesh/workflow/{name}/{name}.yaml')
+        f'~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml')
 
     runtime_yaml_to_read = readfile(runtime_yaml_filepath)
     original_yaml_to_read = readfile(original_yaml_filepath)
@@ -1516,15 +1516,15 @@ def watch_running_workflow(request: Request,
     return templates.TemplateResponse("workflow-running.html",
                                       {"request": request,
                                        "dictionary": runtime_yaml_file['workflow']['nodes'],
-                                       "name_of_workflow": name,
+                                       "name_of_workflow": workflow_name,
                                        "workflowlist": folders,
                                        "preferences": preferences})
 
 
-@app.post("/workflow/job/{name}",
+@app.post("/workflow/{workflow_name}/job/{job_name}",
          tags=['workflow'])
-def add_job(name: str,
-            job: str,
+def add_job(job_name: str,
+            workflow_name: str,
             user: str = None,
             host: str = None,
             kind: str = None,
@@ -1546,8 +1546,8 @@ def add_job(name: str,
 
     Parameters:
 
-    - **name**: (str) the name of workflow
-    - **job**: (str) the name of the job to add
+    - **job_name**: (str) the name of job to add
+    - **workflow_name**: (str) the name of the workflow to add the job to
     - **user**: (str) name of user of the job
     - **host**: (str) name of the host of the job
     - **kind**: (str) the kind of job, like ssh, slurm, local,
@@ -1565,13 +1565,13 @@ def add_job(name: str,
     We need to have first uploaded workflow-example for this curl to work:
 
     curl -X 'POST' \
-        'http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
+        'http://127.0.0.1:8000/workflow/workflow-example/job/myJob?user=aPerson&host=local&kind=local&status=ready&script=aJob.sh&progress=0&label=aLabel' \
         -H 'accept: application/json'
     
-    :param name: the name of the workflow
-    :type name: str
-    :param job: the name of the job
-    :type job: str
+    :param job_name: the name of the job to add
+    :type job_name: str
+    :param workflow_name: the name of the workflow to add the job to
+    :type workflow_name: str
     :param user: name of user of the job
     :type user: str
     :param host: name of the host of the job
@@ -1595,14 +1595,14 @@ def add_job(name: str,
     """
     # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
     # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
-    # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow?job=c&user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
-    w = load_workflow(name=name)
+    # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow/job/c?user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
+    w = load_workflow(name=workflow_name)
 
     try:
         if type(progress) == str:
             progress = int(progress)
         w.add_job(filename=w.filename,
-                  name=job,
+                  name=job_name,
                   user=user,
                   host=host,
                   label=label,
@@ -1611,7 +1611,7 @@ def add_job(name: str,
                   progress=progress,
                   script=script)
         if parent:
-            w.add_dependencies(f"{parent},{job}")
+            w.add_dependencies(f"{parent},{job_name}")
         w.save_with_state(w.filename)
         w.save(w.filename)
     except Exception as e:
@@ -1715,12 +1715,10 @@ def preferences_post(id: bool = Form(False),
          status_code=302,
          response_class=RedirectResponse,
          include_in_schema=include_portal_tag_in_schema)
-def generate_example_workflow(request: Request):
+def generate_example_workflow():
     """
     Create example workflow for testing.
 
-    :param request: request that is supplied when using web interface
-    :type request: Request
     :return: failure message or a redirection to homepage upon success
     :rtype: dict or RedirectResponse
     """
