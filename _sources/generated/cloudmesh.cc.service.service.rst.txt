@@ -25,6 +25,7 @@
       failed_watcher
       generate_example_workflow
       get_available_workflows
+      get_job
       get_workflow
       get_workflow_graph
       home_page

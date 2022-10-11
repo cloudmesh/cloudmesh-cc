@@ -147,64 +147,67 @@
 <tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows" title="cloudmesh.cc.service.service.get_available_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_available_workflows</span></code></a>()</p></td>
 <td><p>Return workflow dirs found in .cloudmesh directory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow" title="cloudmesh.cc.service.service.get_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow</span></code></a>(request, name[, job, output, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_job" title="cloudmesh.cc.service.service.get_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_job</span></code></a>(workflow_name[, job_name, output])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow" title="cloudmesh.cc.service.service.get_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow</span></code></a>(request, name[, output, ...])</p></td>
 <td><p>Get the workflow.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph" title="cloudmesh.cc.service.service.get_workflow_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow_graph</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph" title="cloudmesh.cc.service.service.get_workflow_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_workflow_graph</span></code></a>(request, name)</p></td>
 <td><p>See the graph embedded within web interface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.home_page" title="cloudmesh.cc.service.service.home_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">home_page</span></code></a>(request)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.home_page" title="cloudmesh.cc.service.service.home_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">home_page</span></code></a>(request)</p></td>
 <td><p>Return the home page.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher" title="cloudmesh.cc.service.service.image_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher" title="cloudmesh.cc.service.service.image_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_watcher</span></code></a>(request, name_of_workflow)</p></td>
 <td><p>Watch an svg for changes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows" title="cloudmesh.cc.service.service.list_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_workflows</span></code></a>([output])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows" title="cloudmesh.cc.service.service.list_workflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_workflows</span></code></a>([output])</p></td>
 <td><p>Return a list of all workflows found on local computer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow" title="cloudmesh.cc.service.service.load_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_workflow</span></code></a>(name[, load])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow" title="cloudmesh.cc.service.service.load_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_workflow</span></code></a>(name[, load])</p></td>
 <td><p>Load a workflow corresponding to given name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.man_page" title="cloudmesh.cc.service.service.man_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">man_page</span></code></a>(request)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.man_page" title="cloudmesh.cc.service.service.man_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">man_page</span></code></a>(request)</p></td>
 <td><p>Page that shows manual of cms cc command.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher" title="cloudmesh.cc.service.service.penultimate_status_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">penultimate_status_watcher</span></code></a>(request, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher" title="cloudmesh.cc.service.service.penultimate_status_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">penultimate_status_watcher</span></code></a>(request, ...)</p></td>
 <td><p>Watch a runtime yaml for status changes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer" title="cloudmesh.cc.service.service.preferences_changer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preferences_changer</span></code></a>(column)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer" title="cloudmesh.cc.service.service.preferences_changer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preferences_changer</span></code></a>(column)</p></td>
 <td><p>Change a preference to show a column from within datatable viewer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_post" title="cloudmesh.cc.service.service.preferences_post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preferences_post</span></code></a>([id, name, status, host, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_post" title="cloudmesh.cc.service.service.preferences_post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preferences_post</span></code></a>([id, name, status, host, ...])</p></td>
 <td><p>Set preferences.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher" title="cloudmesh.cc.service.service.ready_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ready_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher" title="cloudmesh.cc.service.service.ready_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ready_watcher</span></code></a>(request, name_of_workflow)</p></td>
 <td><p>Server side event watcher that yields number of jobs that are ready.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow" title="cloudmesh.cc.service.service.run_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_workflow</span></code></a>(name[, run_type, redirect, show])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow" title="cloudmesh.cc.service.service.run_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_workflow</span></code></a>(name[, run_type, redirect, show])</p></td>
 <td><p>Run a specified workflow according to provided run type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher" title="cloudmesh.cc.service.service.running_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher" title="cloudmesh.cc.service.service.running_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running_watcher</span></code></a>(request, name_of_workflow)</p></td>
 <td><p>Server side event watcher that yields number of jobs that are running.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done" title="cloudmesh.cc.service.service.serve_done"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_done</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done" title="cloudmesh.cc.service.service.serve_done"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_done</span></code></a>(request, name)</p></td>
 <td><p>Give the number of done jobs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed" title="cloudmesh.cc.service.service.serve_failed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_failed</span></code></a>(request, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed" title="cloudmesh.cc.service.service.serve_failed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_failed</span></code></a>(request, name)</p></td>
 <td><p>Give the number of failed jobs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready" title="cloudmesh.cc.service.service.serve_ready"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_ready</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready" title="cloudmesh.cc.service.service.serve_ready"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_ready</span></code></a>(request, name)</p></td>
 <td><p>Give the number of ready jobs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running" title="cloudmesh.cc.service.service.serve_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_running</span></code></a>(request, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running" title="cloudmesh.cc.service.service.serve_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_running</span></code></a>(request, name)</p></td>
 <td><p>Give the number of running jobs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted" title="cloudmesh.cc.service.service.serve_submitted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_submitted</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted" title="cloudmesh.cc.service.service.serve_submitted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_submitted</span></code></a>(request, name)</p></td>
 <td><p>Give the number of submitted jobs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table" title="cloudmesh.cc.service.service.serve_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_table</span></code></a>(request, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table" title="cloudmesh.cc.service.service.serve_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_table</span></code></a>(request, name)</p></td>
 <td><p>See the table of the workflow.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher" title="cloudmesh.cc.service.service.serve_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_watcher</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher" title="cloudmesh.cc.service.service.serve_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_watcher</span></code></a>(request, name)</p></td>
 <td><p><dl class="field-list simple">
 <dt class="field-odd">type request</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></p>
@@ -212,16 +215,16 @@
 </dl>
 </p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.status_returner" title="cloudmesh.cc.service.service.status_returner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_returner</span></code></a>(name_of_workflow)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.status_returner" title="cloudmesh.cc.service.service.status_returner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_returner</span></code></a>(name_of_workflow)</p></td>
 <td><p>Read a runtime yaml file to return a dict of status of jobs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher" title="cloudmesh.cc.service.service.submitted_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">submitted_watcher</span></code></a>(request, name_of_workflow)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher" title="cloudmesh.cc.service.service.submitted_watcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">submitted_watcher</span></code></a>(request, name_of_workflow)</p></td>
 <td><p>Server side event watcher that yields number of jobs that are submitted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload" title="cloudmesh.cc.service.service.upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload</span></code></a>([directory, archive, yaml, name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload" title="cloudmesh.cc.service.service.upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload</span></code></a>([directory, archive, yaml, name])</p></td>
 <td><p>Upload a workflow.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow" title="cloudmesh.cc.service.service.watch_running_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watch_running_workflow</span></code></a>(request, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow" title="cloudmesh.cc.service.service.watch_running_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watch_running_workflow</span></code></a>(request, name)</p></td>
 <td><p>Page for watching a workflow that has been started.</p></td>
 </tr>
 </tbody>

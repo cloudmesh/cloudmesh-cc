@@ -118,7 +118,7 @@
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Query</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Query</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Form</span>
 <span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">FileResponse</span>
 <span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">RedirectResponse</span>
@@ -1205,7 +1205,6 @@
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">initialized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the workflow.</span>
@@ -1216,7 +1215,6 @@
 <span class="sd">    Parameters:</span>
 
 <span class="sd">    - **name**: (str) name of workflow to retrieve</span>
-<span class="sd">    - **job**: (str) name of job to retrieve, if specified</span>
 <span class="sd">    - **output**: (str) how to print workflow, which can be</span>
 <span class="sd">    html, graph, json, table, or csv. if not specified, then returned as dict</span>
 <span class="sd">    - **initialized**: (bool) indicates whether workflow has already been</span>
@@ -1232,8 +1230,6 @@
 <span class="sd">    :type request: Request</span>
 <span class="sd">    :param name: name of the workflow</span>
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param job: name of the job</span>
-<span class="sd">    :type job: str</span>
 <span class="sd">    :param output: how to print workflow. can be html or table</span>
 <span class="sd">    :type output: str</span>
 <span class="sd">    :return: success or failure message</span>
@@ -1368,23 +1364,46 @@
         <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
 
-    <span class="k">if</span> <span class="n">job</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">job</span><span class="p">]</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the job &#39;</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2">&#39; in workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_available_workflows</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span>
+                                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">w</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+         <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
+            <span class="n">job_dict</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">job</span><span class="p">(</span><span class="n">job_name</span><span class="p">)</span>
+            <span class="n">json_workflow</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">job_dict</span><span class="p">)</span>
+            <span class="n">json_filepath</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">-json.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+            <span class="n">writefile</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">,</span> <span class="n">json_workflow</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the job &#39;</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&#39; from workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">job_name</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span>
+                            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Job &#39;</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&#39; not in workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">job_name</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="get_workflow_graph"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-graph/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
