@@ -147,6 +147,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># print(&quot;self.data&quot;, self.data)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">argv</span>
@@ -420,7 +421,7 @@
         <span class="k">return</span> <span class="n">content</span></div>
 
 <div class="viewcode-block" id="Job.sync"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.localhost.html#cloudmesh.cc.job.localhost.Job.Job.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Syncronise the current directory with the remote.</span>
+        <span class="sd">&quot;&quot;&quot;Synchronise the current directory with the remote.</span>
 
 <span class="sd">        copies the shell script to the experiment directory and</span>
 <span class="sd">        ensures that the file is copied with the sync command</span>
@@ -430,9 +431,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mkdir_experimentdir</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chmod</span><span class="p">()</span>
+        <span class="n">expanded_workflow_dir</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
+            <span class="sa">fr</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">expanded_workflow_dir</span><span class="p">)</span>
         <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cp ./runtime/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">/.&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;sync&quot;</span><span class="p">)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span></div>
