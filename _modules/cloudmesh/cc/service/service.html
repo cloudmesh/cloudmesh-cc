@@ -148,10 +148,10 @@
 <span class="sd">    ?dict</span>
 <span class="sd">    </span>
 <span class="sd">@app.post(&quot;/workflow/upload&quot;, tags=[&#39;workflow&#39;])</span>
-<span class="sd">@app.delete(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
-<span class="sd">@app.get(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
-<span class="sd">@app.get(&quot;/workflow/run/{name}&quot;, tags=[&#39;workflow&#39;])</span>
-<span class="sd">@app.post(&quot;/workflow/{name}&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.delete(&quot;/workflow/{workflow_name}&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.get(&quot;/workflow/{workflow_name}&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.get(&quot;/workflow/run/{workflow_name}&quot;, tags=[&#39;workflow&#39;])</span>
+<span class="sd">@app.post(&quot;/workflow/{workflow_name}&quot;, tags=[&#39;workflow&#39;])</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">variables</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
@@ -629,92 +629,92 @@
     <span class="k">return</span> <span class="n">count</span></div>
 
 
-<div class="viewcode-block" id="serve_done"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/done-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_done"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/done-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_done</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_done</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Give the number of done jobs.</span>
 
 <span class="sd">    **request** (Request) that is supplied when using web interface</span>
-<span class="sd">    **name** (str) name of workflow</span>
+<span class="sd">    **workflow_name** (str) name of workflow</span>
 <span class="sd">    **return** (EventSourceResponse) event source response for server side event</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: event source response for server side event</span>
 <span class="sd">    :rtype: EventSourceResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_ready"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ready-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_ready"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ready-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_ready</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_ready</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Give the number of ready jobs.</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: event source response for server side event</span>
 <span class="sd">    :rtype: EventSourceResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_failed"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/failed-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_failed"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/failed-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_failed</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_failed</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Give the number of failed jobs.</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: event source response for server side event</span>
 <span class="sd">    :rtype: EventSourceResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_submitted"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/submitted-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_submitted"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/submitted-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_submitted</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_submitted</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Give the number of submitted jobs.</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: event source response for server side event</span>
 <span class="sd">    :rtype: EventSourceResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_running"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/running-count/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_running"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/running-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_running</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_running</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Give the number of running jobs.</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: event source response for server side event</span>
 <span class="sd">    :rtype: EventSourceResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
@@ -896,7 +896,7 @@
 <span class="c1"># 4.2 they are uncompressed just as if they were to do an individual upload.</span>
 <span class="c1"># name is optional because the name is determined on what is provided</span>
 <div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
           <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
@@ -909,7 +909,7 @@
                                             <span class="s1">&#39;or tar&#39;</span><span class="p">),</span>
            <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to yaml file for workflow&#39;</span><span class="p">),</span>
-           <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+           <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">description</span><span class="o">=</span><span class="s1">&#39;name of workflow to be uploaded&#39;</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;Upload a workflow.</span>
 
@@ -922,7 +922,7 @@
 <span class="sd">    - **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,</span>
 <span class="sd">    or tar, that contains workflow files</span>
 <span class="sd">    - **yaml**: (str) path to yaml file that specifies workflow configuration</span>
-<span class="sd">    - **name**: (str) name of workflow to be uploaded</span>
+<span class="sd">    - **workflow_name**: (str) name of workflow to be uploaded</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -963,8 +963,8 @@
                 <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s2"> is not a valid dir path&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="p">{</span>
                     <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s2"> is not a valid dir path&quot;</span><span class="p">}</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">expanded_dir_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">workflow_name</span><span class="p">:</span>
+                <span class="n">workflow_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">expanded_dir_path</span><span class="p">)</span>
             <span class="c1"># try:</span>
             <span class="c1">#     Shell.run(f&#39;tar -C {expanded_dir_path} -cf {name}.tar .&#39;)</span>
             <span class="c1"># except Exception as e:</span>
@@ -973,9 +973,9 @@
             <span class="c1">#     Shell.map_filename(f&#39;./{name}.tar&#39;).path).as_posix()</span>
             <span class="c1">#</span>
             <span class="n">runtime_directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
             <span class="n">yaml_location</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">)</span>
             <span class="c1"># command = f&#39;tar --strip-components 1 --force-local -xvf {tar_location} -C {runtime_directory}&#39;</span>
             <span class="c1">#</span>
@@ -990,32 +990,32 @@
             <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">,</span> <span class="s2">&quot;ipynb&quot;</span><span class="p">]:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;yaml&#39;</span><span class="p">:</span>
-                        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+                        <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">Shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">expanded_dir_path</span><span class="si">}</span><span class="s1">*.</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
                     <span class="k">pass</span>
             <span class="n">runtime_yaml_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">,</span>
-                                                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+                                                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
             <span class="n">runtime_yaml_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">runtime_yaml_location</span><span class="p">,</span> <span class="n">yaml_location</span><span class="p">)</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
             <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Successfully uploaded </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> dir&quot;</span><span class="p">}</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Successfully uploaded </span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2"> dir&quot;</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error uploading the file </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 
     <span class="k">elif</span> <span class="n">archive</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">workflow_name</span><span class="p">:</span>
+                <span class="n">workflow_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">runtime_directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">)</span>
             <span class="n">yaml_location</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
             <span class="n">runtime_directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
             <span class="n">archive_location</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
 
@@ -1024,7 +1024,7 @@
                     <span class="n">archive</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.tar.gz&#39;</span><span class="p">)</span> <span class="ow">or</span> \
                     <span class="n">archive</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.tar&#39;</span><span class="p">):</span>
 
-                <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
                 <span class="c1"># Shell.mkdir(runtime_directory)</span>
                 <span class="k">if</span> <span class="n">archive</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.tar&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">archive</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xz&#39;</span><span class="p">):</span>
                     <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;tar --strip-components 1 --force-local -xvf </span><span class="si">{</span><span class="n">archive_location</span><span class="si">}</span><span class="s1"> -C </span><span class="si">{</span><span class="n">runtime_directory</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -1033,7 +1033,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
                 <span class="n">runtime_yaml_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">,</span>
-                                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+                                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
                 <span class="n">runtime_yaml_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
                 <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">runtime_yaml_location</span><span class="p">,</span> <span class="n">yaml_location</span><span class="p">)</span>
                 <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
@@ -1052,18 +1052,18 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">yaml</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yaml&#39;</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">workflow_name</span><span class="p">:</span>
+                <span class="n">workflow_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">original_yaml_location</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
             <span class="n">yaml_location</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
             <span class="n">runtime_directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path_expand</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+                <span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/runtime/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">runtime_directory</span><span class="p">)</span>
 
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LOG: Create Workflow at:&quot;</span><span class="p">,</span> <span class="n">yaml_location</span><span class="p">)</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">original_yaml_location</span><span class="p">,</span> <span class="n">yaml_location</span><span class="p">)</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Successfully uploaded </span><span class="si">{</span><span class="n">yaml</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 
@@ -1079,32 +1079,32 @@
 <span class="c1"># resp = requests.post(url=url, files=file)</span>
 <span class="c1"># print(resp.json())</span>
 
-<div class="viewcode-block" id="delete_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="delete_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">delete_workflow_direct_url</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Delete a workflow bu url.</span>
+<span class="k">def</span> <span class="nf">delete_workflow_direct_url</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete a workflow by url.</span>
 
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 
 <span class="sd">    :return:</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># w = load_workflow(name)</span>
-        <span class="n">directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># w = load_workflow(workflow_name)</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm -rf </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;/home&#39;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="delete_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="delete_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete a workflow by name.</span>
 
 <span class="sd">    deletes an entire workflow. if the job is specified, then deletes</span>
@@ -1112,7 +1112,7 @@
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">    - **name**: (str) name of workflow to delete</span>
+<span class="sd">    - **workflow_name**: (str) name of workflow to delete</span>
 <span class="sd">    - **job**: (str) name of job to delete in a workflow, if specified</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1123,8 +1123,8 @@
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    :param name: name of the workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of the workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :param job: name of the job</span>
 <span class="sd">    :type job: str</span>
 <span class="sd">    :return: success or failure message</span>
@@ -1132,48 +1132,48 @@
     <span class="k">if</span> <span class="n">job</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># if we specify to delete the job</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="c1"># print(w[job])</span>
             <span class="n">w</span><span class="o">.</span><span class="n">remove_job</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The job </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> was deleted in the workflow </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The job </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> was deleted in the workflow </span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the job &#39;</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2">&#39; in workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the job &#39;</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2">&#39; in workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># if we specify to delete the workflow</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># w = load_workflow(name)</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># w = load_workflow(workflow_name)</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm -rf </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The workflow </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was deleted and the directory </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2"> was removed&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The workflow </span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2"> was deleted and the directory </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2"> was removed&quot;</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="edit_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.edit_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="edit_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.edit_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">edit_workflow_direct_url</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">edit_workflow_direct_url</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Edit a workflow by url.</span>
 
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: failure message if it fails</span>
 <span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># w = load_workflow(name)</span>
-        <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
+        <span class="c1"># w = load_workflow(workflow_name)</span>
+        <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
         <span class="c1"># os.system(f&quot;emacs {yaml_file}&quot;)</span>
         <span class="n">Shell</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error editing the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error editing the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="preferences_changer"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/preferences-changer&quot;</span><span class="p">,</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
@@ -1201,10 +1201,10 @@
                   <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="get_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">initialized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the workflow.</span>
@@ -1214,7 +1214,7 @@
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">    - **name**: (str) name of workflow to retrieve</span>
+<span class="sd">    - **workflow_name**: (str) name of workflow to retrieve</span>
 <span class="sd">    - **output**: (str) how to print workflow, which can be</span>
 <span class="sd">    html, graph, json, table, or csv. if not specified, then returned as dict</span>
 <span class="sd">    - **initialized**: (bool) indicates whether workflow has already been</span>
@@ -1228,8 +1228,8 @@
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of the workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of the workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :param output: how to print workflow. can be html or table</span>
 <span class="sd">    :type output: str</span>
 <span class="sd">    :return: success or failure message</span>
@@ -1238,17 +1238,17 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
             <span class="c1"># #result = [os.path.basename(e) for e in result]</span>
-            <span class="c1"># w = load_workflow(name=name)</span>
+            <span class="c1"># w = load_workflow(name=workflow_name)</span>
             <span class="c1"># print(w.dict_of_workflow)</span>
             <span class="c1"># df = pd.DataFrame(w.dict_of_workflow)</span>
             <span class="c1"># df_html = df.to_html()</span>
             <span class="c1"># #html_workflow = Printer.write(table=w_dict, output=&#39;html&#39;)</span>
             <span class="c1"># script_dir = os.path.dirname(os.path.realpath(__file__))</span>
             <span class="c1"># script_dir = os.path.join(script_dir, &#39;templates&#39;)</span>
-            <span class="c1"># script_dir = os.path.join(script_dir, f&#39;{name}-html.html&#39;)</span>
+            <span class="c1"># script_dir = os.path.join(script_dir, f&#39;{workflow_name}-html.html&#39;)</span>
             <span class="c1"># writefile(script_dir, df_html)</span>
-            <span class="c1"># return templates.TemplateResponse(f&quot;{name}-html.html&quot;, {&quot;request&quot;: request})</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># return templates.TemplateResponse(f&quot;{workflow_name}-html.html&quot;, {&quot;request&quot;: request})</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="n">test</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">table</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
             <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
@@ -1263,20 +1263,20 @@
             <span class="n">workflow_html</span> <span class="o">=</span> <span class="n">Printer</span><span class="o">.</span><span class="n">dict_html</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
             <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
             <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span>
-            <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">-html.html&#39;</span><span class="p">)</span>
+            <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">-html.html&#39;</span><span class="p">)</span>
             <span class="n">writefile</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="n">workflow_html</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-html.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">-html.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">})</span>
 
         <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;graph&#39;</span><span class="p">:</span>
-            <span class="n">runtime_svg</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+            <span class="n">runtime_svg</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">runtime_svg</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">runtime_svg</span><span class="p">)</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
             <span class="n">svg_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+                <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
             <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
                          <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
@@ -1285,10 +1285,10 @@
             <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="n">w_dict</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">dict_of_workflow</span>
             <span class="n">json_workflow</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">w_dict</span><span class="p">)</span>
-            <span class="n">json_filepath</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">-json.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+            <span class="n">json_filepath</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">-json.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
             <span class="n">writefile</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">,</span> <span class="n">json_workflow</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">)</span>
 
@@ -1312,7 +1312,7 @@
                     <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">table_preferences</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                               <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">initialized</span><span class="p">:</span>
-                <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
 
             <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
                      <span class="s1">&#39;host&#39;</span><span class="p">,</span>
@@ -1345,37 +1345,37 @@
 
             <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;workflow-table.html&quot;</span><span class="p">,</span>
                                               <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-                                               <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                                               <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">workflow_name</span><span class="p">,</span>
                                                <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">,</span>
                                                <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">preferences</span><span class="p">})</span>
 
         <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
             <span class="n">w_dict</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">dict_of_workflow</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">w_dict</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingResponse</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">()),</span>
                                          <span class="n">media_type</span><span class="o">=</span><span class="s2">&quot;text/csv&quot;</span><span class="p">)</span>
 
-            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;attachment; filename=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-csv.csv&quot;</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;attachment; filename=</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">-csv.csv&quot;</span>
             <span class="k">return</span> <span class="n">response</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_available_workflows</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">workflow_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_available_workflows</span><span class="p">():</span>
             <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span>
-                                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span>
+                                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">w</span><span class="p">}</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">workflow_name</span><span class="p">:</span> <span class="n">w</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">Console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">traceflag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="get_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -1406,20 +1406,20 @@
     <span class="k">return</span> <span class="p">{</span><span class="n">job_name</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="get_workflow_graph"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-graph/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="get_workflow_graph"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-graph/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_workflow_graph</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_workflow_graph</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;See the graph embedded within web interface.</span>
 
 <span class="sd">    :param request: request that is supplied when using web interface</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow to retrieve the graph for</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow to retrieve the graph for</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: html page with graph</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># folders = get_available_workflows()</span>
-    <span class="c1"># svg = f&quot;http://127.0.0.1:8000/workflow/{name}?output=graph&quot;</span>
+    <span class="c1"># svg = f&quot;http://127.0.0.1:8000/workflow/{workflow_name}?output=graph&quot;</span>
     <span class="c1"># import requests</span>
     <span class="c1"># r = requests.get(svg)</span>
     <span class="c1"># # r = &#39;&#39;&#39;</span>
@@ -1431,7 +1431,7 @@
     <span class="c1"># # &#39;&#39;&#39;</span>
     <span class="c1">#</span>
     <span class="c1"># print(r.text)</span>
-    <span class="c1"># w = load_workflow(name)</span>
+    <span class="c1"># w = load_workflow(workflow_name)</span>
     <span class="c1"># status_dict = w.analyze_states()</span>
     <span class="c1"># return templates.TemplateResponse(&quot;workflow-graph.html&quot;,</span>
     <span class="c1">#                                   {&quot;request&quot;: request,</span>
@@ -1439,63 +1439,63 @@
     <span class="c1">#                                    &quot;name_of_workflow&quot;: name,</span>
     <span class="c1">#                                    &quot;workflowlist&quot;: folders,</span>
     <span class="c1">#                                    &quot;status_dict&quot;: status_dict})</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">image_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">image_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/watcher/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/watcher/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    :param request:</span>
 <span class="sd">    :type request:</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return:</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
 
     <span class="n">runtime_svg</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">runtime_svg</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">svg_file</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+            <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
         <span class="n">w</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
                      <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
 
-    <span class="c1"># w = load_workflow(name)</span>
+    <span class="c1"># w = load_workflow(workflow_name)</span>
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;watcher.html&quot;</span><span class="p">,</span>
                                       <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-                                       <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-                                       <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>  <span class="c1"># same as name</span>
+                                       <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">workflow_name</span><span class="p">,</span>
+                                       <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">workflow_name</span><span class="p">,</span>  <span class="c1"># same as name</span>
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="serve_table"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/serve-datatable/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="serve_table"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/serve-datatable/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">serve_table</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">serve_table</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;See the table of the workflow.</span>
 
 <span class="sd">    :param request:</span>
 <span class="sd">    :type request:</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return:</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">event_generator</span> <span class="o">=</span> <span class="n">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;topo&quot;</span><span class="p">,</span>
                  <span class="n">redirect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -1504,7 +1504,7 @@
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">    - **name**: (str) name of workflow to run</span>
+<span class="sd">    - **workflow_name**: (str) name of workflow to run</span>
 <span class="sd">    - **run_type**: (str) how to run workflow. only topo is implemented</span>
 <span class="sd">    (topological sort of jobs)</span>
 <span class="sd">    - **redirect**: (str) where to redirect after initializing the run.</span>
@@ -1518,8 +1518,8 @@
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/run/workflow-example?run_type=topo&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :param run_type: type of run, either topo or parallel</span>
 <span class="sd">    :type run_type: str</span>
 <span class="sd">    :param redirect: where to redirect after initiating run</span>
@@ -1531,11 +1531,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># reset the yaml and the log files</span>
     <span class="n">workflow_runtime_dir</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
     <span class="n">workflow_runtime_star</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime/*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime/*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
     <span class="n">workflow_dir</span> <span class="o">=</span> <span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">workflow_runtime_dir</span><span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">workflow_runtime_star</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
@@ -1546,7 +1546,7 @@
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">):</span>
                 <span class="n">Shell</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">workflow_runtime_dir</span><span class="p">)</span>
 
-    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>
     <span class="n">w</span><span class="o">.</span><span class="n">create_topological_order</span><span class="p">()</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
 
@@ -1567,26 +1567,26 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exception:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="watch_running_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-running/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="watch_running_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-running/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">watch_running_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-                           <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+                           <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Page for watching a workflow that has been started.</span>
 
 <span class="sd">    :param request: type of request (api does this automatically in browser)</span>
 <span class="sd">    :type request: Request</span>
-<span class="sd">    :param name: name of workflow</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param workflow_name: name of workflow</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :return: html page with updating table</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
 
     <span class="n">runtime_yaml_filepath</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/runtime/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
     <span class="n">original_yaml_filepath</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s1">&#39;~/.cloudmesh/workflow/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
 
     <span class="n">runtime_yaml_to_read</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">runtime_yaml_filepath</span><span class="p">)</span>
     <span class="n">original_yaml_to_read</span> <span class="o">=</span> <span class="n">readfile</span><span class="p">(</span><span class="n">original_yaml_filepath</span><span class="p">)</span>
@@ -1619,15 +1619,15 @@
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;workflow-running.html&quot;</span><span class="p">,</span>
                                       <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
                                        <span class="s2">&quot;dictionary&quot;</span><span class="p">:</span> <span class="n">runtime_yaml_file</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">],</span>
-                                       <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                                       <span class="s2">&quot;name_of_workflow&quot;</span><span class="p">:</span> <span class="n">workflow_name</span><span class="p">,</span>
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">,</span>
                                        <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">preferences</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="add_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/job/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="add_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">job</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1649,8 +1649,8 @@
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">    - **name**: (str) the name of workflow</span>
-<span class="sd">    - **job**: (str) the name of the job to add</span>
+<span class="sd">    - **job_name**: (str) the name of job to add</span>
+<span class="sd">    - **workflow_name**: (str) the name of the workflow to add the job to</span>
 <span class="sd">    - **user**: (str) name of user of the job</span>
 <span class="sd">    - **host**: (str) name of the host of the job</span>
 <span class="sd">    - **kind**: (str) the kind of job, like ssh, slurm, local,</span>
@@ -1668,13 +1668,13 @@
 <span class="sd">    We need to have first uploaded workflow-example for this curl to work:</span>
 
 <span class="sd">    curl -X &#39;POST&#39; \</span>
-<span class="sd">        &#39;http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example/job/myJob?user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39; \</span>
 <span class="sd">        -H &#39;accept: application/json&#39;</span>
 <span class="sd">    </span>
-<span class="sd">    :param name: the name of the workflow</span>
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param job: the name of the job</span>
-<span class="sd">    :type job: str</span>
+<span class="sd">    :param job_name: the name of the job to add</span>
+<span class="sd">    :type job_name: str</span>
+<span class="sd">    :param workflow_name: the name of the workflow to add the job to</span>
+<span class="sd">    :type workflow_name: str</span>
 <span class="sd">    :param user: name of user of the job</span>
 <span class="sd">    :type user: str</span>
 <span class="sd">    :param host: name of the host of the job</span>
@@ -1698,14 +1698,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># cms cc workflow service add [--name=NAME] --job=JOB ARGS...</span>
     <span class="c1"># cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh</span>
-    <span class="c1"># curl -X &#39;POST&#39; &#39;http://127.0.0.1:8000/workflow/workflow?job=c&amp;user=gregor&amp;host=localhost&amp;kind=local&amp;status=ready&amp;script=c.sh&#39; -H &#39;accept: application/json&#39;</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="c1"># curl -X &#39;POST&#39; &#39;http://127.0.0.1:8000/workflow/workflow/job/c?user=gregor&amp;host=localhost&amp;kind=local&amp;status=ready&amp;script=c.sh&#39; -H &#39;accept: application/json&#39;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
             <span class="n">progress</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
-                  <span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">,</span>
+                  <span class="n">name</span><span class="o">=</span><span class="n">job_name</span><span class="p">,</span>
                   <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
                   <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span>
                   <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
@@ -1714,7 +1714,7 @@
                   <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span>
                   <span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">parent</span><span class="p">:</span>
-            <span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">save_with_state</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1818,12 +1818,10 @@
          <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">RedirectResponse</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">generate_example_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_example_workflow</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create example workflow for testing.</span>
 
-<span class="sd">    :param request: request that is supplied when using web interface</span>
-<span class="sd">    :type request: Request</span>
 <span class="sd">    :return: failure message or a redirection to homepage upon success</span>
 <span class="sd">    :rtype: dict or RedirectResponse</span>
 <span class="sd">    &quot;&quot;&quot;</span>
