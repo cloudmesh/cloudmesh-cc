@@ -355,6 +355,12 @@ class Graph:
         the completion of a previous node in order for the
         next to be run.
 
+        An example is a,b,c,d which creates dependencies between
+        a,b
+        b,c
+        c,d
+        e.g. a->b->c->d
+
         :param dependency: a comma separated string with names of nodes
         :type dependency: str
         :param nodedata: specifications of the node such as status
