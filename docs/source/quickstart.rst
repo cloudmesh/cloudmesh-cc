@@ -193,7 +193,7 @@ line. On the command line execute:
 .. code:: bash
 
    curl -X 'POST' \
-     'http://127.0.0.1:8000/workflow?directory=/tmp/workflow-example' \
+     'http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example' \
      -H 'accept: application/json' \
      -d ''
 
@@ -202,11 +202,11 @@ line. On the command line execute:
 Option 2: Upload via ``/docs``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Also here one cane upload the needed files with the OpenAPI
+Also here one can upload the needed files with the OpenAPI
 specification interface on the service. Navigate to
 ``http://127.0.0.1:8000/docs`` and use the POST Upload method.
 
-Click ``Try it out`` and then enter ``/tmp/workflow-example`` in the
+Click ``Try it out`` and then enter ``~/cm/cloudmesh-cc/tests/workflow-example`` in the
 directory field and then click Execute.
 
 .. _option-3-upload-via-the-python-api-1:
@@ -221,7 +221,7 @@ python requests to demonstrate the upload of the workflow.
 
    import requests
 
-   r = requests.post('http://127.0.0.1:8000/workflow?directory=/tmp/workflow-example')
+   r = requests.post('http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example')
    print(r)
    print(r.text)
 
