@@ -792,10 +792,10 @@ def list_workflows(output: str = None):
 # 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
-@app.post("/workflow")
+@app.post("/workflow", include_in_schema=include_portal_tag_in_schema)
 @app.post("/workflow/{name}",
           tags=['workflow'])
-@app.post("/workflow/upload")
+@app.post("/workflow/upload", include_in_schema=include_portal_tag_in_schema)
 def upload(directory: str = Query(None,
                                   description='path to workflow dir '
                                               'that contains scripts '
