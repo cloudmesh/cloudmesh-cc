@@ -207,6 +207,39 @@ config.yaml file will be used and the name will be job-n</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cloudmesh.cc.service.service.add_page">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#add_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.add_page" title="Permalink to this definition"></a></dt>
+<dd><p>Page that allows users to add workflows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>add page</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cloudmesh.cc.service.service.add_post">
+<span class="sig-name descname"><span class="pre">add_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archivename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Form(None)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#add_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.add_post" title="Permalink to this definition"></a></dt>
+<dd><p>Add workflow from html page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_name</strong> (<em>str</em>) – the name of the new workflow</p></li>
+<li><p><strong>dirname</strong> (<em>str</em>) – path to dir with workflow files</p></li>
+<li><p><strong>archivename</strong> (<em>str</em>) – path to archive file with workflow files</p></li>
+<li><p><strong>yaml</strong> (<em>str</em>) – path to workflow yaml file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>redirect to home page</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>RedirectResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.contact_page">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">contact_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#contact_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.contact_page" title="Permalink to this definition"></a></dt>
 <dd><p>Page that lists contact information.</p>

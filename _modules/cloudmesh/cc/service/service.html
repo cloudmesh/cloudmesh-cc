@@ -825,6 +825,54 @@
                                        <span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="n">html</span><span class="p">,</span>
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
 
+<div class="viewcode-block" id="add_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/add&quot;</span><span class="p">,</span>
+         <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
+         <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Page that allows users to add workflows.</span>
+
+<span class="sd">    :return: add page</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../../..&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+    <span class="n">folders</span> <span class="o">=</span> <span class="n">get_available_workflows</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span><span class="s2">&quot;add.html&quot;</span><span class="p">,</span>
+                                      <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+                                       <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="add_post"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/add&#39;</span><span class="p">,</span>
+          <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
+          <span class="n">response_class</span><span class="o">=</span><span class="n">RedirectResponse</span><span class="p">,</span>
+          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_post</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+             <span class="n">dirname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+             <span class="n">archivename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+             <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add workflow from html page.</span>
+
+<span class="sd">    :param workflow_name: the name of the new workflow</span>
+<span class="sd">    :type workflow_name: str</span>
+<span class="sd">    :param dirname: path to dir with workflow files</span>
+<span class="sd">    :type dirname: str</span>
+<span class="sd">    :param archivename: path to archive file with workflow files</span>
+<span class="sd">    :type archivename: str</span>
+<span class="sd">    :param yaml: path to workflow yaml file</span>
+<span class="sd">    :type yaml: str</span>
+<span class="sd">    :return: redirect to home page</span>
+<span class="sd">    :rtype: RedirectResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">upload_workflow</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span>
+                    <span class="n">archive</span><span class="o">=</span><span class="n">archivename</span><span class="p">,</span>
+                    <span class="n">yaml</span><span class="o">=</span><span class="n">yaml</span><span class="p">,</span>
+                    <span class="n">workflow_name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span></div>
+    <span class="c1"># folders = get_available_workflows()</span>
+    <span class="c1"># print(preferences)</span>
+
 
 <span class="c1">#</span>
 <span class="c1"># WORKFLOW</span>
@@ -1896,7 +1944,7 @@
     <span class="c1"># expanded_dir_path = Path(expanded_dir_path).as_posix()</span>
 
     <span class="c1"># these try excepts are needed in the case of a workflow with</span>
-    <span class="c1"># all py files! or all sh files! or all ipynb files!</span>
+    <span class="c1"># all py files, or all sh files, or all ipynb files</span>
     <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">expanded_dir_path</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yaml&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.sh&#39;</span><span class="p">)</span> <span class="ow">or</span> \
