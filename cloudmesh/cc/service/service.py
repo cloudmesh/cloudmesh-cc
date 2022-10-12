@@ -380,11 +380,14 @@ async def done_watcher(request, name_of_workflow: str):
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_done_count = count['done']
-        status_dict = count
-        if current_done_count != placeholder_status_count:
-            placeholder_status_count = current_done_count
-            yield current_done_count
+        try:
+            current_done_count = count['done']
+            status_dict = count
+            if current_done_count != placeholder_status_count:
+                placeholder_status_count = current_done_count
+                yield current_done_count
+        except:
+            pass
 
         time.sleep(interval)
 
@@ -407,11 +410,14 @@ async def ready_watcher(request, name_of_workflow: str):
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_ready_count = count['ready']
-        status_dict = count
-        if current_ready_count != placeholder_status_count:
-            placeholder_status_count = current_ready_count
-            yield current_ready_count
+        try:
+            current_ready_count = count['ready']
+            status_dict = count
+            if current_ready_count != placeholder_status_count:
+                placeholder_status_count = current_ready_count
+                yield current_ready_count
+        except:
+            pass
 
         time.sleep(interval)
 
@@ -434,11 +440,14 @@ async def failed_watcher(request, name_of_workflow: str):
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_failed_count = count['failed']
-        status_dict = count
-        if current_failed_count != placeholder_status_count:
-            placeholder_status_count = current_failed_count
-            yield current_failed_count
+        try:
+            current_failed_count = count['failed']
+            status_dict = count
+            if current_failed_count != placeholder_status_count:
+                placeholder_status_count = current_failed_count
+                yield current_failed_count
+        except:
+            pass
 
         time.sleep(interval)
 
@@ -461,11 +470,14 @@ async def submitted_watcher(request, name_of_workflow: str):
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_submitted_count = count['submitted']
-        status_dict = count
-        if current_submitted_count != placeholder_status_count:
-            placeholder_status_count = current_submitted_count
-            yield current_submitted_count
+        try:
+            current_submitted_count = count['submitted']
+            status_dict = count
+            if current_submitted_count != placeholder_status_count:
+                placeholder_status_count = current_submitted_count
+                yield current_submitted_count
+        except:
+            pass
 
         time.sleep(interval)
 
@@ -488,11 +500,14 @@ async def running_watcher(request, name_of_workflow: str):
         if await request.is_disconnected():
             print('disconnected')
             break
-        current_running_count = count['running']
-        status_dict = count
-        if current_running_count != placeholder_status_count:
-            placeholder_status_count = current_running_count
-            yield current_running_count
+        try:
+            current_running_count = count['running']
+            status_dict = count
+            if current_running_count != placeholder_status_count:
+                placeholder_status_count = current_running_count
+                yield current_running_count
+        except:
+            pass
 
         time.sleep(interval)
 
@@ -1045,6 +1060,46 @@ def delete_workflow_direct_url(workflow_name: str):
         Console.error(e, traceflag=True)
         return {
             "message": f"There was an error deleting the workflow '{workflow_name}'"}
+
+
+@app.get("/reset/{workflow_name}",
+         tags=['workflow'],
+         include_in_schema=include_portal_tag_in_schema)
+def reset_workflow_direct_url(workflow_name: str,
+                              redirect: str = None):
+    """Reset a workflow by url.
+
+    :param workflow_name: name of workflow
+    :type workflow_name: str
+
+    :return:
+    :rtype:
+    """
+    try:
+        # w = load_workflow(workflow_name)
+        workflow_runtime_dir = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{workflow_name}/runtime').path
+        workflow_runtime_star = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{workflow_name}/runtime/*').path
+        workflow_dir = Shell.map_filename(
+            f'~/.cloudmesh/workflow/{workflow_name}/').path
+        if os.path.isdir(workflow_runtime_dir):
+            files = glob.glob(workflow_runtime_star)
+            for file in files:
+                if file.endswith(".yaml") or file.endswith(".log") or \
+                        file.endswith(".svg") or file.endswith(".dat"):
+                    os.remove(file)
+            files2 = glob.glob(workflow_dir)
+            for file in files2:
+                if file.endswith(".yaml"):
+                    Shell.copy(file, workflow_runtime_dir)
+        if redirect == 'graph':
+            return RedirectResponse(url=f'/watcher/{workflow_name}')
+        return RedirectResponse(url=f'/workflow/{workflow_name}?output=table')
+    except Exception as e:
+        Console.error(e, traceflag=True)
+        return {
+            "message": f"There was an error resetting the workflow '{workflow_name}'"}
 
 
 @app.delete("/workflow/{workflow_name}",
