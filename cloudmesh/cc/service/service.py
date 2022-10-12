@@ -796,17 +796,17 @@ def list_workflows(output: str = None):
 @app.post("/workflow/{workflow_name}",
           tags=['workflow'])
 @app.post("/workflow/upload", include_in_schema=include_portal_tag_in_schema)
-def upload(directory: str = Query(None,
+def upload_workflow(directory: str = Query(None,
                                   description='path to workflow dir '
                                               'that contains scripts '
                                               'and yaml file'),
-           archive: str = Query(None,
+                    archive: str = Query(None,
                                 description='path to archive file that '
                                             'can be tgx, xz, tar.gz, '
                                             'or tar'),
-           yaml: str = Query(None,
+                    yaml: str = Query(None,
                              description='path to yaml file for workflow'),
-           workflow_name: str = Query(None,
+                    workflow_name: str = Query(None,
                              description='name of workflow to be uploaded')):
     """Upload a workflow.
 
