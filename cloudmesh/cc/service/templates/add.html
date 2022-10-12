@@ -1,0 +1,80 @@
+{% set workflowslist = workflowlist %}
+{% extends "base.html" %}
+
+{% block title %}cloudmesh-cc{% endblock %}
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+
+{% block page_content %}
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="manpage">Man page</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://cloudmesh.github.io/cloudmesh-cc/">Manual</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://github.com/cloudmesh/cloudmesh-cc">GitHub</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+<div class="container">
+<form method="post">
+    <h1>Add a Workflow</h1>
+    Specify how to upload your workflow. It is required to specify
+    at least one file. If the workflow name is not specified, it will be
+    inferred from the uploaded file(s).
+    <br>
+    <br>
+    <label for="workflow_name">Workflow Name (optional)</label><br>
+    <small>Example: workflow-example</small><br><br>
+    <input type="text" size="10" id="workflow_name" name="workflow_name"><br><br><br>
+    <br><h5>Specify one of the following.</h5><br>
+    <label for="dirname">Directory to Workflow Files</label><br>
+    <small>Example: ~/cm/cloudmesh-cc/tests/workflow-example</small><br><br>
+    <input type="text" size="30" id="dirname" name="dirname"><br><br><br>
+    <label for="archivename">Archive of Workflow Files</label><br>
+    <small>Example: ~/my-workflow.tar</small><br><br>
+    <input type="text" size="30" id="archivename" name="archivename"><br><br><br>
+    <label for="yaml">Path to Workflow YAML File</label><br>
+    <small>Example: ~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</small><br><br>
+    <input type="text" size="30" id="yaml" name="yaml"><br>
+    <br>
+    <br>
+    <input type="submit" value="Save">
+</form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+
+
+{% endblock %}

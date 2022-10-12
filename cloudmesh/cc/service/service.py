@@ -722,6 +722,54 @@ async def about_page(request: Request):
                                        "html": html,
                                        "workflowlist": folders})
 
+@app.get("/add",
+         tags=['portal'],
+         include_in_schema=include_portal_tag_in_schema)
+async def add_page(request: Request):
+    """
+    Page that allows users to add workflows.
+
+    :return: add page
+    """
+    os.path.dirname(__file__)
+    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path('../../..').as_posix())
+    folders = get_available_workflows()
+    return templates.TemplateResponse("add.html",
+                                      {"request": request,
+                                       "workflowlist": folders})
+
+@app.post('/add',
+          status_code=302,
+          response_class=RedirectResponse,
+          include_in_schema=include_portal_tag_in_schema)
+def add_post(workflow_name: str = Form(None),
+             dirname: str = Form(None),
+             archivename: str = Form(None),
+             yaml: str = Form(None)):
+    """
+    Add workflow from html page.
+
+    :param workflow_name: the name of the new workflow
+    :type workflow_name: str
+    :param dirname: path to dir with workflow files
+    :type dirname: str
+    :param archivename: path to archive file with workflow files
+    :type archivename: str
+    :param yaml: path to workflow yaml file
+    :type yaml: str
+    :return: redirect to home page
+    :rtype: RedirectResponse
+    """
+    r = upload_workflow(directory=dirname,
+                    archive=archivename,
+                    yaml=yaml,
+                    workflow_name=workflow_name)
+    print(r)
+    return RedirectResponse('/home', status_code=302)
+    # folders = get_available_workflows()
+    # print(preferences)
+
 
 #
 # WORKFLOW
@@ -1793,7 +1841,7 @@ def generate_example_workflow():
     # expanded_dir_path = Path(expanded_dir_path).as_posix()
 
     # these try excepts are needed in the case of a workflow with
-    # all py files! or all sh files! or all ipynb files!
+    # all py files, or all sh files, or all ipynb files
     for dirpath, dirnames, filenames in os.walk(expanded_dir_path):
         for filename in filenames:
             if filename.endswith('.yaml') or filename.endswith('.sh') or \
