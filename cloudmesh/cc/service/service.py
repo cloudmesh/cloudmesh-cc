@@ -9,6 +9,7 @@ from collections import Counter
 from pathlib import Path
 from pprint import pprint
 
+import httpx
 import markdown
 import networkx as nx
 import pandas as pd
@@ -761,10 +762,10 @@ async def add_page(request: Request):
           status_code=302,
           response_class=RedirectResponse,
           include_in_schema=include_portal_tag_in_schema)
-async def add_post(workflow_name: str = None,
-                   dirname: str = None,
-                   archivename: Optional[UploadFile] = File(...),
-                   yaml: str = None):
+async def add_post(workflow_name: str = Form(None),
+                   dirname: str = Form(None),
+                   archivename: Optional[UploadFile] = File(None),
+                   yaml: str = Form(None)):
     """
     Add workflow from html page.
 
@@ -782,6 +783,17 @@ async def add_post(workflow_name: str = None,
     directory = Shell.map_filename(f"~/.cloudmesh/workflow/").path
     if not os.path.isdir(directory):
         Shell.mkdir(directory)
+    if dirname:
+        archivename = None
+        # # with file upload
+        # async with httpx.AsyncClient(timeout=httpx.Timeout(100.0)) as client:
+        #     r = await client.post(
+        #
+        #     )
+        upload_workflow(workflow_name=workflow_name,
+                        directory=dirname,
+                        yaml=yaml,
+                        archive=archivename)
     if archivename:
         os.path.dirname(__file__)
         os.chdir(os.path.dirname(__file__))
