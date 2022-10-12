@@ -1250,7 +1250,7 @@ def get_workflow(request: Request,
                  workflow_name: str,
                  output: str = None,
                  initialized: bool = False):
-    """Get the workflow.
+    """Get a workflow.
 
     retrieves a workflow by its name. if the job is specified, retrieves
     just the job in the specified workflow
@@ -1264,6 +1264,7 @@ def get_workflow(request: Request,
     loaded for the first time. should be True when switching views
     """
     """
+    Example Curl command:
     you need to have first uploaded the workflow-example for this curl to work!
     curl -X 'GET' \
         'http://127.0.0.1:8000/workflow/workflow-example' \
@@ -1426,6 +1427,33 @@ def get_workflow(request: Request,
 def get_job(workflow_name: str,
             job_name: str = None,
             output: str = None):
+    """Get a job that is inside a workflow.
+
+    Retrieves a job by its name and its workflow's name.
+
+    Parameters:
+
+    - **workflow_name**: (str) name of workflow that job resides in
+    - **job_name**: (str) name of job to retrieve
+    - **output**: (str) how to print workflow, which can be
+    json or none. if not specified, then returned as dict
+    """
+    """
+    Example Curl command:
+    you need to have first uploaded the workflow-example for this curl to work!
+    curl -X 'GET' \
+        'http://127.0.0.1:8000/workflow/workflow-example/job/start' \
+        -H 'accept: application/json'
+        
+    :param workflow_name: name of the workflow
+    :type workflow_name: str
+    :param job_name: name of the job 
+    :type job_name: str
+    :param output: how to print job. can be json or none
+    :type output: str
+    :return: dict of job
+    :rtype: dict
+    """
     try:
         if output == 'json':
             w = load_workflow(workflow_name)
