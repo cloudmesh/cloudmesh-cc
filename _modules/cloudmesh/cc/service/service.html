@@ -1353,7 +1353,7 @@
                  <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">initialized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the workflow.</span>
+    <span class="sd">&quot;&quot;&quot;Get a workflow.</span>
 
 <span class="sd">    retrieves a workflow by its name. if the job is specified, retrieves</span>
 <span class="sd">    just the job in the specified workflow</span>
@@ -1367,6 +1367,7 @@
 <span class="sd">    loaded for the first time. should be True when switching views</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example Curl command:</span>
 <span class="sd">    you need to have first uploaded the workflow-example for this curl to work!</span>
 <span class="sd">    curl -X &#39;GET&#39; \</span>
 <span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example&#39; \</span>
@@ -1529,6 +1530,33 @@
 <span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a job that is inside a workflow.</span>
+
+<span class="sd">    Retrieves a job by its name and its workflow&#39;s name.</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **workflow_name**: (str) name of workflow that job resides in</span>
+<span class="sd">    - **job_name**: (str) name of job to retrieve</span>
+<span class="sd">    - **output**: (str) how to print workflow, which can be</span>
+<span class="sd">    json or none. if not specified, then returned as dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example Curl command:</span>
+<span class="sd">    you need to have first uploaded the workflow-example for this curl to work!</span>
+<span class="sd">    curl -X &#39;GET&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example/job/start&#39; \</span>
+<span class="sd">        -H &#39;accept: application/json&#39;</span>
+<span class="sd">        </span>
+<span class="sd">    :param workflow_name: name of the workflow</span>
+<span class="sd">    :type workflow_name: str</span>
+<span class="sd">    :param job_name: name of the job </span>
+<span class="sd">    :type job_name: str</span>
+<span class="sd">    :param output: how to print job. can be json or none</span>
+<span class="sd">    :type output: str</span>
+<span class="sd">    :return: dict of job</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">)</span>

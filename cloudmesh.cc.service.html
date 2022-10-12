@@ -393,12 +393,21 @@ as initialized workflows inside a dict
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_job">
 <span class="sig-name descname"><span class="pre">get_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_job" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Get a job that is inside a workflow.</p>
+<p>Retrieves a job by its name and its workflow’s name.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>workflow_name</strong>: (str) name of workflow that job resides in</p></li>
+<li><p><strong>job_name</strong>: (str) name of job to retrieve</p></li>
+<li><p><strong>output</strong>: (str) how to print workflow, which can be</p></li>
+</ul>
+<p>json or none. if not specified, then returned as dict</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cloudmesh.cc.service.service.get_workflow">
 <span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloudmesh/cc/service/service.html#get_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloudmesh.cc.service.service.get_workflow" title="Permalink to this definition"></a></dt>
-<dd><p>Get the workflow.</p>
+<dd><p>Get a workflow.</p>
 <p>retrieves a workflow by its name. if the job is specified, retrieves
 just the job in the specified workflow</p>
 <p>Parameters:</p>
