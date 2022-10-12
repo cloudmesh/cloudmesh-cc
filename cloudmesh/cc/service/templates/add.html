@@ -44,7 +44,7 @@
             </nav>
 
 <div class="container">
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <h1>Add a Workflow</h1>
     Specify how to upload your workflow. It is required to specify
     at least one file. If the workflow name is not specified, it will be
@@ -57,10 +57,19 @@
     <br><h5>Specify one of the following.</h5><br>
     <label for="dirname">Directory to Workflow Files</label><br>
     <small>Example: ~/cm/cloudmesh-cc/tests/workflow-example</small><br><br>
-    <input type="text" size="30" id="dirname" name="dirname"><br><br><br>
+    <input type="file" id="dirname" name="dirname" webkitdirectory="true" directory/><br><br><br>
     <label for="archivename">Archive of Workflow Files</label><br>
     <small>Example: ~/my-workflow.tar</small><br><br>
-    <input type="text" size="30" id="archivename" name="archivename"><br><br><br>
+    <div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="archivename" name="archivename" aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="archivename">Choose file</label>
+    </div>
+    </div>
+    <br><br><br>
     <label for="yaml">Path to Workflow YAML File</label><br>
     <small>Example: ~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml</small><br><br>
     <input type="text" size="30" id="yaml" name="yaml"><br>

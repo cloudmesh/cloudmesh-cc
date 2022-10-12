@@ -16,6 +16,8 @@ import pkg_resources
 import time
 import yaml
 from fastapi import FastAPI, Query, HTTPException
+from fastapi import File
+from fastapi import UploadFile
 from fastapi import Request, Form
 from fastapi.responses import FileResponse
 from fastapi.responses import RedirectResponse
@@ -25,6 +27,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
+from typing import Optional
 
 from cloudmesh.cc.__version__ import version as cm_version
 from cloudmesh.cc.workflow import Workflow
@@ -758,10 +761,10 @@ async def add_page(request: Request):
           status_code=302,
           response_class=RedirectResponse,
           include_in_schema=include_portal_tag_in_schema)
-def add_post(workflow_name: str = Form(None),
-             dirname: str = Form(None),
-             archivename: str = Form(None),
-             yaml: str = Form(None)):
+async def add_post(workflow_name: str = None,
+                   dirname: str = None,
+                   archivename: Optional[UploadFile] = File(...),
+                   yaml: str = None):
     """
     Add workflow from html page.
 
@@ -776,11 +779,39 @@ def add_post(workflow_name: str = Form(None),
     :return: redirect to home page
     :rtype: RedirectResponse
     """
-    r = upload_workflow(directory=dirname,
-                    archive=archivename,
-                    yaml=yaml,
-                    workflow_name=workflow_name)
-    print(r)
+    directory = Shell.map_filename(f"~/.cloudmesh/workflow/").path
+    if not os.path.isdir(directory):
+        Shell.mkdir(directory)
+    if archivename:
+        os.path.dirname(__file__)
+        os.chdir(os.path.dirname(__file__))
+        os.chdir(Path('../../..').as_posix())
+        try:
+            os.chdir(directory)
+            contents = archivename.file.read()
+            with open(archivename.filename, 'wb') as f:
+                f.write(contents)
+        except Exception as e:
+            print(e)
+        finally:
+            archivename.file.close()
+        print(f'{directory}{archivename.filename}')
+        path = f'{directory}{archivename.filename}'
+        path = path.replace('\\', '/')
+        print(path)
+        upload_workflow(workflow_name=workflow_name,
+                        directory=dirname,
+                        yaml=yaml,
+                        archive=f'{directory}{archivename.filename}')
+        Shell.rm(f'{directory}{archivename.filename}')
+        #upload_workflow(archivename=archivename.filename)
+    #
+    # else:
+    #     r = upload_workflow(directory=dirname,
+    #                 archive=archivename,
+    #                 yaml=yaml,
+    #                 workflow_name=workflow_name)
+    # print(r)
     return RedirectResponse('/home', status_code=302)
     # folders = get_available_workflows()
     # print(preferences)
@@ -977,7 +1008,7 @@ def upload_workflow(directory: str = Query(None,
             yaml_location = path_expand(
                 f"~/.cloudmesh/workflow/{workflow_name}/{workflow_name}.yaml")
             runtime_directory = Path(runtime_directory).as_posix()
-            archive_location = Path(Shell.map_filename(archive).path).as_posix()
+            archive_location = archive
 
             if archive.endswith('.tgz') or \
                     archive.endswith('.xz') or \
