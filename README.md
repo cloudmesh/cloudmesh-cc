@@ -67,16 +67,12 @@ To test the workflow program, prepare a cm directory in your home
 directory by executing the following commands in a terminal:
 
 ```bash
-cd ~
-mkdir cm
-cd cm
+mkdir ~/cm
+cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
-git clone https://github.com/cloudmesh/cloudmesh-cc
 cd cloudmesh-cc
-pip install -e .
-pip install -r requirements.txt
-pytest -v -x --capture=no tests/test_080_workflow_clean.py
+pytest -v -x --capture=no tests/test_199_workflow_clean.py
 ```
 
 This test runs three jobs within a singular workflow: the first job
