@@ -895,21 +895,21 @@
 <span class="c1"># 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3</span>
 <span class="c1"># 4.2 they are uncompressed just as if they were to do an individual upload.</span>
 <span class="c1"># name is optional because the name is determined on what is provided</span>
-<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
+<div class="viewcode-block" id="upload_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
           <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">upload_workflow</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to workflow dir &#39;</span>
                                               <span class="s1">&#39;that contains scripts &#39;</span>
                                               <span class="s1">&#39;and yaml file&#39;</span><span class="p">),</span>
-           <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                                 <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to archive file that &#39;</span>
                                             <span class="s1">&#39;can be tgx, xz, tar.gz, &#39;</span>
                                             <span class="s1">&#39;or tar&#39;</span><span class="p">),</span>
-           <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">description</span><span class="o">=</span><span class="s1">&#39;path to yaml file for workflow&#39;</span><span class="p">),</span>
-           <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">description</span><span class="o">=</span><span class="s1">&#39;name of workflow to be uploaded&#39;</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;Upload a workflow.</span>
 
