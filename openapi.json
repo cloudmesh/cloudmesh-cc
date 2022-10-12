@@ -11,7 +11,7 @@
                     "workflow"
                 ],
                 "summary": "List Workflows",
-                "description": "returns a list of all workflows found on local computer\n\nParameters:\n\n- **output**: (str) format to print available workflows, which can be\njson, csv, or none which prints it as dict\n\n:param output: format to print available workflows, which can be\njson, csv, or none which prints it as dict\n:type output: str\n:return: list of workflow names",
+                "description": "Return a list of all workflows found on local computer.\n\nParameters:\n\n- **output**: (str) format to print available workflows, which can be\njson, csv, or none which prints it as dict\n\n:param output: format to print available workflows, which can be\njson, csv, or none which prints it as dict\n:type output: str\n:return: list of workflow names",
                 "operationId": "list_workflows_workflows_get",
                 "parameters": [
                     {
@@ -46,15 +46,82 @@
                 }
             }
         },
-        "/workflow/upload": {
+        "/workflow/{workflow_name}": {
+            "get": {
+                "tags": [
+                    "workflow"
+                ],
+                "summary": "Get Workflow",
+                "description": "Get the workflow.\n\nretrieves a workflow by its name. if the job is specified, retrieves\njust the job in the specified workflow\n\nParameters:\n\n- **workflow_name**: (str) name of workflow to retrieve\n- **output**: (str) how to print workflow, which can be\nhtml, graph, json, table, or csv. if not specified, then returned as dict\n- **initialized**: (bool) indicates whether workflow has already been\nloaded for the first time. should be True when switching views",
+                "operationId": "get_workflow_workflow__workflow_name__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Workflow Name",
+                            "type": "string"
+                        },
+                        "name": "workflow_name",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Output",
+                            "type": "string"
+                        },
+                        "name": "output",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Initialized",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "name": "initialized",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "workflow"
                 ],
-                "summary": "Upload",
-                "description": "upload a workflow to the ~/.cloudmesh/workflow directory for running\nor editing.\n\nParameters:\n\n- **directory**: (str) path to directory with workflow files\n- **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,\nor tar, that contains workflow files\n- **yaml**: (str) path to yaml file that specifies workflow configuration",
-                "operationId": "upload_workflow_upload_post",
+                "summary": "Upload Workflow",
+                "description": "Upload a workflow.\n\nUpload a workflow to the ~/.cloudmesh/workflow directory for running\nor editing.\n\nParameters:\n\n- **directory**: (str) path to directory with workflow files\n- **archive**: (str) path to archive file, which can be tgx, xz, tar.gz,\nor tar, that contains workflow files\n- **yaml**: (str) path to yaml file that specifies workflow configuration\n- **workflow_name**: (str) name of workflow to be uploaded",
+                "operationId": "upload_workflow_workflow__workflow_name__post",
                 "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Workflow Name",
+                            "type": "string"
+                        },
+                        "name": "workflow_name",
+                        "in": "path"
+                    },
                     {
                         "description": "path to workflow dir that contains scripts and yaml file",
                         "required": false,
@@ -109,24 +176,22 @@
                         }
                     }
                 }
-            }
-        },
-        "/workflow/{name}": {
-            "get": {
+            },
+            "delete": {
                 "tags": [
                     "workflow"
                 ],
-                "summary": "Get Workflow",
-                "description": "retrieves a workflow by its name. if the job is specified, retrieves\njust the job in the specified workflow\n\nParameters:\n\n- **name**: (str) name of workflow to retrieve\n- **job**: (str) name of job to retrieve, if specified (optional)\n- **output**: (str) how to print workflow, which can be\nhtml, graph, json, table, or csv. if not specified, then returned as dict",
-                "operationId": "get_workflow_workflow__name__get",
+                "summary": "Delete Workflow",
+                "description": "Delete a workflow by name.\n\ndeletes an entire workflow. if the job is specified, then deletes\njust the job in the workflow.\n\nParameters:\n\n- **workflow_name**: (str) name of workflow to delete\n- **job**: (str) name of job to delete in a workflow, if specified",
+                "operationId": "delete_workflow_workflow__workflow_name__delete",
                 "parameters": [
                     {
                         "required": true,
                         "schema": {
-                            "title": "Name",
+                            "title": "Workflow Name",
                             "type": "string"
                         },
-                        "name": "name",
+                        "name": "workflow_name",
                         "in": "path"
                     },
                     {
@@ -137,6 +202,55 @@
                         },
                         "name": "job",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workflow/{workflow_name}/job/{job_name}": {
+            "get": {
+                "tags": [
+                    "workflow"
+                ],
+                "summary": "Get Job",
+                "operationId": "get_job_workflow__workflow_name__job__job_name__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Workflow Name",
+                            "type": "string"
+                        },
+                        "name": "workflow_name",
+                        "in": "path"
+                    },
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Name",
+                            "type": "string"
+                        },
+                        "name": "job_name",
+                        "in": "path"
                     },
                     {
                         "required": false,
@@ -169,151 +283,31 @@
                     }
                 }
             },
-            "delete": {
-                "tags": [
-                    "workflow"
-                ],
-                "summary": "Delete Workflow",
-                "description": "deletes an entire workflow. if the job is specified, then deletes\njust the job in the workflow.\n\nParameters:\n\n- **name**: (str) name of workflow to delete\n- **job**: (str) name of job to delete in a workflow, if specified",
-                "operationId": "delete_workflow_workflow__name__delete",
-                "parameters": [
-                    {
-                        "required": true,
-                        "schema": {
-                            "title": "Name",
-                            "type": "string"
-                        },
-                        "name": "name",
-                        "in": "path"
-                    },
-                    {
-                        "required": false,
-                        "schema": {
-                            "title": "Job",
-                            "type": "string"
-                        },
-                        "name": "job",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/workflow/run/{name}": {
-            "get": {
-                "tags": [
-                    "workflow"
-                ],
-                "summary": "Run Workflow",
-                "description": "runs a specified workflow according to provided run type\n\nParameters:\n\n- **name**: (str) name of workflow to run\n- **run_type**: (str) how to run workflow. only topo is implemented\n(topological sort of jobs)\n- **redirect**: (str) where to redirect after initializing the run.\nonly graph is implemented for web interface. None will disable redirect\n- **show**: (bool) whether to show the graph as the workflow is run",
-                "operationId": "run_workflow_workflow_run__name__get",
-                "parameters": [
-                    {
-                        "required": true,
-                        "schema": {
-                            "title": "Name",
-                            "type": "string"
-                        },
-                        "name": "name",
-                        "in": "path"
-                    },
-                    {
-                        "required": false,
-                        "schema": {
-                            "title": "Run Type",
-                            "type": "string",
-                            "default": "topo"
-                        },
-                        "name": "run_type",
-                        "in": "query"
-                    },
-                    {
-                        "required": false,
-                        "schema": {
-                            "title": "Redirect",
-                            "type": "string"
-                        },
-                        "name": "redirect",
-                        "in": "query"
-                    },
-                    {
-                        "required": false,
-                        "schema": {
-                            "title": "Show",
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "name": "show",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/workflow/job/{name}": {
             "post": {
                 "tags": [
                     "workflow"
                 ],
                 "summary": "Add Job",
-                "description": "adds a node/job to a workflow\n\nA check\nis returned and the user is alerted if arguments are missing\narguments are passed in ATTRIBUTE=VALUE fashion.\nif the name of the workflow is omitted, the default workflow is used.\nIf no job name is specified, an automated number that is kept in the\nconfig.yaml file will be used and the name will be job-n\n\nParameters:\n\n- **name**: (str) the name of workflow\n- **job**: (str) the name of the job to add\n- **user**: (str) name of user of the job\n- **host**: (str) name of the host of the job\n- **kind**: (str) the kind of job, like ssh, slurm, local,\n- **status**: (str) the status of the job, such as ready,\n- **script**: (str) the name of the script to be run,\nincluding file extension\n- **exec**: (str) command(s) to execute\n- **progress**: (str) value of job progress from 0 to 100\n- **label**: (str) text to be shown on node in the graph\n- **parent**: (str) parent job",
-                "operationId": "add_job_workflow_job__name__post",
+                "description": "Adds a job to a workflow.\n\nA check\nis returned and the user is alerted if arguments are missing\narguments are passed in ATTRIBUTE=VALUE fashion.\nif the name of the workflow is omitted, the default workflow is used.\nIf no job name is specified, an automated number that is kept in the\nconfig.yaml file will be used and the name will be job-n\n\nParameters:\n\n- **job_name**: (str) the name of job to add\n- **workflow_name**: (str) the name of the workflow to add the job to\n- **user**: (str) name of user of the job\n- **host**: (str) name of the host of the job\n- **kind**: (str) the kind of job, like ssh, slurm, local,\n- **status**: (str) the status of the job, such as ready,\n- **script**: (str) the name of the script to be run,\nincluding file extension\n- **exec**: (str) command(s) to execute\n- **progress**: (str) value of job progress from 0 to 100\n- **label**: (str) text to be shown on node in the graph\n- **parent**: (str) parent job",
+                "operationId": "add_job_workflow__workflow_name__job__job_name__post",
                 "parameters": [
                     {
                         "required": true,
                         "schema": {
-                            "title": "Name",
+                            "title": "Job Name",
                             "type": "string"
                         },
-                        "name": "name",
+                        "name": "job_name",
                         "in": "path"
                     },
                     {
                         "required": true,
                         "schema": {
-                            "title": "Job",
+                            "title": "Workflow Name",
                             "type": "string"
                         },
-                        "name": "job",
-                        "in": "query"
+                        "name": "workflow_name",
+                        "in": "path"
                     },
                     {
                         "required": false,
@@ -394,6 +388,124 @@
                             "type": "string"
                         },
                         "name": "parent",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "workflow"
+                ],
+                "summary": "Remove Job",
+                "description": "Removes a job from a workflow.\n\nParameters:\n\n- **job_name**: (str) the name of job to add\n- **workflow_name**: (str) the name of the workflow to add the job to",
+                "operationId": "remove_job_workflow__workflow_name__job__job_name__delete",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Name",
+                            "type": "string"
+                        },
+                        "name": "job_name",
+                        "in": "path"
+                    },
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Workflow Name",
+                            "type": "string"
+                        },
+                        "name": "workflow_name",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workflow/run/{workflow_name}": {
+            "get": {
+                "tags": [
+                    "workflow"
+                ],
+                "summary": "Run Workflow",
+                "description": "Run a specified workflow according to provided run type.\n\nParameters:\n\n- **workflow_name**: (str) name of workflow to run\n- **run_type**: (str) how to run workflow. only topo is implemented\n(topological sort of jobs)\n- **redirect**: (str) where to redirect after initializing the run.\nonly graph is implemented for web interface. None will disable redirect\n- **show**: (bool) whether to show the graph as the workflow is run",
+                "operationId": "run_workflow_workflow_run__workflow_name__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Workflow Name",
+                            "type": "string"
+                        },
+                        "name": "workflow_name",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Run Type",
+                            "type": "string",
+                            "default": "topo"
+                        },
+                        "name": "run_type",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Redirect",
+                            "type": "string"
+                        },
+                        "name": "redirect",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "title": "Show",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "name": "show",
                         "in": "query"
                     }
                 ],
