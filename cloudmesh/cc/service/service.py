@@ -1620,6 +1620,46 @@ def add_job(job_name: str,
     return {"jobs": w.jobs}
 
 
+@app.delete("/workflow/{workflow_name}/job/{job_name}",
+          tags=['workflow'])
+def remove_job(job_name: str,
+               workflow_name: str):
+    """
+    Removes a job from a workflow.
+
+    Parameters:
+
+    - **job_name**: (str) the name of job to add
+    - **workflow_name**: (str) the name of the workflow to add the job to
+    """
+    """
+    **Example curl Script**
+
+    We need to have first uploaded workflow-example for this curl to work:
+
+    curl -X 'DELETE' \
+        'http://127.0.0.1:8000/workflow/workflow-example/job/analyze' \
+        -H 'accept: application/json'
+
+    :param job_name: the name of the job to add
+    :type job_name: str
+    :param workflow_name: the name of the workflow to add the job to
+    :type workflow_name: str
+    :return: returns jobs within the specified workflow
+    :rtype: dict
+    """
+    # cms cc workflow service add [--name=NAME] --job=JOB ARGS...
+    # cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh
+    # curl -X 'POST' 'http://127.0.0.1:8000/workflow/workflow/job/c?user=gregor&host=localhost&kind=local&status=ready&script=c.sh' -H 'accept: application/json'
+    w = load_workflow(name=workflow_name)
+    try:
+        w.remove_job(job_name, state=True)
+    except Exception as e:
+        print("Exception:", e)
+
+    return {w.jobs}
+
+
 @app.get('/preferences',
          include_in_schema=include_portal_tag_in_schema)
 def preferences_post(request: Request):

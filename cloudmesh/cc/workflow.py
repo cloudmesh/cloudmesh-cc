@@ -1078,8 +1078,8 @@ class Workflow:
         :rtype: None
         """
         label = label or name
-        user = user or self.user or Shell.user()
-        host = host or self.host or Shell.host()
+        user = user or Shell.user()
+        host = host or Shell.host()
         label_format = label_format or label or name
 
         if script is None:
@@ -1861,6 +1861,8 @@ class Workflow:
                 dellist.append(edge)
 
         # TODO: remove parent node
+        # if self.graph.nodes[name]["parent"]:
+        #     dellist.append(self.graph.nodes[name]["parent"])
         for key in dellist:
             self.graph.edges.pop(key)
 
