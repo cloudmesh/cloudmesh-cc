@@ -143,7 +143,7 @@ paths:
       tags:
       - workflow
     get:
-      description: 'Get the workflow.
+      description: 'Get a workflow.
 
 
         retrieves a workflow by its name. if the job is specified, retrieves
@@ -308,6 +308,22 @@ paths:
       tags:
       - workflow
     get:
+      description: 'Get a job that is inside a workflow.
+
+
+        Retrieves a job by its name and its workflow''s name.
+
+
+        Parameters:
+
+
+        - **workflow_name**: (str) name of workflow that job resides in
+
+        - **job_name**: (str) name of job to retrieve
+
+        - **output**: (str) how to print workflow, which can be
+
+        json or none. if not specified, then returned as dict'
       operationId: get_job_workflow__workflow_name__job__job_name__get
       parameters:
       - in: path

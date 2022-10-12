@@ -52,7 +52,7 @@
                     "workflow"
                 ],
                 "summary": "Get Workflow",
-                "description": "Get the workflow.\n\nretrieves a workflow by its name. if the job is specified, retrieves\njust the job in the specified workflow\n\nParameters:\n\n- **workflow_name**: (str) name of workflow to retrieve\n- **output**: (str) how to print workflow, which can be\nhtml, graph, json, table, or csv. if not specified, then returned as dict\n- **initialized**: (bool) indicates whether workflow has already been\nloaded for the first time. should be True when switching views",
+                "description": "Get a workflow.\n\nretrieves a workflow by its name. if the job is specified, retrieves\njust the job in the specified workflow\n\nParameters:\n\n- **workflow_name**: (str) name of workflow to retrieve\n- **output**: (str) how to print workflow, which can be\nhtml, graph, json, table, or csv. if not specified, then returned as dict\n- **initialized**: (bool) indicates whether workflow has already been\nloaded for the first time. should be True when switching views",
                 "operationId": "get_workflow_workflow__workflow_name__get",
                 "parameters": [
                     {
@@ -232,6 +232,7 @@
                     "workflow"
                 ],
                 "summary": "Get Job",
+                "description": "Get a job that is inside a workflow.\n\nRetrieves a job by its name and its workflow's name.\n\nParameters:\n\n- **workflow_name**: (str) name of workflow that job resides in\n- **job_name**: (str) name of job to retrieve\n- **output**: (str) how to print workflow, which can be\njson or none. if not specified, then returned as dict",
                 "operationId": "get_job_workflow__workflow_name__job__job_name__get",
                 "parameters": [
                     {
