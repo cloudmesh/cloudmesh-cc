@@ -37,7 +37,7 @@ class RESTWorkflow:
         user = kwargs['user']
         host = kwargs['host']
         kind = kwargs['kind']
-        url = f'''http://127.0.0.1:8000/workflow/job/{workflow_name}?job={jobname}&user={user}&host={host}&kind={kind}'''
+        url = f'''http://127.0.0.1:8000/workflow/{workflow_name}/job/{jobname}?user={user}&host={host}&kind={kind}'''
         if 'status' in kwargs:
             status = kwargs['status']
         else:
@@ -70,7 +70,7 @@ class RESTWorkflow:
         #     r = os.system(f'''curl -X 'POST' {url} -H 'accept: application/json'/''')
         # except Exception as e:
         #     print(e.output)
-        content = requests.get(url)
+        content = requests.post(url)
         return content
 
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):

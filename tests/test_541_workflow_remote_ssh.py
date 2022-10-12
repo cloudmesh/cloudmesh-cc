@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_041_workflow_remote_ssh.py
-# pytest -v  tests/test_041_workflow_remote_ssh.py
-# pytest -v --capture=no  tests/test_041_workflow_remote_ssh.py::TestWorkflow::<METHODNAME>
+# pytest -v -x --capture=no tests/test_541_workflow_remote_ssh.py
+# pytest -v  tests/test_541_workflow_remote_ssh.py
+# pytest -v --capture=no  tests/test_541_workflow_remote_ssh.py::TestWorkflow::<METHODNAME>
 # ##############################################################
 import os.path
 from pathlib import Path
@@ -97,7 +97,7 @@ def create_workflow(filename='workflow-ssh.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H--%M--%S}\\nprogress={progress}'"
 
         w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
         n = n + 1

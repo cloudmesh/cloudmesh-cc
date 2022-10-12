@@ -111,13 +111,13 @@ class TestService:
 
         Benchmark.Start()
 
-        responsejob = client.get("/workflow/workflow-example?job=start")
+        responsejob = client.get("/workflow/workflow-example/job/start")
         response = client.get("/workflow/workflow-example")
         # print(responsejob.json())
         # from pprint import pprint
         # pprint(response.json())
         Benchmark.Stop()
-        assert 'echo hello' in responsejob.json()['workflow-example']['exec']
+        assert 'echo hello' in responsejob.json()['start']['exec']
         assert 'compute' in response.json()['workflow-example']['graph']['nodes']
         assert 'fetch-data' in response.json()['workflow-example']['graph']['nodes']
         assert response.status_code == 200
@@ -178,7 +178,7 @@ class TestService:
             'Content-Type': 'application/json'
         }
 
-        response = client.post(f"/workflow/job/workflow-example?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
+        response = client.post(f"/workflow/workflow-example/job/{job}?user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
         Benchmark.Stop()
         assert job in response.json()['jobs']
         assert response.ok

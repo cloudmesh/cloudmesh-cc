@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_031_workflow_local.py
-# pytest -v  tests/test_031_workflow_local.py
-# pytest -v --capture=no  tests/test_031_workflow_local.py::TestWorkflowLocal::<METHODNAME>
+# pytest -v -x --capture=no tests/test_131_workflow_local.py
+# pytest -v  tests/test_131_workflow_local.py
+# pytest -v --capture=no  tests/test_131_workflow_local.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil
@@ -73,7 +73,7 @@ def create_workflow(filename='./workflow-local.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
+        label = "debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H--%M--%S}\\nprogress={progress}"
         label_format = label
         w.add_job(name=f"job-{host}-{n}", label=label, kind=kind, user=user, host=host)
         n = n + 1

@@ -1,7 +1,7 @@
 # ##############################################################
-# pytest -v -x --capture=no tests/test_080_workflow_clean.py
-# pytest -v  tests/test_080_workflow_clean.py
-# pytest -v --capture=no  tests/test_080_workflow_clean.py::TestWorkflowLocal::<METHODNAME>
+# pytest -v -x --capture=no tests/test_199_workflow_clean.py
+# pytest -v  tests/test_199_workflow_clean.py
+# pytest -v --capture=no  tests/test_199_workflow_clean.py::TestWorkflowLocal::<METHODNAME>
 # ##############################################################
 import os.path
 import shutil
@@ -81,8 +81,8 @@ def create_workflow(filename='workflow-clean.yaml'):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        #label = "{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\n{modified.%m/%d/%Y, %H:%M:%S}\\n{created.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}"
-        label = "{{name}}\\nnow={{now.%m/%d/%Y, %H:%M:%S}}\\nprogress={{progress}}\\ncreated={created_time}\\n{{dt.workflow-clean_%H:%M:%S}} sec elapsed"
+        #label = "{name}\\n{now.%m/%d/%Y, %H--%M--%S}\\n{modified.%m/%d/%Y, %H--%M--%S}\\n{created.%m/%d/%Y, %H--%M--%S}\\nprogress={progress}"
+        label = "{{name}}\\nnow={{now.%m/%d/%Y, %H--%M--%S}}\\nprogress={{progress}}\\ncreated={created_time}\\n{{dt0.%H--%M--%S}} sec elapsed"
         label = label.format(created_time=created_time)
 
         w.add_job(name=f"b.sh", label=label,  kind=kind, user=user, host=host)

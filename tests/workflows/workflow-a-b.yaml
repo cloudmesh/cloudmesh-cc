@@ -22,7 +22,7 @@ workflow:
       host: localhost
       kind: local
       status: ready
-      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'
+      label: 'debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'
       script: test-c.sh
   dependencies:
     - a,b,c

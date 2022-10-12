@@ -1,7 +1,7 @@
 ###############################################################
-# pytest -v --capture=no tests/test_060_service.py
-# pytest -v  tests/test_060_service.py
-# pytest -v --capture=no  tests/test_060_service.py::TestService::<METHODNAME>
+# pytest -v --capture=no tests/test_660_service.py
+# pytest -v  tests/test_660_service.py
+# pytest -v --capture=no  tests/test_660_service.py::TestService::<METHODNAME>
 ###############################################################
 import glob
 from pathlib import Path
@@ -96,7 +96,7 @@ def create_workflow(filename="workflow-service.yaml"):
         host = login[host]["host"]
         # label = f'job-{host}-{n}'.replace('.hpc.virginia.edu', '')
 
-        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H:%M:%S}\\nprogress={progress}'"
+        label = "'debug={cm.debug}\\nhome={os.HOME}\\n{name}\\n{now.%m/%d/%Y, %H--%M--%S}\\nprogress={progress}'"
 
         w.add_job(name=f"job-{host}-{n}", label=label,  kind=kind, user=user, host=host)
         n = n + 1
@@ -216,7 +216,7 @@ class TestService:
             'Content-Type': 'application/json'
         }
 
-        response = client.post(f"/workflow/job/workflow-service?job={job}&user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
+        response = client.post(f"/workflow/workflow-service/job/{job}?user={user}&host={host}&label={label}&kind={kind}&status={status}&progress={progress}&script={script}")
         print(response)
         print(response.text)
         assert response.ok

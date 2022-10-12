@@ -17,7 +17,7 @@ workflow:
       script: end.sh
       name: end
     job-local-0:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: grey
       host: local
@@ -25,7 +25,7 @@ workflow:
       script: job-local-0.sh
       name: job-local-0
     job-local-1:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: grey
       host: local
@@ -33,7 +33,7 @@ workflow:
       script: job-local-1.sh
       name: job-local-1
     job-local-2:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: grey
       host: local
@@ -41,7 +41,7 @@ workflow:
       script: job-local-2.sh
       name: job-local-2
     job-rivanna.hpc.virginia.edu-3:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: thf2bn
       host: rivanna.hpc.virginia.edu
@@ -49,7 +49,7 @@ workflow:
       script: job-rivanna.hpc.virginia.edu-3.sh
       name: job-rivanna.hpc.virginia.edu-3
     job-rivanna.hpc.virginia.edu-4:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: thf2bn
       host: rivanna.hpc.virginia.edu
@@ -57,7 +57,7 @@ workflow:
       script: job-rivanna.hpc.virginia.edu-4.sh
       name: job-rivanna.hpc.virginia.edu-4
     job-rivanna.hpc.virginia.edu-5:
-      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H:%M:%S}\nprogress={progress}'''
+      label: '''debug={cm.debug}\nhome={os.HOME}\n{name}\n{now.%m/%d/%Y, %H--%M--%S}\nprogress={progress}'''
       kind: local
       user: thf2bn
       host: rivanna.hpc.virginia.edu
