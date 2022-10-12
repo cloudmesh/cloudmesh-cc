@@ -1181,8 +1181,8 @@
 <span class="sd">        :rtype: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">name</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">user</span><span class="p">()</span>
-        <span class="n">host</span> <span class="o">=</span> <span class="n">host</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">host</span><span class="p">()</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">user</span><span class="p">()</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">host</span> <span class="ow">or</span> <span class="n">Shell</span><span class="o">.</span><span class="n">host</span><span class="p">()</span>
         <span class="n">label_format</span> <span class="o">=</span> <span class="n">label_format</span> <span class="ow">or</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">name</span>
 
         <span class="k">if</span> <span class="n">script</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1964,6 +1964,8 @@
                 <span class="n">dellist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
 
         <span class="c1"># TODO: remove parent node</span>
+        <span class="c1"># if self.graph.nodes[name][&quot;parent&quot;]:</span>
+        <span class="c1">#     dellist.append(self.graph.nodes[name][&quot;parent&quot;])</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dellist</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 

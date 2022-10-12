@@ -1723,6 +1723,46 @@
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jobs&quot;</span><span class="p">:</span> <span class="n">w</span><span class="o">.</span><span class="n">jobs</span><span class="p">}</span></div>
 
 
+<div class="viewcode-block" id="remove_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.remove_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">remove_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+               <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes a job from a workflow.</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - **job_name**: (str) the name of job to add</span>
+<span class="sd">    - **workflow_name**: (str) the name of the workflow to add the job to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    **Example curl Script**</span>
+
+<span class="sd">    We need to have first uploaded workflow-example for this curl to work:</span>
+
+<span class="sd">    curl -X &#39;DELETE&#39; \</span>
+<span class="sd">        &#39;http://127.0.0.1:8000/workflow/workflow-example/job/analyze&#39; \</span>
+<span class="sd">        -H &#39;accept: application/json&#39;</span>
+
+<span class="sd">    :param job_name: the name of the job to add</span>
+<span class="sd">    :type job_name: str</span>
+<span class="sd">    :param workflow_name: the name of the workflow to add the job to</span>
+<span class="sd">    :type workflow_name: str</span>
+<span class="sd">    :return: returns jobs within the specified workflow</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># cms cc workflow service add [--name=NAME] --job=JOB ARGS...</span>
+    <span class="c1"># cms cc workflow service add --name=workflow --job=c user=gregor host=localhost kind=local status=ready script=c.sh</span>
+    <span class="c1"># curl -X &#39;POST&#39; &#39;http://127.0.0.1:8000/workflow/workflow/job/c?user=gregor&amp;host=localhost&amp;kind=local&amp;status=ready&amp;script=c.sh&#39; -H &#39;accept: application/json&#39;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">remove_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exception:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="n">w</span><span class="o">.</span><span class="n">jobs</span><span class="p">}</span></div>
+
+
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/preferences&#39;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">preferences_post</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>

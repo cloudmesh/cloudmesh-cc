@@ -37,6 +37,7 @@
       preferences_changer
       preferences_post
       ready_watcher
+      remove_job
       run_workflow
       running_watcher
       serve_done
