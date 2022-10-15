@@ -123,7 +123,7 @@ dynamic workflow patterns to be implemented while results from
 previous calculations can be used in later stages of the workflow.
 
 We have developed a simple-to-use API for this so programs can be
-formulated using the API in python. However, we embedded this API also
+formulated using the API in Python. However, we embedded this API also
 in a prototype REST service to showcase that integration into
 language-independent frameworks is possible. The obvious functions to
 manage workflows are supported including graph specification through
