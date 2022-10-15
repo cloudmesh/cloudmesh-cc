@@ -182,7 +182,7 @@ class TestService:
     def test_get_workflow(self):
         HEADING()
         Benchmark.Start()
-        responsejob = client.get("/workflow/workflow-service?job=start")
+        responsejob = client.get("/workflow/workflow-service/job/start")
         response = client.get("/workflow/workflow-service")
         Benchmark.Stop()
         assert response.status_code == 200
