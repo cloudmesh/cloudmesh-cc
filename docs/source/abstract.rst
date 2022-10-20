@@ -191,6 +191,29 @@ components.
 
    The architecture of the Cloudmesh cc Workflow
 
+Additionally, for ease-of-use we have implemented a Graphical User
+Interface (GUI) for utilizing the REST service, implemented with
+the FastAPI framework in Python. The GUI can be used inside the
+internet browser. The GUI features two ways to view the details
+of a workflow: the table view and the graph view, both which
+contain dynamic, live updating so that a user can view
+the status of a workflow as it runs.
+
+See :numref:`workflow-table` for a screenshot of the table view and
+:numref:`workflow-graph` for a screenshot of the graph view.
+
+.. figure:: images/service-table.png
+   :alt: Table view of a workflow in the browser GUI.
+   :name: service-table
+
+   A screenshot of the table view of a workflow in the browser GUI interface
+
+.. figure:: images/service-graph.png
+   :alt: Graph view of a workflow in the browser GUI.
+   :name: service-graph
+
+   A screenshot of the graph view of a workflow in the browser GUI interface
+
 Application demonstration using MNIST
 -------------------------------------
 
