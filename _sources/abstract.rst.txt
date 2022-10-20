@@ -199,8 +199,8 @@ of a workflow: the table view and the graph view, both which
 contain dynamic, live updating so that a user can view
 the status of a workflow as it runs.
 
-See :numref:`workflow-table` for a screenshot of the table view and
-:numref:`workflow-graph` for a screenshot of the graph view.
+See :numref:`service-table` for a screenshot of the table view and
+:numref:`service-graph` for a screenshot of the graph view.
 
 .. figure:: images/service-table.png
    :alt: Table view of a workflow in the browser GUI.
