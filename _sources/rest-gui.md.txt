@@ -22,3 +22,9 @@ workflow-example and run the workflow by clicking the green Run
 button in the top-right. As the workflow runs, the user is able
 to click on the Graph button and back to the Table button, as
 desired, to view the workflow's progression.
+
+Table view:
+![Workflow table view on browser GUI interface](images/service-table.png)
+
+Graph view:
+![Workflow graph view on browser GUI interface](images/service-graph.png)
