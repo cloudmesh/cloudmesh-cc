@@ -129,31 +129,31 @@ of the graph.</p>
 <h2>Workflow YAML format<a class="headerlink" href="#workflow-yaml-format" title="Permalink to this heading"></a></h2>
 <p>A workflow yaml file with three Shell script
 jobs <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> is as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>workflow:
   nodes:
     a:
        name: a
        user: gregor
        host: localhost
-       kind: <span class="nb">local</span>
+       kind: local
        status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       label: &#39;{name}\nprogress={progress}&#39;
        script: test-a.sh
     b:
        name: b
        user: gregor
        host: localhost
-       kind: <span class="nb">local</span>
+       kind: local
        status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+       label: &#39;{name}\nprogress={progress}&#39;
        script: test-b.sh
     c:
       name: c
       user: gregor
       host: localhost
-      kind: <span class="nb">local</span>
+      kind: local
       status: ready
-      label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+      label: &#39;{name}\nprogress={progress}&#39;
       script: test-c.sh
   dependencies:
     - a,b,c

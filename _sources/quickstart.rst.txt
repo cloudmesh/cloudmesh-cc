@@ -214,7 +214,7 @@ directory field and then click Execute.
 Option 3: Upload via the Python API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Accessing the upload from the Pythin API is very easy. We will use
+Accessing the upload from the Python API is very easy. We will use
 python requests to demonstrate the upload of the workflow.
 
 .. code:: python
