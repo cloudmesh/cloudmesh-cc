@@ -38,10 +38,13 @@ variables = Variables()
 host = "rivanna.hpc.virginia.edu"
 username = variables["username"]
 
-def create_workflow(filename='mnist.yaml'):
+def create_workflow(name='mnist'):
     global w
     global username
-    w = Workflow(filename=filename, load=False)
+    utilities.create_dest()
+    if os.path.isdir('./mnist'):
+        Shell.rmdir('./mnist')
+    w = Workflow(name=name, load=False)
 
     localuser = Shell.sys_user()
     login = {
@@ -49,10 +52,7 @@ def create_workflow(filename='mnist.yaml'):
         "rivanna": {"user": f"{username}", "host": "rivanna.hpc.virginia.edu"}
     }
 
-    utilities.create_dest()
-    if os.path.isdir('./mnist'):
-        Shell.rmdir('./mnist')
-    Shell.mkdir('./mnist')
+
     os.chdir('./mnist')
     Shell.mkdir('./runtime')
     os.chdir('./runtime')

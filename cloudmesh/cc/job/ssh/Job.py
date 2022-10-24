@@ -149,7 +149,8 @@ class Job:
         """
         self.mkdir_experimentdir()
 
-        command = f'chmod ug+x ./runtime/{self.name}{self.filetype}'
+        command = f'ssh {self.username}@{self.host} "chmod ug+x {self.directory}/{self.name}{self.filetype}"'
+        print(command)
         os.system(command)
         if os_is_windows():
 

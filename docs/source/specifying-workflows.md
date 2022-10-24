@@ -12,7 +12,7 @@ of the graph.
 A workflow yaml file with three Shell script
 jobs `a`, `b`, and `c` is as follows:
 
-```bash
+```text
 workflow:
   nodes:
     a:

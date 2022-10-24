@@ -35,6 +35,7 @@ clean, self-contained workflow.
 username = Shell.sys_user()
 utilities.create_dest()
 
+
 def create_workflow(filename='workflow-clean.yaml'):
     global w
     global username

@@ -1104,8 +1104,12 @@ class Workflow:
         # update the times dat file to show created
         job_created_time = datetime.now().strftime(
             "%m/%d/%Y, %H:%M:%S")
-        times_dict = yaml.safe_load(
-            Path(self.times_filename).read_text())
+        times_dict = None
+        try:
+            times_dict = yaml.safe_load(
+                Path(self.times_filename).read_text())
+        except:
+            pass
         if times_dict is None:
             times_dict = {}
         if 'times' in times_dict:
