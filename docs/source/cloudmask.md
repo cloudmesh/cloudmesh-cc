@@ -17,8 +17,12 @@ X's with your ID:
 me@mycomputer $ cms set username=XXXXXX
 ```
 
-Then, connect to the UVA Anywhere VPN,
-clone the `mlcommons` repository on your local machine,
+We assume you have properly configured the UVA
+VPN by following the steps located at <https://in.virginia.edu/vpn>.
+The steps include installing a digital certificate and
+installing Cisco VPN; please follow them fully.
+
+Then, clone the `mlcommons` repository on your local machine
 and run the workflow:
 
 ```bash
