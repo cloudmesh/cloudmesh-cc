@@ -17,22 +17,8 @@ X's with your ID:
 me@mycomputer $ cms set username=XXXXXX
 ```
 
-Then, connect to the UVA Anywhere VPN and then
-download the satellite data into your [scratch](https://www.rc.virginia.edu/userinfo/storage/non-sensitive-data/#scratch)
-directory on Rivanna:
-
-```bash
-me@mycomputer $ cms vpn connect
-me@mycomputer $ ssh rivanna
-rivanna $ cd /scratch/$USER
-rivanna $ git clone https://github.com/laszewsk/mlcommons.git
-rivanna $ cd mlcommons/benchmarks/cloudmask/target/rivanna
-rivanna $ make data
-# downloading the data will take a while.
-rivanna $ exit
-```
-
-Next, clone the `mlcommons` repository on your local machine
+Then, connect to the UVA Anywhere VPN,
+clone the `mlcommons` repository on your local machine,
 and run the workflow:
 
 ```bash
