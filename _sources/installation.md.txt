@@ -1,6 +1,47 @@
 # Installation
 
-Installation is relatively simple. We leverage the cloudmesh-installer
+Installation is relatively simple.
+
+## OS-Specific Requirements
+
+After completing the steps for your operating system, 
+continue on to the `All Platforms` section.
+
+### Windows
+
+Git Bash and Graphviz must be installed. The user can use [Chocolatey](https://chocolatey.org/install) run as
+an administrator for convenience. We also install Visual C++ as
+a prerequisite for necessary Python modules.
+
+```bash
+choco install git.install --params "/GitAndUnixToolsOnPath \
+        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf" -y
+choco install graphviz -y
+cinst visualstudio2019buildtools visualstudio2019-workload-vctools
+```
+
+Please also follow <https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows>
+for proper configuration of Git Bash.
+
+### macOS
+
+Graphviz must be installed. The user can use Homebrew for convenience:
+
+```zsh
+brew install graphviz
+```
+
+### Linux
+
+Graphviz must be installed. The user can use apt for convenience:
+
+```bash
+sudo apt install graphviz -y
+```
+
+## All Platforms
+
+We leverage the cloudmesh-installer
 to locally install the cloudmesh suite of repositories. Please use
 a virtual Python environment.
 
@@ -9,34 +50,4 @@ mkdir ~/cm
 cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
-```
-
-## Windows
-
-Git Bash and Graphviz must be installed. The user can use [Chocolatey](https://chocolatey.org/install) run as
-an administrator for convenience:
-
-```bash
-choco install git.install --params "/GitAndUnixToolsOnPath \
-        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf" -y
-choco install graphviz -y
-```
-
-Please also follow <https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows>
-for proper configuration of Git Bash.
-
-## macOS
-
-Graphviz must be installed. The user can use Homebrew for convenience:
-
-```zsh
-brew install graphviz
-```
-
-## Linux
-
-Graphviz must be installed. The user can use apt for convenience:
-
-```bash
-sudo apt install graphviz -y
 ```
