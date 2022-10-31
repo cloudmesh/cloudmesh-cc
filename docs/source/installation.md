@@ -25,7 +25,8 @@ for proper configuration of Git Bash.
 
 ### macOS
 
-Graphviz must be installed. The user can use Homebrew for convenience:
+Graphviz must be installed. The user should use 
+[Homebrew](https://brew.sh/) for convenience:
 
 ```zsh
 brew install graphviz
@@ -33,7 +34,7 @@ brew install graphviz
 
 ### Linux
 
-Graphviz must be installed. The user can use apt for convenience:
+Graphviz must be installed. The user should use apt:
 
 ```bash
 sudo apt install graphviz -y
