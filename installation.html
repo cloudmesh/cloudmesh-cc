@@ -121,13 +121,13 @@
 continue on to the <code class="docutils literal notranslate"><span class="pre">All</span> <span class="pre">Platforms</span></code> section.</p>
 <section id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this heading"></a></h3>
-<p>Git Bash and Graphviz must be installed. The user can use <a class="reference external" href="https://chocolatey.org/install">Chocolatey</a> run as
-an administrator for convenience. We also install Visual C++ as
-a prerequisite for necessary Python modules.</p>
+<p>The user should use <a class="reference external" href="https://chocolatey.org/install">Chocolatey</a> run as
+an administrator to install Git Bash and Graphviz. We also install Visual
+C++ Build Tools as a prerequisite for necessary Python modules.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>choco install git.install --params <span class="s2">&quot;/GitAndUnixToolsOnPath \</span>
 <span class="s2">        /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf&quot;</span> -y
-choco install graphviz -y
-cinst visualstudio2019buildtools visualstudio2019-workload-vctools
+choco install graphviz visualstudio2019buildtools <span class="se">\</span>
+        visualstudio2019-workload-vctools -y
 </pre></div>
 </div>
 <p>Please also follow <a class="reference external" href="https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows">https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows</a>

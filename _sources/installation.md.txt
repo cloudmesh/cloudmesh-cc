@@ -9,15 +9,15 @@ continue on to the `All Platforms` section.
 
 ### Windows
 
-Git Bash and Graphviz must be installed. The user can use [Chocolatey](https://chocolatey.org/install) run as
-an administrator for convenience. We also install Visual C++ as
-a prerequisite for necessary Python modules.
+The user should use [Chocolatey](https://chocolatey.org/install) run as
+an administrator to install Git Bash and Graphviz. We also install Visual 
+C++ Build Tools as a prerequisite for necessary Python modules.
 
 ```bash
 choco install git.install --params "/GitAndUnixToolsOnPath \
         /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf" -y
-choco install graphviz -y
-cinst visualstudio2019buildtools visualstudio2019-workload-vctools
+choco install graphviz visualstudio2019buildtools \
+        visualstudio2019-workload-vctools -y
 ```
 
 Please also follow <https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows>
