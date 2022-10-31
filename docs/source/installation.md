@@ -12,7 +12,7 @@ cloudmesh-installer get cc
 
 ## Windows
 
-Git Bash and Graphviz must be installed. The user can use Chocolatey run as
+Git Bash and Graphviz must be installed. The user can use [Chocolatey](https://chocolatey.org/install) run as
 an administrator for convenience:
 
 ```bash
@@ -20,6 +20,9 @@ choco install git.install --params "/GitAndUnixToolsOnPath \
         /Editor:Nano /PseudoConsoleSupport /NoAutoCrlf" -y
 choco install graphviz -y
 ```
+
+Please also follow <https://github.com/cybertraining-dsc/reu2022/blob/main/project/git-bash-pseudo-console.md#using-git-bash-on-windows>
+for proper configuration of Git Bash.
 
 ## macOS
 
