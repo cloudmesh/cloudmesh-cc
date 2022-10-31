@@ -22,12 +22,18 @@ VPN by following the steps located at <https://in.virginia.edu/vpn>.
 The steps include installing a digital certificate and
 installing Cisco VPN; please follow them fully.
 
+Additionally, you must have used `ssh-copy-id XXXXXX@rivanna.hpc.virginia.edu` 
+to automate the password login to Rivanna, as well as have
+set up a proper `ssh-agent` on your local computer, for your ssh-key.
+We also assume that, if your local machine runs Windows,
+that your Git Bash is set to use only LF line endings.
+
 Then, clone the `mlcommons` repository on your local machine
 and run the workflow:
 
 ```bash
 me@mycomputer $ cd ~/cm
-me@mycomputer $ git clone https://github.com/laszewsk/mlcommons.git
+me@mycomputer $ git clone --config core.autocrlf=false https://github.com/laszewsk/mlcommons.git
 me@mycomputer $ cd mlcommons
 me@mycomputer $ pytest -v -x --capture=no benchmarks/cloudmask/target/rivanna/run_cloudmask_workflow.py
 ```
