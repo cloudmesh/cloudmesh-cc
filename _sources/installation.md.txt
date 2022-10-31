@@ -50,4 +50,6 @@ mkdir ~/cm
 cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
+cd cloudmesh-cc
+pip install -e .
 ```
