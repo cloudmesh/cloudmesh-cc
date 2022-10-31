@@ -1,7 +1,8 @@
 # Installation
 
 Installation is relatively simple. We leverage the cloudmesh-installer
-to locally install the cloudmesh suite of repositories.
+to locally install the cloudmesh suite of repositories. Please use
+a virtual Python environment.
 
 ```bash
 mkdir ~/cm
