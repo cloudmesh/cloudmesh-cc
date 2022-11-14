@@ -25,6 +25,25 @@ from utilities import create_dest
 
 create_dest()
 
+def wsl_available() -> bool:
+    """
+    heuristic to detect if Windows Subsystem for Linux is available.
+
+    Uses presence of /etc/os-release in the WSL image to say Linux is there.
+    This is a de facto file standard across Linux distros.
+    """
+    if os.name == "nt":
+        wsl = shutil.which("wsl")
+        if not wsl:
+            return False
+        # can't read this file or test with
+        # pathlib.Path('//wsl$/Ubuntu/etc/os-release').
+        # A Python limitation?
+        ret = subprocess.run(["wsl", "test", "-f", "/etc/os-release"])
+        return ret.returncode == 0
+
+    return False
+
 banner(Path(__file__).name, c="#", color="RED")
 
 if not os_is_windows():
@@ -34,8 +53,10 @@ if not os_is_windows():
 variables = Variables()
 
 host = "localhost"
+wsl_exists = False
 if os_is_windows():
     username = os.environ["USERNAME"]
+    wsl_exists = wsl_available()
 
 job = None
 
@@ -44,6 +65,7 @@ wait_job = f"run-killme"
 
 
 @pytest.mark.skipif(not os_is_windows(), reason="OS is not Windows")
+@pytest.mark.skipif(not wsl_exists, reason="WSL not installed")
 @pytest.mark.incremental
 class TestJobWsl:
 

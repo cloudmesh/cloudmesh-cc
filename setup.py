@@ -34,6 +34,7 @@ cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
+pyyaml==5.4.1
 psutil
 yamldb
 docker-compose
@@ -64,7 +65,7 @@ with open('README.md') as f:
 
 
 NAME = "cloudmesh-cc"
-DESCRIPTION = "A command called cc and foo for the cloudmesh shell"
+DESCRIPTION = "A repository for running workflows"
 AUTHOR = "Gregor von Laszewski"
 AUTHOR_EMAIL = "laszewski@gmail.com"
 URL = "https://github.com/cloudmesh/cloudmesh-cc"

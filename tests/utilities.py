@@ -37,6 +37,8 @@ def create_dest():
     # Shell.rmdir("dest")
     # Shell.mkdir("dest")
     expanded_path = Shell.map_filename('~/.cloudmesh/workflow').path
+    if not os.path.isdir(expanded_path):
+        Shell.mkdir(expanded_path)
     os.chdir(expanded_path)
 
 def create_workflow_service():

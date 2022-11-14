@@ -39,7 +39,7 @@ class TestLabelmaker:
 
 
         print(r)
-        assert r.startswith(f"name=gregor home={str(Shell.map_filename('~').path).encode('unicode-escape').decode()} debug=True")
+        assert r.startswith(f"name=gregor home={str(Shell.map_filename('~').path).encode('unicode-escape').decode()}")
 
     def test_benchmark(self):
         HEADING()
