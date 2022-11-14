@@ -178,6 +178,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">slurm</span> <span class="o">=</span> <span class="n">Slurm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
 
+        <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="s1">&#39;~/.cloudmesh/workflow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">Shell</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Shell</span><span class="o">.</span><span class="n">map_filename</span><span class="p">(</span><span class="s1">&#39;~/.cloudmesh/workflow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Job.script_type"><a class="viewcode-back" href="../../../../../cloudmesh.cc.job.slurm.html#cloudmesh.cc.job.slurm.Job.Job.script_type">[docs]</a>    <span class="k">def</span> <span class="nf">script_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the filename type based on the ending.</span>
 
