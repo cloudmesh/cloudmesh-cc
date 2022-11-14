@@ -52,6 +52,5 @@ cd ~/cm
 pip install pyyaml==5.4.1
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
-cd cloudmesh-cc
-pip install -e .
+cms help
 ```
