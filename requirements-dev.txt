@@ -1,4 +1,3 @@
-docker-compose
 pytest
 coverage
 flake8

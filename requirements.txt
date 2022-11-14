@@ -9,8 +9,10 @@ cloudmesh-progress
 #
 #    pip-compile setup.py
 #
+pyyaml==5.4.1
 psutil
 yamldb
+docker-compose
 networkx[default]
 pydot
 graphviz

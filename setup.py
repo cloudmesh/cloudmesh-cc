@@ -34,6 +34,7 @@ cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
+pyyaml==5.4.1
 psutil
 yamldb
 docker-compose
