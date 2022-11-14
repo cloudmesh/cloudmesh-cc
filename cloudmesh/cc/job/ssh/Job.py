@@ -68,6 +68,10 @@ class Job:
         if self.script is None and self.exec is not None:
             self.script = self.create_script(self.exec)
 
+        Shell.mkdir(Shell.map_filename(self.directory).path)
+        if not os.path.isdir(Shell.map_filename('~/.cloudmesh/workflow').path):
+            Shell.mkdir(Shell.map_filename('~/.cloudmesh/workflow').path)
+
     def script_type(self, name):
         """Return the filename type based on the ending.
 
