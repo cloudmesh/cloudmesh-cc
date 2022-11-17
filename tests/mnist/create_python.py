@@ -26,16 +26,15 @@ $ conda env list
 """
 
 if "command not found" in subprocess.run(['conda', 'env', 'list'], capture_output=True, text=True).stdout:
-
     try:
         print("conda module not yet loaded")
-        subprocess.run("module load anaconda", capture_output=True, text=True)
+        subprocess.run(['module', 'load', 'anaconda'], capture_output=True, text=True)
     except Exception as e:
         print(e)
 
-if env in subprocess.run("conda env list", capture_output=True, text=True).stdout:
+if env in subprocess.run(['conda', 'env', 'list'], capture_output=True, text=True).stdout:
     print(f"environment {env} already installed in conda")
 else:
-    subprocess.run(f"conda create -f -y -n {env} -c conda-forge python={version}", capture_output=True, text=True)
+    subprocess.run(f"conda create -f -y -n {env} -c conda-forge python={version}", capture_output=True, text=True, shell=True)
 
 #nvidia-smi --list-gpus
