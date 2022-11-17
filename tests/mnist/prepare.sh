@@ -24,4 +24,4 @@ pip install -e .
 cd ~/cm
 pip install cloudmesh-installer -U
 cloudmesh-installer get cc
-echo "# cloudmesh status=running progress=100 pid=$$"
+echo "# cloudmesh status=done progress=100 pid=$$"
