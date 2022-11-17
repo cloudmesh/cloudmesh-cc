@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.Shell import Console
+# from cloudmesh.common.Shell import Shell
+# from cloudmesh.common.Shell import Console
 import sys
-import os
+import subprocess
 
 try:
     env = sys.argv[1]
@@ -25,16 +25,17 @@ $ conda env list
 -bash: conda: command not found
 """
 
-if "command not found" in Shell.run("conda env list"):
-    try:
-        Console.error("conda module not yet loaded")
-        Shell.run("module load anaconda")
-    except Exception as e:
-        print(e.output)
+if "command not found" in subprocess.run(['conda', 'env', 'list'], capture_output=True, text=True).stdout:
 
-if env in Shell.run("conda env list"):
-    Console.ok(f"environment {env} already installed in conda")
+    try:
+        print("conda module not yet loaded")
+        subprocess.run("module load anaconda", capture_output=True, text=True)
+    except Exception as e:
+        print(e)
+
+if env in subprocess.run("conda env list", capture_output=True, text=True).stdout:
+    print(f"environment {env} already installed in conda")
 else:
-    Shell.run(f"conda create -f -y -n {env} -c conda-forge python={version}")
+    subprocess.run(f"conda create -f -y -n {env} -c conda-forge python={version}", capture_output=True, text=True)
 
 #nvidia-smi --list-gpus
