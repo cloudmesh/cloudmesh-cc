@@ -13,7 +13,7 @@ from cloudmesh.common.Shell import Shell
 from cloudmesh.common.StopWatch import progress
 import time
 
-progress(0)
+progress(progress=0)
 
 dryrun = False
 
@@ -54,7 +54,7 @@ if host is None:
 if error:
     sys.exit()
 
-progress(5)
+progress(progress=5)
 
 # scripts = textwrap.dedent("""
 # mlp_mnist
@@ -125,6 +125,6 @@ for card in gpu:
 
 StopWatch.benchmark(sysinfo=False, filename=f"all-mnist.log")
 Shell.run(f'cms set delete currentgpu')
-progress(100)
+progress(progress=100)
 
 
