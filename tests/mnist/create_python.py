@@ -35,6 +35,7 @@ if "command not found" in subprocess.run(['conda', 'env', 'list'], capture_outpu
 if env in subprocess.run(['conda', 'env', 'list'], capture_output=True, text=True).stdout:
     print(f"environment {env} already installed in conda")
 else:
-    subprocess.run(f"conda create -f -y -n {env} -c conda-forge python={version}", capture_output=True, text=True, shell=True)
+    subprocess.check_call(f"conda create -f -y -n {env} -c conda-forge python={version}", shell=True,
+                          stdout=sys.stdout, stderr=subprocess.STDOUT)
 
 #nvidia-smi --list-gpus
