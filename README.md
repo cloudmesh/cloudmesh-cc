@@ -9,7 +9,8 @@ $^*$ Corresponding author
 
 ## Citation
 
-
+* <https://github.com/cyberaide/paper-cloudmesh-cc/raw/main/vonLaszewski-cloudmesh-cc.pdf>
+* 
 ```
 @misc{las-2022-hybrid-cc,
   title =	 {Hybrid Reusable Computational Analytics Workflow
