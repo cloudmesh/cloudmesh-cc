@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python Interface &mdash; cloudmesh-cc 4.3.7 documentation</title>
@@ -14,10 +14,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
@@ -34,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cloudmesh-cc
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -92,7 +95,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Python Interface</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/python.md" class="fa fa-github"> Edit on GitHub</a>
@@ -161,49 +164,49 @@ The supplied parameter should be a filepath that points to the location
 of the YAML, and <code class="docutils literal notranslate"><span class="pre">load=</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <p>The following is the workflow-example configuration in YAML format.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
-  nodes:
-    start.sh:
-       name: start.sh
-       user: gregor
-       host: localhost
-       kind: <span class="nb">local</span>
-       status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
-       script: start.sh
-    fetch-data.sh:
-       name: fetch-data.sh
-       user: gregor
-       host: localhost
-       kind: <span class="nb">local</span>
-       status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
-       script: fetch-data.sh
-   compute.sh:
-       name: compute.sh
-       user: gregor
-       host: localhost
-       kind: <span class="nb">local</span>
-       status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
-       script: compute.sh
-   analyze.sh:
-       name: analyze.sh
-       user: gregor
-       host: localhost
-       kind: <span class="nb">local</span>
-       status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
-       script: analyze.sh
-   end.sh:
-       name: end.sh
-       user: gregor
-       host: localhost
-       kind: <span class="nb">local</span>
-       status: ready
-       label: <span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
-       script: end.sh
-  dependencies:
-    - start.sh,fetch-data.sh,compute.sh,analyze.sh,end.sh
+<span class="w">  </span>nodes:
+<span class="w">    </span>start.sh:
+<span class="w">       </span>name:<span class="w"> </span>start.sh
+<span class="w">       </span>user:<span class="w"> </span>gregor
+<span class="w">       </span>host:<span class="w"> </span>localhost
+<span class="w">       </span>kind:<span class="w"> </span><span class="nb">local</span>
+<span class="w">       </span>status:<span class="w"> </span>ready
+<span class="w">       </span>label:<span class="w"> </span><span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+<span class="w">       </span>script:<span class="w"> </span>start.sh
+<span class="w">    </span>fetch-data.sh:
+<span class="w">       </span>name:<span class="w"> </span>fetch-data.sh
+<span class="w">       </span>user:<span class="w"> </span>gregor
+<span class="w">       </span>host:<span class="w"> </span>localhost
+<span class="w">       </span>kind:<span class="w"> </span><span class="nb">local</span>
+<span class="w">       </span>status:<span class="w"> </span>ready
+<span class="w">       </span>label:<span class="w"> </span><span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+<span class="w">       </span>script:<span class="w"> </span>fetch-data.sh
+<span class="w">   </span>compute.sh:
+<span class="w">       </span>name:<span class="w"> </span>compute.sh
+<span class="w">       </span>user:<span class="w"> </span>gregor
+<span class="w">       </span>host:<span class="w"> </span>localhost
+<span class="w">       </span>kind:<span class="w"> </span><span class="nb">local</span>
+<span class="w">       </span>status:<span class="w"> </span>ready
+<span class="w">       </span>label:<span class="w"> </span><span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+<span class="w">       </span>script:<span class="w"> </span>compute.sh
+<span class="w">   </span>analyze.sh:
+<span class="w">       </span>name:<span class="w"> </span>analyze.sh
+<span class="w">       </span>user:<span class="w"> </span>gregor
+<span class="w">       </span>host:<span class="w"> </span>localhost
+<span class="w">       </span>kind:<span class="w"> </span><span class="nb">local</span>
+<span class="w">       </span>status:<span class="w"> </span>ready
+<span class="w">       </span>label:<span class="w"> </span><span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+<span class="w">       </span>script:<span class="w"> </span>analyze.sh
+<span class="w">   </span>end.sh:
+<span class="w">       </span>name:<span class="w"> </span>end.sh
+<span class="w">       </span>user:<span class="w"> </span>gregor
+<span class="w">       </span>host:<span class="w"> </span>localhost
+<span class="w">       </span>kind:<span class="w"> </span><span class="nb">local</span>
+<span class="w">       </span>status:<span class="w"> </span>ready
+<span class="w">       </span>label:<span class="w"> </span><span class="s1">&#39;{name}\nprogress={progress}&#39;</span>
+<span class="w">       </span>script:<span class="w"> </span>end.sh
+<span class="w">  </span>dependencies:
+<span class="w">    </span>-<span class="w"> </span>start.sh,fetch-data.sh,compute.sh,analyze.sh,end.sh
 </pre></div>
 </div>
 <p>The different options for kind include local, ssh, slurm, and wsl.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>REST &mdash; cloudmesh-cc 4.3.7 documentation</title>
@@ -14,10 +14,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
@@ -34,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cloudmesh-cc
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -100,7 +103,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">REST</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/rest.md" class="fa fa-github"> Edit on GitHub</a>
@@ -119,17 +122,17 @@ is advantageous as it can be used with programming
 languages other than Python.</p>
 <p>To use this feature, ensure that the FastAPI server is
 online with the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/cm/cloudmesh-cc
-cms cc start
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/cm/cloudmesh-cc
+cms<span class="w"> </span>cc<span class="w"> </span>start
 </pre></div>
 </div>
 <section id="list-workflows-available-on-local-computer">
 <h2>List Workflows Available on Local Computer<a class="headerlink" href="#list-workflows-available-on-local-computer" title="Permalink to this heading"></a></h2>
 <p>The following command returns a dict that lists each
 available workflow.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflows&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflows&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -140,29 +143,29 @@ cloudmesh-cc, by specifying one of the following:</p>
 <ul class="simple">
 <li><p>a directory that contains the scripts and yaml</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
-    -d <span class="s1">&#39;&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow?directory=~/cm/cloudmesh-cc/tests/workflow-example&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>an archive file in tgz, xz, tar.gz, or tar format that contains the scripts
 and yaml</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow?archive=ThePathToYourArchiveFile&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
-    -d <span class="s1">&#39;&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow?archive=ThePathToYourArchiveFile&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>or a yaml file that specifies what jobs to run.</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
-    -d <span class="s1">&#39;&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow?yaml=~/cm/cloudmesh-cc/tests/workflow-example/workflow-example.yaml&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -172,9 +175,9 @@ and yaml</p></li>
 from the local computer.</p>
 <p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
 you wish to delete.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;DELETE&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;DELETE&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -186,9 +189,9 @@ the jobs that it contains, the colors of the statuses,
 and more.</p>
 <p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
 you wish to retrieve.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow/workflow-example&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -198,9 +201,9 @@ you wish to retrieve.</p>
 <p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
 you wish to run. Additionally, to hide the graph of the
 workflow as it is run, replace <code class="docutils literal notranslate"><span class="pre">show=True</span></code> with <code class="docutils literal notranslate"><span class="pre">show=False</span></code>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;GET&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/run/workflow-example?show=True&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow/run/workflow-example?show=True&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -212,9 +215,9 @@ the name of the job. The other optional parameters include the
 user, host, label, kind, status, progress, and script. To use
 the command, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow you
 wish to change. Additionally, change the other parameters, as desired.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X <span class="s1">&#39;POST&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39;</span> <span class="se">\</span>
-    -H <span class="s1">&#39;accept: application/json&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s1">&#39;http://127.0.0.1:8000/workflow/job/workflow-example?job=myJob&amp;user=aPerson&amp;host=local&amp;kind=local&amp;status=ready&amp;script=aJob.sh&amp;progress=0&amp;label=aLabel&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
 </pre></div>
 </div>
 </section>

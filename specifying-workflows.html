@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Specifying Workflows &mdash; cloudmesh-cc 4.3.7 documentation</title>
@@ -14,10 +14,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
@@ -34,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> cloudmesh-cc
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cloudmesh-cc
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -106,7 +109,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Specifying Workflows</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/docs/source/specifying-workflows.md" class="fa fa-github"> Edit on GitHub</a>
@@ -259,15 +262,15 @@ when the job status is changed.</p>
 run, from left to right. They are listed under the workflow
 in the yaml file.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workflow:
-  nodes:
-    a:
-       name: a
-    b:
-       name: b
-    c:
-       name: c
-  dependencies:
-    - a,b,c
+<span class="w">  </span>nodes:
+<span class="w">    </span>a:
+<span class="w">       </span>name:<span class="w"> </span>a
+<span class="w">    </span>b:
+<span class="w">       </span>name:<span class="w"> </span>b
+<span class="w">    </span>c:
+<span class="w">       </span>name:<span class="w"> </span>c
+<span class="w">  </span>dependencies:
+<span class="w">    </span>-<span class="w"> </span>a,b,c
 </pre></div>
 </div>
 </section>
@@ -285,11 +288,11 @@ guidelines as follows.</p>
 <section id="shell-and-slurm-scripts">
 <h2>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h2>
 <p>For shell and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, the script must contain:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# cloudmesh status=running progress=1 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# cloudmesh status=running progress=1 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 <p>at the beginning of the script, and</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# cloudmesh status=done progress=100 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# cloudmesh status=done progress=100 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 <p>at the end of the script.</p>
@@ -300,14 +303,14 @@ guidelines as follows.</p>
 the script must contain an import module from
 cloudmesh.common and calls to the progress function.</p>
 <p>py_script.py</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from cloudmesh.common.StopWatch import progress
-from cloudmesh.common.Shell import Shell
-<span class="nv">filename</span> <span class="o">=</span> Shell.map_filename<span class="o">(</span><span class="s1">&#39;./py_script.log&#39;</span><span class="o">)</span>.path
-progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">1</span>, <span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from<span class="w"> </span>cloudmesh.common.StopWatch<span class="w"> </span>import<span class="w"> </span>progress
+from<span class="w"> </span>cloudmesh.common.Shell<span class="w"> </span>import<span class="w"> </span>Shell
+<span class="nv">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Shell.map_filename<span class="o">(</span><span class="s1">&#39;./py_script.log&#39;</span><span class="o">)</span>.path
+progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
 
 <span class="c1"># your script does what you want it to do here...</span>
 
-progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">100</span>, <span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
+progress<span class="o">(</span><span class="nv">progress</span><span class="o">=</span><span class="m">100</span>,<span class="w"> </span><span class="nv">filename</span><span class="o">=</span>filename<span class="o">)</span>
 </pre></div>
 </div>
 <p>The statements do not need to be at the absolute beginning
