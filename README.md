@@ -7,6 +7,25 @@ Jacques Fleischer
 
 $^*$ Corresponding author
 
+## Citation
+
+
+```
+@misc{las-2022-hybrid-cc,
+  title =	 {Hybrid Reusable Computational Analytics Workflow
+                  Management with Cloudmesh},
+  author =	 {Gregor von Laszewski and J. P. Fleischer and
+                  Geoffrey C. Fox},
+  year =	 2022,
+  eprint =	 {2210.16941},
+  archivePrefix ={arXiv},
+  primaryClass = {cs.DC},
+  url =		 {https://arxiv.org/pdf/2210.16941},
+  urlOPT =
+                  {https://github.com/cyberaide/paper-cloudmesh-cc/raw/main/vonLaszewski-cloudmesh-cc.pdf}
+}
+```
+
 
 ## Background
 
