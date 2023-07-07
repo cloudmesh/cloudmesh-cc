@@ -15,6 +15,8 @@
    
       about_page
       add_job
+      add_page
+      add_post
       contact_page
       datatable_server
       delete_workflow
@@ -25,6 +27,7 @@
       failed_watcher
       generate_example_workflow
       get_available_workflows
+      get_job
       get_workflow
       get_workflow_graph
       home_page
@@ -36,6 +39,8 @@
       preferences_changer
       preferences_post
       ready_watcher
+      remove_job
+      reset_workflow_direct_url
       run_workflow
       running_watcher
       serve_done
@@ -47,7 +52,7 @@
       serve_watcher
       status_returner
       submitted_watcher
-      upload
+      upload_workflow
       watch_running_workflow
    
    
