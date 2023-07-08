@@ -20,9 +20,20 @@ $(document).ready(function () {
         ],
     });
 });
-
-
 </script>
+
+<style>
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .nav-item.heading {
+        margin-right: 10px;
+    }
+</style>
+
 <script>
     var source = new EventSource("http://127.0.0.1:8000/workflow-graph/{{ name }}");
     source.onmessage = function(event) {
@@ -52,109 +63,120 @@ $(document).ready(function () {
         <!-- Page Content  -->
 <div id="content">
 <h1>{{ name|safe }}</h1>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <i class="fas fa-align-justify"></i>
+                        </button>
 
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
+                        <div class="collapse navbar-collapse flex-column ms-auto justify-content-start" id="navbarSupportedContent">
+                            <ul class="nav navbar-nav me-auto">
+                                <li class="nav-item heading">
+                                    <b class="text-black"> Jobs </b>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li><b class="btn badge-light"> Jobs</i> </b>
-                            </li>
+                                </li>
                             &nbsp;
-                            <li>
-
-                                <button type="button" class="btn badge-danger btn-sm">
-                                    <small> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small> <span class="badge badge-light"><div id="failednumber"></div></span>
-                                </button>
-                            </li>
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-danger btn-sm">
+                                        <small class="text-white"> <i class="fa fa-close" aria-hidden="true"></i> &nbsp; Failed</small>
+                                        <span class="badge bg-light text-dark"><div id="failednumber"></div></span>
+                                    </button>
+                                </li>
                             &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-success btn-sm">
-                                    <small> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Done</small> <span class="badge badge-light"><div id="donenumber"></div></span>
-                                </button>
-                            </li>
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-success btn-sm">
+                                        <small class="text-white"> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; Done</small>
+                                        <span class="badge bg-light text-dark"><div id="donenumber"></div></span>
+                                    </button>
+                                </li>
                             &nbsp;
-                            <li>
-                            <button type="button" class="btn badge-info btn-sm">
-                                <small><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small> <span class="badge badge-light"><div id="runningnumber"></div></span>
-                            </button>
-                            </li>
-                            &nbsp;
-
-                            <li>
-                            <button type="button" class="btn badge-warning btn-sm">
-                                <small><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small> <span class="badge badge-light"><div id="submittednumber"></div></span>
-                            </button>
-                            </li>
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-info btn-sm">
+                                        <small class="text-black"><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Running</small>
+                                        <span class="badge bg-light text-dark"><div id="runningnumber"></div></span>
+                                    </button>
+                                </li>
                             &nbsp;
 
-                            <li>
-                            <button type="button" class="btn badge-light btn-sm">
-                                <small><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small> <span class="badge badge-light"><div id="readynumber"></div></span>
-                            </button>
-                            </li>
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-warning btn-sm">
+                                        <small class="text-black"><i class="fa fa-external-link" aria-hidden="true"></i> &nbsp; Submitted</small>
+                                        <span class="badge bg-light text-dark"><div id="submittednumber"></div></span>
+                                    </button>
+                                </li>
                             &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-secondary btn-sm">
-                                    <small> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
-                                </button>
-                            </li>
+
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-light btn-sm border border-dark">
+                                        <small class="text-black"><i class="fa fa-square" aria-hidden="true"></i> &nbsp; Ready</small>
+                                        <span class="badge bg-light text-dark"><div id="readynumber"></div></span>
+                                    </button>
+                                </li>
+                            &nbsp;
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-secondary btn-sm">
+                                        <small class="text-white"> <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add</small>
+                                    </button>
+                                </li>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                            <li>
-                             <b class="btn badge-light btn-sm"> Workflow </b>
-                            </li>
-                            <li>
-                                <button type="button" class="btn badge-secondary btn-sm">
-                                    <a href="/workflow/{{ name }}?output=table&initialized=True">
+                            </ul>
 
-                                        <small><i class="fa fa-table" aria-hidden="true"></i>   Table</small></a>
+                            <ul class="nav navbar-nav me-auto">
+                                <li class="nav-item heading">
+                                    <b class="text-black"> Workflow </b>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-secondary btn-sm">
+                                        <a href="/workflow/{{ name }}?output=table&initialized=True">
+                                            <small class="text-white"><i class="fa fa-table" aria-hidden="true"></i> &nbsp; Table</small>
+                                        </a>
+                                    </button>
+                                </li>
+                            &nbsp;
+                                <li class="nav-item">
+                                    <button type="button" class="btn bg-success btn-sm">
+                                        <a href="/workflow/run/{{ name }}?redirect=graph">
+                                            <small class="text-white"><i class="fa fa-rocket" aria-hidden="true"></i> &nbsp; Run</small>
+                                        </a>
+                                    </button>
+                                </li>
+                            &nbsp;
 
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-danger btn-sm">
+                                    <small class="text-white"><i class="fa fa-ban" aria-hidden="true"></i> &nbsp; Stop</small>
                                 </button>
-                            &nbsp;
-                            <li>
-                                <button type="button" class="btn badge-success btn-sm">
-                                    <a href="/workflow/run/{{ name }}?redirect=graph"><small><i class="fa fa-rocket" aria-hidden="true"></i> &nbsp; Run</small></a>
-                            </button>
-                           </li>
-                            &nbsp;
-
-                            <li>
-                            <button type="button" class="btn badge-danger btn-sm">
-                                <small><i class="fa fa-ban" aria-hidden="true"></i> &nbsp; Stop</small>
-                            </button>
                             </li>
                             &nbsp;
 
-                            <!-- reset does stop, then empties out runtime -->
-                            <!-- dir, copies original workflow into runtime -->
-                            <!-- dir, and report back that its done. -->
-                            <!-- popup yes/no choice in bootstrap -->
-                            <li>
-                            <button type="button" class="btn badge-warning btn-sm">
-                                <a href="/reset/{{ name }}?redirect=graph"><small><i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; Reset</small></a>
-                            </button>
+                            <!-- popup yes/no choice in bootstrap needed ... -->
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-warning btn-sm">
+                                    <a href="/reset/{{ name }}?redirect=graph">
+                                        <small><i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; Reset</small>
+                                    </a>
+                                </button>
                             </li>
                             &nbsp;
 
-                            <li>
-                            <button type="button" class="btn badge-danger btn-sm">
-                                <a href="/delete/{{ name }}"><small><i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Delete</small></a>
-                            </button>
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-danger btn-sm">
+                                            <a href="/delete/{{ name }}">
+                                                <small class="text-white"><i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Delete</small>
+                                            </a>
+                                </button>
                             </li>
                             &nbsp;
 
-                            <li>
-                            <button type="button" class="btn badge-info btn-sm">
+                            <li class="nav-item">
+                            <button type="button" class="btn bg-info btn-sm">
                                 <a href="/edit/{{ name_of_workflow }}"><small><i class="fa fa-pen-to-square" aria-hidden="true"></i> &nbsp; Edit</small></a>
                             </button>
                             </li>
