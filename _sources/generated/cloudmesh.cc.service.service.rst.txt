@@ -1,4 +1,4 @@
-﻿cloudmesh.cc.service.service
+cloudmesh.cc.service.service
 ============================
 
 .. automodule:: cloudmesh.cc.service.service
