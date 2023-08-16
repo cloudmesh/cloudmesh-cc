@@ -1,2 +1,2 @@
 """The cloudmesh cc version number."""
-version = "4.3.11"
+version = "4.3.12"
