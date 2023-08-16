@@ -1,0 +1,118 @@
+workflow:
+  nodes:
+    start:
+      label: 'start\nCreated={created.%Y/%m/%d, %H--%M--%S}\nWorkflow Started={t0.%Y/%m/%d, %H--%M--%S}\nNow={now.%Y/%m/%d, %H--%M--%S}\nElapsed={dt0.%M--%S}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: start
+      shape: box
+      style: ''
+    end:
+      label: 'end\nWorkflow Ended={t1.%Y/%m/%d, %H--%M--%S}\nTotal Time={dt1.%S} seconds'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: end
+      shape: box
+      style: ''
+    fetch-data-5950x:
+      label: 'Cloudmask\nscp\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data-5950x
+    5950x-benchmark:
+      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: 5950x-benchmark
+    fetch-data-9900k:
+      label: 'Cloudmask\nsftp\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data-9900k
+    9900k-benchmark:
+      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: 9900k-benchmark
+    fetch-data-rivanna:
+      label: 'Cloudmask\nglobus\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data-rivanna
+    rivanna-a100-benchmark:
+      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: rivanna-a100-benchmark
+    rivanna-v100-benchmark:
+      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: rivanna-v100-benchmark
+#    rivanna-a100-dgx-benchmark:
+#      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+#      kind: local
+#      user: grey
+#      host: local
+#      status: ready
+#      exec: 'echo hello'
+#      name: rivanna-a100-dgx-benchmark
+    fetch-data-a100-dgx-station:
+      label: 'Cloudmask\nrclone\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: fetch-data-a100-dgx-station
+    a100-dgx-station-benchmark:
+      label: 'Cloudmask\n{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
+      kind: local
+      user: grey
+      host: local
+      status: ready
+      exec: 'echo hello'
+      name: a100-dgx-station-benchmark
+  dependencies:
+      - start,fetch-data-5950x,5950x-benchmark,end
+      - start,fetch-data-9900k,9900k-benchmark,end
+      - start,fetch-data-rivanna
+      - fetch-data-rivanna,rivanna-a100-benchmark,end
+      - fetch-data-rivanna,rivanna-v100-benchmark,end
+#      - fetch-data-rivanna,rivanna-a100-dgx-benchmark,end
+      - start,fetch-data-a100-dgx-station,a100-dgx-station-benchmark,end
+
+colors:
+  status:
+    ready: white
+    undefined: '#DBFF33'
+    done: '#CCFFCC'
+    failed: '#FFCCCC'
+    running: '#CCE5FF'

@@ -9,7 +9,7 @@ cloudmesh-progress
 #
 #    pip-compile setup.py
 #
-pyyaml==5.4.1
+pyyaml
 psutil
 yamldb
 docker-compose
