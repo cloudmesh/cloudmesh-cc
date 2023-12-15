@@ -8,7 +8,7 @@ workflow:
       status: ready
       exec: 'echo hello'
       name: start
-      shape: box
+      shape: invhouse
       style: ''
     end:
       label: 'end\nWorkflow Ended={t1.%Y/%m/%d, %H--%M--%S}\nTotal Time={dt1.%S} seconds'
@@ -18,7 +18,7 @@ workflow:
       status: ready
       exec: 'echo hello'
       name: end
-      shape: box
+      shape: house
       style: ''
     fetch-data:
       label: '{name}\nProgress={progress}\nStart={tstart.%Y/%m/%d, %H--%M--%S}\nEnd={tend.%Y/%m/%d, %H--%M--%S}\nModified={modified.%Y/%m/%d, %H--%M--%S}\nJob Time={dt.}'
