@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.manager &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <title>cloudmesh.cc.manager &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/clipboard.min.js"></script>
-        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -112,7 +114,9 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<div class="viewcode-block" id="WorkflowCLIManager"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager">[docs]</a><span class="k">class</span> <span class="nc">WorkflowCLIManager</span><span class="p">:</span>
+<div class="viewcode-block" id="WorkflowCLIManager">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager">[docs]</a>
+<span class="k">class</span> <span class="nc">WorkflowCLIManager</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage the workflow commands given from command line interface.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -123,7 +127,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-<div class="viewcode-block" id="WorkflowCLIManager.add_from_filename"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="WorkflowCLIManager.add_from_filename">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_filename">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a job from a file.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -142,7 +148,10 @@
         <span class="n">filename</span> <span class="o">=</span> <span class="n">path_expand</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.add_from_arguments"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.add_from_arguments">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.add_from_arguments">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_from_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">argv</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a job.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -162,7 +171,10 @@
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.delete_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_job">[docs]</a>    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.delete_job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a job.</span>
 
 <span class="sd">        Handels the command::</span>
@@ -177,7 +189,10 @@
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">remove_job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.delete_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.delete_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a workflow.</span>
 
 <span class="sd">        handles the command::</span>
@@ -192,7 +207,10 @@
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">remove_workflow</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.list_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_job">[docs]</a>    <span class="k">def</span> <span class="nf">list_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.list_job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List the jobs.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -208,7 +226,10 @@
         <span class="n">j</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">job</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.list_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.list_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.list_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List the workflows.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -224,7 +245,10 @@
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">jobs</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.run"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.run">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the workflow.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -239,7 +263,10 @@
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">w</span><span class="o">.</span><span class="n">run_topo</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dependency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.dependencies">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.dependencies">[docs]</a>
+    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dependency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                      <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Manage the dependencies.</span>
 
@@ -263,7 +290,10 @@
         <span class="c1"># I think that the dependencies are separated by commas and will call this function a few times</span>
         <span class="n">w</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">dependency</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.status_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.status_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">status_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.status_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.status_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">status_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Retruns the status of the workflow.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -284,7 +314,10 @@
         <span class="n">status</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WorkflowCLIManager.graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="WorkflowCLIManager.graph">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.manager.WorkflowCLIManager.graph">[docs]</a>
+    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a graph from the workflow.</span>
 
 <span class="sd">        Handles the command::</span>
@@ -301,7 +334,9 @@
 
         <span class="n">w</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">graph</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span></div></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span></div>
+</div>
+
 
 </pre></div>
 

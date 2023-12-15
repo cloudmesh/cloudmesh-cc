@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REST &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <title>REST &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -115,7 +117,7 @@
            <div itemprop="articleBody">
              
   <section id="rest">
-<h1>REST<a class="headerlink" href="#rest" title="Permalink to this heading"></a></h1>
+<h1>REST<a class="headerlink" href="#rest" title="Link to this heading"></a></h1>
 <p>Cloudmesh cc can be interfaced with Representational
 State Transfer (REST) by using Curl commands. REST
 is advantageous as it can be used with programming
@@ -127,7 +129,7 @@ cms<span class="w"> </span>cc<span class="w"> </span>start
 </pre></div>
 </div>
 <section id="list-workflows-available-on-local-computer">
-<h2>List Workflows Available on Local Computer<a class="headerlink" href="#list-workflows-available-on-local-computer" title="Permalink to this heading"></a></h2>
+<h2>List Workflows Available on Local Computer<a class="headerlink" href="#list-workflows-available-on-local-computer" title="Link to this heading"></a></h2>
 <p>The following command returns a dict that lists each
 available workflow.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="w"> </span><span class="se">\</span>
@@ -137,7 +139,7 @@ available workflow.</p>
 </div>
 </section>
 <section id="upload-a-workflow">
-<h2>Upload a Workflow<a class="headerlink" href="#upload-a-workflow" title="Permalink to this heading"></a></h2>
+<h2>Upload a Workflow<a class="headerlink" href="#upload-a-workflow" title="Link to this heading"></a></h2>
 <p>There are different ways to upload a new workflow to
 cloudmesh-cc, by specifying one of the following:</p>
 <ul class="simple">
@@ -170,7 +172,7 @@ and yaml</p></li>
 </div>
 </section>
 <section id="delete-a-workflow">
-<h2>Delete a Workflow<a class="headerlink" href="#delete-a-workflow" title="Permalink to this heading"></a></h2>
+<h2>Delete a Workflow<a class="headerlink" href="#delete-a-workflow" title="Link to this heading"></a></h2>
 <p>The following command deletes a preexisting workflow
 from the local computer.</p>
 <p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
@@ -182,7 +184,7 @@ you wish to delete.</p>
 </div>
 </section>
 <section id="retrieve-a-workflow">
-<h2>Retrieve a Workflow<a class="headerlink" href="#retrieve-a-workflow" title="Permalink to this heading"></a></h2>
+<h2>Retrieve a Workflow<a class="headerlink" href="#retrieve-a-workflow" title="Link to this heading"></a></h2>
 <p>The following command retrieves a workflow and its
 configuration, such as the directory where it resides,
 the jobs that it contains, the colors of the statuses,
@@ -196,7 +198,7 @@ you wish to retrieve.</p>
 </div>
 </section>
 <section id="run-a-workflow">
-<h2>Run a Workflow<a class="headerlink" href="#run-a-workflow" title="Permalink to this heading"></a></h2>
+<h2>Run a Workflow<a class="headerlink" href="#run-a-workflow" title="Link to this heading"></a></h2>
 <p>The following command runs a workflow.</p>
 <p>To use it, replace <code class="docutils literal notranslate"><span class="pre">workflow-example</span></code> with the workflow
 you wish to run. Additionally, to hide the graph of the
@@ -208,7 +210,7 @@ workflow as it is run, replace <code class="docutils literal notranslate"><span 
 </div>
 </section>
 <section id="add-a-job-to-a-workflow">
-<h2>Add a Job to a Workflow<a class="headerlink" href="#add-a-job-to-a-workflow" title="Permalink to this heading"></a></h2>
+<h2>Add a Job to a Workflow<a class="headerlink" href="#add-a-job-to-a-workflow" title="Link to this heading"></a></h2>
 <p>The following command adds a new job to a preexisting workflow.</p>
 <p>The only required parameter is the job parameter, which specifies
 the name of the job. The other optional parameters include the

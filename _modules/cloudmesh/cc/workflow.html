@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.workflow &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <title>cloudmesh.cc.workflow &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/clipboard.min.js"></script>
-        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -183,7 +185,9 @@
 <span class="kn">from</span> <span class="nn">cloudmesh.common.variables</span> <span class="kn">import</span> <span class="n">Variables</span>
 
 
-<div class="viewcode-block" id="Graph"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph">[docs]</a><span class="k">class</span> <span class="nc">Graph</span><span class="p">:</span>
+<div class="viewcode-block" id="Graph">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph">[docs]</a>
+<span class="k">class</span> <span class="nc">Graph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The Graph class handles the generation of workflow diagrams.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -214,7 +218,9 @@
         <span class="c1">#    name:</span>
         <span class="c1">#    colors:</span>
 
-<div class="viewcode-block" id="Graph.clear"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.clear">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.clear">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reset the graph characteristics to a clean slate.</span>
 
@@ -230,6 +236,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_count</span> <span class="o">=</span> <span class="mi">0</span></div>
 
+
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the specified variable from the nodes.</span>
@@ -240,7 +247,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Graph.set_status_colors"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status_colors">[docs]</a>    <span class="k">def</span> <span class="nf">set_status_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.set_status_colors">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status_colors">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_status_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the ready, undefined, done, failed, and running colors as hex values.</span>
 
 <span class="sd">        :return: nothing</span>
@@ -258,7 +267,10 @@
                        <span class="n">failed</span><span class="o">=</span><span class="s2">&quot;#FFCCCC&quot;</span><span class="p">,</span>
                        <span class="n">running</span><span class="o">=</span><span class="s1">&#39;#CCE5FF&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.add_color"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_color">[docs]</a>    <span class="k">def</span> <span class="nf">add_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">colors</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.add_color">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_color">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">colors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add specified color(s).</span>
 
@@ -274,6 +286,7 @@
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">colors</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the graph in string format.</span>
@@ -292,7 +305,9 @@
 
         <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">workflow</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Graph.load"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.load">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.load">[docs]</a>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load a graph for a workflow.</span>
 
@@ -326,7 +341,10 @@
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="p">:</span>
              <span class="bp">self</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.add_node"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.add_node">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add node(s) to the graph.</span>
 
@@ -350,7 +368,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_count</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">node_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="Graph.add_edge"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.add_edge">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_edge">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add edge(s) to the graph.</span>
 
@@ -382,7 +403,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">source</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">destination</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.delete_edge"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_edge">[docs]</a>    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.delete_edge">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_edge">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add edge(s) to the graph.</span>
 
@@ -402,6 +426,7 @@
 
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
+
         <span class="c1"># TODO: do this somehow e.g. remove source from destination in parent</span>
         <span class="c1"># if &quot;parent&quot; not in self.nodes[destination]:</span>
         <span class="c1">#     self.nodes[destination][&quot;parent&quot;] = []</span>
@@ -409,15 +434,20 @@
         <span class="c1">#     self.nodes[source][&quot;parent&quot;] = []</span>
         <span class="c1"># self.nodes[destination][&quot;parent&quot;].append(source)</span>
 
-<div class="viewcode-block" id="Graph.delete_node"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_node">[docs]</a>    <span class="k">def</span> <span class="nf">delete_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.delete_node">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.delete_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 
         <span class="k">pass</span></div>
+
         <span class="c1"># del self.node[name]</span>
         <span class="c1"># for all nodes:</span>
         <span class="c1">#     if parents of node containes name:</span>
         <span class="c1">#         remove the name from parents:</span>
 
-<div class="viewcode-block" id="Graph.done"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.done">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.done">[docs]</a>
+    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove from all nodes the named parent.</span>
 
@@ -431,7 +461,10 @@
                 <span class="k">if</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.todo"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.todo">[docs]</a>    <span class="k">def</span> <span class="nf">todo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.todo">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.todo">[docs]</a>
+    <span class="k">def</span> <span class="nf">todo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find all nodes with no parents and progress != 100.</span>
 
@@ -448,7 +481,10 @@
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Graph.set_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status">[docs]</a>    <span class="k">def</span> <span class="nf">set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.set_status">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.set_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the status of a specified node.</span>
 
@@ -461,7 +497,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status</span></div>
 
-<div class="viewcode-block" id="Graph.get_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.get_status">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve status of a specified node.</span>
 
@@ -472,7 +511,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Graph.add_dependency"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.add_dependency">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependency">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add dependency between source and destination.</span>
 
 <span class="sd">        Add a dependency for a node. a dependency enforces</span>
@@ -488,7 +530,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.add_dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">nodedata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgedata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.add_dependencies">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.add_dependencies">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">nodedata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgedata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add multiple dependencies betwee several nodes.</span>
 
 <span class="sd">        Add dependencies for nodes. a dependency enforces</span>
@@ -527,7 +572,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">edgedata</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.export"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;show,a.png,a.svg,a.pdf&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.export">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.export">[docs]</a>
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;show,a.png,a.svg,a.pdf&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Export the graph.</span>
 
 <span class="sd">        Take the inputted filename, expands it into list</span>
@@ -549,9 +597,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
             <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
                 <span class="k">pass</span></div>
+
             <span class="c1"># and so on</span>
 
-<div class="viewcode-block" id="Graph.save_to_yaml"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.save_to_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.save_to_yaml">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.save_to_yaml">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the graph.</span>
 
 <span class="sd">        Save the graph to a specified filename and</span>
@@ -586,7 +637,10 @@
 
         <span class="n">writefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.create_label"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_label">[docs]</a>    <span class="k">def</span> <span class="nf">create_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.create_label">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_label">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the text to appear on a node in the graph.</span>
 
 <span class="sd">        :param name: name of node to add text to.</span>
@@ -605,7 +659,10 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="n">replacement</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">msg</span></div>
 
-<div class="viewcode-block" id="Graph.save"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Graph.save">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
              <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.svg&quot;</span><span class="p">,</span>
              <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">layout</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">,</span>
@@ -705,7 +762,10 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.get_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">get_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
+
+<div class="viewcode-block" id="Graph.get_topological_order">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.get_topological_order">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a list of the topological order of the workflow.</span>
 
@@ -719,7 +779,10 @@
         <span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">order</span></div>
 
-<div class="viewcode-block" id="Graph.create_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
+
+<div class="viewcode-block" id="Graph.create_topological_order">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Graph.create_topological_order">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the graph while each node bget a number determined from get_sequential_order.</span>
 
@@ -733,10 +796,14 @@
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
             <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">order</span></div></div>
+        <span class="k">return</span> <span class="n">order</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow">[docs]</a><span class="k">class</span> <span class="nc">Workflow</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow">[docs]</a>
+<span class="k">class</span> <span class="nc">Workflow</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Workflow class that runs all jobs, handles dependencies, etc.</span>
 
 <span class="sd">    ::</span>
@@ -924,7 +991,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Workflow.job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.job">[docs]</a>    <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Workflow.job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.job">[docs]</a>
+    <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the details of a job within the workflow.</span>
 
@@ -934,6 +1003,7 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -945,7 +1015,9 @@
         <span class="c1"># gvl implemented but not tested</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span>  <span class="c1"># [name]</span>
 
-<div class="viewcode-block" id="Workflow.predecessor"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Workflow.predecessor">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.predecessor">[docs]</a>
+    <span class="k">def</span> <span class="nf">predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the jobs that must be run before the specified job.</span>
 
@@ -963,7 +1035,10 @@
                 <span class="n">predecessors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">predecessors</span></div>
 
-<div class="viewcode-block" id="Workflow.get_predecessors"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.get_predecessors">[docs]</a>    <span class="k">def</span> <span class="nf">get_predecessors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.get_predecessors">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.get_predecessors">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_predecessors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the predecessors.</span>
 
 <span class="sd">        Figure out all the dependencies of the name node</span>
@@ -987,7 +1062,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">parents</span></div>
 
-<div class="viewcode-block" id="Workflow.save_with_state"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save_with_state">[docs]</a>    <span class="k">def</span> <span class="nf">save_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.save_with_state">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save_with_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the workflow with state.</span>
 
@@ -1012,7 +1090,10 @@
         <span class="k">if</span> <span class="n">stdout</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="Workflow.load_with_state"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load_with_state">[docs]</a>    <span class="k">def</span> <span class="nf">load_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.load_with_state">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load_with_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_with_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load the workflow with state.</span>
 
@@ -1030,7 +1111,10 @@
         <span class="k">if</span> <span class="s2">&quot;colors&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;colors&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Workflow.load"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.load">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.load">[docs]</a>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the workflow.</span>
 
 <span class="sd">        Load a workflow graph from file. However, the file is still stored in</span>
@@ -1084,12 +1168,15 @@
             <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
                 <span class="n">node</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">node</span><span class="p">)</span></div>
+
         <span class="c1">#</span>
         <span class="c1"># for edge in dependencies:</span>
         <span class="c1">#     self.add_dependencies(edge)</span>
 
 
-<div class="viewcode-block" id="Workflow.save"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Workflow.save">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the workflow.</span>
 
@@ -1137,7 +1224,10 @@
         <span class="c1">#    saveto = filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">save_to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.add_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_job">[docs]</a>    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Workflow.add_job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1231,7 +1321,10 @@
             <span class="n">writefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_filename</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.add_dependency"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.add_dependency">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependency">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a job dependency to the workflow (and the graph).</span>
 
@@ -1244,7 +1337,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.add_dependencies"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependencies">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.add_dependencies">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.add_dependencies">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a job dependency to the workflow (and the graph).</span>
 
@@ -1255,7 +1351,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_dependencies</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">dependency</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.update_status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_status">[docs]</a>    <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.update_status">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manually update a job&#39;s status.</span>
 
@@ -1268,7 +1367,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status</span></div>
 
-<div class="viewcode-block" id="Workflow.set_progress"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.set_progress">[docs]</a>    <span class="k">def</span> <span class="nf">set_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">percent</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.set_progress">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.set_progress">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">percent</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manually update a job&#39;s progress.</span>
 
@@ -1281,7 +1383,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;progress&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percent</span></div>
 
-<div class="viewcode-block" id="Workflow.update_progress"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_progress">[docs]</a>    <span class="k">def</span> <span class="nf">update_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.update_progress">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.update_progress">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manually update the progress of a job according to its log file.</span>
 
@@ -1294,7 +1399,10 @@
         <span class="c1"># once progress is fetched set it for the named job</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Workflow.run_parallel"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.run_parallel">[docs]</a>    <span class="k">def</span> <span class="nf">run_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Workflow.run_parallel">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.run_parallel">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                      <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;~/experiment&quot;</span><span class="p">,</span>
                      <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1497,7 +1605,10 @@
                         <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
                         <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.run_topo"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.run_topo">[docs]</a>    <span class="k">def</span> <span class="nf">run_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Workflow.run_topo">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.run_topo">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1727,7 +1838,10 @@
                 <span class="c1"># banner(f&quot;Job: {name}&quot;)</span>
                 <span class="n">Console</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.display"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.display">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.display">[docs]</a>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;workflow&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show the graph of the workflow.</span>
 
@@ -1753,7 +1867,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Shell</span><span class="o">.</span><span class="n">browser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.create_topological_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.create_topological_order">[docs]</a>    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
+
+<div class="viewcode-block" id="Workflow.create_topological_order">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.create_topological_order">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_topological_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#create_sequential_order</span>
         <span class="c1"># or put it in workflow or in both # mey need to be in workflow.</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the graph while each node bget a number determined from get_sequential_order.</span>
@@ -1787,7 +1904,10 @@
             <span class="n">current_job</span> <span class="o">=</span> <span class="n">primary_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">current_job</span><span class="p">][</span><span class="s1">&#39;number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">primary_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Workflow.sequential_order"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.sequential_order">[docs]</a>    <span class="k">def</span> <span class="nf">sequential_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
+
+<div class="viewcode-block" id="Workflow.sequential_order">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.sequential_order">[docs]</a>
+    <span class="k">def</span> <span class="nf">sequential_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#get_sequentil_order</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a list of the topological order of the workflow.</span>
 
@@ -1800,6 +1920,7 @@
         <span class="n">g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">tuples</span><span class="p">)</span>
         <span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">order</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1829,7 +1950,9 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">data</span>
 
-<div class="viewcode-block" id="Workflow.json"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Workflow.json">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.json">[docs]</a>
+    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the workflow as json string.</span>
 
@@ -1843,6 +1966,7 @@
             <span class="s1">&#39;dependencies&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="p">)</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1887,7 +2011,9 @@
         <span class="k">return</span> <span class="n">Printer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span>
                              <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Workflow.table2"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.table2">[docs]</a>    <span class="k">def</span> <span class="nf">table2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_label</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Workflow.table2">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.table2">[docs]</a>
+    <span class="k">def</span> <span class="nf">table2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_label</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a table of the workflow.</span>
 
@@ -1931,7 +2057,10 @@
         <span class="k">return</span> <span class="n">Printer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span>
                              <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.remove_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">remove_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.remove_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete workflow from the local file system.</span>
 
@@ -1946,7 +2075,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Workflow.remove_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_job">[docs]</a>    <span class="k">def</span> <span class="nf">remove_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.remove_job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.remove_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a particular job from the workflow.</span>
 
@@ -1980,7 +2112,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Workflow.status"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.status">[docs]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.status">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.status">[docs]</a>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return details of the workflow in dict format.</span>
 
@@ -2009,7 +2144,10 @@
         <span class="n">_status</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
         <span class="k">return</span> <span class="n">_status</span></div>
 
-<div class="viewcode-block" id="Workflow.analyze_states"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.analyze_states">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Workflow.analyze_states">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflow.Workflow.analyze_states">[docs]</a>
+    <span class="k">def</span> <span class="nf">analyze_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a wordcount on status.</span>
 
@@ -2026,7 +2164,9 @@
         <span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;completed&#39;</span><span class="p">,</span> <span class="s1">&#39;ready&#39;</span><span class="p">,</span> <span class="s1">&#39;failed&#39;</span><span class="p">,</span> <span class="s1">&#39;submitted&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">]:</span>
             <span class="n">count</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">count</span></div></div>
+        <span class="k">return</span> <span class="n">count</span></div>
+</div>
+
 </pre></div>
 
            </div>

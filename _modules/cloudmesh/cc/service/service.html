@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.service.service &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/readthedocs-custom.css" type="text/css" />
+  <title>cloudmesh.cc.service.service &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../../_static/clipboard.min.js"></script>
-        <script src="../../../../_static/copybutton.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -174,7 +176,9 @@
 <span class="n">include_portal_tag_in_schema</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<div class="viewcode-block" id="get_available_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows">[docs]</a><span class="k">def</span> <span class="nf">get_available_workflows</span><span class="p">():</span>
+<div class="viewcode-block" id="get_available_workflows">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_available_workflows">[docs]</a>
+<span class="k">def</span> <span class="nf">get_available_workflows</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return workflow dirs found in .cloudmesh directory.</span>
 
@@ -200,7 +204,10 @@
     <span class="k">return</span> <span class="n">folders</span></div>
 
 
-<div class="viewcode-block" id="dict_of_available_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.dict_of_available_workflows">[docs]</a><span class="k">def</span> <span class="nf">dict_of_available_workflows</span><span class="p">():</span>
+
+<div class="viewcode-block" id="dict_of_available_workflows">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.dict_of_available_workflows">[docs]</a>
+<span class="k">def</span> <span class="nf">dict_of_available_workflows</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a dict of available workflows.</span>
 
 <span class="sd">    looks inside ~/.cloudmesh/workflow directory</span>
@@ -220,7 +227,10 @@
     <span class="k">return</span> <span class="n">dict_of_workflow_dicts</span></div>
 
 
-<div class="viewcode-block" id="Jobpy"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.Jobpy">[docs]</a><span class="k">class</span> <span class="nc">Jobpy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Jobpy">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.Jobpy">[docs]</a>
+<span class="k">class</span> <span class="nc">Jobpy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A python job.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
@@ -233,6 +243,7 @@
     <span class="n">script</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">pid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">parent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 
 
 <span class="c1"># q = test_run()</span>
@@ -259,7 +270,9 @@
 <span class="c1">#</span>
 
 
-<div class="viewcode-block" id="load_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow">[docs]</a><span class="k">def</span> <span class="nf">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Workflow</span><span class="p">:</span>
+<div class="viewcode-block" id="load_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.load_workflow">[docs]</a>
+<span class="k">def</span> <span class="nf">load_workflow</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Workflow</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a workflow corresponding to given name.</span>
 
 <span class="sd">    :param name: name of workflow</span>
@@ -278,7 +291,10 @@
     <span class="k">return</span> <span class="n">w</span></div>
 
 
-<div class="viewcode-block" id="image_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">image_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="image_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.image_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">image_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Watch an svg for changes.</span>
 
@@ -324,7 +340,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="penultimate_status_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher">[docs]</a><span class="k">def</span> <span class="nf">penultimate_status_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="penultimate_status_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.penultimate_status_watcher">[docs]</a>
+<span class="k">def</span> <span class="nf">penultimate_status_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Watch a runtime yaml for status changes.</span>
 
@@ -359,7 +378,10 @@
     <span class="k">return</span> <span class="n">count</span></div>
 
 
-<div class="viewcode-block" id="datatable_server"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.datatable_server">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="datatable_server">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.datatable_server">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">datatable_server</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that returns datatable when changes are detected.</span>
 
@@ -472,7 +494,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="done_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.done_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="done_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.done_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">done_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that yields number of jobs that are done.</span>
 
@@ -502,7 +527,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ready_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ready_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.ready_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">ready_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that yields number of jobs that are ready.</span>
 
@@ -532,7 +560,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="failed_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.failed_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="failed_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.failed_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">failed_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that yields number of jobs that are failed.</span>
 
@@ -562,7 +593,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="submitted_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="submitted_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.submitted_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">submitted_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that yields number of jobs that are submitted.</span>
 
@@ -592,7 +626,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="running_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="running_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.running_watcher">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">running_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Server side event watcher that yields number of jobs that are running.</span>
 
@@ -622,7 +659,10 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="status_returner"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.status_returner">[docs]</a><span class="k">def</span> <span class="nf">status_returner</span><span class="p">(</span><span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="status_returner">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.status_returner">[docs]</a>
+<span class="k">def</span> <span class="nf">status_returner</span><span class="p">(</span><span class="n">name_of_workflow</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read a runtime yaml file to return a dict of status of jobs.</span>
 
@@ -651,7 +691,10 @@
     <span class="k">return</span> <span class="n">count</span></div>
 
 
-<div class="viewcode-block" id="serve_done"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/done-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_done">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_done">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/done-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_done</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -672,7 +715,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_ready"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ready-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_ready">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_ready">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ready-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_ready</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -689,7 +735,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_failed"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/failed-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_failed">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_failed">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/failed-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_failed</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -706,7 +755,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_submitted"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/submitted-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_submitted">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_submitted">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/submitted-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_submitted</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -723,7 +775,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_running"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/running-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_running">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_running">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/running-count/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_running</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -740,11 +795,14 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
+
 <span class="c1">#</span>
 <span class="c1"># HOME</span>
 <span class="c1">#</span>
 
-<div class="viewcode-block" id="home_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.home_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="home_page">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.home_page">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">,</span>
@@ -770,11 +828,14 @@
                                                     <span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="n">html</span><span class="p">})</span></div>
 
 
+
 <span class="c1">#</span>
 <span class="c1"># CONTACT</span>
 <span class="c1">#</span>
 
-<div class="viewcode-block" id="contact_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.contact_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/contact&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="contact_page">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.contact_page">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/contact&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">contact_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
@@ -796,7 +857,10 @@
                                        <span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="n">html</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="man_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.man_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/manpage&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="man_page">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.man_page">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/manpage&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">man_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
@@ -826,7 +890,10 @@
                                        <span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="n">html</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="about_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.about_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/about&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="about_page">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.about_page">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/about&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">about_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
@@ -847,7 +914,10 @@
                                        <span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="n">html</span><span class="p">,</span>
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="add_page"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/add&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="add_page">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_page">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/add&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
@@ -864,7 +934,10 @@
                                       <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="add_post"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/add&#39;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="add_post">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_post">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/add&#39;</span><span class="p">,</span>
           <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
           <span class="n">response_class</span><span class="o">=</span><span class="n">RedirectResponse</span><span class="p">,</span>
           <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
@@ -931,6 +1004,7 @@
     <span class="c1">#                 workflow_name=workflow_name)</span>
     <span class="c1"># print(r)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span></div>
+
     <span class="c1"># folders = get_available_workflows()</span>
     <span class="c1"># print(preferences)</span>
 
@@ -940,7 +1014,9 @@
 <span class="c1">#</span>
 
 
-<div class="viewcode-block" id="list_workflows"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflows&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="list_workflows">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.list_workflows">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflows&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of all workflows found on local computer.</span>
@@ -990,6 +1066,7 @@
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No workflows found&quot;</span><span class="p">}</span></div>
 
 
+
 <span class="c1"># we need to be putting in there whatever we need to be updating.</span>
 <span class="c1"># 1. upload a.yaml (standalone, doesnt need anything else)</span>
 <span class="c1"># 1.1 upload a.yaml?name=d</span>
@@ -1004,7 +1081,9 @@
 <span class="c1"># 4.1 a.tgz and a.xz which contain whatever is being provided in 1,2,3</span>
 <span class="c1"># 4.2 they are uncompressed just as if they were to do an individual upload.</span>
 <span class="c1"># name is optional because the name is determined on what is provided</span>
-<div class="viewcode-block" id="upload_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
+<div class="viewcode-block" id="upload_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.upload_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="c1"># @app.post(&quot;/workflow/{workflow_name}&quot;,</span>
 <span class="c1">#           tags=[&#39;workflow&#39;])</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/upload&quot;</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
@@ -1181,6 +1260,7 @@
             <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error uploading the file </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span></div>
 
 
+
 <span class="c1"># import requests</span>
 <span class="c1">#</span>
 <span class="c1"># url = &#39;http://127.0.0.1:8000/workflow/upload&#39;</span>
@@ -1188,7 +1268,9 @@
 <span class="c1"># resp = requests.post(url=url, files=file)</span>
 <span class="c1"># print(resp.json())</span>
 
-<div class="viewcode-block" id="delete_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="delete_workflow_direct_url">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow_direct_url">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/delete/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">delete_workflow_direct_url</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1211,7 +1293,10 @@
             <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="reset_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.reset_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/reset/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="reset_workflow_direct_url">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.reset_workflow_direct_url">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/reset/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">reset_workflow_direct_url</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1251,7 +1336,10 @@
             <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error resetting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="delete_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="delete_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.delete_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete a workflow by name.</span>
@@ -1301,7 +1389,10 @@
             <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error deleting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="edit_workflow_direct_url"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.edit_workflow_direct_url">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="edit_workflow_direct_url">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.edit_workflow_direct_url">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/edit/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">],</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
@@ -1324,7 +1415,10 @@
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error editing the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="preferences_changer"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/preferences-changer&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="preferences_changer">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_changer">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/preferences-changer&quot;</span><span class="p">,</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
@@ -1350,7 +1444,10 @@
                   <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="get_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
                  <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1528,7 +1625,10 @@
                 <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;There was an error with getting the workflow &#39;</span><span class="si">{</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="get_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="get_job">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_job">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1583,7 +1683,10 @@
     <span class="k">return</span> <span class="p">{</span><span class="n">job_name</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="get_workflow_graph"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-graph/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="get_workflow_graph">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.get_workflow_graph">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-graph/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_workflow_graph</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1620,7 +1723,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="serve_watcher"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/watcher/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_watcher">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_watcher">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/watcher/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_watcher</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1654,7 +1760,10 @@
                                        <span class="s2">&quot;workflowlist&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="serve_table"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/serve-datatable/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="serve_table">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.serve_table">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/serve-datatable/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">serve_table</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See the table of the workflow.</span>
@@ -1670,7 +1779,10 @@
     <span class="k">return</span> <span class="n">EventSourceResponse</span><span class="p">(</span><span class="n">event_generator</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="run_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.run_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow/run/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;topo&quot;</span><span class="p">,</span>
@@ -1744,7 +1856,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exception:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="watch_running_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-running/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="watch_running_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.watch_running_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/workflow-running/</span><span class="si">{workflow_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;portal&#39;</span><span class="p">],</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">watch_running_workflow</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
@@ -1801,7 +1916,10 @@
                                        <span class="s2">&quot;preferences&quot;</span><span class="p">:</span> <span class="n">preferences</span><span class="p">})</span></div>
 
 
-<div class="viewcode-block" id="add_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="add_job">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.add_job">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
          <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1900,7 +2018,10 @@
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jobs&quot;</span><span class="p">:</span> <span class="n">w</span><span class="o">.</span><span class="n">jobs</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="remove_job"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.remove_job">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="remove_job">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.remove_job">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/workflow/</span><span class="si">{workflow_name}</span><span class="s2">/job/</span><span class="si">{job_name}</span><span class="s2">&quot;</span><span class="p">,</span>
           <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;workflow&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">remove_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1940,6 +2061,7 @@
     <span class="k">return</span> <span class="p">{</span><span class="n">w</span><span class="o">.</span><span class="n">jobs</span><span class="p">}</span></div>
 
 
+
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/preferences&#39;</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">preferences_post</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
@@ -1975,7 +2097,9 @@
     <span class="k">return</span> <span class="n">r</span>
 
 
-<div class="viewcode-block" id="preferences_post"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/preferences&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="preferences_post">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.preferences_post">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/preferences&#39;</span><span class="p">,</span>
           <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">,</span>
           <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span><span class="p">,</span>
           <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
@@ -2031,7 +2155,10 @@
                   <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="generate_example_workflow"><a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.generate_example_workflow">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/generate-example&#39;</span><span class="p">,</span>
+
+<div class="viewcode-block" id="generate_example_workflow">
+<a class="viewcode-back" href="../../../../cloudmesh.cc.service.html#cloudmesh.cc.service.service.generate_example_workflow">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/generate-example&#39;</span><span class="p">,</span>
          <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
          <span class="n">response_class</span><span class="o">=</span><span class="n">RedirectResponse</span><span class="p">,</span>
          <span class="n">include_in_schema</span><span class="o">=</span><span class="n">include_portal_tag_in_schema</span><span class="p">)</span>
@@ -2088,6 +2215,7 @@
     <span class="n">w</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">runtime_yaml_location</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/watcher/workflow-example&#39;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span></div>
+
 
 
 </pre></div>

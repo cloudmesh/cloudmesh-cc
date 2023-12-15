@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Specifying Workflows &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <title>Specifying Workflows &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -121,7 +123,7 @@
            <div itemprop="articleBody">
              
   <section id="specifying-workflows">
-<h1>Specifying Workflows<a class="headerlink" href="#specifying-workflows" title="Permalink to this heading"></a></h1>
+<h1>Specifying Workflows<a class="headerlink" href="#specifying-workflows" title="Link to this heading"></a></h1>
 <p>Users of cloudmesh cc must follow a certain
 configuration style to best specify how a
 workflow should be run. Customization options
@@ -129,7 +131,7 @@ include specifying the job types, the order of
 how the jobs should be run, and the portrayal
 of the graph.</p>
 <section id="workflow-yaml-format">
-<h2>Workflow YAML format<a class="headerlink" href="#workflow-yaml-format" title="Permalink to this heading"></a></h2>
+<h2>Workflow YAML format<a class="headerlink" href="#workflow-yaml-format" title="Link to this heading"></a></h2>
 <p>A workflow yaml file with three Shell script
 jobs <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> is as follows:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>workflow:
@@ -164,19 +166,19 @@ jobs <code class="docutils literal notranslate"><span class="pre">a</span></code
 </div>
 </section>
 <section id="example-workflows">
-<h2>Example Workflows<a class="headerlink" href="#example-workflows" title="Permalink to this heading"></a></h2>
+<h2>Example Workflows<a class="headerlink" href="#example-workflows" title="Link to this heading"></a></h2>
 <p>Sample yaml files can be found at the following link:</p>
 <p><a class="reference external" href="https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml">https://github.com/cloudmesh/cloudmesh-cc/blob/main/tests/workflow-example/workflow-example.yaml</a></p>
 </section>
 <section id="defining-nodes-in-the-workflow">
-<h2>Defining nodes in the workflow<a class="headerlink" href="#defining-nodes-in-the-workflow" title="Permalink to this heading"></a></h2>
+<h2>Defining nodes in the workflow<a class="headerlink" href="#defining-nodes-in-the-workflow" title="Link to this heading"></a></h2>
 <p>Nodes can be customized in various ways within the
 workflow configuration YAML file, including their
 job types (python, sh, jupyter, or slurm), their
 virtual Python environment (by specifying <code class="docutils literal notranslate"><span class="pre">venv</span></code>),
 their appearance on the graph, and other characteristics.</p>
 <section id="defining-labels-for-the-workflow">
-<h3>Defining labels for the workflow<a class="headerlink" href="#defining-labels-for-the-workflow" title="Permalink to this heading"></a></h3>
+<h3>Defining labels for the workflow<a class="headerlink" href="#defining-labels-for-the-workflow" title="Link to this heading"></a></h3>
 <p>These variables must be in curly braces when
 defining the labels inside the yaml workflow files.</p>
 <p>For example, a label could be defined as follows:</p>
@@ -221,7 +223,7 @@ format of the time must come immediately following the period.</p>
 </section>
 </section>
 <section id="defining-format-for-timestamp-labels">
-<h2>Defining format for timestamp labels<a class="headerlink" href="#defining-format-for-timestamp-labels" title="Permalink to this heading"></a></h2>
+<h2>Defining format for timestamp labels<a class="headerlink" href="#defining-format-for-timestamp-labels" title="Link to this heading"></a></h2>
 <p>Various formats can be used for the timestamps, such as
 the American datetime format <code class="docutils literal notranslate"><span class="pre">%m/%d/%Y,</span> <span class="pre">%H--%M--%S</span></code>
 or the international datetime format <code class="docutils literal notranslate"><span class="pre">%Y/%m/%d,</span> <span class="pre">%H--%M--%S</span></code>.
@@ -232,7 +234,7 @@ and second, respectively), any format can be created.</p>
 the datetime defaults to American format.</p>
 </section>
 <section id="defining-graphviz-shapes-and-styles">
-<h2>Defining graphviz shapes and styles<a class="headerlink" href="#defining-graphviz-shapes-and-styles" title="Permalink to this heading"></a></h2>
+<h2>Defining graphviz shapes and styles<a class="headerlink" href="#defining-graphviz-shapes-and-styles" title="Link to this heading"></a></h2>
 <p>Any shape and style for the nodes in the graph can be
 chosen, as long as they are taken from the graphviz documentation:</p>
 <p><a class="reference external" href="https://graphviz.org/doc/info/shapes.html">https://graphviz.org/doc/info/shapes.html</a></p>
@@ -257,7 +259,7 @@ when the job status is changed.</p>
 </div>
 </section>
 <section id="defining-dependencies-in-the-workflow">
-<h2>Defining dependencies in the workflow<a class="headerlink" href="#defining-dependencies-in-the-workflow" title="Permalink to this heading"></a></h2>
+<h2>Defining dependencies in the workflow<a class="headerlink" href="#defining-dependencies-in-the-workflow" title="Link to this heading"></a></h2>
 <p>Dependencies are specified in the order which jobs should be
 run, from left to right. They are listed under the workflow
 in the yaml file.</p>
@@ -275,7 +277,7 @@ in the yaml file.</p>
 </div>
 </section>
 <section id="reporting-progress">
-<h2>Reporting Progress<a class="headerlink" href="#reporting-progress" title="Permalink to this heading"></a></h2>
+<h2>Reporting Progress<a class="headerlink" href="#reporting-progress" title="Link to this heading"></a></h2>
 <p>When running scripts/jobs inside a workflow, the scripts must
 leverage some format of cloudmesh.progress to run successfully.
 Otherwise, the Workflow class cannot tell
@@ -286,7 +288,7 @@ running self-made jobs and workflows, they must adhere to the
 guidelines as follows.</p>
 </section>
 <section id="shell-and-slurm-scripts">
-<h2>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Permalink to this heading"></a></h2>
+<h2>Shell and Slurm Scripts<a class="headerlink" href="#shell-and-slurm-scripts" title="Link to this heading"></a></h2>
 <p>For shell and Slurm scripts <code class="docutils literal notranslate"><span class="pre">.sh</span></code>, the script must contain:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# cloudmesh status=running progress=1 pid=</span><span class="nv">$$</span><span class="s2">&quot;</span>
 </pre></div>
@@ -298,7 +300,7 @@ guidelines as follows.</p>
 <p>at the end of the script.</p>
 </section>
 <section id="python-scripts-and-jupyter-notebooks">
-<h2>Python Scripts and Jupyter Notebooks<a class="headerlink" href="#python-scripts-and-jupyter-notebooks" title="Permalink to this heading"></a></h2>
+<h2>Python Scripts and Jupyter Notebooks<a class="headerlink" href="#python-scripts-and-jupyter-notebooks" title="Link to this heading"></a></h2>
 <p>For Python scripts <code class="docutils literal notranslate"><span class="pre">.py</span></code> and Jupyter notebooks <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>,
 the script must contain an import module from
 cloudmesh.common and calls to the progress function.</p>

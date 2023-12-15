@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cloudmesh.cc.workflowrest &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <title>cloudmesh.cc.workflowrest &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/clipboard.min.js"></script>
-        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -108,7 +110,9 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 
 
-<div class="viewcode-block" id="RESTWorkflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow">[docs]</a><span class="k">class</span> <span class="nc">RESTWorkflow</span><span class="p">:</span>
+<div class="viewcode-block" id="RESTWorkflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow">[docs]</a>
+<span class="k">class</span> <span class="nc">RESTWorkflow</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class which interfaces with cc FastAPI server using REST.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -116,7 +120,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000&quot;</span>
 
     <span class="c1"># @app.get(&quot;/workflows&quot;)</span>
-<div class="viewcode-block" id="RESTWorkflow.list_workflows"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.list_workflows">[docs]</a>    <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RESTWorkflow.list_workflows">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.list_workflows">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_workflows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a list of workflows that is found within the server.</span>
 
@@ -130,7 +136,10 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">/workflows&quot;</span><span class="p">)</span> <span class="c1"># return as json string</span>
         <span class="k">return</span> <span class="n">content</span>  <span class="c1"># likely a dict</span></div>
 
-<div class="viewcode-block" id="RESTWorkflow.add_job"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.add_job">[docs]</a>    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RESTWorkflow.add_job">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.add_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a job to the workflow.</span>
 
 <span class="sd">        Adds a job to a workflow that is specified in the</span>
@@ -179,7 +188,10 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">content</span></div>
 
-<div class="viewcode-block" id="RESTWorkflow.upload_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">upload_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RESTWorkflow.upload_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.upload_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">upload_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">archive</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upload a workflow by using REST.</span>
 
@@ -205,7 +217,10 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span></div>
 
-<div class="viewcode-block" id="RESTWorkflow.get_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RESTWorkflow.get_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.get_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve a workflow by using REST.</span>
 
@@ -222,7 +237,10 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span></div>
 
-<div class="viewcode-block" id="RESTWorkflow.run_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.run_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+
+<div class="viewcode-block" id="RESTWorkflow.run_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.run_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                      <span class="n">run_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;topo&#39;</span><span class="p">,</span>
                      <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -234,7 +252,10 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span></div>
 
-<div class="viewcode-block" id="RESTWorkflow.delete_workflow"><a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RESTWorkflow.delete_workflow">
+<a class="viewcode-back" href="../../../cloudmesh.cc.html#cloudmesh.cc.workflowrest.RESTWorkflow.delete_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete a workflow by using REST.</span>
 
@@ -249,7 +270,9 @@
         <span class="k">if</span> <span class="n">job_name</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;?job=</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">r</span></div></div>
+        <span class="k">return</span> <span class="n">r</span></div>
+</div>
+
 
 
 <span class="sd">&#39;&#39;&#39;</span>

@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; cloudmesh-cc 4.3.15 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <title>Quickstart &mdash; cloudmesh-cc 4.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/readthedocs-custom.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2f20d6c1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -127,7 +129,7 @@
            <div itemprop="articleBody">
              
   <section id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
 <p>The Cloudmesh Compute Cluster service allows you to execute analytical,
 computational workflows which run programs on remote compute resources.
 We specify not only a list of tasks to be executed, but the tasks can
@@ -183,7 +185,7 @@ allows the easy interaction through a Web-based Portal.</p>
 <p>Let us demonstrate a number of selected features with the help of this
 quickstart. We will only focus on using the REST service.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>To start, the code is needed and we assume you are standing in the
 cloudmesh-cc directory. Use the following commands</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/cloudmesh/cloudmesh-cc.git
@@ -197,7 +199,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </div>
 </section>
 <section id="creating-a-simple-example">
-<h2>Creating a simple example<a class="headerlink" href="#creating-a-simple-example" title="Permalink to this heading"></a></h2>
+<h2>Creating a simple example<a class="headerlink" href="#creating-a-simple-example" title="Link to this heading"></a></h2>
 <p>First let us create a simple workflow example that we already have
 included for you in our source code. We will use this workflow and copy
 it into a temporary directory:</p>
@@ -229,7 +231,7 @@ service. We showcase here how to</p>
 </ul>
 </section>
 <section id="a-upload-and-run-a-workflow-embedded-in-an-archive-file">
-<h2>A. Upload and run a workflow embedded in an archive file<a class="headerlink" href="#a-upload-and-run-a-workflow-embedded-in-an-archive-file" title="Permalink to this heading"></a></h2>
+<h2>A. Upload and run a workflow embedded in an archive file<a class="headerlink" href="#a-upload-and-run-a-workflow-embedded-in-an-archive-file" title="Link to this heading"></a></h2>
 <p>We can upload an archive file which contains all the workflow files,
 including the yaml specification file and the scripts. Providing an
 archive file such as a <code class="docutils literal notranslate"><span class="pre">.tar</span></code>, <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>, or <code class="docutils literal notranslate"><span class="pre">.xz</span></code>. may enable the
@@ -237,7 +239,7 @@ workflow to be better suited towards portability and simplicity, where
 one can share an archive file with another user. We will choose here a
 tar file as example.</p>
 <section id="create-tar-archive-file">
-<h3>Create tar archive file<a class="headerlink" href="#create-tar-archive-file" title="Permalink to this heading"></a></h3>
+<h3>Create tar archive file<a class="headerlink" href="#create-tar-archive-file" title="Link to this heading"></a></h3>
 <p>Before uploading a <code class="docutils literal notranslate"><span class="pre">tar</span></code> archive file, we must first create it using
 the previous example yaml and scripts that we copied.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>-C<span class="w"> </span>/tmp/workflow-example<span class="w"> </span>-cf<span class="w"> </span>workflow-example.tar<span class="w"> </span>.
@@ -245,7 +247,7 @@ the previous example yaml and scripts that we copied.</p>
 </div>
 </section>
 <section id="option-1-upload-via-curl">
-<h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl" title="Permalink to this heading"></a></h3>
+<h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl" title="Link to this heading"></a></h3>
 <p>We can upload the archive file by using the <code class="docutils literal notranslate"><span class="pre">curl</span></code> terminal command as
 follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
@@ -256,14 +258,14 @@ follows:</p>
 </div>
 </section>
 <section id="option-2-upload-via-docs">
-<h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs" title="Permalink to this heading"></a></h3>
+<h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs" title="Link to this heading"></a></h3>
 <p>As the service is using also an OpenAPI 2.0 specification the workflow
 can also be uploaded implicitly through the specification GUI. Navigate
 to <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code> and use the POST Upload method.</p>
 <figure class="align-default" id="id4">
 <img alt="Browser API GUI for Cloudmesh Compute Cluster" src="_images/upload_api.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Browser API GUI for Cloudmesh Compute Cluster</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Browser API GUI for Cloudmesh Compute Cluster</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>Please click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code> and then enter
@@ -271,7 +273,7 @@ to <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1
 then click Execute.</p>
 </section>
 <section id="option-3-upload-via-the-python-api">
-<h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api" title="Permalink to this heading"></a></h3>
+<h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api" title="Link to this heading"></a></h3>
 <p>As we use a REST service, we can also easily upload the workflow through
 a Python enabled REST call. We will use Python requests to demonstrate
 this upload feature.</p>
@@ -287,7 +289,7 @@ indicates success). Printing <code class="docutils literal notranslate"><span cl
 API, such as a success or error message.</p>
 </section>
 <section id="option-4-upload-with-a-third-party-rest-framework">
-<h3>Option 4: Upload with a third party REST framework<a class="headerlink" href="#option-4-upload-with-a-third-party-rest-framework" title="Permalink to this heading"></a></h3>
+<h3>Option 4: Upload with a third party REST framework<a class="headerlink" href="#option-4-upload-with-a-third-party-rest-framework" title="Link to this heading"></a></h3>
 <p>Naturally if you like to use a different REST API you can do so. You can
 also use different programming languages and we leave it up to you to
 choose the framework of your choice to interact with the REST service,
@@ -295,7 +297,7 @@ popular choices are JavaScript, Go, C/C++, matlab, and R, to name a few.</p>
 </section>
 </section>
 <section id="b-upload-a-dir-that-contains-workflow-directory">
-<h2>B. Upload a dir that contains workflow directory<a class="headerlink" href="#b-upload-a-dir-that-contains-workflow-directory" title="Permalink to this heading"></a></h2>
+<h2>B. Upload a dir that contains workflow directory<a class="headerlink" href="#b-upload-a-dir-that-contains-workflow-directory" title="Link to this heading"></a></h2>
 <p>To increase flexibility and allow quick experiments, users can specify a
 workflow directory which contains the yaml specification file and the
 scripts. This way, pre-archival of the directory is not needed. The
@@ -304,7 +306,7 @@ specified directory.</p>
 <p>There are three different ways to upload the dir: via <code class="docutils literal notranslate"><span class="pre">curl</span></code> on the
 command line, via the browser GUI, and via the Python API.</p>
 <section id="option-1-upload-via-curl-1">
-<span id="id1"></span><h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl-1" title="Permalink to this heading"></a></h3>
+<span id="id1"></span><h3>Option 1: Upload via <code class="docutils literal notranslate"><span class="pre">curl</span></code><a class="headerlink" href="#option-1-upload-via-curl-1" title="Link to this heading"></a></h3>
 <p>A workflow can be uploaded easily with a curl command from the command
 line. On the command line execute:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
@@ -315,7 +317,7 @@ line. On the command line execute:</p>
 </div>
 </section>
 <section id="option-2-upload-via-docs-1">
-<span id="id2"></span><h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs-1" title="Permalink to this heading"></a></h3>
+<span id="id2"></span><h3>Option 2: Upload via <code class="docutils literal notranslate"><span class="pre">/docs</span></code><a class="headerlink" href="#option-2-upload-via-docs-1" title="Link to this heading"></a></h3>
 <p>Also here one can upload the needed files with the OpenAPI
 specification interface on the service. Navigate to
 <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code> and use the POST Upload method.</p>
@@ -323,7 +325,7 @@ specification interface on the service. Navigate to
 directory field and then click Execute.</p>
 </section>
 <section id="option-3-upload-via-the-python-api-1">
-<span id="id3"></span><h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api-1" title="Permalink to this heading"></a></h3>
+<span id="id3"></span><h3>Option 3: Upload via the Python API<a class="headerlink" href="#option-3-upload-via-the-python-api-1" title="Link to this heading"></a></h3>
 <p>Accessing the upload from the Python API is very easy. We will use
 python requests to demonstrate the upload of the workflow.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
@@ -339,7 +341,7 @@ API, such as a success or error message.</p>
 </section>
 </section>
 <section id="parameters-to-the-upload-a-workflow-with-a-rest-call">
-<h2>Parameters to the Upload a workflow with a REST call<a class="headerlink" href="#parameters-to-the-upload-a-workflow-with-a-rest-call" title="Permalink to this heading"></a></h2>
+<h2>Parameters to the Upload a workflow with a REST call<a class="headerlink" href="#parameters-to-the-upload-a-workflow-with-a-rest-call" title="Link to this heading"></a></h2>
 <p>The upload REST URL can take different parameters, such as</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">?directory=name</span></code></p></li>
@@ -363,7 +365,7 @@ can even work without scripts by using the <code class="docutils literal notrans
 the yaml.</p>
 </section>
 <section id="run-the-workflow">
-<h2>Run the workflow<a class="headerlink" href="#run-the-workflow" title="Permalink to this heading"></a></h2>
+<h2>Run the workflow<a class="headerlink" href="#run-the-workflow" title="Link to this heading"></a></h2>
 <p>To run, navigate to homepage at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/</span></code> and click the
 workflow-example on the left side. Then click Run.</p>
 </section>
