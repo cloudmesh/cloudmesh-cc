@@ -25,38 +25,34 @@ import io
 #         return stream.read().split()
 
 
-requiers = readfile('requirements.txt').splitlines()
+#requiers = readfile('requirements.txt').splitlines()
 #
 # add minimum requirements here
 #
-# requiers = """
-# cloudmesh-cmd5
-# cloudmesh-sys
-# cloudmesh-inventory
-# cloudmesh-configuration
-# cloudmesh-progress
-# pyyaml==5.4.1
-# psutil
-# yamldb
-# docker-compose
-# networkx[default]
-# pydot
-# graphviz
-# fastapi[all]
-# httpx
-# trio
-# papermill
-# pandas
-# markdown
-# sse-starlette
-# ipython
-# ipykernel
-# """.split("\n")
-
-if os_is_windows():
-    requiers.append('pywin32')
-
-print(requiers)
+requiers = """
+cloudmesh-cmd5
+cloudmesh-sys
+cloudmesh-inventory
+cloudmesh-configuration
+cloudmesh-progress
+pyyaml>=5.5
+psutil
+yamldb
+networkx[default]
+pydot
+graphviz
+pexpect
+fastapi[all]
+httpx
+trio
+papermill
+pandas
+markdown
+pywin32; platform_system == "Windows"
+sse-starlette
+ipython
+ipykernel
+""".split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 
