@@ -899,8 +899,8 @@ def list_workflows(output: str = None):
 # 4.2 they are uncompressed just as if they were to do an individual upload.
 # name is optional because the name is determined on what is provided
 @app.post("/workflow", include_in_schema=include_portal_tag_in_schema)
-@app.post("/workflow/{workflow_name}",
-          tags=['workflow'])
+# @app.post("/workflow/{workflow_name}",
+#           tags=['workflow'])
 @app.post("/workflow/upload", include_in_schema=include_portal_tag_in_schema)
 def upload_workflow(directory: str = Query(None,
                                   description='path to workflow dir '

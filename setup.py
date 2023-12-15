@@ -17,43 +17,46 @@
 
 from setuptools import find_packages, setup
 from cloudmesh.common.systeminfo import os_is_windows
+from cloudmesh.common.util import readfile
 import io
 
-def readfile(filename):
-    with io.open(filename, encoding="utf-8") as stream:
-        return stream.read().split()
+# def readfile(filename):
+#     with io.open(filename, encoding="utf-8") as stream:
+#         return stream.read().split()
 
 
-#requiers = readfile ('requirements.txt')
+requiers = readfile('requirements.txt').splitlines()
 #
 # add minimum requirements here
 #
-requiers = """
-cloudmesh-cmd5
-cloudmesh-sys
-cloudmesh-inventory
-cloudmesh-configuration
-cloudmesh-progress
-pyyaml==5.4.1
-psutil
-yamldb
-docker-compose
-networkx[default]
-pydot
-graphviz
-fastapi[all]
-httpx
-trio
-papermill
-pandas
-markdown
-sse-starlette
-ipython
-ipykernel
-""".split("\n")
+# requiers = """
+# cloudmesh-cmd5
+# cloudmesh-sys
+# cloudmesh-inventory
+# cloudmesh-configuration
+# cloudmesh-progress
+# pyyaml==5.4.1
+# psutil
+# yamldb
+# docker-compose
+# networkx[default]
+# pydot
+# graphviz
+# fastapi[all]
+# httpx
+# trio
+# papermill
+# pandas
+# markdown
+# sse-starlette
+# ipython
+# ipykernel
+# """.split("\n")
 
 if os_is_windows():
     requiers.append('pywin32')
+
+print(requiers)
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
 

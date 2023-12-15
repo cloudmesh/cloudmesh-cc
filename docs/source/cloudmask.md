@@ -35,7 +35,7 @@ and run the workflow:
 me@mycomputer $ cd ~/cm
 me@mycomputer $ git clone --config core.autocrlf=false https://github.com/laszewsk/mlcommons.git
 me@mycomputer $ cd mlcommons
-me@mycomputer $ pytest -v -x --capture=no benchmarks/cloudmask/target/rivanna/run_cloudmask_workflow.py
+me@mycomputer $ pytest -v -x --capture=no benchmarks/cloudmask/target/rivanna-cloudmesh-cc/rivanna/run_cloudmask_workflow.py
 ```
 
 The workflow iterates through the five GPUs available
