@@ -1,4 +1,4 @@
-package=ee
+package=cc
 
 include ../cloudmesh-common/makefile-basic.mk
 

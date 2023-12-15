@@ -1,9 +1,9 @@
+cloudmesh-common
 cloudmesh-cmd5
 cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
-pyyaml>=5.5
 psutil
 yamldb
 networkx[default]
@@ -12,12 +12,9 @@ graphviz
 pexpect
 fastapi[all]
 httpx
-trio
 papermill
 pandas
 markdown
-pywin32; platform_system == "Windows"
-sse-starlette
 ipython
 ipykernel
 

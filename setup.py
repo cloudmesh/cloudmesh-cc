@@ -16,26 +16,24 @@
 # ------------------------------------------------------------------------#
 
 from setuptools import find_packages, find_namespace_packages, setup
-from cloudmesh.common.systeminfo import os_is_windows
-from cloudmesh.common.util import readfile
 import io
 
-# def readfile(filename):
-#     with io.open(filename, encoding="utf-8") as stream:
-#         return stream.read().split()
+def readfile(filename):
+    with io.open(filename, encoding="utf-8") as stream:
+        return stream.read().split()
 
 
-#requiers = readfile('requirements.txt').splitlines()
+#requiers = readfile ('requirements.txt')
 #
 # add minimum requirements here
 #
 requiers = """
+cloudmesh-common
 cloudmesh-cmd5
 cloudmesh-sys
 cloudmesh-inventory
 cloudmesh-configuration
 cloudmesh-progress
-pyyaml>=5.5
 psutil
 yamldb
 networkx[default]
@@ -44,12 +42,9 @@ graphviz
 pexpect
 fastapi[all]
 httpx
-trio
 papermill
 pandas
 markdown
-pywin32; platform_system == "Windows"
-sse-starlette
 ipython
 ipykernel
 """.split("\n")
@@ -64,7 +59,7 @@ with open('README.md') as f:
 
 
 NAME = "cloudmesh-cc"
-DESCRIPTION = "A repository for running workflows"
+DESCRIPTION = "A command called cc and foo for the cloudmesh shell"
 AUTHOR = "Gregor von Laszewski"
 AUTHOR_EMAIL = "laszewski@gmail.com"
 URL = "https://github.com/cloudmesh/cloudmesh-cc"
@@ -96,14 +91,13 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.12",
     ],
     install_requires=requiers,
     tests_require=[
         "flake8",
         "coverage",
+        "pytests"
     ],
     zip_safe=False,
 )
