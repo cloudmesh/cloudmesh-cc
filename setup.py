@@ -15,7 +15,7 @@
 # limitations under the License.                                          #
 # ------------------------------------------------------------------------#
 
-from setuptools import find_packages, setup
+from setuptools import find_packages, find_namespace_packages, setup
 from cloudmesh.common.systeminfo import os_is_windows
 from cloudmesh.common.util import readfile
 import io
@@ -84,13 +84,11 @@ setup(
     version=version,
     license="Apache 2.0",
     url=URL,
-    packages=find_namespace_packages(
-        exclude=("tests",
-                 "deprecated",
-                 "propose",
-                 "examples",
-                 "conda"),
-        include=['cloudmesh']),
+    packages=find_packages(exclude=("tests",
+                                    "deprecated",
+                                    "propose",
+                                    "examples",
+                                    "conda")) + find_namespace_packages(include=['cloudmesh.*']),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
