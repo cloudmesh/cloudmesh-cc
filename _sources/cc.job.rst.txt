@@ -1,5 +1,5 @@
-cloudmesh package
-=================
+cc.job package
+==============
 
 Subpackages
 -----------
@@ -7,12 +7,16 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   cloudmesh.cc
+   cc.job.localhost
+   cc.job.lsf
+   cc.job.slurm
+   cc.job.ssh
+   cc.job.wsl
 
 Module contents
 ---------------
 
-.. automodule:: cloudmesh
+.. automodule:: cc.job
    :members:
    :undoc-members:
    :show-inheritance:

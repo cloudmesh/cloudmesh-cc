@@ -1,0 +1,21 @@
+cc.service package
+==================
+
+Submodules
+----------
+
+cc.service.service module
+-------------------------
+
+.. automodule:: cc.service.service
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc.service
+   :members:
+   :undoc-members:
+   :show-inheritance:

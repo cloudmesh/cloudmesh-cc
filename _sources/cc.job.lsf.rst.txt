@@ -1,0 +1,21 @@
+cc.job.lsf package
+==================
+
+Submodules
+----------
+
+cc.job.lsf.Job module
+---------------------
+
+.. automodule:: cc.job.lsf.Job
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc.job.lsf
+   :members:
+   :undoc-members:
+   :show-inheritance:

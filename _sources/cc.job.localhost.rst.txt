@@ -1,0 +1,21 @@
+cc.job.localhost package
+========================
+
+Submodules
+----------
+
+cc.job.localhost.Job module
+---------------------------
+
+.. automodule:: cc.job.localhost.Job
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc.job.localhost
+   :members:
+   :undoc-members:
+   :show-inheritance:

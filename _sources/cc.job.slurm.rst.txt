@@ -1,0 +1,21 @@
+cc.job.slurm package
+====================
+
+Submodules
+----------
+
+cc.job.slurm.Job module
+-----------------------
+
+.. automodule:: cc.job.slurm.Job
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc.job.slurm
+   :members:
+   :undoc-members:
+   :show-inheritance:

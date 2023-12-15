@@ -1,0 +1,21 @@
+cc.job.ssh package
+==================
+
+Submodules
+----------
+
+cc.job.ssh.Job module
+---------------------
+
+.. automodule:: cc.job.ssh.Job
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc.job.ssh
+   :members:
+   :undoc-members:
+   :show-inheritance:

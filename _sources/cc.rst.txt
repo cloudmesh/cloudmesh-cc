@@ -1,0 +1,55 @@
+cc package
+==========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   cc.command
+   cc.job
+   cc.service
+
+Submodules
+----------
+
+cc.labelmaker module
+--------------------
+
+.. automodule:: cc.labelmaker
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cc.manager module
+-----------------
+
+.. automodule:: cc.manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cc.workflow module
+------------------
+
+.. automodule:: cc.workflow
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cc.workflowrest module
+----------------------
+
+.. automodule:: cc.workflowrest
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cc
+   :members:
+   :undoc-members:
+   :show-inheritance:
