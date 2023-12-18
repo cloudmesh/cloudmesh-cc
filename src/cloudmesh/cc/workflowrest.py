@@ -11,15 +11,14 @@ class RESTWorkflow:
 
     # @app.get("/workflows")
     def list_workflows(self):
-        """
-        Return a list of workflows that is found within the server.
+        """Return a list of workflows that is found within the server.
 
         You can invoke this function also with a curl command:
 
         curl -X 'GET' 'http://127.0.0.1:8000/workflows' -H 'accept: application/json'
 
-        :return: list of workflow names
-        :rtype: dict
+        Returns:
+            dict: list of workflow names
         """
         content = requests.get(f"{self.address}/workflows") # return as json string
         return content  # likely a dict
@@ -30,8 +29,8 @@ class RESTWorkflow:
         Adds a job to a workflow that is specified in the
         provided workflow_name string.
 
-        :return: all jobs within workflow
-        :rtype: dict
+        Returns:
+            dict: all jobs within workflow
         """
         jobname = kwargs['jobname']
         user = kwargs['user']
@@ -74,17 +73,17 @@ class RESTWorkflow:
         return content
 
     def upload_workflow(self, directory: str = None, archive: str = None, yaml: str = None):
-        """
-        Upload a workflow by using REST.
+        """Upload a workflow by using REST.
 
-        :param directory: path to a folder of scripts and/or yaml
-        :type directory: str
-        :param archive: path to an archive file of scripts and/or yaml
-        :type archive: str
-        :param yaml: path to a yaml file that specifies workflow configuration
-        :type yaml: str
-        :return: success or failure message
-        :rtype: dict
+        Args:
+            directory (str): path to a folder of scripts and/or yaml
+            archive (str): path to an archive file of scripts and/or
+                yaml
+            yaml (str): path to a yaml file that specifies workflow
+                configuration
+
+        Returns:
+            dict: success or failure message
         """
         url = 'http://127.0.0.1:8000/workflow/upload'
         if directory:
@@ -100,15 +99,15 @@ class RESTWorkflow:
         return r
 
     def get_workflow(self, workflow_name: str, job_name: str = None):
-        """
-        Retrieve a workflow by using REST.
+        """Retrieve a workflow by using REST.
 
-        :param workflow_name: name of workflow to be retrieved
-        :type workflow_name: str
-        :param job_name: name of job to be retrieved inside specified workflow
-        :type job_name: str
-        :return: contents of workflow
-        :rtype: str
+        Args:
+            workflow_name (str): name of workflow to be retrieved
+            job_name (str): name of job to be retrieved inside specified
+                workflow
+
+        Returns:
+            str: contents of workflow
         """
         url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
         if job_name:
@@ -119,25 +118,25 @@ class RESTWorkflow:
     def run_workflow(self, workflow_name: str,
                      run_type: str = 'topo',
                      show: bool = True):
-        """
-        Run a workflow by using REST.
+        """Run a workflow by using REST.
 
-        :return:
+        Returns:
+
         """
         url = f'http://127.0.0.1:8000/workflow/run/{workflow_name}?show={show}'
         r = requests.get(url)
         return r
 
     def delete_workflow(self, workflow_name: str, job_name: str = None):
-        """
-        Delete a workflow by using REST.
+        """Delete a workflow by using REST.
 
-        :param workflow_name: name of workflow to delete
-        :type workflow_name: str
-        :param job_name: name of job to delete inside specified workflow
-        :type job_name: str
-        :return: success or failure message
-        :rtype: dict
+        Args:
+            workflow_name (str): name of workflow to delete
+            job_name (str): name of job to delete inside specified
+                workflow
+
+        Returns:
+            dict: success or failure message
         """
         url = f'http://127.0.0.1:8000/workflow/{workflow_name}'
         if job_name:

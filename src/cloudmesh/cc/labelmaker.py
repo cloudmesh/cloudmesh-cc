@@ -18,17 +18,13 @@ class Labelmaker:
                  workflow_name: str,
                  job_name: str,
                  t0=None):
-        """
-        Initialize the labelmaker.
+        """Initialize the labelmaker.
 
-        :param template: The labelmaker tamplate string
-        :type template: str
-        :param workflow_name: The workflow name
-        :type workflow_name: str
-        :param job_name: The job name
-        :type job_name: str
-        :param t0: The time t0
-        :type t0: str
+        Args:
+            template (str): The labelmaker tamplate string
+            workflow_name (str): The workflow name
+            job_name (str): The job name
+            t0 (str): The time t0
         """
         self.colon = r'--'
         self.cms_variables = Variables()
@@ -56,30 +52,30 @@ class Labelmaker:
         ).path).as_posix()
 
     def set_colon(self, value):
-        """
-        Set the quote character as colon. Single colon is not allowed.
+        """Set the quote character as colon. Single colon is not allowed.
         The quote character is being replaced with a single colon.
         Warning: setting the colon has not been fully implemented.
         The reason why this is the case is because we cannot use anything
         other than --
 
-        :param value: the value of the colon
-        :type value: str
-        :return: nothing
-        :rtype: None
+        Args:
+            value (str): the value of the colon
+
+        Returns:
+            None: nothing
         """
         self.colon = value
 
     def get(self, **data):
-        """
-        If now is followed by any of them its uste as strfmt.
+        """If now is followed by any of them its uste as strfmt.
 
         Example: now.%m/%d/%Y, %H:%M:%S
 
-        :param data:
-        :type data:
-        :return:
-        :rtype:
+        Args:
+            **data
+
+        Returns:
+
         """
         now = datetime.now()
         t0 = self.t0 or now

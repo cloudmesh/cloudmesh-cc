@@ -18,8 +18,8 @@ class Slurm:
 
         Set locations of slurm commands for the job.
 
-        :param host: device that the script will be run on
-        :type host: str
+        Args:
+            host (str): device that the script will be run on
         """
         if host.startswith("rivanna"):
             self.slurm = "/opt/slurm/current/bin"
@@ -41,10 +41,11 @@ class Job:
         creates a job by passing either a dict with \*\*dict or named arguments
         attribute1 = value1, ...
 
-        :param data: parameters and specifications of job, such as name
-        :type data:
-        :return: nothing
-        :rtype: None
+        Args:
+            data: parameters and specifications of job, such as name
+
+        Returns:
+            None: nothing
         """
         self.name = None
         self.username = None
@@ -86,10 +87,11 @@ class Job:
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
 
-        :param name: the name of the script
-        :type name: str
-        :return: file extension of script
-        :rtype: str
+        Args:
+            name (str): the name of the script
+
+        Returns:
+            str: file extension of script
         """
         kind = "sh"
         if name is None:
@@ -105,8 +107,8 @@ class Job:
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
 
-        :return: description and specifications of job in string format
-        :rtype: str
+        Returns:
+            str: description and specifications of job in string format
         """
         msg = [
             f"host:      {self.host}",
@@ -129,16 +131,16 @@ class Job:
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
-        :return: the status of job
-        :rtype: str
+        Returns:
+            str: the status of job
         """
         return self.get_status()
 
     def clean(self):
         """Delete the remote experiment directory.
 
-        :return: nothing
-        :rtype: None
+        Returns:
+            None: nothing
         """
         command = f'ssh {self.username}@{self.host} "rm -rf {self.directory}"'
         print(command)
@@ -151,8 +153,8 @@ class Job:
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         command = f'ssh {self.username}@{self.host} "mkdir -p {self.directory}"'
         print(command)
@@ -164,9 +166,9 @@ class Job:
         runs the job by making script executable and running the
         slurm job remotely.
 
-        :returns:
-            - state - undefined, running, or done
-            - job_id - the slurm job id of the job
+        Returns:
+            - state - undefined, running, or done - job_id - the slurm
+            job id of the job
         """
         self.mkdir_experimentdir()
 
@@ -193,8 +195,8 @@ class Job:
     def clear(self):
         """Clear all leftover log files from past runs.
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         content = None
         try:
@@ -211,10 +213,12 @@ class Job:
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: returns status, which is the progress of the job
-        :rtype: str
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            str: returns status, which is the progress of the job
         """
         status = "ready"
         try:
@@ -235,10 +239,12 @@ class Job:
         fetches the log file of the job and reads the log file to check
         for the current completeness of the job
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: value from 0 to 100 which reflects completeness of job
-        :rtype: int
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            int: value from 0 to 100 which reflects completeness of job
         """
         progress = 0
         try:
@@ -265,8 +271,8 @@ class Job:
         copy the remote log file and read the contents of the file to
         return the contents as a string
 
-        :return: the contents of the log file in string format
-        :rtype: str
+        Returns:
+            str: the contents of the log file in string format
         """
         content = None
         try:
@@ -285,8 +291,8 @@ class Job:
         makes experiment dir and changes permissions, and then
         copies the shell script to remote host
 
-        :return: 0 or 1 depending on success of command
-        :rtype: int
+        Returns:
+            int: 0 or 1 depending on success of command
         """
         self.clean()
         self.mkdir_experimentdir()
@@ -303,8 +309,8 @@ class Job:
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
 
-        :return: 0 or 1 depending on success of command
-        :rtype: int
+        Returns:
+            int: 0 or 1 depending on success of command
         """
         if self.filetype == "python":
             command = f"chmod ug+rx ./runtime/{self.name}.py"
@@ -320,10 +326,12 @@ class Job:
         used to check if the file is existing within the remote experiment
         directory
 
-        :param filename: the name of the script, including file extension
-        :type filename: str
-        :return: True if the file exists and False if it doesnt
-        :rtype: bool
+        Args:
+            filename (str): the name of the script, including file
+                extension
+
+        Returns:
+            bool: True if the file exists and False if it doesnt
         """
         command = f'ssh {self.username}@{self.host} "ls {self.directory}/{filename}"'
         print(command)
@@ -339,10 +347,11 @@ class Job:
         specified in the period in seconds,
         until the job has completed
 
-        :param period: time in seconds to check, as an interval
-        :type period: float
-        :return: does not return anything
-        :rtype: None
+        Args:
+            period (float): time in seconds to check, as an interval
+
+        Returns:
+            None: does not return anything
         """
         finished = False
         progress = 0
@@ -358,10 +367,11 @@ class Job:
     def get_pid(self, refresh=False):
         """Get the pid that the job is running within.
 
-        :param refresh: whether to retrieve the latest log
-        :type refresh: bool
-        :return: the pid (process identifier)
-        :rtype: str
+        Args:
+            refresh (bool): whether to retrieve the latest log
+
+        Returns:
+            str: the pid (process identifier)
         """
         if refresh:
             log = self.get_log()
@@ -377,12 +387,12 @@ class Job:
     def kill(self, period=1, job_id=None):
         """Kill the job.
 
-        :param period: interval to use for waiting for log/pid
-        :type period: float
-        :param job_id: id of slurm job
-        :type job_id: str
-        :return: output of squeue command
-        :rtype: str
+        Args:
+            period (float): interval to use for waiting for log/pid
+            job_id (str): id of slurm job
+
+        Returns:
+            str: output of squeue command
         """
         if job_id is None:
             Console.error("No job_id supplied")
@@ -435,15 +445,17 @@ class Job:
                time):
         """Create a template for slurm sbatch.
 
-        :param command: command to be executed
-        :param file: name of file
-        :param jobname: name of job
-        :param card_name: name of graphics card that job will be run on
-        :param gpu_count: number of gpus
-        :param system_partition: partition on which job will be run
-        :param time: maximum time limit for slurm job
-        :return: nothing
-        :rtype: None
+        Args:
+            command: command to be executed
+            file: name of file
+            jobname: name of job
+            card_name: name of graphics card that job will be run on
+            gpu_count: number of gpus
+            system_partition: partition on which job will be run
+            time: maximum time limit for slurm job
+
+        Returns:
+            None: nothing
         """
         script = """\
             #!/usr/bin/env bash
@@ -477,10 +489,11 @@ class Job:
     def create_script(self, exec=None):
         """Create a template for the slurm sbatch with progress.
 
-        :param exec: command to be executed
-        :type exec: str
-        :return: name of script
-        :rtype: str
+        Args:
+            exec (str): command to be executed
+
+        Returns:
+            str: name of script
         """
         filename = f"{self.name}.sh"
         if self.filetype == 'ipynb':

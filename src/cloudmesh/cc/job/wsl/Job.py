@@ -24,10 +24,11 @@ class Job:
         creates a job by passing either a dict with \*\*dict or named arguments
         attribute1 = value1, ...
 
-        :param data:
-        :type data:
-        :return:
-        :rtype:
+        Args:
+            data
+
+        Returns:
+
         """
         self.data = argv
 
@@ -82,9 +83,11 @@ class Job:
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
 
-        :param name: the name of the script
-        :return: file extension of script
-        :rtype: str
+        Args:
+            name: the name of the script
+
+        Returns:
+            str: file extension of script
         """
         kind = "sh"
         if name is None:
@@ -100,8 +103,8 @@ class Job:
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
 
-        :return: description and specifications of job in string format
-        :rtype: str
+        Returns:
+            str: description and specifications of job in string format
         """
         msg = [
             f"host:      {self.host}",
@@ -124,8 +127,8 @@ class Job:
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
-        :return: the status of job
-        :rtype: str
+        Returns:
+            str: the status of job
         """
         return self.get_status()
 
@@ -136,8 +139,8 @@ class Job:
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         directory = Shell.map_filename(self.directory).path
         Shell.mkdir(directory)
@@ -148,8 +151,8 @@ class Job:
         changes permissions and makes experiment dir, and then
         copies the shell script to experiment dir
 
-        :return: True or False depending on if file exists
-        :rtype: bool
+        Returns:
+            bool: True or False depending on if file exists
         """
         self.mkdir_experimentdir()
         self.chmod()
@@ -167,8 +170,8 @@ class Job:
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
 
-        :return: 0 or 1 depending on success of command
-        :rtype: int
+        Returns:
+            int: 0 or 1 depending on success of command
         """
         command = f'chmod ug+rx ./runtime/{self.name}{self.filetype}'
         print(command)
@@ -181,10 +184,12 @@ class Job:
         used to check if the file is existing within the experiment
         directory
 
-        :param filename: the name of the script, including file extension
-        :type filename: str
-        :return: True if the file exists and False if it doesnt
-        :rtype: bool
+        Args:
+            filename (str): the name of the script, including file
+                extension
+
+        Returns:
+            bool: True if the file exists and False if it doesnt
         """
         return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
@@ -195,9 +200,9 @@ class Job:
         script within wsl. only works for shell scripts, as .sh is
         hardcoded within the commands
 
-        :returns:
-            - state - undefined, running, or done
-            - log - the output of the job
+        Returns:
+            - state - undefined, running, or done - log - the output of
+            the job
         """
         self.mkdir_experimentdir()
         # make sure executable is set
@@ -240,8 +245,8 @@ class Job:
     def clear(self):
         """Clear all leftover log files from past runs.
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         content = None
         try:
@@ -258,10 +263,11 @@ class Job:
         copy the log file and read the contents of the file to
         return the contents as a string
 
-        :param verbose: if True then print contents of log
-        :type verbose: bool
-        :return: the contents of the log file in string format
-        :rtype: str
+        Args:
+            verbose (bool): if True then print contents of log
+
+        Returns:
+            str: the contents of the log file in string format
         """
         content = None
         try:
@@ -281,10 +287,12 @@ class Job:
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: returns status, which is the progress of the job
-        :rtype: str
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            str: returns status, which is the progress of the job
         """
         status = "ready"
         try:
@@ -304,10 +312,12 @@ class Job:
         fetches the log file of the job and reads the log file to check
         for the current completeness of the job
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: value from 0 to 100 which reflects completeness of job
-        :rtype: int
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            int: value from 0 to 100 which reflects completeness of job
         """
         progress = 0
         try:
@@ -332,10 +342,11 @@ class Job:
         specified in the period in seconds,
         until the job has completed
 
-        :param period: time in seconds to check, as an interval
-        :type period: float
-        :return: does not return anything
-        :rtype: None
+        Args:
+            period (float): time in seconds to check, as an interval
+
+        Returns:
+            None: does not return anything
         """
         finished = False
         while not finished:
@@ -348,10 +359,11 @@ class Job:
     def get_pid(self, refresh=False):
         """Get the pid that the job is running within.
 
-        :param refresh: whether to retrieve the latest log
-        :type refresh: bool
-        :return: the pid (process identifier)
-        :rtype: str
+        Args:
+            refresh (bool): whether to retrieve the latest log
+
+        Returns:
+            str: the pid (process identifier)
         """
         if refresh:
             log = self.get_log()
@@ -367,11 +379,12 @@ class Job:
     def kill(self, period=1):
         """Kill the job.
 
-        :param period: interval to use for waiting for log/pid
-        :type period: float
-        :returns:
-            - pid - process id of the script
-            - child - child of the script
+        Args:
+            period (float): interval to use for waiting for log/pid
+
+        Returns:
+            - pid - process id of the script - child - child of the
+            script
         """
         #
         # find logfile

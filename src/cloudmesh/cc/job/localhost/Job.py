@@ -14,8 +14,7 @@ from cloudmesh.common.systeminfo import os_is_windows
 
 
 class Job:
-    """
-    Class to submit a job to the local host. Supported operating systems.
+    """Class to submit a job to the local host. Supported operating systems.
 
     This includes:
 
@@ -32,10 +31,11 @@ class Job:
         creates a job by passing either a dict with \*\*dict or named arguments
         attribute1 = value1, ...
 
-        :param data:
-        :type data:
-        :return:
-        :rtype:
+        Args:
+            data
+
+        Returns:
+
         """
         self.name = None
         self.username = None
@@ -90,9 +90,11 @@ class Job:
         corresponding file extension that is run, such as
         shell script, jupyter notebook, or python file
 
-        :param name: the name of the script
-        :return: file extension of script
-        :rtype: str
+        Args:
+            name: the name of the script
+
+        Returns:
+            str: file extension of script
         """
         kind = "sh"
         if name is None:
@@ -109,8 +111,8 @@ class Job:
         returns pertinent information of job in string format,
         including host, username, name of job, and other characteristics
 
-        :return: description and specifications of job in string format
-        :rtype: str
+        Returns:
+            str: description and specifications of job in string format
         """
         msg = [
             f"host:      {self.host}",
@@ -133,8 +135,8 @@ class Job:
         exactly the same as get_status but duplicated to provide as
         a shortened-named, alternative call
 
-        :return: the status of job
-        :rtype: str
+        Returns:
+            str: the status of job
         """
         return self.get_status()
 
@@ -145,8 +147,8 @@ class Job:
         yaml file, log file, and pertinent script to be run
         like sh script or ipynb or py
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         directory = Shell.map_filename(self.directory).path
         Shell.mkdir(directory)
@@ -158,8 +160,8 @@ class Job:
         script locally. only works for shell scripts, as .sh is
         hardcoded within the commands
 
-        :return: 0 if successfully run and 1 if failed
-        :rtype: int
+        Returns:
+            int: 0 if successfully run and 1 if failed
         """
         self.mkdir_experimentdir()
 
@@ -236,8 +238,8 @@ class Job:
     def clear(self):
         """Clear all leftover log files from past runs.
 
-        :return: does not return anything
-        :rtype: None
+        Returns:
+            None: does not return anything
         """
         content = None
         try:
@@ -254,10 +256,12 @@ class Job:
         fetches the log file of the job and returns the status of
         the job, which can be undefined, running, or done
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: returns status, which is the progress of the job
-        :rtype: str
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            str: returns status, which is the progress of the job
         """
         status = "ready"
         try:
@@ -277,10 +281,12 @@ class Job:
         fetch the log file of the job and read the log file to check
         for the current completeness of the job
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: value from 0 to 100 which reflects completeness of job
-        :rtype: int
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            int: value from 0 to 100 which reflects completeness of job
         """
         progress = 0
         try:
@@ -304,10 +310,12 @@ class Job:
         copy the log file, sync, and read the contents of the file to
         return the contents as a string
 
-        :param refresh: whether to copy the log file in case of changes
-        :type refresh: bool
-        :return: the contents of the log file in string format
-        :rtype: str
+        Args:
+            refresh (bool): whether to copy the log file in case of
+                changes
+
+        Returns:
+            str: the contents of the log file in string format
         """
         content = None
         try:
@@ -327,8 +335,8 @@ class Job:
         copies the shell script to the experiment directory and
         ensures that the file is copied with the sync command
 
-        :return: 0 or 1 depending on success of command
-        :rtype: int
+        Returns:
+            int: 0 or 1 depending on success of command
         """
         self.mkdir_experimentdir()
         self.chmod()
@@ -354,8 +362,8 @@ class Job:
         run (shell or py file, ipynb not yet supported) so that
         the system can successfully execute the script
 
-        :return: 0 or 1 depending on success of command
-        :rtype: int
+        Returns:
+            int: 0 or 1 depending on success of command
         """
         command = f'chmod ug+rx ./runtime/{self.name}{self.filetype}'
         print(command)
@@ -368,10 +376,12 @@ class Job:
         used to check if the file is existing within the experiment
         directory
 
-        :param filename: the name of the script, including file extension
-        :type filename: str
-        :return: True if the file exists and False if it doesnt
-        :rtype: bool
+        Args:
+            filename (str): the name of the script, including file
+                extension
+
+        Returns:
+            bool: True if the file exists and False if it doesnt
         """
         return os.path.exists(path_expand(f'{self.directory}/{filename}'))
 
@@ -382,10 +392,11 @@ class Job:
         specified in the period in seconds,
         till the job has completed
 
-        :param period: time in seconds to check, as an interval
-        :type period: float
-        :return: does not return anything
-        :rtype: None
+        Args:
+            period (float): time in seconds to check, as an interval
+
+        Returns:
+            None: does not return anything
         """
         finished = False
         while not finished:
@@ -398,10 +409,11 @@ class Job:
     def get_pid(self, refresh=False):
         """Get the pid that the job is running within.
 
-        :param refresh: whether to retrieve the latest log
-        :type refresh: bool
-        :return: the pid (process identifier)
-        :rtype: str
+        Args:
+            refresh (bool): whether to retrieve the latest log
+
+        Returns:
+            str: the pid (process identifier)
         """
         if refresh:
             log = self.get_log()
@@ -417,11 +429,12 @@ class Job:
     def kill(self, period=1):
         """Kill the job.
 
-        :param period: interval to use for waiting for log/pid
-        :type period: float
-        :returns:
-            - pid - process identifier as str
-            - child - child process as str
+        Args:
+            period (float): interval to use for waiting for log/pid
+
+        Returns:
+            - pid - process identifier as str - child - child process as
+            str
         """
         #
         # find logfile
@@ -487,10 +500,11 @@ class Job:
     def create_script(self, exec=None):
         """Create a template for the script.
 
-        :param exec: command to be executed
-        :type exec: str
-        :return: name of script
-        :rtype: str
+        Args:
+            exec (str): command to be executed
+
+        Returns:
+            str: name of script
         """
         filename = f"{self.name}.sh"
         if self.filetype == 'ipynb':
@@ -521,14 +535,14 @@ class Job:
     def create(filename=None, script=None, exec=None):
         """Create a template for the script with progress.
 
-        :param filename: name of file that the script will be written to
-        :type filename: str
-        :param script: contents of script
-        :type script: str
-        :param exec: command to be executed
-        :type exec: str
-        :return: the contents of the script itself
-        :rtype: str
+        Args:
+            filename (str): name of file that the script will be written
+                to
+            script (str): contents of script
+            exec (str): command to be executed
+
+        Returns:
+            str: the contents of the script itself
         """
         if script is None and exec is None:
             Console.error("Script and executable cannot be used at the same time.")

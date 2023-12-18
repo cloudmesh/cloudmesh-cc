@@ -24,10 +24,11 @@ class WorkflowCLIManager:
 
             cc workflow add [--name=NAME] [--job=JOB] ARGS...
 
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
@@ -43,14 +44,13 @@ class WorkflowCLIManager:
 
             cc workflow add [--name=NAME] [--job=JOB] ARGS...
 
-        :param job: name of job
-        :type job: str
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :param argv: other arguments
-        :type argv: list
-        :return: nothing
-        :rtype: None
+        Args:
+            job (str): name of job
+            filename (str): path to yaml of workflow
+            **argv (list): other arguments
+
+        Returns:
+            None: nothing
         """
         data = argv
         w = Workflow(filename=filename)
@@ -63,10 +63,11 @@ class WorkflowCLIManager:
 
             cc workflow delete [--name=NAME] --job=JOB
 
-        :param job: name of job to delete
-        :type job: str
-        :return: nothing
-        :rtype: None
+        Args:
+            job (str): name of job to delete
+
+        Returns:
+            None: nothing
         """
         w = Workflow(filename=self.filename)
         w.remove_job(name=job)
@@ -78,10 +79,11 @@ class WorkflowCLIManager:
 
             cc workflow delete [--name=NAME] --job=JOB
 
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         w = Workflow(filename=self.filename)
         w.remove_workflow()
@@ -93,10 +95,11 @@ class WorkflowCLIManager:
 
             cc workflow list [--name=NAME] [--job=JOB]
 
-        :param job: name of job
-        :type job: str
-        :return: nothing
-        :rtype: None
+        Args:
+            job (str): name of job
+
+        Returns:
+            None: nothing
         """
         w = Workflow(filename=self.filename)
         j = w.job(name=job)
@@ -109,10 +112,11 @@ class WorkflowCLIManager:
 
             cc workflow list [--name=NAME] [--filename=FILENAME]
 
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         w = Workflow(filename=filename)
         nodes = w.jobs
@@ -125,10 +129,11 @@ class WorkflowCLIManager:
 
             cc workflow run [--name=NAME] [--job=JOB] [--filename=FILENAME]
 
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         w = Workflow(filename=filename)
         w.run_topo()
@@ -141,14 +146,13 @@ class WorkflowCLIManager:
 
             cc workflow NAME DEPENDENCIES
 
-        :param name: name of workflow
-        :type name: str
-        :param dependency: name of dependency
-        :type dependency: str
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            name (str): name of workflow
+            dependency (str): name of dependency
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
@@ -164,12 +168,12 @@ class WorkflowCLIManager:
 
             cc workflow status --name=NAME --filename=FILENAME [--output=OUTPUT]
 
-        :param name: name of workflow
-        :type name: str
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            name (str): name of workflow
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
@@ -185,10 +189,11 @@ class WorkflowCLIManager:
 
             cc workflow graph --name=NAME
 
-        :param filename: path to yaml of workflow
-        :type filename: str
-        :return: nothing
-        :rtype: None
+        Args:
+            filename (str): path to yaml of workflow
+
+        Returns:
+            None: nothing
         """
         if self.name is None:
             self.name = os.path.basename(filename).replace(".yaml", "")
