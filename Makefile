@@ -1,11 +1,13 @@
-package=cc
+CURRENT_DIR := $(shell pwd)
+BASENAME := $(shell basename $(CURRENT_DIR))
+package=$(BASENAME)
 
-include ../cloudmesh-common/makefile-basic.mk
+include ../cloudmesh-common/makefile.mk
 
-include ../cloudmesh-common/makefile-test.mk
+.PHONY: help
 
-include ../cloudmesh-common/makefile-clean.mk
-
-include ../cloudmesh-common/makefile-check.mk
-
-include ../cloudmesh-common/makefile-pypi.mk
+help:
+	@echo "Available targets:"
+	@echo "------------------"
+	@grep ": ##"  ../cloudmesh-common/makefile.mk | awk 'BEGIN {FS=": ##"}; {printf "%-11s - %s\n", $$1, $$2}'
+	@echo
