@@ -69,8 +69,13 @@ dependencies = [
     "ipython",
     "ipykernel",
 ]
+
 [project.urls]
-"Documentation" = "https://github.com/cloudmesh/cloudmesh-common"
+Homepage = "https://github.com/cloudmesh/cloudmesh-cc"
+Documentation = "https://github.com/cloudmesh/cloudmesh-cc/blob/main/README.md"
+Repository = "https://github.com/cloudmesh/cloudmesh-cc.git"
+Issues = "https://github.com/cloudmesh/cloudmesh-cc/issues"
+Changelog = "https://github.com/cloudmesh/cloudmesh-cc/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src/"]
